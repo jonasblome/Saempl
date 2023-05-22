@@ -1,9 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="HebHQS" name="Auto_Sample" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
-              companyName="Blome">
-  <MAINGROUP id="Ryuu1q" name="Auto_Sample">
+<JUCERPROJECT id="HebHQS" name="Saemple" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="1" displaySplashScreen="1" jucerFormatVersion="1"
+              companyName="Blome" pluginAUMainType="'aumu'" pluginVST3Category="Tools"
+              pluginAAXCategory="0" pluginVSTCategory="kPlugCategUnknown" companyEmail="jonas.blome@gmx.de">
+  <MAINGROUP id="Ryuu1q" name="Saemple">
+    <GROUP id="{42BE264F-73CB-1788-4B66-AF9042EF1615}" name="BlomeComponents">
+      <FILE id="ipExmz" name="SampleDatabaseViewViewModel.cpp" compile="1"
+            resource="0" file="Source/SampleDatabaseViewViewModel.cpp"/>
+      <FILE id="b8vvCa" name="SampleDatabaseViewViewModel.h" compile="0"
+            resource="0" file="Source/SampleDatabaseViewViewModel.h"/>
+      <FILE id="S292g2" name="SampleMapViewModel.cpp" compile="1" resource="0"
+            file="Source/SampleMapViewModel.cpp"/>
+      <FILE id="c62PoI" name="SampleMapViewModel.h" compile="0" resource="0"
+            file="Source/SampleMapViewModel.h"/>
+      <FILE id="gfsGgl" name="SampleViewer.cpp" compile="1" resource="0"
+            file="Source/SampleViewer.cpp"/>
+      <FILE id="pvl4h9" name="SampleViewer.h" compile="0" resource="0" file="Source/SampleViewer.h"/>
+    </GROUP>
+    <GROUP id="{6D66FD26-8F3F-0894-5730-966778E462FE}" name="BlomePanels">
+      <FILE id="lThgmA" name="BasePanel.cpp" compile="1" resource="0" file="Source/BasePanel.cpp"/>
+      <FILE id="EsamqD" name="BasePanel.h" compile="0" resource="0" file="Source/BasePanel.h"/>
+      <FILE id="OyVv0E" name="MainPanel.cpp" compile="1" resource="0" file="Source/MainPanel.cpp"/>
+      <FILE id="NTzZV2" name="MainPanel.h" compile="0" resource="0" file="Source/MainPanel.h"/>
+      <FILE id="vxYbk9" name="SampleDatabaseViewerPanel.cpp" compile="1"
+            resource="0" file="Source/SampleDatabaseViewerPanel.cpp"/>
+      <FILE id="dPQ3lJ" name="SampleDatabaseViewerPanel.h" compile="0" resource="0"
+            file="Source/SampleDatabaseViewerPanel.h"/>
+    </GROUP>
+    <GROUP id="{F1D19C9D-5976-FA7E-4145-99A46D7DB6D2}" name="BlomeHelpers"/>
+    <GROUP id="{24E53329-C4AB-C36D-5F45-A76DFCFCE6A5}" name="BlomeDSP">
+      <FILE id="UpyEC4" name="SampleAnalyser.cpp" compile="1" resource="0"
+            file="Source/SampleAnalyser.cpp"/>
+      <FILE id="Vj1R2H" name="SampleAnalyser.h" compile="0" resource="0"
+            file="Source/SampleAnalyser.h"/>
+      <FILE id="xJkutK" name="SampleEditor.cpp" compile="1" resource="0"
+            file="Source/SampleEditor.cpp"/>
+      <FILE id="eGotgT" name="SampleEditor.h" compile="0" resource="0" file="Source/SampleEditor.h"/>
+    </GROUP>
+    <GROUP id="{E9B1E780-95F6-8A24-1076-4F173F69A7D1}" name="BlomeSampleManagement">
+      <FILE id="UMdojm" name="SampleDatabase.cpp" compile="1" resource="0"
+            file="Source/SampleDatabase.cpp"/>
+      <FILE id="ijfj3H" name="SampleDatabase.h" compile="0" resource="0"
+            file="Source/SampleDatabase.h"/>
+      <FILE id="hhjzmX" name="SampleDatabaseView.cpp" compile="1" resource="0"
+            file="Source/SampleDatabaseView.cpp"/>
+      <FILE id="oEWIDG" name="SampleDatabaseView.h" compile="0" resource="0"
+            file="Source/SampleDatabaseView.h"/>
+      <FILE id="i4IYPu" name="SampleItem.cpp" compile="1" resource="0" file="Source/SampleItem.cpp"/>
+      <FILE id="i15BWX" name="SampleItem.h" compile="0" resource="0" file="Source/SampleItem.h"/>
+      <FILE id="rL8BEY" name="SamplePalette.cpp" compile="1" resource="0"
+            file="Source/SamplePalette.cpp"/>
+      <FILE id="XS1oDS" name="SamplePalette.h" compile="0" resource="0" file="Source/SamplePalette.h"/>
+      <FILE id="mcLyPh" name="SampleSequencer.cpp" compile="1" resource="0"
+            file="Source/SampleSequencer.cpp"/>
+      <FILE id="pIRzDZ" name="SampleSequencer.h" compile="0" resource="0"
+            file="Source/SampleSequencer.h"/>
+      <FILE id="GKZbDK" name="SampleTag.cpp" compile="1" resource="0" file="Source/SampleTag.cpp"/>
+      <FILE id="b8CCnT" name="SampleTag.h" compile="0" resource="0" file="Source/SampleTag.h"/>
+    </GROUP>
     <GROUP id="{DC34CDD6-63E9-961B-46AF-F2C74C695602}" name="Source">
       <FILE id="tiuyaQ" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>

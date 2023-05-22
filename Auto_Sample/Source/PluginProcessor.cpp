@@ -10,7 +10,7 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-Auto_SampleAudioProcessor::Auto_SampleAudioProcessor()
+SaemplAudioProcessor::SaemplAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
@@ -24,17 +24,17 @@ Auto_SampleAudioProcessor::Auto_SampleAudioProcessor()
 {
 }
 
-Auto_SampleAudioProcessor::~Auto_SampleAudioProcessor()
+SaemplAudioProcessor::~SaemplAudioProcessor()
 {
 }
 
 //==============================================================================
-const juce::String Auto_SampleAudioProcessor::getName() const
+const juce::String SaemplAudioProcessor::getName() const
 {
     return JucePlugin_Name;
 }
 
-bool Auto_SampleAudioProcessor::acceptsMidi() const
+bool SaemplAudioProcessor::acceptsMidi() const
 {
    #if JucePlugin_WantsMidiInput
     return true;
@@ -43,7 +43,7 @@ bool Auto_SampleAudioProcessor::acceptsMidi() const
    #endif
 }
 
-bool Auto_SampleAudioProcessor::producesMidi() const
+bool SaemplAudioProcessor::producesMidi() const
 {
    #if JucePlugin_ProducesMidiOutput
     return true;
@@ -52,7 +52,7 @@ bool Auto_SampleAudioProcessor::producesMidi() const
    #endif
 }
 
-bool Auto_SampleAudioProcessor::isMidiEffect() const
+bool SaemplAudioProcessor::isMidiEffect() const
 {
    #if JucePlugin_IsMidiEffect
     return true;
@@ -61,50 +61,50 @@ bool Auto_SampleAudioProcessor::isMidiEffect() const
    #endif
 }
 
-double Auto_SampleAudioProcessor::getTailLengthSeconds() const
+double SaemplAudioProcessor::getTailLengthSeconds() const
 {
     return 0.0;
 }
 
-int Auto_SampleAudioProcessor::getNumPrograms()
+int SaemplAudioProcessor::getNumPrograms()
 {
     return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
                 // so this should be at least 1, even if you're not really implementing programs.
 }
 
-int Auto_SampleAudioProcessor::getCurrentProgram()
+int SaemplAudioProcessor::getCurrentProgram()
 {
     return 0;
 }
 
-void Auto_SampleAudioProcessor::setCurrentProgram (int index)
+void SaemplAudioProcessor::setCurrentProgram (int index)
 {
 }
 
-const juce::String Auto_SampleAudioProcessor::getProgramName (int index)
+const juce::String SaemplAudioProcessor::getProgramName (int index)
 {
     return {};
 }
 
-void Auto_SampleAudioProcessor::changeProgramName (int index, const juce::String& newName)
+void SaemplAudioProcessor::changeProgramName (int index, const juce::String& newName)
 {
 }
 
 //==============================================================================
-void Auto_SampleAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void SaemplAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 }
 
-void Auto_SampleAudioProcessor::releaseResources()
+void SaemplAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool Auto_SampleAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool SaemplAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
   #if JucePlugin_IsMidiEffect
     juce::ignoreUnused (layouts);
@@ -129,7 +129,7 @@ bool Auto_SampleAudioProcessor::isBusesLayoutSupported (const BusesLayout& layou
 }
 #endif
 
-void Auto_SampleAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void SaemplAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
@@ -159,25 +159,25 @@ void Auto_SampleAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
 }
 
 //==============================================================================
-bool Auto_SampleAudioProcessor::hasEditor() const
+bool SaemplAudioProcessor::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
 }
 
-juce::AudioProcessorEditor* Auto_SampleAudioProcessor::createEditor()
+juce::AudioProcessorEditor* SaemplAudioProcessor::createEditor()
 {
-    return new Auto_SampleAudioProcessorEditor (*this);
+    return new SaemplAudioProcessorEditor (*this);
 }
 
 //==============================================================================
-void Auto_SampleAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
+void SaemplAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
 
-void Auto_SampleAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void SaemplAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
@@ -187,5 +187,5 @@ void Auto_SampleAudioProcessor::setStateInformation (const void* data, int sizeI
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new Auto_SampleAudioProcessor();
+    return new SaemplAudioProcessor();
 }
