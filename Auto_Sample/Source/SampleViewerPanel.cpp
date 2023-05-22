@@ -1,11 +1,11 @@
 /*
   ==============================================================================
 
-    BasePanel.cpp
-    Created: 22 May 2023 6:31:30am
+    SampleViewerPanel.cpp
+    Created: 22 May 2023 9:46:19am
     Author:  Jonas Blome
 
   ==============================================================================
 */
 
-#include "BasePanel.h"
+#include "SampleViewerPanel.h"

@@ -9,3 +9,17 @@
 */
 
 #pragma once
+
+#include "PanelBase.h"
+#include "SampleDatabaseViewViewModel.h"
+
+class SampleDatabaseViewerPanel
+:   public PanelBase
+{
+public:
+    SampleDatabaseViewerPanel(SaemplAudioProcessor* inProcessor);
+    ~SampleDatabaseViewerPanel();
+    
+private:
+    std::unique_ptr<SampleDatabaseViewViewModel> sampleDatabase;
+};

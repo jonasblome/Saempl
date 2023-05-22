@@ -10,6 +10,8 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "MainPanel.h"
+#include "BlomeLookAndFeel.h"
 
 //==============================================================================
 /**
@@ -28,6 +30,9 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     SaemplAudioProcessor& audioProcessor;
+    
+    std::unique_ptr<MainPanel> mMainPanel;
+    std::unique_ptr<BlomeLookAndFeel> mLookAndFeel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SaemplAudioProcessorEditor)
 };

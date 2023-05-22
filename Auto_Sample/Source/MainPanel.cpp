@@ -9,3 +9,16 @@
 */
 
 #include "MainPanel.h"
+
+MainPanel::MainPanel(SaemplAudioProcessor* inProcessor)
+:   PanelBase(inProcessor)
+{
+    setSize(MAIN_PANEL_WIDTH, MAIN_PANEL_HEIGHT);
+    
+    sampleDatabaseViewer = std::make_unique<SampleDatabaseViewerPanel>(inProcessor);
+}
+
+MainPanel::~MainPanel()
+{
+    
+}

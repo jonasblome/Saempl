@@ -9,3 +9,13 @@
 */
 
 #pragma once
+
+class SampleDatabaseViewViewModel
+{
+public:
+    SampleDatabaseViewViewModel();
+    ~SampleDatabaseViewViewModel();
+    
+private:
+    
+};

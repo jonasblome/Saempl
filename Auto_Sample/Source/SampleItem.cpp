@@ -9,3 +9,11 @@
 */
 
 #include "SampleItem.h"
+
+SampleItem::SampleItem()
+{
+}
+
+SampleItem::~SampleItem()
+{
+}

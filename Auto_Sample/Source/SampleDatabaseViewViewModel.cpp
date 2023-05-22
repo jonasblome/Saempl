@@ -9,3 +9,13 @@
 */
 
 #include "SampleDatabaseViewViewModel.h"
+
+SampleDatabaseViewViewModel::SampleDatabaseViewViewModel()
+{
+    
+}
+
+SampleDatabaseViewViewModel::~SampleDatabaseViewViewModel()
+{
+    
+}

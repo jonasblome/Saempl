@@ -9,3 +9,15 @@
 */
 
 #pragma once
+
+#include "SampleItem.h"
+
+class SampleViewer
+{
+public:
+    SampleViewer();
+    ~SampleViewer();
+    
+private:
+    SampleItem loadedSample;
+};

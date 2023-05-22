@@ -19,8 +19,12 @@
       <FILE id="pvl4h9" name="SampleViewer.h" compile="0" resource="0" file="Source/SampleViewer.h"/>
     </GROUP>
     <GROUP id="{6D66FD26-8F3F-0894-5730-966778E462FE}" name="BlomePanels">
-      <FILE id="lThgmA" name="BasePanel.cpp" compile="1" resource="0" file="Source/BasePanel.cpp"/>
-      <FILE id="EsamqD" name="BasePanel.h" compile="0" resource="0" file="Source/BasePanel.h"/>
+      <FILE id="blGuS9" name="SampleViewerPanel.cpp" compile="1" resource="0"
+            file="Source/SampleViewerPanel.cpp"/>
+      <FILE id="EGnlFh" name="SampleViewerPanel.h" compile="0" resource="0"
+            file="Source/SampleViewerPanel.h"/>
+      <FILE id="lThgmA" name="PanelBase.cpp" compile="1" resource="0" file="Source/PanelBase.cpp"/>
+      <FILE id="EsamqD" name="PanelBase.h" compile="0" resource="0" file="Source/PanelBase.h"/>
       <FILE id="OyVv0E" name="MainPanel.cpp" compile="1" resource="0" file="Source/MainPanel.cpp"/>
       <FILE id="NTzZV2" name="MainPanel.h" compile="0" resource="0" file="Source/MainPanel.h"/>
       <FILE id="vxYbk9" name="SampleDatabaseViewerPanel.cpp" compile="1"
@@ -28,7 +32,14 @@
       <FILE id="dPQ3lJ" name="SampleDatabaseViewerPanel.h" compile="0" resource="0"
             file="Source/SampleDatabaseViewerPanel.h"/>
     </GROUP>
-    <GROUP id="{F1D19C9D-5976-FA7E-4145-99A46D7DB6D2}" name="BlomeHelpers"/>
+    <GROUP id="{F1D19C9D-5976-FA7E-4145-99A46D7DB6D2}" name="BlomeHelpers">
+      <FILE id="EkzFp4" name="BlomeHelperFunctions.h" compile="0" resource="0"
+            file="Source/BlomeHelperFunctions.h"/>
+      <FILE id="Ioam49" name="BlomeLookAndFeel.h" compile="0" resource="0"
+            file="Source/BlomeLookAndFeel.h"/>
+      <FILE id="bDidRl" name="BlomeStyleDefinitions.h" compile="0" resource="0"
+            file="Source/BlomeStyleDefinitions.h"/>
+    </GROUP>
     <GROUP id="{24E53329-C4AB-C36D-5F45-A76DFCFCE6A5}" name="BlomeDSP">
       <FILE id="UpyEC4" name="SampleAnalyser.cpp" compile="1" resource="0"
             file="Source/SampleAnalyser.cpp"/>

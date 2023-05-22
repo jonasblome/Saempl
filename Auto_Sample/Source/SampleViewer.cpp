@@ -9,3 +9,13 @@
 */
 
 #include "SampleViewer.h"
+
+SampleViewer::SampleViewer()
+{
+    
+}
+
+SampleViewer::~SampleViewer()
+{
+    
+}

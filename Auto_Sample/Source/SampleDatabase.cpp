@@ -9,3 +9,23 @@
 */
 
 #include "SampleDatabase.h"
+
+SampleDatabase::SampleDatabase()
+{
+    
+}
+
+SampleDatabase::~SampleDatabase()
+{
+    
+}
+
+void SampleDatabase::addSampleItem(SampleItem inItem)
+{
+    
+}
+
+void SampleDatabase::removeSampleItem(String itemID)
+{
+    
+}

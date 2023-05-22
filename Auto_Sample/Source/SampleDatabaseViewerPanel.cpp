@@ -9,3 +9,14 @@
 */
 
 #include "SampleDatabaseViewerPanel.h"
+
+SampleDatabaseViewerPanel::SampleDatabaseViewerPanel(SaemplAudioProcessor* inProcessor)
+:   PanelBase(inProcessor)
+{
+    setSize(MAIN_PANEL_WIDTH, MAIN_PANEL_HEIGHT);
+}
+
+SampleDatabaseViewerPanel::~SampleDatabaseViewerPanel()
+{
+    
+}

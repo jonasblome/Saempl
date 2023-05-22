@@ -9,3 +9,17 @@
 */
 
 #pragma once
+#include "SampleItem.h"
+
+class SampleDatabase
+{
+public:
+    SampleDatabase();
+    ~SampleDatabase();
+    
+    void addSampleItem(SampleItem inItem);
+    void removeSampleItem(String itemID);
+    
+private:
+    OwnedArray<SampleItem> sampleItems;
+};

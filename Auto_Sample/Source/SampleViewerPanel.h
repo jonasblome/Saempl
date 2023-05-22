@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    SampleItem.h
-    Created: 21 May 2023 3:01:25pm
+    SampleViewerPanel.h
+    Created: 22 May 2023 9:46:19am
     Author:  Jonas Blome
 
   ==============================================================================
@@ -10,15 +10,15 @@
 
 #pragma once
 
-#include "SampleTag.h"
+#include "PanelBase.h"
 
-class SampleItem
+class SampleViewerPanel
+:   public PanelBase
 {
 public:
-    SampleItem();
-    ~SampleItem();
+    SampleViewerPanel();
+    ~SampleViewerPanel();
     
 private:
-    OwnedArray<SampleTag> sampleTags;
-    String url;
+    
 };
