@@ -9,3 +9,13 @@
 */
 
 #pragma once
+
+class AudioPlayer
+{
+public:
+    AudioPlayer();
+    ~AudioPlayer();
+    
+private:
+    
+};

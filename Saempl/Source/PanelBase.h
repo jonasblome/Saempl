@@ -15,10 +15,10 @@
 #include "BlomeStyleDefinitions.h"
 
 class PanelBase
-:   public juce::Component
+:   public Component
 {
 public:
-    PanelBase(SaemplAudioProcessor* inProcessor);
+    PanelBase();
     ~PanelBase();
     
     void mouseEnter(const MouseEvent& event) override;
@@ -28,5 +28,4 @@ public:
     void paint(Graphics& g) override;
     
 protected:
-    SaemplAudioProcessor* mProcessor;
 };

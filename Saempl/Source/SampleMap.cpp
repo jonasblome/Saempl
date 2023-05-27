@@ -9,3 +9,13 @@
 */
 
 #include "SampleMap.h"
+
+SampleMap::SampleMap()
+{
+    
+}
+
+SampleMap::~SampleMap()
+{
+    
+}

@@ -11,14 +11,14 @@
 #include "PanelBase.h"
 #include "BlomeStyleDefinitions.h"
 
-PanelBase::PanelBase(SaemplAudioProcessor* inProcessor)
-:   mProcessor(inProcessor)
+PanelBase::PanelBase()
 {
     
 }
 
 PanelBase::~PanelBase()
 {
+    
 }
 
 void PanelBase::mouseEnter(const MouseEvent& event)

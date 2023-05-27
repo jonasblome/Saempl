@@ -1,11 +1,11 @@
 /*
   ==============================================================================
 
-    SampleItemViewPanel.cpp
-    Created: 22 May 2023 9:46:19am
+    SampleMapPanel.cpp
+    Created: 25 May 2023 12:58:41am
     Author:  Jonas Blome
 
   ==============================================================================
 */
 
-#include "SampleItemViewPanel.h"
+#include "SampleMapPanel.h"

@@ -19,6 +19,6 @@ public:
     ~SampleItem();
     
 private:
-    OwnedArray<SampleTag> sampleTags;
-    String url;
+    OwnedArray<SampleTag> mSampleTags;
+    String mUrl;
 };

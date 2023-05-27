@@ -9,3 +9,13 @@
 */
 
 #include "SamplePalette.h"
+
+SamplePalette::SamplePalette()
+{
+    
+}
+
+SamplePalette::~SamplePalette()
+{
+    
+}

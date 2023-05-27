@@ -19,15 +19,15 @@ public:
     SampleTag(String inName, double inValue);
     ~SampleTag();
     
-    void setName(String inName) { name = inName; }
+    void setName(String inName) { mTagName = inName; }
     
-    String getName() { return name; }
+    String getName() { return mTagName; }
     
-    void setValue(double inValue) { value = inValue; }
+    void setValue(double inValue) { mTagValue = inValue; }
     
-    double getValue() {return value; }
+    double getValue() { return mTagValue; }
     
 private:
-    String name;
-    double value;
+    String mTagName;
+    double mTagValue;
 };

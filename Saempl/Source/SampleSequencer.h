@@ -9,3 +9,13 @@
 */
 
 #pragma once
+
+class SampleSequencer
+{
+public:
+    SampleSequencer();
+    ~SampleSequencer();
+    
+private:
+    
+};

@@ -19,5 +19,5 @@ public:
     ~SampleItemViewModel();
     
 private:
-    SampleItem loadedSample;
+    SampleItem mLoadedSample;
 };

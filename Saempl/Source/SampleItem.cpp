@@ -12,8 +12,10 @@
 
 SampleItem::SampleItem()
 {
+    
 }
 
 SampleItem::~SampleItem()
 {
+    
 }

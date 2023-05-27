@@ -1,11 +1,11 @@
 /*
   ==============================================================================
 
-    SamplePaletteViewPanel.cpp
+    SamplePalettePanel.cpp
     Created: 25 May 2023 12:59:57am
     Author:  Jonas Blome
 
   ==============================================================================
 */
 
-#include "SamplePaletteViewPanel.h"
+#include "SamplePalettePanel.h"

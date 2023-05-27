@@ -12,14 +12,16 @@
 
 SampleTag::SampleTag()
 {
+    
 }
 
 SampleTag::SampleTag(String inName, double inValue)
 {
-    name = inName;
-    value = inValue;
+    mTagName = inName;
+    mTagValue = inValue;
 }
 
 SampleTag::~SampleTag()
 {
+    
 }

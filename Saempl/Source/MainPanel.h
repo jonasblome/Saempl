@@ -11,16 +11,19 @@
 #pragma once
 
 #include "PanelBase.h"
-#include "SampleDatabaseViewViewPanel.h"
+#include "HeaderPanel.h"
+#include "CenterPanel.h"
 
 class MainPanel
 :   public PanelBase
 {
 public:
-    MainPanel(SaemplAudioProcessor* inProcessor);
+    MainPanel();
     ~MainPanel();
     
 private:
-    std::unique_ptr<SampleDatabaseViewViewPanel> sampleDatabaseViewer;
+    std::unique_ptr<TimeSliceThread> mThread;
+    std::unique_ptr<HeaderPanel> mHeaderPanel;
+    std::unique_ptr<CenterPanel> mCenterPanel;
     
 };

@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    SampleMapViewPanel.h
+    SampleMapPanel.h
     Created: 25 May 2023 12:58:41am
     Author:  Jonas Blome
 

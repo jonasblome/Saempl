@@ -9,3 +9,13 @@
 */
 
 #include "SampleSequencer.h"
+
+SampleSequencer::SampleSequencer()
+{
+    
+}
+
+SampleSequencer::~SampleSequencer()
+{
+    
+}

@@ -9,3 +9,13 @@
 */
 
 #include "SampleEditor.h"
+
+SampleEditor::SampleEditor()
+{
+    mAudioPlayer = std::make_unique<AudioPlayer>();
+}
+
+SampleEditor::~SampleEditor()
+{
+    
+}

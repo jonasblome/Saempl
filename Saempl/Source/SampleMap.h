@@ -9,3 +9,13 @@
 */
 
 #pragma once
+
+class SampleMap
+{
+public:
+    SampleMap();
+    ~SampleMap();
+    
+private:
+    
+};

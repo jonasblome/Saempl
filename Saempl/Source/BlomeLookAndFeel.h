@@ -23,7 +23,7 @@ public:
         setColour(ComboBox::outlineColourId, BlomeColour_Black);
         setColour(ComboBox::arrowColourId, BlomeColour_LightGray);
         setColour(ComboBox::textColourId, BlomeColour_LightGray);
-        setColour(PopupMenu::backgroundColourId, BlomeColour_DarkYellowStrongTransparent);
+        setColour(PopupMenu::backgroundColourId, BlomeColour_DarkRedStrongTransparent);
         
         // Button Text Colours
         setColour(TextButton::buttonColourId, BlomeColour_LightGray);
@@ -91,7 +91,7 @@ public:
          if(button.getToggleState())
          {
              cornerSize = 4.0f;
-             g.setColour(BlomeColour_DarkYellow);
+             g.setColour(BlomeColour_DarkRed);
              g.fillRoundedRectangle(bounds.reduced(3), cornerSize);
          }
      }
@@ -167,6 +167,197 @@ public:
         g.setColour(BlomeColour_LightGray);
         Line<float> sliderTick = Line<float>::fromStartAndAngle(Point<float>(width * 0.5 - 1, height * 0.5 - 1), (width - 19) * 0.5, sliderPosProportional * M_PI * 1.5 - (M_PI * 0.75));
         g.drawLine(sliderTick, 2.0);
+    }
+    
+    void drawLinearSlider (Graphics& g,
+                           int x,
+                           int y,
+                           int width,
+                           int height,
+                           float sliderPos,
+                           float minSliderPos,
+                           float maxSliderPos,
+                           const Slider::SliderStyle style,
+                           Slider& slider) override
+    {
+        if (slider.isBar())
+        {
+            g.setColour(BlomeColour_BlackMediumTransparent);
+            g.fillRect(slider.isHorizontal() ? Rectangle<float>(static_cast<float> (x), (float)y + 0.5f, sliderPos - (float) x, (float) height - 1.0f)
+                       : Rectangle<float>((float)x + 0.5f, sliderPos, (float)width - 1.0f, (float)y + ((float)height - sliderPos)));
+        }
+        else
+        {
+            auto isTwoVal   = (style == Slider::SliderStyle::TwoValueVertical   || style == Slider::SliderStyle::TwoValueHorizontal);
+            auto isThreeVal = (style == Slider::SliderStyle::ThreeValueVertical || style == Slider::SliderStyle::ThreeValueHorizontal);
+            
+            auto trackWidth = jmin (6.0f, slider.isHorizontal() ? (float) height * 0.25f : (float) width * 0.25f);
+            
+            Point<float> startPoint (slider.isHorizontal() ? (float)x : (float)x + (float)width * 0.5f,
+                                     slider.isHorizontal() ? (float)y + (float)height * 0.5f : (float)(height + y));
+            
+            Point<float> endPoint (slider.isHorizontal() ? (float)width + x : startPoint.x,
+                                   slider.isHorizontal() ? startPoint.y : (float)y);
+            
+            Path backgroundTrack;
+            backgroundTrack.startNewSubPath(startPoint);
+            backgroundTrack.lineTo(endPoint);
+            g.setColour(BlomeColour_BlackMediumTransparent);
+            g.strokePath(backgroundTrack, { trackWidth, PathStrokeType::curved, PathStrokeType::rounded });
+            
+            Path valueTrack;
+            Point<float> minPoint, maxPoint, thumbPoint;
+            
+            if (isTwoVal || isThreeVal)
+            {
+                minPoint = { slider.isHorizontal() ? minSliderPos : (float) width * 0.5f,
+                    slider.isHorizontal() ? (float) height * 0.5f : minSliderPos };
+                
+                if (isThreeVal)
+                    thumbPoint = { slider.isHorizontal() ? sliderPos : (float) width * 0.5f,
+                        slider.isHorizontal() ? (float) height * 0.5f : sliderPos };
+                
+                maxPoint = { slider.isHorizontal() ? maxSliderPos : (float) width * 0.5f,
+                    slider.isHorizontal() ? (float) height * 0.5f : maxSliderPos };
+            }
+            else
+            {
+                auto kx = slider.isHorizontal() ? sliderPos : ((float) x + (float) width * 0.5f);
+                auto ky = slider.isHorizontal() ? ((float) y + (float) height * 0.5f) : sliderPos;
+                
+                minPoint = startPoint;
+                maxPoint = { kx, ky };
+            }
+            
+            auto thumbWidth = getSliderThumbRadius(slider);
+            
+            valueTrack.startNewSubPath (minPoint);
+            valueTrack.lineTo(isThreeVal ? thumbPoint : maxPoint);
+            g.setColour(BlomeColour_DarkRed);
+            g.strokePath(valueTrack, { trackWidth - 4, PathStrokeType::curved, PathStrokeType::rounded });
+            
+            if (! isTwoVal)
+            {
+                g.setColour(BlomeColour_BlackMediumTransparent);
+                g.fillEllipse (Rectangle<float> (static_cast<float> (thumbWidth), static_cast<float> (thumbWidth)).withCentre (isThreeVal ? thumbPoint : maxPoint));
+            }
+            
+            if (isTwoVal || isThreeVal)
+            {
+                auto sr = jmin (trackWidth, (slider.isHorizontal() ? (float) height : (float) width) * 0.4f);
+                auto pointerColour = slider.findColour (Slider::thumbColourId);
+                
+                if (slider.isHorizontal())
+                {
+                    drawPointer (g, minSliderPos - sr,
+                                 jmax (0.0f, (float) y + (float) height * 0.5f - trackWidth * 2.0f),
+                                 trackWidth * 2.0f, pointerColour, 2);
+                    
+                    drawPointer (g, maxSliderPos - trackWidth,
+                                 jmin ((float) (y + height) - trackWidth * 2.0f, (float) y + (float) height * 0.5f),
+                                 trackWidth * 2.0f, pointerColour, 4);
+                }
+                else
+                {
+                    drawPointer (g, jmax (0.0f, (float) x + (float) width * 0.5f - trackWidth * 2.0f),
+                                 minSliderPos - trackWidth,
+                                 trackWidth * 2.0f, pointerColour, 1);
+                    
+                    drawPointer (g, jmin ((float) (x + width) - trackWidth * 2.0f, (float) x + (float) width * 0.5f), maxSliderPos - sr,
+                                 trackWidth * 2.0f, pointerColour, 3);
+                }
+            }
+        }
+    }
+    
+    /** Scroll Bars **/
+    void drawScrollbar(Graphics& g,
+                       ScrollBar& scrollbar,
+                       int x,
+                       int y,
+                       int width,
+                       int height,
+                       bool isScrollbarVertical,
+                       int thumbStartPosition,
+                       int thumbSize,
+                       bool isMouseOver,
+                       [[maybe_unused]] bool isMouseDown) override
+    {
+        Rectangle<int> thumbBounds;
+
+        if (isScrollbarVertical)
+            thumbBounds = { x, thumbStartPosition, width, thumbSize };
+        else
+            thumbBounds = { thumbStartPosition, y, thumbSize, height };
+
+        g.setColour (isMouseOver ? BlomeColour_BlackLightTransparent : BlomeColour_BlackMediumTransparent);
+        g.fillRoundedRectangle (thumbBounds.reduced(1).toFloat(), 4.0f);
+    }
+    
+    /** Tree Views **/
+    void drawTreeviewPlusMinusBox(Graphics& g,
+                                  const Rectangle<float>& area,
+                                  Colour backgroundColour,
+                                  bool isOpen,
+                                  bool isMouseOver) override
+    {
+        Path p;
+        p.addTriangle(0.0f, 0.0f, 1.0f, isOpen ? 0.0f : 0.5f, isOpen ? 0.5f : 0.0f, 1.0f);
+
+        g.setColour(isMouseOver ? BlomeColour_BlackMediumTransparent : BlomeColour_LightGray);
+        g.fillPath(p, p.getTransformToScaleToFit(area.reduced(2, area.getHeight() / 3), true));
+    }
+    
+    void drawFileBrowserRow(Graphics& g, int width, int height,
+                                             const File&, const String& filename, Image* icon,
+                                             const String& fileSizeDescription,
+                                             const String& fileTimeDescription,
+                                             bool isDirectory, bool isItemSelected,
+                                             int itemIndex, DirectoryContentsDisplayComponent& dcc) override
+    {
+        auto fileListComp = dynamic_cast<Component*> (&dcc);
+
+        if (isItemSelected)
+        {
+            g.setColour(fileListComp != nullptr ? BlomeColour_BlackMediumTransparent : BlomeColour_BlackLightTransparent);
+            g.fillRoundedRectangle(0, 0, width - 5, height, 3.0);
+        }
+
+        const int x = 5;
+        
+        g.setColour(BlomeColour_LightGray);
+        g.setFont (font_small_bold);
+
+        if (width > 450 && ! isDirectory)
+        {
+            auto sizeX = roundToInt ((float) width * 0.7f);
+            auto dateX = roundToInt ((float) width * 0.8f);
+
+            g.drawFittedText (filename,
+                              x, 0, sizeX - x, height,
+                              Justification::centredLeft, 1);
+
+            g.setFont (font_small_bold);
+            g.setColour (BlomeColour_LightGray);
+
+            if (! isDirectory)
+            {
+                g.drawFittedText (fileSizeDescription,
+                                  sizeX, 0, dateX - sizeX - 8, height,
+                                  Justification::centredRight, 1);
+
+                g.drawFittedText (fileTimeDescription,
+                                  dateX, 0, width - 8 - dateX, height,
+                                  Justification::centredRight, 1);
+            }
+        }
+        else
+        {
+            g.drawFittedText (filename,
+                              x, 0, width - x, height,
+                              Justification::centredLeft, 1);
+
+        }
     }
     
 private:

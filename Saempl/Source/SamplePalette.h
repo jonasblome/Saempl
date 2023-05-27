@@ -9,3 +9,13 @@
 */
 
 #pragma once
+
+class SamplePalette
+{
+public:
+    SamplePalette();
+    ~SamplePalette();
+    
+private:
+    
+};

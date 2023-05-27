@@ -21,5 +21,5 @@ public:
     void removeSampleItem(String itemID);
     
 private:
-    OwnedArray<SampleItem> sampleItems;
+    OwnedArray<SampleItem> mSampleItems;
 };

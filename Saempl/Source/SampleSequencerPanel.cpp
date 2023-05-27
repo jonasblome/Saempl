@@ -1,11 +1,11 @@
 /*
   ==============================================================================
 
-    SampleDatabaseView.h
-    Created: 21 May 2023 3:09:08pm
+    SampleSequencerPanel.cpp
+    Created: 25 May 2023 1:00:07am
     Author:  Jonas Blome
 
   ==============================================================================
 */
 
-#pragma once
+#include "SampleSequencerPanel.h"

@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    SampleItemViewPanel.h
-    Created: 22 May 2023 9:46:19am
+    HeaderPanel.h
+    Created: 27 May 2023 11:12:36am
     Author:  Jonas Blome
 
   ==============================================================================
@@ -12,13 +12,14 @@
 
 #include "PanelBase.h"
 
-class SampleItemViewPanel
+class HeaderPanel
 :   public PanelBase
 {
 public:
-    SampleItemViewPanel();
-    ~SampleItemViewPanel();
+    HeaderPanel();
+    ~HeaderPanel();
+    
+    void paint(Graphics& g) override;
     
 private:
-    
 };
