@@ -24,12 +24,13 @@ public:
     
     // Methods
     void paint(Graphics& g) override;
+    void setPanelComponents() override;
     
 private:
     // Fields
+    TimeSliceThread& currentThread;
     std::unique_ptr<SampleDatabaseTablePanel> mSampleDatabaseTablePanel;
     std::unique_ptr<SampleItemPanel> mSampleItemPanel;
     
     // Methods
-    
 };

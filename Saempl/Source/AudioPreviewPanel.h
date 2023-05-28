@@ -11,6 +11,7 @@
 #pragma once
 
 #include "PanelBase.h"
+#include "SampleItemViewModel.h"
 
 class AudioPreviewPanel
 :   public PanelBase,
@@ -22,12 +23,12 @@ class AudioPreviewPanel
 {
 public:
     // Constructors
-    AudioPreviewPanel(AudioFormatManager& formatManager, AudioTransportSource& source, Slider& inSlider);
+    AudioPreviewPanel(TimeSliceThread& inThread, Slider& inSlider, SampleItemViewModel& inSampleItemViewModel);
     ~AudioPreviewPanel();
     
     // Methods
     void paint(Graphics& g) override;
-    void setPanelStyle();
+    void setPanelComponents() override;
     void setURL (const URL& url);
     URL getLastDroppedFile() const noexcept;
     void setZoomFactor (double amount);
@@ -40,9 +41,16 @@ public:
     void mouseDrag (const MouseEvent& e) override;
     void mouseUp (const MouseEvent&) override;
     void mouseWheelMove (const MouseEvent&, const MouseWheelDetails& wheel) override;
+    void showAudioResource();
+    void showAudioResource(URL inResource);
+    void startOrStop();
+    bool loadURLIntoTransport(const URL& audioURL);
+    void updateFollowTransportState();
 
 private:
-    AudioTransportSource& transportSource;
+    // Fields
+    TimeSliceThread& currentThread;
+    SampleItemViewModel& sampleItemViewModel;
     Slider* mZoomSlider;
     std::unique_ptr<ScrollBar> mAudioPreviewScrollbar;
     AudioThumbnailCache thumbnailCache;
@@ -51,6 +59,7 @@ private:
     bool isFollowingTransport;
     URL lastFileDropped;
     DrawableRectangle mPositionMarker;
+    URL mCurrentAudioFile;
     
     // Methods
     float timeToX(const double time) const;

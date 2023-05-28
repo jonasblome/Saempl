@@ -11,19 +11,11 @@
 #include "CenterPanel.h"
 
 CenterPanel::CenterPanel(TimeSliceThread& inThread)
-:   PanelBase()
+:   PanelBase(),
+    currentThread(inThread)
 {
     setSize(CENTER_PANEL_WIDTH, CENTER_PANEL_HEIGHT);
-    
-    // Add panel for sample item view
-    mSampleItemPanel = std::make_unique<SampleItemPanel>(inThread);
-    mSampleItemPanel->setTopLeftPosition(0, TABLE_PANEL_HEIGHT);
-    addAndMakeVisible(*mSampleItemPanel);
-    
-    // Add panel for database views
-    mSampleDatabaseTablePanel = std::make_unique<SampleDatabaseTablePanel>(inThread, *mSampleItemPanel);
-    mSampleDatabaseTablePanel->setTopLeftPosition(0, 0);
-    addAndMakeVisible(*mSampleDatabaseTablePanel);
+    setPanelComponents();
 }
 
 CenterPanel::~CenterPanel()
@@ -34,7 +26,17 @@ CenterPanel::~CenterPanel()
 void CenterPanel::paint(Graphics& g)
 {
     PanelBase::paint(g);
+}
+
+void CenterPanel::setPanelComponents()
+{
+    // Add panel for sample item view
+    mSampleItemPanel = std::make_unique<SampleItemPanel>(currentThread);
+    mSampleItemPanel->setTopLeftPosition(0, TABLE_PANEL_HEIGHT);
+    addAndMakeVisible(*mSampleItemPanel);
     
-    // Draw panel background
-    g.fillAll(BlomeColour_DarkRed);
+    // Add panel for database views
+    mSampleDatabaseTablePanel = std::make_unique<SampleDatabaseTablePanel>(currentThread, *mSampleItemPanel);
+    mSampleDatabaseTablePanel->setTopLeftPosition(0, 0);
+    addAndMakeVisible(*mSampleDatabaseTablePanel);
 }

@@ -23,7 +23,7 @@ public:
         setColour(ComboBox::outlineColourId, BlomeColour_Black);
         setColour(ComboBox::arrowColourId, BlomeColour_LightGray);
         setColour(ComboBox::textColourId, BlomeColour_LightGray);
-        setColour(PopupMenu::backgroundColourId, BlomeColour_DarkRedStrongTransparent);
+        setColour(PopupMenu::backgroundColourId, BlomeColour_AccentColourMediumStrongTransparent);
         
         // Button Text Colours
         setColour(TextButton::buttonColourId, BlomeColour_LightGray);
@@ -91,7 +91,7 @@ public:
          if(button.getToggleState())
          {
              cornerSize = 4.0f;
-             g.setColour(BlomeColour_DarkRed);
+             g.setColour(BlomeColour_AccentColourLight);
              g.fillRoundedRectangle(bounds.reduced(3), cornerSize);
          }
      }
@@ -191,7 +191,7 @@ public:
             auto isTwoVal   = (style == Slider::SliderStyle::TwoValueVertical   || style == Slider::SliderStyle::TwoValueHorizontal);
             auto isThreeVal = (style == Slider::SliderStyle::ThreeValueVertical || style == Slider::SliderStyle::ThreeValueHorizontal);
             
-            auto trackWidth = jmin (6.0f, slider.isHorizontal() ? (float) height * 0.25f : (float) width * 0.25f);
+            auto trackWidth = jmin (9.0f, slider.isHorizontal() ? (float) height * 0.25f : (float) width * 0.25f);
             
             Point<float> startPoint (slider.isHorizontal() ? (float)x : (float)x + (float)width * 0.5f,
                                      slider.isHorizontal() ? (float)y + (float)height * 0.5f : (float)(height + y));
@@ -233,19 +233,19 @@ public:
             
             valueTrack.startNewSubPath (minPoint);
             valueTrack.lineTo(isThreeVal ? thumbPoint : maxPoint);
-            g.setColour(BlomeColour_DarkRed);
+            g.setColour(BlomeColour_AccentColourLight);
             g.strokePath(valueTrack, { trackWidth - 4, PathStrokeType::curved, PathStrokeType::rounded });
             
             if (! isTwoVal)
             {
-                g.setColour(BlomeColour_BlackMediumTransparent);
+                g.setColour(BlomeColour_Black);
                 g.fillEllipse (Rectangle<float> (static_cast<float> (thumbWidth), static_cast<float> (thumbWidth)).withCentre (isThreeVal ? thumbPoint : maxPoint));
             }
             
             if (isTwoVal || isThreeVal)
             {
                 auto sr = jmin (trackWidth, (slider.isHorizontal() ? (float) height : (float) width) * 0.4f);
-                auto pointerColour = slider.findColour (Slider::thumbColourId);
+                auto pointerColour = slider.findColour(Slider::thumbColourId);
                 
                 if (slider.isHorizontal())
                 {
@@ -270,6 +270,12 @@ public:
         }
     }
     
+    int getSliderThumbRadius(Slider& slider) override
+    {
+        return jmin(14, slider.isHorizontal() ? static_cast<int> ((float)slider.getHeight() * 0.5f)
+                                               : static_cast<int> ((float)slider.getWidth() * 0.5f));
+    }
+    
     /** Scroll Bars **/
     void drawScrollbar(Graphics& g,
                        ScrollBar& scrollbar,
@@ -290,7 +296,7 @@ public:
         else
             thumbBounds = { thumbStartPosition, y, thumbSize, height };
 
-        g.setColour (isMouseOver ? BlomeColour_BlackLightTransparent : BlomeColour_BlackMediumTransparent);
+        g.setColour (isMouseOver ? BlomeColour_AccentColourMedium : BlomeColour_AccentColourLight);
         g.fillRoundedRectangle (thumbBounds.reduced(1).toFloat(), 4.0f);
     }
     

@@ -16,10 +16,29 @@
 class SampleEditor
 {
 public:
+    // Constructors
     SampleEditor();
     ~SampleEditor();
     
+    // Methods
+    AudioFormatManager& getFormatManager();
+    AudioTransportSource& getTransportSource();
+    void startOrStop();
+    void setPosition(double position);
+    void start();
+    bool isPlaying();
+    double getCurrentPosition();
+    void stop();
+    void setSource(PositionableAudioSource* const newSource,
+                   int readAheadSize,
+                   TimeSliceThread* readAheadThread,
+                   double sourceSampleRateToCorrectFor);
+    bool loadURLIntoTransport(const URL& audioURL, TimeSliceThread& inThread);
+    
 private:
+    // Fields
     std::unique_ptr<AudioPlayer> mAudioPlayer;
+    
+    // Methods
     
 };

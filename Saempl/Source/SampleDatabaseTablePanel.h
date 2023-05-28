@@ -27,12 +27,12 @@ SampleDatabaseTablePanel(TimeSliceThread& inThread, SampleItemPanel& inSampleIte
     
     void paint(Graphics& g) override;
     
-    void setPanelStyle();
+    void setPanelComponents() override;
     
 private:
     // Fields
     TimeSliceThread& currentThread;
-    SampleItemPanel& connectedSampleItemPanel;
+    SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<SampleDatabaseTableViewModel> mSampleDatabaseTableViewModel;
     std::unique_ptr<Label> mExplanationLabel;
     std::unique_ptr<FileTreeComponent> mFileTree;

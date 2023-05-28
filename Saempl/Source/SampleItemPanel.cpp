@@ -12,26 +12,14 @@
 
 SampleItemPanel::SampleItemPanel(TimeSliceThread& inThread)
 :   PanelBase(),
-    audioReadaheadThread(inThread)
+    currentThread(inThread)
 {
-    // Set panel size
     setSize(SAMPLE_PANEL_WIDTH, SAMPLE_PANEL_HEIGHT);
-    
-    // Draw panel components
-    setPanelStyle();
-    
-    // Audio setup
-    mAudioDeviceManager = std::make_unique<AudioDeviceManager>();
-    mFormatManager.registerBasicFormats();
-    mAudioDeviceManager->addAudioCallback(&mAudioSourcePlayer);
-    mAudioSourcePlayer.setSource(&mTransportSource);
+    setPanelComponents();
 }
 
 SampleItemPanel::~SampleItemPanel()
 {
-    mTransportSource.setSource(nullptr);
-    mAudioSourcePlayer.setSource(nullptr);
-    mAudioDeviceManager->removeAudioCallback(&mAudioSourcePlayer);
     mAudioPreviewPanel->removeChangeListener(this);
 }
 
@@ -39,20 +27,21 @@ void SampleItemPanel::paint(Graphics& g)
 {
     PanelBase::paint(g);
     
-    // Draw panel background
-    g.fillAll(BlomeColour_DarkRed);
+    // Draw background
+    g.setColour(BlomeColour_AccentColourDark);
+    g.fillRoundedRectangle(Rectangle<float>(getLocalBounds().toFloat()), PanelCornerSize);
 }
 
-void SampleItemPanel::setPanelStyle()
+void SampleItemPanel::setPanelComponents()
 {
-    auto r = getLocalBounds();
-    
     // Add sample editor component
-    mSampleEditor = std::make_unique<SampleEditor>();
+    mSampleItemViewModel = std::make_unique<SampleItemViewModel>();
+    
+    int controlsHeight = SAMPLE_PANEL_HEIGHT - SAMPLE_PREVIEW_HEIGHT;
     
     // Add zoom slider
     mZoomSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::NoTextBox);
-    mZoomSlider->setBounds(0, SAMPLE_PREVIEW_HEIGHT, getWidth(), 75 / 3);
+    mZoomSlider->setBounds(0, SAMPLE_PREVIEW_HEIGHT, getWidth() / 5.0, controlsHeight / 3.0);
     mZoomSlider->setRange(0, 1, 0);
     mZoomSlider->onValueChange = [this] { mAudioPreviewPanel->setZoomFactor(mZoomSlider->getValue()); };
     mZoomSlider->setSkewFactor(2);
@@ -60,19 +49,19 @@ void SampleItemPanel::setPanelStyle()
 
     // Add follow transport button
     mFollowTransportButton = std::make_unique<ToggleButton>("Follow Transport");
-    mFollowTransportButton->setBounds(0, SAMPLE_PREVIEW_HEIGHT + 25, 25, 75 / 3);
-    mFollowTransportButton->onClick = [this] { updateFollowTransportState(); };
+    mFollowTransportButton->setBounds(0, SAMPLE_PREVIEW_HEIGHT + controlsHeight / 3.0, controlsHeight / 3.0, controlsHeight / 3.0);
+    mFollowTransportButton->onClick = [this] { mAudioPreviewPanel->setFollowsTransport(mFollowTransportButton->getToggleState()); };
     addAndMakeVisible(*mFollowTransportButton);
     
     // Add play button component
     mStartStopButton = std::make_unique<TextButton>("Play/Stop");
-    mStartStopButton->setBounds(0, SAMPLE_PREVIEW_HEIGHT + 50, 75, 75 / 3);
-    mStartStopButton->onClick = [this] { startOrStop(); };
+    mStartStopButton->setBounds(0, SAMPLE_PREVIEW_HEIGHT + 2 * controlsHeight / 3.0, 75, controlsHeight / 3.0);
+    mStartStopButton->onClick = [this] { mAudioPreviewPanel->startOrStop(); };
     addAndMakeVisible(*mStartStopButton);
     
     // Add audio thumbnail component
-    mAudioPreviewPanel = std::make_unique<AudioPreviewPanel>(mFormatManager, mTransportSource, *mZoomSlider);
-    mAudioPreviewPanel->setBounds(r.removeFromTop(SAMPLE_PREVIEW_HEIGHT));
+    mAudioPreviewPanel = std::make_unique<AudioPreviewPanel>(currentThread, *mZoomSlider, *mSampleItemViewModel);
+    mAudioPreviewPanel->setTopLeftPosition(0, 0);
     addAndMakeVisible(mAudioPreviewPanel.get());
     mAudioPreviewPanel->addChangeListener(this);
     
@@ -80,70 +69,15 @@ void SampleItemPanel::setPanelStyle()
     repaint();
 }
 
-void SampleItemPanel::showAudioResource(URL resource)
+void SampleItemPanel::changeListenerCallback(ChangeBroadcaster* source)
 {
-    if (loadURLIntoTransport(resource))
-        mCurrentAudioFile = std::move(resource);
-
-    mZoomSlider->setValue(0, dontSendNotification);
-    mAudioPreviewPanel->setURL(mCurrentAudioFile);
-}
-
-bool SampleItemPanel::loadURLIntoTransport(const URL& audioURL)
-{
-    // Unload the previous file source and delete it
-    mTransportSource.stop();
-    mTransportSource.setSource(nullptr);
-    mCurrentAudioFileSource.reset();
-
-    const auto source = std::make_unique<URLInputSource>(audioURL);
-
-    if (source == nullptr)
-        return false;
-
-    auto stream = rawToUniquePtr (source->createInputStream());
-
-    if (stream == nullptr)
-        return false;
-
-    auto reader = rawToUniquePtr (mFormatManager.createReaderFor(std::move (stream)));
-
-    if (reader == nullptr)
-        return false;
-
-    mCurrentAudioFileSource = std::make_unique<AudioFormatReaderSource>(reader.release(), true);
-
-    // ..and plug it into our transport source
-    mTransportSource.setSource (mCurrentAudioFileSource.get(),
-                               32768,                   // Tells it to buffer this many samples ahead
-                               &audioReadaheadThread,                 // This is the background thread to use for reading-ahead
-                               mCurrentAudioFileSource->getAudioFormatReader()->sampleRate);     // Allows for sample rate correction
-
-    return true;
-}
-
-void SampleItemPanel::startOrStop()
-{
-    if (mTransportSource.isPlaying())
+    if(source == mAudioPreviewPanel.get())
     {
-        mTransportSource.stop();
-    }
-    else
-    {
-        mTransportSource.setPosition(0);
-        mTransportSource.start();
+        mAudioPreviewPanel->showAudioResource();
     }
 }
 
-void SampleItemPanel::updateFollowTransportState()
+void SampleItemPanel::showAudioResource(URL inResource)
 {
-    mAudioPreviewPanel->setFollowsTransport(mFollowTransportButton->getToggleState());
-}
-
-void SampleItemPanel::changeListenerCallback (ChangeBroadcaster* source)
-{
-    if (source == mAudioPreviewPanel.get())
-    {
-        showAudioResource(URL(mAudioPreviewPanel->getLastDroppedFile()));
-    }
+    mAudioPreviewPanel->showAudioResource(inResource);
 }

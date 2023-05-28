@@ -18,14 +18,19 @@ class PanelBase
 :   public Component
 {
 public:
+    // Constructors
     PanelBase();
     ~PanelBase();
     
+    // Methods
     void mouseEnter(const MouseEvent& event) override;
-    
     void mouseExit(const MouseEvent& event) override;
-    
     void paint(Graphics& g) override;
+    virtual void setPanelComponents() {};
     
 protected:
+    // Fields
+    
+    // Methods
+    
 };

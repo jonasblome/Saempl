@@ -10,19 +10,17 @@
 
 #include "AudioPreviewPanel.h"
 
-AudioPreviewPanel::AudioPreviewPanel(AudioFormatManager& formatManager,
-                                     AudioTransportSource& source,
-                                     Slider& inSlider)
+AudioPreviewPanel::AudioPreviewPanel(TimeSliceThread& inThread,Slider& inSlider, SampleItemViewModel& inSampleItemViewModel)
 :   PanelBase(),
-    transportSource(source),
+    currentThread(inThread),
+    sampleItemViewModel(inSampleItemViewModel),
     mZoomSlider(&inSlider),
     thumbnailCache(5),
-    mAudioPreview(512, formatManager, thumbnailCache),
+    mAudioPreview(512, sampleItemViewModel.getFormatManager(), thumbnailCache),
     isFollowingTransport(false)
 {
     setSize(SAMPLE_PREVIEW_WIDTH, SAMPLE_PREVIEW_HEIGHT);
-    
-    setPanelStyle();
+    setPanelComponents();
 }
 
 AudioPreviewPanel::~AudioPreviewPanel()
@@ -35,8 +33,9 @@ void AudioPreviewPanel::paint(Graphics& g)
 {
     PanelBase::paint(g);
     
-    // Draw panel background
-    g.fillAll(BlomeColour_DarkRed);
+    // Draw background
+    g.setColour(BlomeColour_BlackLightTransparent);
+    g.fillRoundedRectangle(Rectangle<float>(getLocalBounds().toFloat()), PanelCornerSize);
     
     // Draw audio preview
     g.setColour(BlomeColour_LightGray);
@@ -59,7 +58,7 @@ void AudioPreviewPanel::paint(Graphics& g)
     }
 }
 
-void AudioPreviewPanel::setPanelStyle()
+void AudioPreviewPanel::setPanelComponents()
 {
     // Add scrollbar for audio thumbnail
     mAudioPreviewScrollbar = std::make_unique<ScrollBar>(false);
@@ -142,13 +141,15 @@ void AudioPreviewPanel::mouseDown(const MouseEvent& e)
 
 void AudioPreviewPanel::mouseDrag(const MouseEvent& e)
 {
-    if (canMoveTransport())
-        transportSource.setPosition(jmax(0.0, xToTime((float) e.x)));
+    if(canMoveTransport())
+    {
+        sampleItemViewModel.setPosition(jmax(0.0, xToTime((float)e.x)));
+    }
 }
 
 void AudioPreviewPanel::mouseUp(const MouseEvent&)
 {
-    transportSource.start();
+    sampleItemViewModel.start();
 }
 
 void AudioPreviewPanel::mouseWheelMove(const MouseEvent&, const MouseWheelDetails& wheel)
@@ -183,14 +184,14 @@ double AudioPreviewPanel::xToTime(const float x) const
 
 bool AudioPreviewPanel::canMoveTransport() const noexcept
 {
-    return !(isFollowingTransport && transportSource.isPlaying());
+    return !(isFollowingTransport && sampleItemViewModel.isPlaying());
 }
 
 void AudioPreviewPanel::scrollBarMoved(ScrollBar* scrollbar, double newRangeStart)
 {
     if(scrollbar == &*mAudioPreviewScrollbar)
     {
-        if(!(isFollowingTransport && transportSource.isPlaying()))
+        if(!(isFollowingTransport && sampleItemViewModel.isPlaying()))
         {
             setRange(visibleRange.movedToStartAt(newRangeStart));
         }
@@ -205,14 +206,41 @@ void AudioPreviewPanel::timerCallback()
     }
     else
     {
-        setRange (visibleRange.movedToStartAt(transportSource.getCurrentPosition() - (visibleRange.getLength() / 2.0)));
+        setRange (visibleRange.movedToStartAt(sampleItemViewModel.getCurrentPosition() - (visibleRange.getLength() / 2.0)));
     }
 }
 
 void AudioPreviewPanel::updateCursorPosition()
 {
-    mPositionMarker.setVisible(transportSource.isPlaying() || isMouseButtonDown());
+    mPositionMarker.setVisible(sampleItemViewModel.isPlaying() || isMouseButtonDown());
 
-    mPositionMarker.setRectangle(Rectangle<float>(timeToX(transportSource.getCurrentPosition()) - 0.75f, 0,
+    mPositionMarker.setRectangle(Rectangle<float>(timeToX(sampleItemViewModel.getCurrentPosition()) - 0.75f, 0,
                                                           1.5f, (float)(getHeight() - mAudioPreviewScrollbar->getHeight())));
+}
+
+void AudioPreviewPanel::showAudioResource()
+{
+    URL resource = getLastDroppedFile();
+    showAudioResource(resource);
+}
+
+void AudioPreviewPanel::showAudioResource(URL inResource)
+{
+    if(loadURLIntoTransport(inResource))
+    {
+        mCurrentAudioFile = std::move(inResource);
+    }
+
+    mZoomSlider->setValue(0, dontSendNotification);
+    setURL(mCurrentAudioFile);
+}
+
+void AudioPreviewPanel::startOrStop()
+{
+    sampleItemViewModel.startOrStop();
+}
+
+bool AudioPreviewPanel::loadURLIntoTransport(const URL& audioURL)
+{
+    return sampleItemViewModel.loadURLIntoTransport(audioURL, currentThread);
 }

@@ -33,4 +33,5 @@ void PanelBase::mouseExit(const MouseEvent& event)
 
 void PanelBase::paint(Graphics& g)
 {
+    
 }

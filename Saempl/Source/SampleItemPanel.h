@@ -12,7 +12,7 @@
 
 #include "PanelBase.h"
 #include "AudioPreviewPanel.h"
-#include "SampleEditor.h"
+#include "SampleItemViewModel.h"
 
 class SampleItemPanel
 :   public PanelBase,
@@ -25,29 +25,19 @@ public:
     
     // Methods
     void paint(Graphics& g) override;
-    void setPanelStyle();
-    void showAudioResource(URL resource);
+    void setPanelComponents() override;
+    void showAudioResource(URL inResource);
 
 private:
-    std::unique_ptr<SampleEditor> mSampleEditor;
-    
-    // Audio player elements
-    std::unique_ptr<AudioDeviceManager> mAudioDeviceManager;
-    AudioFormatManager mFormatManager;
-    TimeSliceThread& audioReadaheadThread;
-    AudioSourcePlayer mAudioSourcePlayer;
-    AudioTransportSource mTransportSource;
-    std::unique_ptr<AudioFormatReaderSource> mCurrentAudioFileSource;
+    // Fields
+    TimeSliceThread& currentThread;
+    std::unique_ptr<SampleItemViewModel> mSampleItemViewModel;
     std::unique_ptr<AudioPreviewPanel> mAudioPreviewPanel;
     std::unique_ptr<Slider> mZoomSlider;
     std::unique_ptr<ToggleButton> mFollowTransportButton;
     std::unique_ptr<TextButton> mStartStopButton;
-    URL mCurrentAudioFile;
     
     // Methods
-    bool loadURLIntoTransport(const URL& audioURL);
-    void startOrStop();
-    void updateFollowTransportState();
     void changeListenerCallback (ChangeBroadcaster* source) override;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SampleItemPanel)

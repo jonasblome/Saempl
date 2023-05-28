@@ -16,10 +16,17 @@ class HeaderPanel
 :   public PanelBase
 {
 public:
+    // Constructors
     HeaderPanel();
     ~HeaderPanel();
     
+    // Methods
     void paint(Graphics& g) override;
+    void setPanelComponents() override;
     
 private:
+    // Fields
+    
+    // Methods
+    
 };

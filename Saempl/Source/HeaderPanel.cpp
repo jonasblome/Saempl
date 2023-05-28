@@ -14,6 +14,7 @@ HeaderPanel::HeaderPanel()
 :   PanelBase()
 {
     setSize(HEADER_PANEL_WIDTH, HEADER_PANEL_HEIGHT);
+    setPanelComponents();
 }
 
 HeaderPanel::~HeaderPanel()
@@ -25,8 +26,9 @@ void HeaderPanel::paint(Graphics& g)
 {
     PanelBase::paint(g);
     
-    // Draw panel background
-    g.fillAll(BlomeColour_DarkRed);
+    // Draw background
+    g.setColour(BlomeColour_AccentColourMedium);
+    g.fillRoundedRectangle(Rectangle<float>(getLocalBounds().toFloat()), PanelCornerSize);
     
     // Draw logo text
     const int logoWidth = 220;
@@ -39,4 +41,9 @@ void HeaderPanel::paint(Graphics& g)
                      getHeight(),
                      Justification::centredRight,
                      1);
+}
+
+void HeaderPanel::setPanelComponents()
+{
+    
 }

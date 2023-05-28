@@ -18,10 +18,16 @@ class MainPanel
 :   public PanelBase
 {
 public:
+    // Constructors
     MainPanel();
     ~MainPanel();
     
+    // Methods
+    void paint(Graphics& g) override;
+    void setPanelComponents() override;
+    
 private:
+    // Fields
     std::unique_ptr<TimeSliceThread> mThread;
     std::unique_ptr<HeaderPanel> mHeaderPanel;
     std::unique_ptr<CenterPanel> mCenterPanel;

@@ -13,15 +13,10 @@
 SampleDatabaseTablePanel::SampleDatabaseTablePanel(TimeSliceThread& inThread, SampleItemPanel& inSampleItemPanel)
 :   PanelBase(),
     currentThread(inThread),
-    connectedSampleItemPanel(inSampleItemPanel)
+    linkedSampleItemPanel(inSampleItemPanel)
 {
-    // Set panel size
     setSize(TABLE_PANEL_WIDTH, TABLE_PANEL_HEIGHT);
-    
-    // Setting view model
-    mSampleDatabaseTableViewModel = std::make_unique<SampleDatabaseTableViewModel>(inThread);
-    
-    setPanelStyle();
+    setPanelComponents();
 }
 
 SampleDatabaseTablePanel::~SampleDatabaseTablePanel()
@@ -32,13 +27,13 @@ SampleDatabaseTablePanel::~SampleDatabaseTablePanel()
 void SampleDatabaseTablePanel::paint(Graphics& g)
 {
     PanelBase::paint(g);
-    
-    // Draw panel background
-    g.fillAll(BlomeColour_DarkRed);
 }
 
-void SampleDatabaseTablePanel::setPanelStyle()
+void SampleDatabaseTablePanel::setPanelComponents()
 {
+    // Setting view model
+    mSampleDatabaseTableViewModel = std::make_unique<SampleDatabaseTableViewModel>(currentThread);
+    
     // Set file tree component
     mFileTree = std::make_unique<FileTreeComponent>(*mSampleDatabaseTableViewModel->getDirectoryList());
     mFileTree->setBounds(0, 0, getWidth(), getHeight());
@@ -53,7 +48,7 @@ void SampleDatabaseTablePanel::setPanelStyle()
 
 void SampleDatabaseTablePanel::selectionChanged()
 {
-    connectedSampleItemPanel.showAudioResource(URL(mFileTree->getSelectedFile()));
+    
 }
 
 void SampleDatabaseTablePanel::fileClicked(const File&, const MouseEvent&)
@@ -63,7 +58,7 @@ void SampleDatabaseTablePanel::fileClicked(const File&, const MouseEvent&)
 
 void SampleDatabaseTablePanel::fileDoubleClicked(const File&)
 {
-    
+    linkedSampleItemPanel.showAudioResource(URL(mFileTree->getSelectedFile()));
 }
 
 void SampleDatabaseTablePanel::browserRootChanged(const File&)
