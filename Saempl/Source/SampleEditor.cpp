@@ -25,11 +25,6 @@ AudioFormatManager& SampleEditor::getFormatManager()
     return mAudioPlayer->getFormatManager();
 }
 
-AudioTransportSource& SampleEditor::getTransportSource()
-{
-    return mAudioPlayer->getTransportSource();
-}
-
 void SampleEditor::startOrStop()
 {
     mAudioPlayer->startOrStop();

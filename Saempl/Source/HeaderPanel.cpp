@@ -13,7 +13,7 @@
 HeaderPanel::HeaderPanel()
 :   PanelBase()
 {
-    setSize(HEADER_PANEL_WIDTH, HEADER_PANEL_HEIGHT);
+    setSize(HEADER_PANEL_WIDTH - Blome_PanelMargin, HEADER_PANEL_HEIGHT - Blome_PanelMargin);
     setPanelComponents();
 }
 
@@ -28,17 +28,17 @@ void HeaderPanel::paint(Graphics& g)
     
     // Draw background
     g.setColour(BlomeColour_AccentColourMedium);
-    g.fillRoundedRectangle(Rectangle<float>(getLocalBounds().toFloat()), PanelCornerSize);
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), Blome_PanelCornerSize);
     
     // Draw logo text
     const int logoWidth = 220;
     g.setColour(BlomeColour_LightGray);
     g.setFont(font_medium);
     g.drawFittedText("Blome Audio",
-                     HEADER_PANEL_WIDTH - logoWidth - 20,
-                     0,
+                     HEADER_PANEL_WIDTH - logoWidth - 20 - Blome_PanelMargin,
+                     Blome_PanelMargin / 2.0,
                      logoWidth,
-                     getHeight(),
+                     getHeight() - Blome_PanelMargin,
                      Justification::centredRight,
                      1);
 }

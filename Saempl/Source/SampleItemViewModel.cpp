@@ -25,11 +25,6 @@ AudioFormatManager& SampleItemViewModel::getFormatManager()
     return mSampleEditor->getFormatManager();
 }
 
-AudioTransportSource& SampleItemViewModel::getTransportSource()
-{
-    return mSampleEditor->getTransportSource();
-}
-
 void SampleItemViewModel::startOrStop()
 {
     mSampleEditor->startOrStop();

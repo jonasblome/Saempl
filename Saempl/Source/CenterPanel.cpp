@@ -32,7 +32,7 @@ void CenterPanel::setPanelComponents()
 {
     // Add panel for sample item view
     mSampleItemPanel = std::make_unique<SampleItemPanel>(currentThread);
-    mSampleItemPanel->setTopLeftPosition(0, TABLE_PANEL_HEIGHT);
+    mSampleItemPanel->setTopLeftPosition(0, TABLE_PANEL_HEIGHT - Blome_PanelMargin / 2.0);
     addAndMakeVisible(*mSampleItemPanel);
     
     // Add panel for database views

@@ -31,11 +31,6 @@ AudioFormatManager& AudioPlayer::getFormatManager()
     return mFormatManager;
 }
 
-AudioTransportSource& AudioPlayer::getTransportSource()
-{
-    return mTransportSource;
-}
-
 void AudioPlayer::startOrStop()
 {
     if(mTransportSource.isPlaying())

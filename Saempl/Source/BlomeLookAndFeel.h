@@ -296,7 +296,7 @@ public:
         else
             thumbBounds = { thumbStartPosition, y, thumbSize, height };
 
-        g.setColour (isMouseOver ? BlomeColour_AccentColourMedium : BlomeColour_AccentColourLight);
+        g.setColour (isMouseOver ? BlomeColour_AccentColourDark : BlomeColour_AccentColourLight);
         g.fillRoundedRectangle (thumbBounds.reduced(1).toFloat(), 4.0f);
     }
     

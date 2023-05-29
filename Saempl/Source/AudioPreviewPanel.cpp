@@ -19,7 +19,7 @@ AudioPreviewPanel::AudioPreviewPanel(TimeSliceThread& inThread,Slider& inSlider,
     mAudioPreview(512, sampleItemViewModel.getFormatManager(), thumbnailCache),
     isFollowingTransport(false)
 {
-    setSize(SAMPLE_PREVIEW_WIDTH, SAMPLE_PREVIEW_HEIGHT);
+    setSize(SAMPLE_PREVIEW_WIDTH - Blome_PanelMargin * 2, SAMPLE_PREVIEW_HEIGHT - Blome_PanelMargin * 2);
     setPanelComponents();
 }
 
@@ -34,19 +34,19 @@ void AudioPreviewPanel::paint(Graphics& g)
     PanelBase::paint(g);
     
     // Draw background
-    g.setColour(BlomeColour_BlackLightTransparent);
-    g.fillRoundedRectangle(Rectangle<float>(getLocalBounds().toFloat()), PanelCornerSize);
+    g.setColour(BlomeColour_Gray);
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), Blome_PanelCornerSize);
     
     // Draw audio preview
-    g.setColour(BlomeColour_LightGray);
+    g.setColour(BlomeColour_AccentColourLight);
 
     if(mAudioPreview.getTotalLength() > 0.0)
     {
-        auto thumbArea = getLocalBounds();
+        auto previewArea = getLocalBounds();
 
-        thumbArea.removeFromBottom(mAudioPreviewScrollbar->getHeight() + 4);
+        previewArea.removeFromBottom(mAudioPreviewScrollbar->getHeight() + 4);
         mAudioPreview.drawChannels(g,
-                                   thumbArea.reduced (2),
+                                   previewArea.reduced(2),
                                    visibleRange.getStart(),
                                    visibleRange.getEnd(),
                                    1.0f);
@@ -206,7 +206,7 @@ void AudioPreviewPanel::timerCallback()
     }
     else
     {
-        setRange (visibleRange.movedToStartAt(sampleItemViewModel.getCurrentPosition() - (visibleRange.getLength() / 2.0)));
+        setRange(visibleRange.movedToStartAt(sampleItemViewModel.getCurrentPosition() - (visibleRange.getLength() / 2.0)));
     }
 }
 

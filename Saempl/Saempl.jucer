@@ -7,6 +7,10 @@
               pluginManufacturerCode="Blom" pluginManufacturer="Blome" pluginDesc="Saempl"
               pluginName="Saempl" pluginCode="Smpl" version="0.1" companyWebsite="https://github.com/jonasblome">
   <MAINGROUP id="Ryuu1q" name="Saempl">
+    <GROUP id="{F65A6678-A68F-58F1-A4D6-F2BF2D42BA2E}" name="Assets">
+      <FILE id="nQsbro" name="noise-texture-1050x800.png" compile="0" resource="1"
+            file="Assets/noise-texture-1050x800.png"/>
+    </GROUP>
     <GROUP id="{42BE264F-73CB-1788-4B66-AF9042EF1615}" name="BlomeComponents">
       <FILE id="ipExmz" name="SampleDatabaseTableViewModel.cpp" compile="1"
             resource="0" file="Source/SampleDatabaseTableViewModel.cpp"/>
@@ -30,6 +34,11 @@
             file="Source/SampleSequencerViewModel.h"/>
     </GROUP>
     <GROUP id="{6D66FD26-8F3F-0894-5730-966778E462FE}" name="BlomePanels">
+      <GROUP id="{A8594CF2-3765-47FF-0ED4-07D35CC5C390}" name="New Group"/>
+      <FILE id="AN94IY" name="NoiseOverlayPanel.cpp" compile="1" resource="0"
+            file="Source/NoiseOverlayPanel.cpp"/>
+      <FILE id="bTcNiy" name="NoiseOverlayPanel.h" compile="0" resource="0"
+            file="Source/NoiseOverlayPanel.h"/>
       <FILE id="ccbkEr" name="CenterPanel.cpp" compile="1" resource="0" file="Source/CenterPanel.cpp"/>
       <FILE id="YtLVhW" name="CenterPanel.h" compile="0" resource="0" file="Source/CenterPanel.h"/>
       <FILE id="qSTxfB" name="AudioPreviewPanel.cpp" compile="1" resource="0"

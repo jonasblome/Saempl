@@ -15,7 +15,7 @@ SampleDatabaseTablePanel::SampleDatabaseTablePanel(TimeSliceThread& inThread, Sa
     currentThread(inThread),
     linkedSampleItemPanel(inSampleItemPanel)
 {
-    setSize(TABLE_PANEL_WIDTH, TABLE_PANEL_HEIGHT);
+    setSize(TABLE_PANEL_WIDTH - Blome_PanelMargin, TABLE_PANEL_HEIGHT - Blome_PanelMargin);
     setPanelComponents();
 }
 
@@ -27,6 +27,10 @@ SampleDatabaseTablePanel::~SampleDatabaseTablePanel()
 void SampleDatabaseTablePanel::paint(Graphics& g)
 {
     PanelBase::paint(g);
+    
+    // Set background
+    g.setColour(BlomeColour_AccentColourMedium);
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), Blome_PanelCornerSize);
 }
 
 void SampleDatabaseTablePanel::setPanelComponents()
@@ -36,7 +40,7 @@ void SampleDatabaseTablePanel::setPanelComponents()
     
     // Set file tree component
     mFileTree = std::make_unique<FileTreeComponent>(*mSampleDatabaseTableViewModel->getDirectoryList());
-    mFileTree->setBounds(0, 0, getWidth(), getHeight());
+    mFileTree->setBounds(Blome_PanelMargin / 2.0, Blome_PanelMargin / 2.0, getWidth() - Blome_PanelMargin, getHeight() - Blome_PanelMargin);
     mFileTree->setTitle("Files");
     mFileTree->setColour(FileTreeComponent::backgroundColourId, BlomeColour_FullTransparent);
     mFileTree->addListener(this);

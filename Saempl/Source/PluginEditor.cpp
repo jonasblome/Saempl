@@ -20,6 +20,9 @@ SaemplAudioProcessorEditor::SaemplAudioProcessorEditor (SaemplAudioProcessor& p)
     mMainPanel = std::make_unique<MainPanel>();
     addAndMakeVisible(mMainPanel.get());
     
+    mNoiseOverlayPanel = std::make_unique<NoiseOverlayPanel>();
+    addAndMakeVisible(mNoiseOverlayPanel.get());
+    
     // Set styling of plugin UI
     mLookAndFeel = std::make_unique<BlomeLookAndFeel>();
     setLookAndFeel(&*mLookAndFeel);
@@ -35,8 +38,6 @@ void SaemplAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // The plugin background
     g.fillAll(BlomeColour_BlueishBlack);
-    g.setColour(BlomeColour_AccentColourDark);
-    g.fillRoundedRectangle(Rectangle<float>(getLocalBounds().toFloat()), 6.0);
 }
 
 void SaemplAudioProcessorEditor::resized()

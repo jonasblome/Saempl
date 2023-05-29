@@ -20,7 +20,6 @@ public:
     
     // Methods
     AudioFormatManager& getFormatManager();
-    AudioTransportSource& getTransportSource();
     void startOrStop();
     void setPosition(double position);
     void start();
