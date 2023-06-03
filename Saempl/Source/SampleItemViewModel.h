@@ -21,18 +21,19 @@ public:
     ~SampleItemViewModel();
     
     // Methods
-    AudioFormatManager& getFormatManager();
-    void startOrStop();
-    void setPosition(double position);
-    void start();
-    bool isPlaying();
+    AudioFormatManager& getAudioFormatManager();
+    void startOrStopAudio();
+    void setAudioReadheadPosition(double position);
+    void startAudio();
+    bool isPlayingAudio();
     double getCurrentPosition();
-    void stop();
-    void setSource(PositionableAudioSource* const newSource,
+    void stopAudio();
+    void setAudioSource(PositionableAudioSource* const newSource,
                    int readAheadSize = 0,
                    TimeSliceThread* readAheadThread = nullptr,
                    double sourceSampleRateToCorrectFor = 0.0);
     bool loadURLIntoTransport(const URL& audioURL, TimeSliceThread& inThread);
+    
     
 private:
     std::unique_ptr<SampleEditor> mSampleEditor;

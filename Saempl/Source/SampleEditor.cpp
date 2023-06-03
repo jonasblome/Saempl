@@ -20,22 +20,22 @@ SampleEditor::~SampleEditor()
     
 }
 
-AudioFormatManager& SampleEditor::getFormatManager()
+AudioFormatManager& SampleEditor::getAudioFormatManager()
 {
     return mAudioPlayer->getFormatManager();
 }
 
-void SampleEditor::startOrStop()
+void SampleEditor::startOrStopAudio()
 {
     mAudioPlayer->startOrStop();
 }
 
-void SampleEditor::setPosition(double position)
+void SampleEditor::setAudioReadheadPosition(double position)
 {
     mAudioPlayer->setPosition(position);
 }
 
-void SampleEditor::start()
+void SampleEditor::startAudio()
 {
     mAudioPlayer->start();
 }
@@ -45,17 +45,17 @@ bool SampleEditor::isPlaying()
     return mAudioPlayer->isPlaying();
 }
 
-double SampleEditor::getCurrentPosition()
+double SampleEditor::getCurrentReadheadPosition()
 {
     return mAudioPlayer->getCurrentPosition();
 }
 
-void SampleEditor::stop()
+void SampleEditor::stopAudio()
 {
     mAudioPlayer->stop();
 }
 
-void SampleEditor::setSource(PositionableAudioSource* const newSource,
+void SampleEditor::setAudioSource(PositionableAudioSource* const newSource,
                              int readAheadSize,
                              TimeSliceThread* readAheadThread,
                              double sourceSampleRateToCorrectFor)

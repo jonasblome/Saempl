@@ -10,14 +10,10 @@
 
 #include "MainPanel.h"
 
-MainPanel::MainPanel()
-:   PanelBase()
+MainPanel::MainPanel(SaemplAudioProcessor& inProcessor)
+:   PanelBase(inProcessor),
+    currentProcessor(inProcessor)
 {
-    // Create thread for current plugin instance
-    // This thread pre-loads the audio files into the player
-    // and checks for updates in the file tree
-    mThread = std::make_unique<TimeSliceThread>("audioFilePreview");
-    
     // Set panel size
     setSize(MAIN_PANEL_WIDTH, MAIN_PANEL_HEIGHT);
     setPanelComponents();
@@ -25,7 +21,7 @@ MainPanel::MainPanel()
 
 MainPanel::~MainPanel()
 {
-    mThread->stopThread(10);
+    
 }
 
 void MainPanel::paint(Graphics &g)
@@ -36,12 +32,12 @@ void MainPanel::paint(Graphics &g)
 void MainPanel::setPanelComponents()
 {
     // Add header panel
-    mHeaderPanel = std::make_unique<HeaderPanel>();
+    mHeaderPanel = std::make_unique<HeaderPanel>(currentProcessor);
     mHeaderPanel->setTopLeftPosition(Blome_PanelMargin / 2.0, Blome_PanelMargin / 2.0);
     addAndMakeVisible(*mHeaderPanel);
     
     // Add center panel
-    mCenterPanel = std::make_unique<CenterPanel>(*mThread);
+    mCenterPanel = std::make_unique<CenterPanel>(currentProcessor);
     mCenterPanel->setTopLeftPosition(Blome_PanelMargin / 2.0, HEADER_PANEL_HEIGHT);
     addAndMakeVisible(*mCenterPanel);
 }

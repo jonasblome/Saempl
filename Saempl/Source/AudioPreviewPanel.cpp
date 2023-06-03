@@ -9,14 +9,15 @@
 */
 
 #include "AudioPreviewPanel.h"
+#include "BlomeFileTreeView.h"
 
-AudioPreviewPanel::AudioPreviewPanel(TimeSliceThread& inThread,Slider& inSlider, SampleItemViewModel& inSampleItemViewModel)
-:   PanelBase(),
-    currentThread(inThread),
+AudioPreviewPanel::AudioPreviewPanel(SaemplAudioProcessor& inProcessor, Slider& inSlider, SampleItemViewModel& inSampleItemViewModel)
+:   PanelBase(inProcessor),
+    currentProcessor(inProcessor),
     sampleItemViewModel(inSampleItemViewModel),
     mZoomSlider(&inSlider),
     thumbnailCache(5),
-    mAudioPreview(512, sampleItemViewModel.getFormatManager(), thumbnailCache),
+    mAudioPreview(512, sampleItemViewModel.getAudioFormatManager(), thumbnailCache),
     isFollowingTransport(false)
 {
     setSize(SAMPLE_PREVIEW_WIDTH - Blome_PanelMargin * 2, SAMPLE_PREVIEW_HEIGHT - Blome_PanelMargin * 2);
@@ -68,9 +69,11 @@ void AudioPreviewPanel::setPanelComponents()
     mAudioPreviewScrollbar->addListener(this);
     addAndMakeVisible(*mAudioPreviewScrollbar);
 
-    mPositionMarker.setFill(Colours::white.withAlpha(0.85f));
-    addAndMakeVisible(mPositionMarker);
+    // Add position marker
+    mAudioPositionMarker.setFill(Colours::white.withAlpha(0.85f));
+    addAndMakeVisible(mAudioPositionMarker);
     
+    // Repaint panel components
     repaint();
 }
 
@@ -117,9 +120,9 @@ void AudioPreviewPanel::setFollowsTransport(bool shouldFollow)
     isFollowingTransport = shouldFollow;
 }
 
-void AudioPreviewPanel::changeListenerCallback (ChangeBroadcaster*)
+void AudioPreviewPanel::changeListenerCallback(ChangeBroadcaster* source)
 {
-    // This method is called by the thumbnail when it has changed, so we should repaint it..
+    // When the audio thumbnail changes
     repaint();
 }
 
@@ -134,22 +137,40 @@ void AudioPreviewPanel::filesDropped(const StringArray& files, int x, int y)
     sendChangeMessage();
 }
 
+bool AudioPreviewPanel::isInterestedInDragSource (const SourceDetails& dragSourceDetails)
+{
+    return true;
+}
+
+void AudioPreviewPanel::itemDropped(const SourceDetails& dragSourceDetails)
+{
+    if(dragSourceDetails.description == "SampleItemFile")
+    {
+        Component* component = dragSourceDetails.sourceComponent.get();
+        if(BlomeFileTreeView* treeView = static_cast<BlomeFileTreeView*>(component))
+        {
+            lastFileDropped = URL(treeView->getSelectedFile());
+            sendChangeMessage();
+        }
+    }
+}
+
 void AudioPreviewPanel::mouseDown(const MouseEvent& e)
 {
-    mouseDrag (e);
+    mouseDrag(e);
 }
 
 void AudioPreviewPanel::mouseDrag(const MouseEvent& e)
 {
     if(canMoveTransport())
     {
-        sampleItemViewModel.setPosition(jmax(0.0, xToTime((float)e.x)));
+        sampleItemViewModel.setAudioReadheadPosition(jmax(0.0, xToTime((float)e.x)));
     }
 }
 
 void AudioPreviewPanel::mouseUp(const MouseEvent&)
 {
-    sampleItemViewModel.start();
+    sampleItemViewModel.startAudio();
 }
 
 void AudioPreviewPanel::mouseWheelMove(const MouseEvent&, const MouseWheelDetails& wheel)
@@ -184,14 +205,14 @@ double AudioPreviewPanel::xToTime(const float x) const
 
 bool AudioPreviewPanel::canMoveTransport() const noexcept
 {
-    return !(isFollowingTransport && sampleItemViewModel.isPlaying());
+    return !(isFollowingTransport && sampleItemViewModel.isPlayingAudio());
 }
 
 void AudioPreviewPanel::scrollBarMoved(ScrollBar* scrollbar, double newRangeStart)
 {
     if(scrollbar == &*mAudioPreviewScrollbar)
     {
-        if(!(isFollowingTransport && sampleItemViewModel.isPlaying()))
+        if(!(isFollowingTransport && sampleItemViewModel.isPlayingAudio()))
         {
             setRange(visibleRange.movedToStartAt(newRangeStart));
         }
@@ -212,9 +233,9 @@ void AudioPreviewPanel::timerCallback()
 
 void AudioPreviewPanel::updateCursorPosition()
 {
-    mPositionMarker.setVisible(sampleItemViewModel.isPlaying() || isMouseButtonDown());
+    mAudioPositionMarker.setVisible(sampleItemViewModel.isPlayingAudio() || isMouseButtonDown());
 
-    mPositionMarker.setRectangle(Rectangle<float>(timeToX(sampleItemViewModel.getCurrentPosition()) - 0.75f, 0,
+    mAudioPositionMarker.setRectangle(Rectangle<float>(timeToX(sampleItemViewModel.getCurrentPosition()) - 0.75f, 0,
                                                           1.5f, (float)(getHeight() - mAudioPreviewScrollbar->getHeight())));
 }
 
@@ -237,10 +258,10 @@ void AudioPreviewPanel::showAudioResource(URL inResource)
 
 void AudioPreviewPanel::startOrStop()
 {
-    sampleItemViewModel.startOrStop();
+    sampleItemViewModel.startOrStopAudio();
 }
 
 bool AudioPreviewPanel::loadURLIntoTransport(const URL& audioURL)
 {
-    return sampleItemViewModel.loadURLIntoTransport(audioURL, currentThread);
+    return sampleItemViewModel.loadURLIntoTransport(audioURL, currentProcessor.getThread());
 }

@@ -10,17 +10,21 @@
 
 #pragma once
 #include "JuceHeader.h"
-#include "SampleDatabaseTable.h"
+#include "SampleDatabase.h"
 
 class SampleDatabaseTableViewModel
 {
 public:
-    SampleDatabaseTableViewModel(TimeSliceThread& inThread);
+    // Constructors
+    SampleDatabaseTableViewModel(SampleDatabase& inSampleDatabaseTable);
     ~SampleDatabaseTableViewModel();
     
+    // Methods
     DirectoryContentsList* getDirectoryList();
+    void addFile(String inFilePath);
+    void removeFile(String inFilePath);
     
 private:
-    SampleDatabaseTable mSampleDatabaseTable;
+    SampleDatabase& sampleDatabaseTable;
     
 };

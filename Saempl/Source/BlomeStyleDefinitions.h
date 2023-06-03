@@ -43,7 +43,7 @@ const Colour BlomeColour_DarkGray = Colour(40, 40, 40);
 
 // Black
 const Colour BlomeColour_Black = Colour(0, 0, 0);
-const Colour BlomeColour_FullTransparent = Colour(BlomeColour_Black).withAlpha(0.0f);
+const Colour BlomeColour_Transparent = Colour(BlomeColour_Black).withAlpha(0.0f);
 const Colour BlomeColour_BlackLightTransparent = Colour(BlomeColour_Black).withAlpha(0.25f);
 const Colour BlomeColour_BlackMediumTransparent = Colour(BlomeColour_Black).withAlpha(0.78f);
 const Colour BlomeColour_BlackStrongTransparent = Colour(BlomeColour_Black).withAlpha(0.95f);

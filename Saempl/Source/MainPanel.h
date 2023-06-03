@@ -15,11 +15,12 @@
 #include "CenterPanel.h"
 
 class MainPanel
-:   public PanelBase
+:   public PanelBase,
+    public DragAndDropContainer
 {
 public:
     // Constructors
-    MainPanel();
+    MainPanel(SaemplAudioProcessor& inProcessor);
     ~MainPanel();
     
     // Methods
@@ -28,7 +29,7 @@ public:
     
 private:
     // Fields
-    std::unique_ptr<TimeSliceThread> mThread;
+    SaemplAudioProcessor& currentProcessor;
     std::unique_ptr<HeaderPanel> mHeaderPanel;
     std::unique_ptr<CenterPanel> mCenterPanel;
     

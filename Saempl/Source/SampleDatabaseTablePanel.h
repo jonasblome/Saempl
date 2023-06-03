@@ -11,6 +11,7 @@
 #pragma once
 
 #include "PanelBase.h"
+#include "BlomeFileTreeView.h"
 #include "SampleDatabaseTableViewModel.h"
 #include "SampleItemPanel.h"
 
@@ -20,26 +21,25 @@ class SampleDatabaseTablePanel
     private ChangeListener
 {
 public:
-    void extracted();
-    
-SampleDatabaseTablePanel(TimeSliceThread& inThread, SampleItemPanel& inSampleItemPanel);
+    // Constructors
+    SampleDatabaseTablePanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~SampleDatabaseTablePanel();
     
+    // Methods
     void paint(Graphics& g) override;
-    
     void setPanelComponents() override;
     
 private:
     // Fields
-    TimeSliceThread& currentThread;
+    SaemplAudioProcessor& currentProcessor;
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<SampleDatabaseTableViewModel> mSampleDatabaseTableViewModel;
     std::unique_ptr<Label> mExplanationLabel;
-    std::unique_ptr<FileTreeComponent> mFileTree;
+    std::unique_ptr<BlomeFileTreeView> mFileTree;
     
     // Methods
     void selectionChanged() override;
-    void fileClicked (const File&, const MouseEvent&) override;
+    void fileClicked (const File& file, const MouseEvent& mouseEvent) override;
     void fileDoubleClicked (const File&) override;
     void browserRootChanged (const File&) override;
     void changeListenerCallback (ChangeBroadcaster* source) override;

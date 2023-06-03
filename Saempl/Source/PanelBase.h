@@ -19,7 +19,7 @@ class PanelBase
 {
 public:
     // Constructors
-    PanelBase();
+    PanelBase(SaemplAudioProcessor& inProcessor);
     ~PanelBase();
     
     // Methods

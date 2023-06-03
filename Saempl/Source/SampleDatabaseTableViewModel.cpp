@@ -10,8 +10,8 @@
 
 #include "SampleDatabaseTableViewModel.h"
 
-SampleDatabaseTableViewModel::SampleDatabaseTableViewModel(TimeSliceThread& inThread)
-:   mSampleDatabaseTable(inThread)
+SampleDatabaseTableViewModel::SampleDatabaseTableViewModel(SampleDatabase& inSampleDatabaseTable)
+:   sampleDatabaseTable(inSampleDatabaseTable)
 {
     
 }
@@ -23,5 +23,15 @@ SampleDatabaseTableViewModel::~SampleDatabaseTableViewModel()
 
 DirectoryContentsList* SampleDatabaseTableViewModel::getDirectoryList()
 {
-    return mSampleDatabaseTable.getDirectoryList();
+    return sampleDatabaseTable.getDirectoryList();
+}
+
+void SampleDatabaseTableViewModel::addFile(String inFilePath)
+{
+    sampleDatabaseTable.addSampleItem(inFilePath);
+}
+
+void SampleDatabaseTableViewModel::removeFile(String inFilePath)
+{
+    sampleDatabaseTable.removeSampleItem(inFilePath);
 }

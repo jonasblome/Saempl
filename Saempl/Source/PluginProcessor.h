@@ -9,6 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "SampleDatabase.h"
 
 //==============================================================================
 /**
@@ -55,8 +56,13 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    
+    TimeSliceThread& getThread();
+    SampleDatabase& getSampleDatabase();
 
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SaemplAudioProcessor)
+    std::unique_ptr<TimeSliceThread> mThread;
+    std::unique_ptr<SampleDatabase> mSampleDatabase;
 };

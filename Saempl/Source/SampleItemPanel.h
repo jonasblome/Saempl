@@ -20,7 +20,7 @@ class SampleItemPanel
 {
 public:
     // Constructors
-    SampleItemPanel(TimeSliceThread& inThread);
+    SampleItemPanel(SaemplAudioProcessor& inProcessor);
     ~SampleItemPanel();
     
     // Methods
@@ -30,7 +30,7 @@ public:
 
 private:
     // Fields
-    TimeSliceThread& currentThread;
+    SaemplAudioProcessor& currentProcessor;
     std::unique_ptr<SampleItemViewModel> mSampleItemViewModel;
     std::unique_ptr<AudioPreviewPanel> mAudioPreviewPanel;
     std::unique_ptr<Slider> mZoomSlider;

@@ -11,12 +11,11 @@
 #include "NoiseOverlayPanel.h"
 
 NoiseOverlayPanel::NoiseOverlayPanel()
-:   PanelBase()
 {
     setInterceptsMouseClicks(false, true);
     setSize(MAIN_PANEL_WIDTH, MAIN_PANEL_HEIGHT);
     mNoiseOverlay = ImageCache::getFromMemory(BinaryData::noisetexture1050x800_png, BinaryData::noisetexture1050x800_pngSize);
-    mNoiseOverlay.multiplyAllAlphas(0.045);
+    mNoiseOverlay.multiplyAllAlphas(0.065);
     setPanelComponents();
 }
 
@@ -27,7 +26,6 @@ NoiseOverlayPanel::~NoiseOverlayPanel()
 
 void NoiseOverlayPanel::paint(Graphics &g)
 {
-    PanelBase::paint(g);
     g.drawImage(mNoiseOverlay, getLocalBounds().toFloat());
 }
 

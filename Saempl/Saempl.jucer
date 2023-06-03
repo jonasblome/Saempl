@@ -12,6 +12,12 @@
             file="Assets/noise-texture-1050x800.png"/>
     </GROUP>
     <GROUP id="{42BE264F-73CB-1788-4B66-AF9042EF1615}" name="BlomeComponents">
+      <FILE id="WxYaGi" name="BlomeFileTreeView.cpp" compile="1" resource="0"
+            file="Source/BlomeFileTreeView.cpp"/>
+      <FILE id="eHx4JX" name="BlomeFileTreeView.h" compile="0" resource="0"
+            file="Source/BlomeFileTreeView.h"/>
+    </GROUP>
+    <GROUP id="{00D751B1-3FF1-898B-DE28-411892B3B79A}" name="BlomeViewModels">
       <FILE id="ipExmz" name="SampleDatabaseTableViewModel.cpp" compile="1"
             resource="0" file="Source/SampleDatabaseTableViewModel.cpp"/>
       <FILE id="b8vvCa" name="SampleDatabaseTableViewModel.h" compile="0"

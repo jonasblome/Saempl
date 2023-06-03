@@ -21,14 +21,14 @@ public:
     ~SampleEditor();
     
     // Methods
-    AudioFormatManager& getFormatManager();
-    void startOrStop();
-    void setPosition(double position);
-    void start();
+    AudioFormatManager& getAudioFormatManager();
+    void startOrStopAudio();
+    void setAudioReadheadPosition(double position);
+    void startAudio();
     bool isPlaying();
-    double getCurrentPosition();
-    void stop();
-    void setSource(PositionableAudioSource* const newSource,
+    double getCurrentReadheadPosition();
+    void stopAudio();
+    void setAudioSource(PositionableAudioSource* const newSource,
                    int readAheadSize,
                    TimeSliceThread* readAheadThread,
                    double sourceSampleRateToCorrectFor);

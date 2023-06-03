@@ -10,9 +10,23 @@
 
 #include "SampleDatabase.h"
 
-SampleDatabase::SampleDatabase()
+#if JUCE_WINDOWS
+    static const juce::String directorySeparator = "\\";
+#elif JUCE_MAC
+    static const juce::String directorySeparator = "/";
+#endif
+
+SampleDatabase::SampleDatabase(TimeSliceThread& inThread)
 {
+    mSampleItemDirectory =
+    (File::getSpecialLocation(juce::File::userDesktopDirectory)).getFullPathName() + directorySeparator + "SampleItemDirectory";
     
+    if(!File(mSampleItemDirectory).exists()) {
+        File(mSampleItemDirectory).createDirectory();
+    }
+    
+    mDirectoryList = std::make_unique<DirectoryContentsList>(nullptr, inThread);
+    mDirectoryList->setDirectory(File(mSampleItemDirectory), true, true);
 }
 
 SampleDatabase::~SampleDatabase()
@@ -20,12 +34,27 @@ SampleDatabase::~SampleDatabase()
     
 }
 
+void SampleDatabase::addSampleItem(String inFilePath)
+{
+    File oldFile = File(inFilePath);
+    String fileName = oldFile.getFileName();
+    File newFile = File(mSampleItemDirectory + directorySeparator + fileName);
+    oldFile.copyFileTo(newFile);
+    mDirectoryList->refresh();
+}
+
 void SampleDatabase::addSampleItem(SampleItem inItem)
 {
     
 }
 
-void SampleDatabase::removeSampleItem(String itemID)
+void SampleDatabase::removeSampleItem(String inFilePath)
 {
-    
+    File(inFilePath).deleteFile();
+    mDirectoryList->refresh();
+}
+
+DirectoryContentsList* SampleDatabase::getDirectoryList()
+{
+    return &*mDirectoryList;
 }

@@ -10,9 +10,9 @@
 
 #include "SampleDatabaseTablePanel.h"
 
-SampleDatabaseTablePanel::SampleDatabaseTablePanel(TimeSliceThread& inThread, SampleItemPanel& inSampleItemPanel)
-:   PanelBase(),
-    currentThread(inThread),
+SampleDatabaseTablePanel::SampleDatabaseTablePanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
+:   PanelBase(inProcessor),
+    currentProcessor(inProcessor),
     linkedSampleItemPanel(inSampleItemPanel)
 {
     setSize(TABLE_PANEL_WIDTH - Blome_PanelMargin, TABLE_PANEL_HEIGHT - Blome_PanelMargin);
@@ -22,6 +22,7 @@ SampleDatabaseTablePanel::SampleDatabaseTablePanel(TimeSliceThread& inThread, Sa
 SampleDatabaseTablePanel::~SampleDatabaseTablePanel()
 {
     mFileTree->removeListener(this);
+    mSampleDatabaseTableViewModel->getDirectoryList()->removeChangeListener(&*mFileTree);
 }
 
 void SampleDatabaseTablePanel::paint(Graphics& g)
@@ -36,15 +37,17 @@ void SampleDatabaseTablePanel::paint(Graphics& g)
 void SampleDatabaseTablePanel::setPanelComponents()
 {
     // Setting view model
-    mSampleDatabaseTableViewModel = std::make_unique<SampleDatabaseTableViewModel>(currentThread);
+    mSampleDatabaseTableViewModel = std::make_unique<SampleDatabaseTableViewModel>(currentProcessor.getSampleDatabase());
     
     // Set file tree component
-    mFileTree = std::make_unique<FileTreeComponent>(*mSampleDatabaseTableViewModel->getDirectoryList());
+    mFileTree = std::make_unique<BlomeFileTreeView>(*mSampleDatabaseTableViewModel);
     mFileTree->setBounds(Blome_PanelMargin / 2.0, Blome_PanelMargin / 2.0, getWidth() - Blome_PanelMargin, getHeight() - Blome_PanelMargin);
     mFileTree->setTitle("Files");
-    mFileTree->setColour(FileTreeComponent::backgroundColourId, BlomeColour_FullTransparent);
+    mFileTree->setColour(FileTreeComponent::backgroundColourId, BlomeColour_Transparent);
+    mFileTree->setDragAndDropDescription("SampleItemFile");
     mFileTree->addListener(this);
     addAndMakeVisible(*mFileTree);
+    mSampleDatabaseTableViewModel->getDirectoryList()->addChangeListener(&*mFileTree);
     
     // Repaint panel
     repaint();
@@ -55,9 +58,13 @@ void SampleDatabaseTablePanel::selectionChanged()
     
 }
 
-void SampleDatabaseTablePanel::fileClicked(const File&, const MouseEvent&)
+void SampleDatabaseTablePanel::fileClicked(const File& file, const MouseEvent& mouseEvent)
 {
-    
+    if(mouseEvent.mods.isRightButtonDown())
+    {
+        file.deleteFile();
+        mSampleDatabaseTableViewModel->getDirectoryList()->refresh();
+    }
 }
 
 void SampleDatabaseTablePanel::fileDoubleClicked(const File&)
@@ -72,5 +79,6 @@ void SampleDatabaseTablePanel::browserRootChanged(const File&)
 
 void SampleDatabaseTablePanel::changeListenerCallback(ChangeBroadcaster* source)
 {
+    // When the file tree state changes
     repaint();
 }

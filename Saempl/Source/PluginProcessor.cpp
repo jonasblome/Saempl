@@ -22,10 +22,17 @@ SaemplAudioProcessor::SaemplAudioProcessor()
                        )
 #endif
 {
+    // Create thread for current plugin instance
+    // This thread pre-loads the audio files into the player
+    // and checks for updates in the file tree
+    mThread = std::make_unique<TimeSliceThread>("audioFilePreview");
+    mThread->startThread(Thread::Priority::normal);
+    mSampleDatabase = std::make_unique<SampleDatabase>(*mThread);
 }
 
 SaemplAudioProcessor::~SaemplAudioProcessor()
 {
+    mThread->stopThread(10);
 }
 
 //==============================================================================
@@ -165,7 +172,7 @@ bool SaemplAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* SaemplAudioProcessor::createEditor()
 {
-    return new SaemplAudioProcessorEditor (*this);
+    return new SaemplAudioProcessorEditor(*this);
 }
 
 //==============================================================================
@@ -187,4 +194,15 @@ void SaemplAudioProcessor::setStateInformation (const void* data, int sizeInByte
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new SaemplAudioProcessor();
+}
+
+TimeSliceThread& SaemplAudioProcessor::getThread()
+{
+    return *mThread;
+}
+
+
+SampleDatabase& SaemplAudioProcessor::getSampleDatabase()
+{
+    return *mSampleDatabase;
 }

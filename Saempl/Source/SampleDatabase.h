@@ -14,12 +14,22 @@
 class SampleDatabase
 {
 public:
-    SampleDatabase();
+    // Constructors
+    SampleDatabase(TimeSliceThread& inThread);
     ~SampleDatabase();
     
+    // Methods
+    void addSampleItem(String inFilePath);
     void addSampleItem(SampleItem inItem);
-    void removeSampleItem(String itemID);
+    void removeSampleItem(String inFilePath);
+    DirectoryContentsList* getDirectoryList();
     
 private:
+    // Fields
+    String mSampleItemDirectory;
+    std::unique_ptr<DirectoryContentsList> mDirectoryList;
     OwnedArray<SampleItem> mSampleItems;
+    
+    // Methods
+    
 };

@@ -17,7 +17,7 @@ class HeaderPanel
 {
 public:
     // Constructors
-    HeaderPanel();
+    HeaderPanel(SaemplAudioProcessor& inProcessor);
     ~HeaderPanel();
     
     // Methods
@@ -26,6 +26,7 @@ public:
     
 private:
     // Fields
+    SaemplAudioProcessor& currentProcessor;
     
     // Methods
     

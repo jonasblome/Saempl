@@ -19,7 +19,7 @@ class CenterPanel
 {
 public:
     // Constructors
-    CenterPanel(TimeSliceThread& inThread);
+    CenterPanel(SaemplAudioProcessor& inProcessor);
     ~CenterPanel();
     
     // Methods
@@ -28,7 +28,7 @@ public:
     
 private:
     // Fields
-    TimeSliceThread& currentThread;
+    SaemplAudioProcessor& currentProcessor;
     std::unique_ptr<SampleDatabaseTablePanel> mSampleDatabaseTablePanel;
     std::unique_ptr<SampleItemPanel> mSampleItemPanel;
     

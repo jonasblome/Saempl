@@ -10,9 +10,9 @@
 
 #include "SampleItemPanel.h"
 
-SampleItemPanel::SampleItemPanel(TimeSliceThread& inThread)
-:   PanelBase(),
-    currentThread(inThread)
+SampleItemPanel::SampleItemPanel(SaemplAudioProcessor& inProcessor)
+:   PanelBase(inProcessor),
+    currentProcessor(inProcessor)
 {
     setSize(SAMPLE_PANEL_WIDTH - Blome_PanelMargin, SAMPLE_PANEL_HEIGHT);
     setPanelComponents();
@@ -66,7 +66,7 @@ void SampleItemPanel::setPanelComponents()
     addAndMakeVisible(*mStartStopButton);
     
     // Add audio thumbnail component
-    mAudioPreviewPanel = std::make_unique<AudioPreviewPanel>(currentThread, *mZoomSlider, *mSampleItemViewModel);
+    mAudioPreviewPanel = std::make_unique<AudioPreviewPanel>(currentProcessor, *mZoomSlider, *mSampleItemViewModel);
     mAudioPreviewPanel->setTopLeftPosition(Blome_PanelMargin / 2.0, Blome_PanelMargin / 2.0);
     addAndMakeVisible(mAudioPreviewPanel.get());
     mAudioPreviewPanel->addChangeListener(this);
@@ -77,6 +77,7 @@ void SampleItemPanel::setPanelComponents()
 
 void SampleItemPanel::changeListenerCallback(ChangeBroadcaster* source)
 {
+    // If file was dropped into audio preview panel
     if(source == mAudioPreviewPanel.get())
     {
         mAudioPreviewPanel->showAudioResource();

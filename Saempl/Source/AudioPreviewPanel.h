@@ -17,30 +17,33 @@ class AudioPreviewPanel
 :   public PanelBase,
     public ChangeListener,
     public FileDragAndDropTarget,
+    public DragAndDropTarget,
     public ChangeBroadcaster,
     private ScrollBar::Listener,
     private Timer
 {
 public:
     // Constructors
-    AudioPreviewPanel(TimeSliceThread& inThread, Slider& inSlider, SampleItemViewModel& inSampleItemViewModel);
+    AudioPreviewPanel(SaemplAudioProcessor& inProcessor, Slider& inSlider, SampleItemViewModel& inSampleItemViewModel);
     ~AudioPreviewPanel();
     
     // Methods
     void paint(Graphics& g) override;
     void setPanelComponents() override;
+    void changeListenerCallback (ChangeBroadcaster* source) override;
+    bool isInterestedInFileDrag (const StringArray& files) override;
+    void filesDropped (const StringArray& files, int x, int y) override;
+    bool isInterestedInDragSource (const SourceDetails& dragSourceDetails) override;
+    void itemDropped (const SourceDetails& dragSourceDetails) override;
+    void mouseDown (const MouseEvent& e) override;
+    void mouseDrag (const MouseEvent& e) override;
+    void mouseUp (const MouseEvent&) override;
+    void mouseWheelMove (const MouseEvent&, const MouseWheelDetails& wheel) override;
     void setURL (const URL& url);
     URL getLastDroppedFile() const noexcept;
     void setZoomFactor (double amount);
     void setRange (Range<double> newRange);
     void setFollowsTransport (bool shouldFollow);
-    void changeListenerCallback (ChangeBroadcaster* source) override;
-    bool isInterestedInFileDrag (const StringArray& files) override;
-    void filesDropped (const StringArray& files, int x, int y) override;
-    void mouseDown (const MouseEvent& e) override;
-    void mouseDrag (const MouseEvent& e) override;
-    void mouseUp (const MouseEvent&) override;
-    void mouseWheelMove (const MouseEvent&, const MouseWheelDetails& wheel) override;
     void showAudioResource();
     void showAudioResource(URL inResource);
     void startOrStop();
@@ -49,7 +52,7 @@ public:
 
 private:
     // Fields
-    TimeSliceThread& currentThread;
+    SaemplAudioProcessor& currentProcessor;
     SampleItemViewModel& sampleItemViewModel;
     Slider* mZoomSlider;
     std::unique_ptr<ScrollBar> mAudioPreviewScrollbar;
@@ -58,7 +61,7 @@ private:
     Range<double> visibleRange;
     bool isFollowingTransport;
     URL lastFileDropped;
-    DrawableRectangle mPositionMarker;
+    DrawableRectangle mAudioPositionMarker;
     URL mCurrentAudioFile;
     
     // Methods

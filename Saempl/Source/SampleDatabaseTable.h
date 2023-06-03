@@ -18,8 +18,5 @@ public:
     SampleDatabaseTable(TimeSliceThread& inThread);
     ~SampleDatabaseTable();
     
-    DirectoryContentsList* getDirectoryList();
-    
 private:
-    std::unique_ptr<DirectoryContentsList> mDirectoryList;
 };

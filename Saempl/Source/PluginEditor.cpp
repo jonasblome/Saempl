@@ -17,7 +17,7 @@ SaemplAudioProcessorEditor::SaemplAudioProcessorEditor (SaemplAudioProcessor& p)
     setSize(MAIN_PANEL_WIDTH, MAIN_PANEL_HEIGHT);
     
     // Set main panel into plugin window
-    mMainPanel = std::make_unique<MainPanel>();
+    mMainPanel = std::make_unique<MainPanel>(p);
     addAndMakeVisible(mMainPanel.get());
     
     mNoiseOverlayPanel = std::make_unique<NoiseOverlayPanel>();

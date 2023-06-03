@@ -20,47 +20,47 @@ SampleItemViewModel::~SampleItemViewModel()
     
 }
 
-AudioFormatManager& SampleItemViewModel::getFormatManager()
+AudioFormatManager& SampleItemViewModel::getAudioFormatManager()
 {
-    return mSampleEditor->getFormatManager();
+    return mSampleEditor->getAudioFormatManager();
 }
 
-void SampleItemViewModel::startOrStop()
+void SampleItemViewModel::startOrStopAudio()
 {
-    mSampleEditor->startOrStop();
+    mSampleEditor->startOrStopAudio();
 }
 
-void SampleItemViewModel::setPosition(double position)
+void SampleItemViewModel::setAudioReadheadPosition(double position)
 {
-    mSampleEditor->setPosition(position);
+    mSampleEditor->setAudioReadheadPosition(position);
 }
 
-void SampleItemViewModel::start()
+void SampleItemViewModel::startAudio()
 {
-    mSampleEditor->start();
+    mSampleEditor->startAudio();
 }
 
-bool SampleItemViewModel::isPlaying()
+bool SampleItemViewModel::isPlayingAudio()
 {
     return mSampleEditor->isPlaying();
 }
 
 double SampleItemViewModel::getCurrentPosition()
 {
-    return mSampleEditor->getCurrentPosition();
+    return mSampleEditor->getCurrentReadheadPosition();
 }
 
-void SampleItemViewModel::stop()
+void SampleItemViewModel::stopAudio()
 {
-    mSampleEditor->stop();
+    mSampleEditor->stopAudio();
 }
 
-void SampleItemViewModel::setSource(PositionableAudioSource* const newSource,
+void SampleItemViewModel::setAudioSource(PositionableAudioSource* const newSource,
                                     int readAheadSize,
                                     TimeSliceThread* readAheadThread,
                                     double sourceSampleRateToCorrectFor)
 {
-    mSampleEditor->setSource(newSource, readAheadSize, readAheadThread, sourceSampleRateToCorrectFor);
+    mSampleEditor->setAudioSource(newSource, readAheadSize, readAheadThread, sourceSampleRateToCorrectFor);
 }
 
 bool SampleItemViewModel::loadURLIntoTransport(const URL& audioURL, TimeSliceThread& inThread)

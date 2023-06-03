@@ -14,7 +14,7 @@
 #include "PanelBase.h"
 
 class NoiseOverlayPanel
-:   public PanelBase
+:   public Component
 {
 public:
     // Constructors
@@ -23,7 +23,7 @@ public:
     
     // Methods
     void paint(Graphics& g) override;
-    void setPanelComponents() override;
+    void setPanelComponents();
     
 private:
     // Fields

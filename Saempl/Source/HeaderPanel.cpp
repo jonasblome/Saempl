@@ -10,8 +10,9 @@
 
 #include "HeaderPanel.h"
 
-HeaderPanel::HeaderPanel()
-:   PanelBase()
+HeaderPanel::HeaderPanel(SaemplAudioProcessor& inProcessor)
+:   PanelBase(inProcessor),
+    currentProcessor(inProcessor)
 {
     setSize(HEADER_PANEL_WIDTH - Blome_PanelMargin, HEADER_PANEL_HEIGHT - Blome_PanelMargin);
     setPanelComponents();
