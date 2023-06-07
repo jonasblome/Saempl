@@ -28,6 +28,7 @@ public:
     // Methods
     void paint(Graphics& g) override;
     void setPanelComponents() override;
+    void resizePanelComponents() override;
     
 private:
     // Fields

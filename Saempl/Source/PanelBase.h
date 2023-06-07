@@ -26,7 +26,9 @@ public:
     void mouseEnter(const MouseEvent& event) override;
     void mouseExit(const MouseEvent& event) override;
     void paint(Graphics& g) override;
+    void resized() override;
     virtual void setPanelComponents() {};
+    virtual void resizePanelComponents() {};
     
 protected:
     // Fields

@@ -28,12 +28,12 @@ void HeaderPanel::paint(Graphics& g)
     PanelBase::paint(g);
     
     // Draw background
-    g.setColour(BlomeColour_AccentColourMedium);
+    g.setColour(BlomeColour_AccentColourLight);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), Blome_PanelCornerSize);
     
     // Draw logo text
     const int logoWidth = 220;
-    g.setColour(BlomeColour_LightGray);
+    g.setColour(BlomeColour_AccentColourDark);
     g.setFont(font_medium);
     g.drawFittedText("Blome Audio",
                      HEADER_PANEL_WIDTH - logoWidth - 20 - Blome_PanelMargin,

@@ -20,7 +20,7 @@ AudioPreviewPanel::AudioPreviewPanel(SaemplAudioProcessor& inProcessor, Slider& 
     mAudioPreview(512, sampleItemViewModel.getAudioFormatManager(), thumbnailCache),
     isFollowingTransport(false)
 {
-    setSize(SAMPLE_PREVIEW_WIDTH - Blome_PanelMargin * 2, SAMPLE_PREVIEW_HEIGHT - Blome_PanelMargin * 2);
+    setSize(SAMPLE_PREVIEW_WIDTH - Blome_PanelMargin * 2, SAMPLE_PREVIEW_HEIGHT - Blome_PanelMargin);
     setPanelComponents();
 }
 
@@ -34,8 +34,10 @@ void AudioPreviewPanel::paint(Graphics& g)
 {
     PanelBase::paint(g);
     
+    auto previewArea = getLocalBounds().removeFromBottom(getHeight() - sampleItemTitleHeight);
+
     // Draw background
-    g.setColour(BlomeColour_Gray);
+    g.setColour(BlomeColour_BlackLightTransparent);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), Blome_PanelCornerSize);
     
     // Draw audio preview
@@ -43,17 +45,26 @@ void AudioPreviewPanel::paint(Graphics& g)
 
     if(mAudioPreview.getTotalLength() > 0.0)
     {
-        auto previewArea = getLocalBounds();
-
+        g.setFont(font_small_bold);
+        String fileName = restoreSpacesFromURLString(lastFileDropped.getFileName());
+        g.drawFittedText(fileName,
+                         getLocalBounds().removeFromRight(getWidth() - Blome_PanelMargin).removeFromTop(sampleItemTitleHeight),
+                         Justification::centredLeft,
+                         2);
         previewArea.removeFromBottom(mAudioPreviewScrollbar->getHeight() + 4);
         mAudioPreview.drawChannels(g,
-                                   previewArea.reduced(2),
+                                   previewArea.reduced(Blome_PanelMargin / 2.0),
                                    visibleRange.getStart(),
                                    visibleRange.getEnd(),
                                    1.0f);
     }
     else
     {
+        g.setFont(font_small_bold);
+        g.drawFittedText("No audio file selected",
+                         getLocalBounds().removeFromRight(getWidth() - Blome_PanelMargin).removeFromTop(sampleItemTitleHeight),
+                         Justification::centredLeft,
+                         1);
         g.setFont(font_medium);
         g.drawFittedText("No audio file selected", getLocalBounds(), Justification::centred, 2);
     }
@@ -70,7 +81,7 @@ void AudioPreviewPanel::setPanelComponents()
     addAndMakeVisible(*mAudioPreviewScrollbar);
 
     // Add position marker
-    mAudioPositionMarker.setFill(Colours::white.withAlpha(0.85f));
+    mAudioPositionMarker.setFill(BlomeColour_BlueishWhite);
     addAndMakeVisible(mAudioPositionMarker);
     
     // Repaint panel components
@@ -133,8 +144,13 @@ bool AudioPreviewPanel::isInterestedInFileDrag(const StringArray& files)
 
 void AudioPreviewPanel::filesDropped(const StringArray& files, int x, int y)
 {
-    lastFileDropped = URL(File(files[0]));
-    sendChangeMessage();
+    File file = File(files[0]);
+    
+    if (!file.isDirectory() && isSupportedAudioFileFormat(file.getFileExtension()))
+    {
+        lastFileDropped = URL(file);
+        sendChangeMessage();
+    }
 }
 
 bool AudioPreviewPanel::isInterestedInDragSource (const SourceDetails& dragSourceDetails)
@@ -149,8 +165,13 @@ void AudioPreviewPanel::itemDropped(const SourceDetails& dragSourceDetails)
         Component* component = dragSourceDetails.sourceComponent.get();
         if(BlomeFileTreeView* treeView = static_cast<BlomeFileTreeView*>(component))
         {
-            lastFileDropped = URL(treeView->getSelectedFile());
-            sendChangeMessage();
+            File file = treeView->getSelectedFile();
+            
+            if (!file.isDirectory() && isSupportedAudioFileFormat(file.getFileExtension()))
+            {
+                lastFileDropped = URL(file);
+                sendChangeMessage();
+            }
         }
     }
 }
@@ -181,10 +202,14 @@ void AudioPreviewPanel::mouseWheelMove(const MouseEvent&, const MouseWheelDetail
         newStart = jlimit (0.0, jmax (0.0, mAudioPreview.getTotalLength() - (visibleRange.getLength())), newStart);
 
         if (canMoveTransport())
+        {
             setRange({ newStart, newStart + visibleRange.getLength() });
+        }
 
         if (wheel.deltaY != 0.0f)
+        {
             mZoomSlider->setValue(mZoomSlider->getValue() - wheel.deltaY);
+        }
 
         repaint();
     }
@@ -193,7 +218,9 @@ void AudioPreviewPanel::mouseWheelMove(const MouseEvent&, const MouseWheelDetail
 float AudioPreviewPanel::timeToX(const double time) const
 {
     if (visibleRange.getLength() <= 0)
+    {
         return 0;
+    }
 
     return (float) getWidth() * (float) ((time - visibleRange.getStart()) / visibleRange.getLength());
 }
@@ -235,8 +262,8 @@ void AudioPreviewPanel::updateCursorPosition()
 {
     mAudioPositionMarker.setVisible(sampleItemViewModel.isPlayingAudio() || isMouseButtonDown());
 
-    mAudioPositionMarker.setRectangle(Rectangle<float>(timeToX(sampleItemViewModel.getCurrentPosition()) - 0.75f, 0,
-                                                          1.5f, (float)(getHeight() - mAudioPreviewScrollbar->getHeight())));
+    mAudioPositionMarker.setRectangle(Rectangle<float>(timeToX(sampleItemViewModel.getCurrentPosition()) - 0.75f, sampleItemTitleHeight + Blome_PanelMargin / 2.0,
+                                                          1.5f, (float)(getHeight() - Blome_PanelMargin - sampleItemTitleHeight - mAudioPreviewScrollbar->getHeight())));
 }
 
 void AudioPreviewPanel::showAudioResource()
@@ -247,6 +274,8 @@ void AudioPreviewPanel::showAudioResource()
 
 void AudioPreviewPanel::showAudioResource(URL inResource)
 {
+    lastFileDropped = inResource;
+    
     if(loadURLIntoTransport(inResource))
     {
         mCurrentAudioFile = std::move(inResource);

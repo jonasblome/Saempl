@@ -31,6 +31,9 @@ private:
     SaemplAudioProcessor& currentProcessor;
     std::unique_ptr<SampleDatabaseTablePanel> mSampleDatabaseTablePanel;
     std::unique_ptr<SampleItemPanel> mSampleItemPanel;
+    std::unique_ptr<ToggleButton> mTogglePanelButton;
     
     // Methods
+    void toggleSampleItemPanel();
+    
 };

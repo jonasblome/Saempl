@@ -11,6 +11,7 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include "BlomeHelperFunctions.h"
 #include "SampleDatabaseTableViewModel.h"
 
 class BlomeFileTreeView
@@ -26,6 +27,7 @@ public:
     void filesDropped(const StringArray& files, int x, int y) override;
     bool isInterestedInFileDrag(const StringArray& files) override;
     void changeListenerCallback(ChangeBroadcaster* source) override;
+    void mouseDrag(const MouseEvent& e) override;
     
 private:
     // Fields

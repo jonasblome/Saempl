@@ -14,12 +14,12 @@ BlomeFileTreeView::BlomeFileTreeView(SampleDatabaseTableViewModel& inSampleDatab
 :   FileTreeComponent(*inSampleDatabaseTableViewModel.getDirectoryList()),
     sampleDatabaseTableViewModel(inSampleDatabaseTableViewModel)
 {
-    
+    addMouseListener(this, true);
 }
 
 BlomeFileTreeView::~BlomeFileTreeView()
 {
-    
+    removeMouseListener(this);
 }
 
 void BlomeFileTreeView::filesDropped(const StringArray& files, int x, int y)
@@ -39,4 +39,26 @@ void BlomeFileTreeView::changeListenerCallback(ChangeBroadcaster* source)
 {
     // When the directory list changes
     repaint();
+}
+
+void BlomeFileTreeView::mouseDrag(const MouseEvent& e)
+{
+    Rectangle<int> itemBounds = getSelectedItem(0)->getItemPosition(false);
+    Point<int> mousePosition = e.getEventRelativeTo(this).position.toInt();
+    
+    if (itemBounds.contains(mousePosition))
+    {
+        StringArray selectedFilePaths;
+        
+        for (int f = 0; f < getNumSelectedFiles(); f++) {
+            File selectedFile = getSelectedFile(f);
+            
+            if (!selectedFile.isDirectory()) {
+                selectedFilePaths.add(selectedFile.getFullPathName());
+            }
+        }
+        
+        DragAndDropContainer* dragContainer = DragAndDropContainer::findParentDragContainerFor(this);
+        dragContainer->performExternalDragDropOfFiles(selectedFilePaths, true);
+    }
 }

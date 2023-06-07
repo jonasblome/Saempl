@@ -35,3 +35,8 @@ void PanelBase::paint(Graphics& g)
 {
     
 }
+
+void PanelBase::resized()
+{
+    resizePanelComponents();
+}

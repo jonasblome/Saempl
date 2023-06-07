@@ -23,12 +23,12 @@ public:
         setColour(ComboBox::outlineColourId, BlomeColour_Black);
         setColour(ComboBox::arrowColourId, BlomeColour_LightGray);
         setColour(ComboBox::textColourId, BlomeColour_LightGray);
-        setColour(PopupMenu::backgroundColourId, BlomeColour_AccentColourMediumStrongTransparent);
+        setColour(PopupMenu::backgroundColourId, BlomeColour_AccentColourLightStrongTransparent);
         
         // Button Text Colours
-        setColour(TextButton::buttonColourId, BlomeColour_LightGray);
-        setColour(TextButton::textColourOnId, BlomeColour_LightGray);
-        setColour(TextButton::textColourOffId, BlomeColour_LightGray);
+        setColour(TextButton::buttonColourId, BlomeColour_AccentColourLight);
+        setColour(TextButton::textColourOnId, BlomeColour_AccentColourLight);
+        setColour(TextButton::textColourOffId, BlomeColour_AccentColourLight);
     }
     
     virtual ~BlomeLookAndFeel() {
@@ -48,18 +48,23 @@ public:
     {
         Colour fillColour;
         
-        if(shouldDrawButtonAsDown) {
+        if(shouldDrawButtonAsDown)
+        {
             fillColour = BlomeColour_BlackStrongTransparent;
-        } else if(shouldDrawButtonAsHighlighted) {
-            fillColour = BlomeColour_BlackLightTransparent;
-        } else {
+        }
+        else if(shouldDrawButtonAsHighlighted)
+        {
             fillColour = BlomeColour_BlackMediumTransparent;
+        }
+        else
+        {
+            fillColour = BlomeColour_BlackLightTransparent;
         }
         
         const float cornerSize = 6.0f;
-        const Rectangle<float> bounds = button.getLocalBounds().toFloat().reduced(0.5f, 0.5f);
+        const Rectangle<float> bounds = button.getLocalBounds().toFloat();
         g.setColour(fillColour);
-        g.fillRoundedRectangle(bounds.reduced(1), cornerSize);
+        g.fillRoundedRectangle(bounds, cornerSize);
     }
     
     void drawToggleButton (Graphics& g,
@@ -69,15 +74,15 @@ public:
      {
          Colour fillColour;
          float cornerSize = 6.0f;
-         const Rectangle<float> bounds = button.getLocalBounds().toFloat().reduced(0.5f, 0.5f);
+         const Rectangle<float> bounds = button.getLocalBounds().toFloat();
          
          if(shouldDrawButtonAsHighlighted)
          {
-             fillColour = BlomeColour_BlackLightTransparent;
+             fillColour = BlomeColour_BlackMediumTransparent;
          }
          else
          {
-             fillColour = BlomeColour_BlackMediumTransparent;
+             fillColour = BlomeColour_BlackLightTransparent;
          }
 
          if (!button.isEnabled())
@@ -86,7 +91,7 @@ public:
          }
          
          g.setColour(fillColour);
-         g.fillRoundedRectangle(bounds.reduced(1), cornerSize);
+         g.fillRoundedRectangle(bounds, cornerSize);
          
          if(button.getToggleState())
          {
@@ -118,7 +123,13 @@ public:
     {
         Rectangle<int> r (area);
         
-        Colour fontColour = isTicked ? BlomeColour_BlackStrongTransparent : BlomeColour_BlackLightTransparent;
+        if(isHighlighted)
+        {
+            g.setColour(BlomeColour_BlackLightTransparent);
+            g.fillRoundedRectangle(r.reduced(1).toFloat(), 3.0);
+        }
+        
+        Colour fontColour = isTicked ? BlomeColour_BlackStrongTransparent : BlomeColour_BlackMediumTransparent;
         g.setColour(fontColour);
         g.setFont(isTicked ? font_small_accentuated : font_small_bold);
         
@@ -134,7 +145,7 @@ public:
         const float cornerSize = 3.0f;
         const Rectangle<int> boxBounds (0, 0, width, height);
         
-        g.setColour(BlomeColour_BlackMediumTransparent);
+        g.setColour(BlomeColour_BlackLightTransparent);
         g.fillRoundedRectangle(boxBounds.toFloat(), cornerSize);
         
         Rectangle<int> arrow (width - 30, 0, 20, height);
@@ -202,7 +213,7 @@ public:
             Path backgroundTrack;
             backgroundTrack.startNewSubPath(startPoint);
             backgroundTrack.lineTo(endPoint);
-            g.setColour(BlomeColour_BlackMediumTransparent);
+            g.setColour(BlomeColour_BlackLightTransparent);
             g.strokePath(backgroundTrack, { trackWidth, PathStrokeType::curved, PathStrokeType::rounded });
             
             Path valueTrack;
@@ -238,7 +249,7 @@ public:
             
             if (! isTwoVal)
             {
-                g.setColour(BlomeColour_Black);
+                g.setColour(BlomeColour_AccentColourLight);
                 g.fillEllipse (Rectangle<float> (static_cast<float> (thumbWidth), static_cast<float> (thumbWidth)).withCentre (isThreeVal ? thumbPoint : maxPoint));
             }
             
@@ -296,7 +307,7 @@ public:
         else
             thumbBounds = { thumbStartPosition, y, thumbSize, height };
 
-        g.setColour (isMouseOver ? BlomeColour_AccentColourDark : BlomeColour_AccentColourLight);
+        g.setColour (isMouseOver ? BlomeColour_BlackLightTransparent : BlomeColour_AccentColourLight);
         g.fillRoundedRectangle (thumbBounds.reduced(1).toFloat(), 4.0f);
     }
     
@@ -310,7 +321,7 @@ public:
         Path p;
         p.addTriangle(0.0f, 0.0f, 1.0f, isOpen ? 0.0f : 0.5f, isOpen ? 0.5f : 0.0f, 1.0f);
 
-        g.setColour(isMouseOver ? BlomeColour_BlackMediumTransparent : BlomeColour_LightGray);
+        g.setColour(isMouseOver ? BlomeColour_BlackLightTransparent : BlomeColour_AccentColourLight);
         g.fillPath(p, p.getTransformToScaleToFit(area.reduced(2, area.getHeight() / 3), true));
     }
     
@@ -321,45 +332,44 @@ public:
                                              bool isDirectory, bool isItemSelected,
                                              int itemIndex, DirectoryContentsDisplayComponent& dcc) override
     {
-        auto fileListComp = dynamic_cast<Component*> (&dcc);
+        auto fileListComp = dynamic_cast<Component*>(&dcc);
 
-        if (isItemSelected)
+        if(isItemSelected)
         {
-            g.setColour(fileListComp != nullptr ? BlomeColour_BlackMediumTransparent : BlomeColour_BlackLightTransparent);
+            g.setColour(fileListComp != nullptr ? BlomeColour_BlackLightTransparent : BlomeColour_BlackMediumTransparent);
             g.fillRoundedRectangle(0, 0, width - 5, height, 3.0);
         }
 
         const int x = 5;
         
-        g.setColour(BlomeColour_LightGray);
+        g.setColour(BlomeColour_AccentColourLight);
         g.setFont (font_small_bold);
 
-        if (width > 450 && ! isDirectory)
+        if(width > 450 && ! isDirectory)
         {
             auto sizeX = roundToInt ((float) width * 0.7f);
             auto dateX = roundToInt ((float) width * 0.8f);
 
-            g.drawFittedText (filename,
+            g.drawFittedText(filename,
                               x, 0, sizeX - x, height,
                               Justification::centredLeft, 1);
 
-            g.setFont (font_small_bold);
-            g.setColour (BlomeColour_LightGray);
+            g.setFont(font_small_bold);
 
-            if (! isDirectory)
+            if(!isDirectory)
             {
-                g.drawFittedText (fileSizeDescription,
+                g.drawFittedText(fileSizeDescription,
                                   sizeX, 0, dateX - sizeX - 8, height,
                                   Justification::centredRight, 1);
 
-                g.drawFittedText (fileTimeDescription,
+                g.drawFittedText(fileTimeDescription,
                                   dateX, 0, width - 8 - dateX, height,
                                   Justification::centredRight, 1);
             }
         }
         else
         {
-            g.drawFittedText (filename,
+            g.drawFittedText(filename,
                               x, 0, width - x, height,
                               Justification::centredLeft, 1);
 

@@ -15,6 +15,12 @@ AudioPlayer::AudioPlayer()
     // Audio setup
     mAudioDeviceManager = std::make_unique<AudioDeviceManager>();
     mFormatManager.registerBasicFormats();
+    RuntimePermissions::request(RuntimePermissions::recordAudio,
+                                [this] (bool granted)
+                                {
+                                    int numInputChannels = granted ? 2 : 0;
+                                    mAudioDeviceManager->initialise(numInputChannels, 2, nullptr, true, {}, nullptr);
+                                });
     mAudioDeviceManager->addAudioCallback(&mAudioSourcePlayer);
     mAudioSourcePlayer.setSource(&mTransportSource);
 }

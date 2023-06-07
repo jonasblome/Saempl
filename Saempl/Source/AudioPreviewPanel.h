@@ -11,6 +11,7 @@
 #pragma once
 
 #include "PanelBase.h"
+#include "BlomeHelperFunctions.h"
 #include "SampleItemViewModel.h"
 
 class AudioPreviewPanel
@@ -30,20 +31,20 @@ public:
     // Methods
     void paint(Graphics& g) override;
     void setPanelComponents() override;
-    void changeListenerCallback (ChangeBroadcaster* source) override;
-    bool isInterestedInFileDrag (const StringArray& files) override;
-    void filesDropped (const StringArray& files, int x, int y) override;
-    bool isInterestedInDragSource (const SourceDetails& dragSourceDetails) override;
-    void itemDropped (const SourceDetails& dragSourceDetails) override;
-    void mouseDown (const MouseEvent& e) override;
-    void mouseDrag (const MouseEvent& e) override;
-    void mouseUp (const MouseEvent&) override;
-    void mouseWheelMove (const MouseEvent&, const MouseWheelDetails& wheel) override;
-    void setURL (const URL& url);
+    void changeListenerCallback(ChangeBroadcaster* source) override;
+    bool isInterestedInFileDrag(const StringArray& files) override;
+    void filesDropped(const StringArray& files, int x, int y) override;
+    bool isInterestedInDragSource(const SourceDetails& dragSourceDetails) override;
+    void itemDropped(const SourceDetails& dragSourceDetails) override;
+    void mouseDown(const MouseEvent& e) override;
+    void mouseDrag(const MouseEvent& e) override;
+    void mouseUp(const MouseEvent&) override;
+    void mouseWheelMove(const MouseEvent&, const MouseWheelDetails& wheel) override;
+    void setURL(const URL& url);
     URL getLastDroppedFile() const noexcept;
-    void setZoomFactor (double amount);
-    void setRange (Range<double> newRange);
-    void setFollowsTransport (bool shouldFollow);
+    void setZoomFactor(double amount);
+    void setRange(Range<double> newRange);
+    void setFollowsTransport(bool shouldFollow);
     void showAudioResource();
     void showAudioResource(URL inResource);
     void startOrStop();
@@ -52,6 +53,7 @@ public:
 
 private:
     // Fields
+    int sampleItemTitleHeight = 25;
     SaemplAudioProcessor& currentProcessor;
     SampleItemViewModel& sampleItemViewModel;
     Slider* mZoomSlider;

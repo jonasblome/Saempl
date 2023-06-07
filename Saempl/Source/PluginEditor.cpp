@@ -21,6 +21,7 @@ SaemplAudioProcessorEditor::SaemplAudioProcessorEditor (SaemplAudioProcessor& p)
     addAndMakeVisible(mMainPanel.get());
     
     mNoiseOverlayPanel = std::make_unique<NoiseOverlayPanel>();
+    mNoiseOverlayPanel->setAlwaysOnTop(true);
     addAndMakeVisible(mNoiseOverlayPanel.get());
     
     // Set styling of plugin UI
@@ -37,7 +38,7 @@ SaemplAudioProcessorEditor::~SaemplAudioProcessorEditor()
 void SaemplAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // The plugin background
-    g.fillAll(BlomeColour_BlueishBlack);
+    g.fillAll(BlomeColour_AccentColourDark);
 }
 
 void SaemplAudioProcessorEditor::resized()

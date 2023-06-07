@@ -45,12 +45,21 @@ void SampleDatabaseTablePanel::setPanelComponents()
     mFileTree->setTitle("Files");
     mFileTree->setColour(FileTreeComponent::backgroundColourId, BlomeColour_Transparent);
     mFileTree->setDragAndDropDescription("SampleItemFile");
+    mFileTree->setMultiSelectEnabled(true);
     mFileTree->addListener(this);
     addAndMakeVisible(*mFileTree);
     mSampleDatabaseTableViewModel->getDirectoryList()->addChangeListener(&*mFileTree);
     
     // Repaint panel
     repaint();
+}
+
+void SampleDatabaseTablePanel::resizePanelComponents()
+{
+    if(mFileTree != nullptr)
+    {
+        mFileTree->setBounds(Blome_PanelMargin / 2.0, Blome_PanelMargin / 2.0, getWidth() - Blome_PanelMargin, getHeight() - Blome_PanelMargin);
+    }
 }
 
 void SampleDatabaseTablePanel::selectionChanged()
@@ -62,14 +71,26 @@ void SampleDatabaseTablePanel::fileClicked(const File& file, const MouseEvent& m
 {
     if(mouseEvent.mods.isRightButtonDown())
     {
-        file.deleteFile();
-        mSampleDatabaseTableViewModel->getDirectoryList()->refresh();
+        auto deleteFile = [&] () {
+            for (int f = 0; f < mFileTree->getNumSelectedItems(); f++) {
+                mFileTree->getSelectedFile(f).deleteRecursively();
+            }
+            mSampleDatabaseTableViewModel->getDirectoryList()->refresh();
+        };
+        
+        PopupMenu popupMenu;
+        popupMenu.addItem("Delete File", deleteFile);
+        popupMenu.addItem("Placeholder", nullptr);
+        popupMenu.addItem("Placeholder", nullptr);
+        popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
     }
 }
 
-void SampleDatabaseTablePanel::fileDoubleClicked(const File&)
+void SampleDatabaseTablePanel::fileDoubleClicked(const File& file)
 {
-    linkedSampleItemPanel.showAudioResource(URL(mFileTree->getSelectedFile()));
+    if (!file.isDirectory() && isSupportedAudioFileFormat(file.getFileExtension())) {
+        linkedSampleItemPanel.showAudioResource(URL(file));
+    }
 }
 
 void SampleDatabaseTablePanel::browserRootChanged(const File&)
