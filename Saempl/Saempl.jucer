@@ -2,10 +2,10 @@
 
 <JUCERPROJECT id="HebHQS" name="Saempl" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="1" displaySplashScreen="1" jucerFormatVersion="1"
-              companyName="Blome" pluginAUMainType="'aumu'" pluginVST3Category="Tools"
-              pluginAAXCategory="0" pluginVSTCategory="kPlugCategUnknown" companyEmail="jonas.blome@gmx.de"
-              pluginManufacturerCode="Blom" pluginManufacturer="Blome" pluginDesc="Saempl"
-              pluginName="Saempl" pluginCode="Smpl" version="0.1" companyWebsite="https://github.com/jonasblome">
+              companyName="Blome" pluginAAXCategory="0" pluginVSTCategory="kPlugCategUnknown"
+              companyEmail="jonas.blome@gmx.de" pluginManufacturerCode="Blom"
+              pluginManufacturer="Blome" pluginDesc="Saempl" pluginName="Saempl"
+              pluginCode="Smpl" version="0.1" companyWebsite="https://github.com/jonasblome">
   <MAINGROUP id="Ryuu1q" name="Saempl">
     <GROUP id="{F65A6678-A68F-58F1-A4D6-F2BF2D42BA2E}" name="Assets">
       <FILE id="nQsbro" name="noise-texture-1050x800.png" compile="0" resource="1"

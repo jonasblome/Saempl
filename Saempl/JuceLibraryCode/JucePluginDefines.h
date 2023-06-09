@@ -92,10 +92,10 @@
  #define JucePlugin_VSTCategory            kPlugCategUnknown
 #endif
 #ifndef  JucePlugin_Vst3Category
- #define JucePlugin_Vst3Category           "Fx|Tools"
+ #define JucePlugin_Vst3Category           "Fx"
 #endif
 #ifndef  JucePlugin_AUMainType
- #define JucePlugin_AUMainType             'aumu'
+ #define JucePlugin_AUMainType             'aufx'
 #endif
 #ifndef  JucePlugin_AUSubType
  #define JucePlugin_AUSubType              JucePlugin_PluginCode

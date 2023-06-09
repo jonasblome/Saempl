@@ -13,7 +13,8 @@
 SampleDatabaseTablePanel::SampleDatabaseTablePanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
 :   PanelBase(inProcessor),
     currentProcessor(inProcessor),
-    linkedSampleItemPanel(inSampleItemPanel)
+    linkedSampleItemPanel(inSampleItemPanel),
+    mButtonHeight(25)
 {
     setSize(TABLE_PANEL_WIDTH - Blome_PanelMargin, TABLE_PANEL_HEIGHT - Blome_PanelMargin);
     setPanelComponents();
@@ -39,9 +40,18 @@ void SampleDatabaseTablePanel::setPanelComponents()
     // Setting view model
     mSampleDatabaseTableViewModel = std::make_unique<SampleDatabaseTableViewModel>(currentProcessor.getSampleDatabase());
     
+    // Add play button component
+    mChangeDirectoryButton = std::make_unique<TextButton>("^");
+    mChangeDirectoryButton->setBounds(Blome_PanelMargin / 2.0,
+                                Blome_PanelMargin / 2.0,
+                                mButtonHeight - Blome_PanelMargin / 2.0,
+                                mButtonHeight - Blome_PanelMargin / 2.0);
+    mChangeDirectoryButton->onClick = [this] { goToParentDirectory(); };
+    addAndMakeVisible(*mChangeDirectoryButton);
+    
     // Set file tree component
     mFileTree = std::make_unique<BlomeFileTreeView>(*mSampleDatabaseTableViewModel);
-    mFileTree->setBounds(Blome_PanelMargin / 2.0, Blome_PanelMargin / 2.0, getWidth() - Blome_PanelMargin, getHeight() - Blome_PanelMargin);
+    mFileTree->setBounds(Blome_PanelMargin / 2.0, Blome_PanelMargin / 2.0 + mButtonHeight, getWidth() - Blome_PanelMargin, getHeight() - mButtonHeight - Blome_PanelMargin);
     mFileTree->setTitle("Files");
     mFileTree->setColour(FileTreeComponent::backgroundColourId, BlomeColour_Transparent);
     mFileTree->setDragAndDropDescription("SampleItemFile");
@@ -58,7 +68,7 @@ void SampleDatabaseTablePanel::resizePanelComponents()
 {
     if(mFileTree != nullptr)
     {
-        mFileTree->setBounds(Blome_PanelMargin / 2.0, Blome_PanelMargin / 2.0, getWidth() - Blome_PanelMargin, getHeight() - Blome_PanelMargin);
+        mFileTree->setBounds(Blome_PanelMargin / 2.0, Blome_PanelMargin / 2.0 + mButtonHeight, getWidth() - Blome_PanelMargin, getHeight() - Blome_PanelMargin);
     }
 }
 
@@ -71,25 +81,22 @@ void SampleDatabaseTablePanel::fileClicked(const File& file, const MouseEvent& m
 {
     if(mouseEvent.mods.isRightButtonDown())
     {
-        auto deleteFile = [&] () {
-            for (int f = 0; f < mFileTree->getNumSelectedItems(); f++) {
-                mFileTree->getSelectedFile(f).deleteRecursively();
-            }
-            mSampleDatabaseTableViewModel->getDirectoryList()->refresh();
-        };
-        
         PopupMenu popupMenu;
-        popupMenu.addItem("Delete File", deleteFile);
-        popupMenu.addItem("Placeholder", nullptr);
-        popupMenu.addItem("Placeholder", nullptr);
+        popupMenu.addItem("Move File to Trash", [&] { moveFileToTrash(); });
+        popupMenu.addItem("Delete File (Permanently)", [&] { deleteFile(); });
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
     }
 }
 
 void SampleDatabaseTablePanel::fileDoubleClicked(const File& file)
 {
-    if (!file.isDirectory() && isSupportedAudioFileFormat(file.getFileExtension())) {
+    if (!file.isDirectory() && isSupportedAudioFileFormat(file.getFileExtension()))
+    {
         linkedSampleItemPanel.showAudioResource(URL(file));
+    }
+    else if (file.isDirectory())
+    {
+        mSampleDatabaseTableViewModel->setDirectory(file);
     }
 }
 
@@ -103,3 +110,26 @@ void SampleDatabaseTablePanel::changeListenerCallback(ChangeBroadcaster* source)
     // When the file tree state changes
     repaint();
 }
+
+void SampleDatabaseTablePanel::goToParentDirectory()
+{
+    mSampleDatabaseTableViewModel->setToParentDirectory();
+}
+
+void SampleDatabaseTablePanel::deleteFile()
+{
+    for (int f = 0; f < mFileTree->getNumSelectedItems(); f++)
+    {
+        mSampleDatabaseTableViewModel->removeSampleItem(mFileTree->getSelectedFile(f).getFullPathName());
+    }
+};
+
+void SampleDatabaseTablePanel::moveFileToTrash()
+{
+    for (int f = 0; f < mFileTree->getNumSelectedItems(); f++)
+    {
+        mSampleDatabaseTableViewModel->moveSampleItemToTrash(mFileTree->getSelectedFile(f).getFullPathName());
+    }
+};
+
+

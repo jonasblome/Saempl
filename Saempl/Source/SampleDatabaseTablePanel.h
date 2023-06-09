@@ -29,6 +29,7 @@ public:
     void paint(Graphics& g) override;
     void setPanelComponents() override;
     void resizePanelComponents() override;
+
     
 private:
     // Fields
@@ -37,6 +38,8 @@ private:
     std::unique_ptr<SampleDatabaseTableViewModel> mSampleDatabaseTableViewModel;
     std::unique_ptr<Label> mExplanationLabel;
     std::unique_ptr<BlomeFileTreeView> mFileTree;
+    std::unique_ptr<TextButton> mChangeDirectoryButton;
+    int mButtonHeight;
     
     // Methods
     void selectionChanged() override;
@@ -44,4 +47,7 @@ private:
     void fileDoubleClicked (const File&) override;
     void browserRootChanged (const File&) override;
     void changeListenerCallback (ChangeBroadcaster* source) override;
+    void goToParentDirectory();
+    void deleteFile();
+    void moveFileToTrash();
 };

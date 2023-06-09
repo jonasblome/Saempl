@@ -10,8 +10,10 @@
 
 #pragma once
 #include "SampleItem.h"
+#include "BlomeHelperFunctions.h"
 
 class SampleDatabase
+:   ChangeListener
 {
 public:
     // Constructors
@@ -19,16 +21,22 @@ public:
     ~SampleDatabase();
     
     // Methods
-    void addSampleItem(String inFilePath);
+    void addSampleItem(File inFile);
     void addSampleItem(SampleItem inItem);
     void removeSampleItem(String inFilePath);
+    void moveSampleItemToTrash(String inFilePath);
     DirectoryContentsList* getDirectoryList();
+    void setDirectory(const File& inFile);
+    void setToParentDirectory();
+    void changeListenerCallback(ChangeBroadcaster* source) override;
     
 private:
     // Fields
-    String mSampleItemDirectory;
+    WildcardFileFilter mDirectoryFilter;
+    String mSampleItemDirectoryPath;
     std::unique_ptr<DirectoryContentsList> mDirectoryList;
     OwnedArray<SampleItem> mSampleItems;
+    String mDirectoryPathToAddFilesTo;
     
     // Methods
     

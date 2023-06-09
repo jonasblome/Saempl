@@ -12,7 +12,15 @@
 
 #include "JuceHeader.h"
 
-const StringArray supportedAudioFileFormat = StringArray({ ".mp3", ".wav" });
+#if JUCE_WINDOWS
+    static const juce::String DIRECTORY_SEPARATOR = "\\";
+#elif JUCE_MAC
+    static const juce::String DIRECTORY_SEPARATOR = "/";
+#endif
+
+
+
+const StringArray supportedAudioFileFormat = StringArray({ ".mp3", ".wav", ".aiff", ".m4a" });
 
 inline bool isSupportedAudioFileFormat(String inExtension)
 {

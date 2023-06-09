@@ -26,7 +26,7 @@ void BlomeFileTreeView::filesDropped(const StringArray& files, int x, int y)
 {
     for(int f = 0; f < files.size(); f++)
     {
-        sampleDatabaseTableViewModel.addFile(files[f]);
+        sampleDatabaseTableViewModel.addSampleItem(files[f]);
     }
 }
 
@@ -43,22 +43,27 @@ void BlomeFileTreeView::changeListenerCallback(ChangeBroadcaster* source)
 
 void BlomeFileTreeView::mouseDrag(const MouseEvent& e)
 {
-    Rectangle<int> itemBounds = getSelectedItem(0)->getItemPosition(false);
     Point<int> mousePosition = e.getEventRelativeTo(this).position.toInt();
     
-    if (itemBounds.contains(mousePosition))
-    {
-        StringArray selectedFilePaths;
+    for (int i = 0; i < getNumSelectedItems(); i++) {
+        Rectangle<int> itemBounds = getSelectedItem(i)->getItemPosition(false);
         
-        for (int f = 0; f < getNumSelectedFiles(); f++) {
-            File selectedFile = getSelectedFile(f);
+        if (itemBounds.contains(mousePosition))
+        {
+            StringArray selectedFilePaths;
             
-            if (!selectedFile.isDirectory()) {
-                selectedFilePaths.add(selectedFile.getFullPathName());
+            for (int f = 0; f < getNumSelectedFiles(); f++) {
+                File selectedFile = getSelectedFile(f);
+                
+                if (!selectedFile.isDirectory()) {
+                    selectedFilePaths.add(selectedFile.getFullPathName());
+                }
             }
+            
+            DragAndDropContainer* dragContainer = DragAndDropContainer::findParentDragContainerFor(this);
+            dragContainer->performExternalDragDropOfFiles(selectedFilePaths, false, this);
+            
+            return;
         }
-        
-        DragAndDropContainer* dragContainer = DragAndDropContainer::findParentDragContainerFor(this);
-        dragContainer->performExternalDragDropOfFiles(selectedFilePaths, true);
     }
 }

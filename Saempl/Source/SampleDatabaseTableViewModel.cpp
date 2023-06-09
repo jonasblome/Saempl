@@ -11,9 +11,9 @@
 #include "SampleDatabaseTableViewModel.h"
 
 SampleDatabaseTableViewModel::SampleDatabaseTableViewModel(SampleDatabase& inSampleDatabaseTable)
-:   sampleDatabaseTable(inSampleDatabaseTable)
+:   sampleDatabase(inSampleDatabaseTable)
 {
-    
+    mSampleAnalyser = std::make_unique<SampleAnalyser>();
 }
 
 SampleDatabaseTableViewModel::~SampleDatabaseTableViewModel()
@@ -23,15 +23,42 @@ SampleDatabaseTableViewModel::~SampleDatabaseTableViewModel()
 
 DirectoryContentsList* SampleDatabaseTableViewModel::getDirectoryList()
 {
-    return sampleDatabaseTable.getDirectoryList();
+    return sampleDatabase.getDirectoryList();
 }
 
-void SampleDatabaseTableViewModel::addFile(String inFilePath)
+void SampleDatabaseTableViewModel::addSampleItem(String forFile)
 {
-    sampleDatabaseTable.addSampleItem(inFilePath);
+    File file = File(forFile);
+    bool isDirectory = file.isDirectory();
+    
+    // Perform audio analysis
+    if (!isDirectory && isSupportedAudioFileFormat(file.getFileExtension()))
+    {
+        float sampleLength = mSampleAnalyser->analyseSampleLength(file);
+    }
+    
+    if (isDirectory || isSupportedAudioFileFormat(file.getFileExtension()))
+    {
+        sampleDatabase.addSampleItem(file);
+    }
 }
 
-void SampleDatabaseTableViewModel::removeFile(String inFilePath)
+void SampleDatabaseTableViewModel::removeSampleItem(String forFile)
 {
-    sampleDatabaseTable.removeSampleItem(inFilePath);
+    sampleDatabase.removeSampleItem(forFile);
+}
+
+void SampleDatabaseTableViewModel::moveSampleItemToTrash(String forFile)
+{
+    sampleDatabase.moveSampleItemToTrash(forFile);
+}
+
+void SampleDatabaseTableViewModel::setDirectory(const File& inFile)
+{
+    sampleDatabase.setDirectory(inFile);
+}
+
+void SampleDatabaseTableViewModel::setToParentDirectory()
+{
+    sampleDatabase.setToParentDirectory();
 }

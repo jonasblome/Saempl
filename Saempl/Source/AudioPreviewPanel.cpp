@@ -27,7 +27,6 @@ AudioPreviewPanel::AudioPreviewPanel(SaemplAudioProcessor& inProcessor, Slider& 
 AudioPreviewPanel::~AudioPreviewPanel()
 {
     mAudioPreviewScrollbar->removeListener(this);
-    mAudioPreview.removeChangeListener(this);
 }
 
 void AudioPreviewPanel::paint(Graphics& g)
@@ -129,12 +128,6 @@ void AudioPreviewPanel::setRange(Range<double> newRange)
 void AudioPreviewPanel::setFollowsTransport(bool shouldFollow)
 {
     isFollowingTransport = shouldFollow;
-}
-
-void AudioPreviewPanel::changeListenerCallback(ChangeBroadcaster* source)
-{
-    // When the audio thumbnail changes
-    repaint();
 }
 
 bool AudioPreviewPanel::isInterestedInFileDrag(const StringArray& files)

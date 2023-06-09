@@ -30,7 +30,7 @@ public:
                    int readAheadSize,
                    TimeSliceThread* readAheadThread,
                    double sourceSampleRateToCorrectFor);
-    bool loadURLIntoTransport(const URL& audioURL, TimeSliceThread& inThread);
+    bool loadURLIntoTransport(const URL& inURL, TimeSliceThread& inThread);
     
 private:
     // Fields

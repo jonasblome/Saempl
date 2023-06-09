@@ -11,20 +11,25 @@
 #pragma once
 #include "JuceHeader.h"
 #include "SampleDatabase.h"
+#include "SampleAnalyser.h"
 
 class SampleDatabaseTableViewModel
 {
 public:
     // Constructors
-    SampleDatabaseTableViewModel(SampleDatabase& inSampleDatabaseTable);
+    SampleDatabaseTableViewModel(SampleDatabase& inSampleDatabase);
     ~SampleDatabaseTableViewModel();
     
     // Methods
     DirectoryContentsList* getDirectoryList();
-    void addFile(String inFilePath);
-    void removeFile(String inFilePath);
+    void addSampleItem(String forFile);
+    void removeSampleItem(String forFile);
+    void moveSampleItemToTrash(String forFile);
+    void setDirectory(const File& inFile);
+    void setToParentDirectory();
     
 private:
-    SampleDatabase& sampleDatabaseTable;
+    SampleDatabase& sampleDatabase;
+    std::unique_ptr<SampleAnalyser> mSampleAnalyser;
     
 };

@@ -16,7 +16,6 @@
 
 class AudioPreviewPanel
 :   public PanelBase,
-    public ChangeListener,
     public FileDragAndDropTarget,
     public DragAndDropTarget,
     public ChangeBroadcaster,
@@ -31,7 +30,6 @@ public:
     // Methods
     void paint(Graphics& g) override;
     void setPanelComponents() override;
-    void changeListenerCallback(ChangeBroadcaster* source) override;
     bool isInterestedInFileDrag(const StringArray& files) override;
     void filesDropped(const StringArray& files, int x, int y) override;
     bool isInterestedInDragSource(const SourceDetails& dragSourceDetails) override;

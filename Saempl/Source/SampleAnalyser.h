@@ -9,3 +9,25 @@
 */
 
 #pragma once
+
+#include "JuceHeader.h"
+
+class SampleAnalyser
+{
+public:
+    // Constructors
+    SampleAnalyser();
+    ~SampleAnalyser();
+    
+    // Methods
+    float analyseSampleLength(File inFile);
+    void loadAudioFileSource(File inFile);
+    
+private:
+    // Fields
+    std::unique_ptr<AudioFormatReaderSource> mCurrentAudioFileSource;
+    AudioFormatManager mFormatManager;
+    
+    // Methods
+    
+};
