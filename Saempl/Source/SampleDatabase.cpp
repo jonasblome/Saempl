@@ -24,6 +24,8 @@ SampleDatabase::SampleDatabase(TimeSliceThread& inThread)
     mDirectoryList = std::make_unique<DirectoryContentsList>(&mDirectoryFilter, inThread);
     mDirectoryList->addChangeListener(this);
     mDirectoryList->setDirectory(File(mSampleItemDirectoryPath), true, true);
+    
+    mSampleAnalyser = std::make_unique<SampleAnalyser>();
 }
 
 SampleDatabase::~SampleDatabase()
@@ -33,12 +35,10 @@ SampleDatabase::~SampleDatabase()
 
 void SampleDatabase::addSampleItem(File inFile)
 {
-    bool isDirectory = inFile.isDirectory();
-    
     String fileName = inFile.getFileName();
     File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
     
-    if (isDirectory)
+    if (inFile.isDirectory())
     {
         mDirectoryPathToAddFilesTo = newFile.getFullPathName();
         bool directoryCreated = newFile.createDirectory();
@@ -56,6 +56,13 @@ void SampleDatabase::addSampleItem(File inFile)
     else if(isSupportedAudioFileFormat(newFile.getFileExtension()))
     {
         inFile.copyFileTo(newFile);
+        std::unique_ptr<SampleItem> newItem = std::make_unique<SampleItem>();
+        newItem->setURL(URL(newFile));
+
+        // Perform audio analysis
+        std::unique_ptr<SampleTag> newTag = std::make_unique<SampleTag>("Length", mSampleAnalyser->analyseSampleLength(newFile));
+        newItem->addSampleTag(*newTag);
+        mSampleItems.add(&*newItem);
     }
     
     mDirectoryList->refresh();

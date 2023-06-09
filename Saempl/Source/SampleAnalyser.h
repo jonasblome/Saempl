@@ -20,7 +20,7 @@ public:
     ~SampleAnalyser();
     
     // Methods
-    float analyseSampleLength(File inFile);
+    double analyseSampleLength(File inFile);
     void loadAudioFileSource(File inFile);
     
 private:

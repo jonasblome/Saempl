@@ -15,10 +15,16 @@
 class SampleItem
 {
 public:
+    // Constructors
     SampleItem();
     ~SampleItem();
     
+    // Methods
+    void addSampleTag(SampleTag inSampleTag);
+    void setURL(URL inURL);
+    
 private:
+    // Fields
     OwnedArray<SampleTag> mSampleTags;
-    String mUrl;
+    URL mURL;
 };

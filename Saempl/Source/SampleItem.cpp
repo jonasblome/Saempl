@@ -19,3 +19,13 @@ SampleItem::~SampleItem()
 {
     
 }
+
+void SampleItem::addSampleTag(SampleTag inSampleTag)
+{
+    mSampleTags.add(&inSampleTag);
+}
+
+void SampleItem::setURL(URL inURL)
+{
+    mURL = inURL;
+}

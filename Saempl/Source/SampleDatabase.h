@@ -11,6 +11,7 @@
 #pragma once
 #include "SampleItem.h"
 #include "BlomeHelperFunctions.h"
+#include "SampleAnalyser.h"
 
 class SampleDatabase
 :   ChangeListener
@@ -37,6 +38,7 @@ private:
     std::unique_ptr<DirectoryContentsList> mDirectoryList;
     OwnedArray<SampleItem> mSampleItems;
     String mDirectoryPathToAddFilesTo;
+    std::unique_ptr<SampleAnalyser> mSampleAnalyser;
     
     // Methods
     

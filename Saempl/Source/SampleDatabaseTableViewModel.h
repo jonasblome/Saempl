@@ -30,6 +30,5 @@ public:
     
 private:
     SampleDatabase& sampleDatabase;
-    std::unique_ptr<SampleAnalyser> mSampleAnalyser;
     
 };

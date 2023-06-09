@@ -20,7 +20,7 @@ SampleAnalyser::~SampleAnalyser()
     
 }
 
-float SampleAnalyser::analyseSampleLength(File inFile)
+double SampleAnalyser::analyseSampleLength(File inFile)
 {
     loadAudioFileSource(inFile);
     

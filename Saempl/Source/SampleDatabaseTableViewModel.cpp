@@ -13,7 +13,7 @@
 SampleDatabaseTableViewModel::SampleDatabaseTableViewModel(SampleDatabase& inSampleDatabaseTable)
 :   sampleDatabase(inSampleDatabaseTable)
 {
-    mSampleAnalyser = std::make_unique<SampleAnalyser>();
+    
 }
 
 SampleDatabaseTableViewModel::~SampleDatabaseTableViewModel()
@@ -29,15 +29,8 @@ DirectoryContentsList* SampleDatabaseTableViewModel::getDirectoryList()
 void SampleDatabaseTableViewModel::addSampleItem(String forFile)
 {
     File file = File(forFile);
-    bool isDirectory = file.isDirectory();
     
-    // Perform audio analysis
-    if (!isDirectory && isSupportedAudioFileFormat(file.getFileExtension()))
-    {
-        float sampleLength = mSampleAnalyser->analyseSampleLength(file);
-    }
-    
-    if (isDirectory || isSupportedAudioFileFormat(file.getFileExtension()))
+    if (file.isDirectory() || isSupportedAudioFileFormat(file.getFileExtension()))
     {
         sampleDatabase.addSampleItem(file);
     }
