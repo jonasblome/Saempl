@@ -47,7 +47,5 @@ private:
     void fileDoubleClicked (const File&) override;
     void browserRootChanged (const File&) override;
     void changeListenerCallback (ChangeBroadcaster* source) override;
-    void goToParentDirectory();
-    void deleteFile();
-    void moveFileToTrash();
+    void deleteFile(bool deletePermanently);
 };

@@ -15,19 +15,22 @@
 class SampleTag
 {
 public:
+    // Constructors
     SampleTag();
     SampleTag(String inName, double inValue);
     ~SampleTag();
     
-    void setName(String inName) { mTagName = inName; }
-    
-    String getName() { return mTagName; }
-    
-    void setValue(double inValue) { mTagValue = inValue; }
-    
-    double getValue() { return mTagValue; }
+    // Methods
+    void setName(String inTagName);
+    String getName();
+    void setValue(double inValue);
+    double getValue();
     
 private:
+    // Fields
     String mTagName;
     double mTagValue;
+    
+    // Methods
+    
 };

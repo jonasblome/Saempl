@@ -30,20 +30,12 @@ void SampleDatabaseTableViewModel::addSampleItem(String forFile)
 {
     File file = File(forFile);
     
-    if (file.isDirectory() || isSupportedAudioFileFormat(file.getFileExtension()))
-    {
-        sampleDatabase.addSampleItem(file);
-    }
+    sampleDatabase.addSampleItem(file);
 }
 
-void SampleDatabaseTableViewModel::removeSampleItem(String forFile)
+void SampleDatabaseTableViewModel::removeSampleItem(String forFile, bool deletePermanently)
 {
-    sampleDatabase.removeSampleItem(forFile);
-}
-
-void SampleDatabaseTableViewModel::moveSampleItemToTrash(String forFile)
-{
-    sampleDatabase.moveSampleItemToTrash(forFile);
+    sampleDatabase.removeSampleItem(forFile, deletePermanently);
 }
 
 void SampleDatabaseTableViewModel::setDirectory(const File& inFile)
@@ -51,7 +43,7 @@ void SampleDatabaseTableViewModel::setDirectory(const File& inFile)
     sampleDatabase.setDirectory(inFile);
 }
 
-void SampleDatabaseTableViewModel::setToParentDirectory()
+void SampleDatabaseTableViewModel::switchToParentDirectory()
 {
-    sampleDatabase.setToParentDirectory();
+    sampleDatabase.switchToParentDirectory();
 }

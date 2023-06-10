@@ -23,10 +23,9 @@ public:
     // Methods
     DirectoryContentsList* getDirectoryList();
     void addSampleItem(String forFile);
-    void removeSampleItem(String forFile);
-    void moveSampleItemToTrash(String forFile);
+    void removeSampleItem(String forFile, bool deletePermanently);
     void setDirectory(const File& inFile);
-    void setToParentDirectory();
+    void switchToParentDirectory();
     
 private:
     SampleDatabase& sampleDatabase;

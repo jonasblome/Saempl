@@ -46,7 +46,7 @@ void SampleDatabaseTablePanel::setPanelComponents()
                                 Blome_PanelMargin / 2.0,
                                 mButtonHeight - Blome_PanelMargin / 2.0,
                                 mButtonHeight - Blome_PanelMargin / 2.0);
-    mChangeDirectoryButton->onClick = [this] { goToParentDirectory(); };
+    mChangeDirectoryButton->onClick = [this] { mSampleDatabaseTableViewModel->switchToParentDirectory(); };
     addAndMakeVisible(*mChangeDirectoryButton);
     
     // Set file tree component
@@ -82,8 +82,10 @@ void SampleDatabaseTablePanel::fileClicked(const File& file, const MouseEvent& m
     if(mouseEvent.mods.isRightButtonDown())
     {
         PopupMenu popupMenu;
-        popupMenu.addItem("Move File to Trash", [&] { moveFileToTrash(); });
-        popupMenu.addItem("Delete File (Permanently)", [&] { deleteFile(); });
+        popupMenu.addItem("Move File(s) to Trash", [&] { deleteFile(false); });
+        popupMenu.addItem("Placeholder", nullptr);
+        popupMenu.addItem("Placeholder", nullptr);
+        popupMenu.addItem("Delete File(s) Permanently", [&] { deleteFile(true); });
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
     }
 }
@@ -111,24 +113,11 @@ void SampleDatabaseTablePanel::changeListenerCallback(ChangeBroadcaster* source)
     repaint();
 }
 
-void SampleDatabaseTablePanel::goToParentDirectory()
-{
-    mSampleDatabaseTableViewModel->setToParentDirectory();
-}
-
-void SampleDatabaseTablePanel::deleteFile()
+void SampleDatabaseTablePanel::deleteFile(bool deletePermanently = false)
 {
     for (int f = 0; f < mFileTree->getNumSelectedItems(); f++)
     {
-        mSampleDatabaseTableViewModel->removeSampleItem(mFileTree->getSelectedFile(f).getFullPathName());
-    }
-};
-
-void SampleDatabaseTablePanel::moveFileToTrash()
-{
-    for (int f = 0; f < mFileTree->getNumSelectedItems(); f++)
-    {
-        mSampleDatabaseTableViewModel->moveSampleItemToTrash(mFileTree->getSelectedFile(f).getFullPathName());
+        mSampleDatabaseTableViewModel->removeSampleItem(mFileTree->getSelectedFile(f).getFullPathName(), deletePermanently);
     }
 };
 

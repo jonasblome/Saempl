@@ -20,11 +20,13 @@ public:
     ~SampleItem();
     
     // Methods
-    void addSampleTag(SampleTag inSampleTag);
-    void setURL(URL inURL);
+    void addSampleTag(SampleTag* inSampleTag);
+    SampleTag* getSampleTag(String inTagName);
+    void setFilePath(String inFilePath);
+    String getFilePath();
     
 private:
     // Fields
     OwnedArray<SampleTag> mSampleTags;
-    URL mURL;
+    String mFilePath;
 };

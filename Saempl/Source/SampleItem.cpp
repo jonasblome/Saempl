@@ -20,12 +20,29 @@ SampleItem::~SampleItem()
     
 }
 
-void SampleItem::addSampleTag(SampleTag inSampleTag)
+void SampleItem::addSampleTag(SampleTag* inSampleTag)
 {
-    mSampleTags.add(&inSampleTag);
+    mSampleTags.add(inSampleTag);
 }
 
-void SampleItem::setURL(URL inURL)
+SampleTag* SampleItem::getSampleTag(String inTagName)
 {
-    mURL = inURL;
+    for(SampleTag* tag : mSampleTags)
+    {
+        if (tag->getName() == inTagName) {
+            return tag;
+        }
+    }
+    
+    return nullptr;
+}
+
+void SampleItem::setFilePath(String inFilePath)
+{
+    mFilePath = inFilePath;
+}
+
+String SampleItem::getFilePath()
+{
+    return mFilePath;
 }

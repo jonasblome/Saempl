@@ -38,12 +38,18 @@ void SampleDatabase::addSampleItem(File inFile)
     String fileName = inFile.getFileName();
     File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
     
+    // Don't add files if they already exist
+    if (mDirectoryList->contains(newFile)) {
+        return;
+    }
+    
     if (inFile.isDirectory())
     {
+        // Check directory recursively for audio files and subdirectoryies
         mDirectoryPathToAddFilesTo = newFile.getFullPathName();
-        bool directoryCreated = newFile.createDirectory();
+        bool newDirectoryWasCreated = newFile.createDirectory();
         
-        if(directoryCreated)
+        if(newDirectoryWasCreated)
         {
             for (DirectoryEntry entry : RangedDirectoryIterator(inFile, false, "*", File::findFilesAndDirectories))
             {
@@ -55,33 +61,34 @@ void SampleDatabase::addSampleItem(File inFile)
     }
     else if(isSupportedAudioFileFormat(newFile.getFileExtension()))
     {
+        // Add file to current directory and create SampleItem
         inFile.copyFileTo(newFile);
-        std::unique_ptr<SampleItem> newItem = std::make_unique<SampleItem>();
-        newItem->setURL(URL(newFile));
-
-        // Perform audio analysis
-        std::unique_ptr<SampleTag> newTag = std::make_unique<SampleTag>("Length", mSampleAnalyser->analyseSampleLength(newFile));
-        newItem->addSampleTag(*newTag);
-        mSampleItems.add(&*newItem);
+        mSampleItems.add(new SampleItem());
+        mSampleItems.getLast()->setFilePath(newFile.getFullPathName());
+        mSampleItems.getLast()->addSampleTag(new SampleTag("Length", mSampleAnalyser->analyseSampleLength(newFile)));
     }
     
     mDirectoryList->refresh();
 }
 
-void SampleDatabase::addSampleItem(SampleItem inItem)
+void SampleDatabase::loadSampleItem(SampleItem inItem)
 {
     
 }
 
-void SampleDatabase::removeSampleItem(String inFilePath)
+void SampleDatabase::removeSampleItem(String inFilePath, bool deletePermanently = false)
 {
-    File(inFilePath).deleteRecursively();
-    mDirectoryList->refresh();
-}
-
-void SampleDatabase::moveSampleItemToTrash(String inFilePath)
-{
-    File(inFilePath).moveToTrash();
+    SampleItem* itemToDelete = getSampleItemWithFilePath(inFilePath);
+    mSampleItems.removeObject(itemToDelete);
+    
+    if (deletePermanently) {
+        File(inFilePath).deleteRecursively();
+    }
+    else
+    {
+        File(inFilePath).moveToTrash();
+    }
+    
     mDirectoryList->refresh();
 }
 
@@ -95,7 +102,7 @@ void SampleDatabase::setDirectory(const File& inFile)
     mDirectoryList->setDirectory(inFile, true, true);
 }
 
-void SampleDatabase::setToParentDirectory()
+void SampleDatabase::switchToParentDirectory()
 {
     File parentDirectory = mDirectoryList->getDirectory().getParentDirectory();
     setDirectory(parentDirectory);
@@ -107,4 +114,16 @@ void SampleDatabase::changeListenerCallback(ChangeBroadcaster* source)
     {
         mDirectoryPathToAddFilesTo = mDirectoryList->getDirectory().getFullPathName();
     }
+}
+
+SampleItem* SampleDatabase::getSampleItemWithFilePath(String inFilePath)
+{
+    for(SampleItem* item : mSampleItems)
+    {
+        if (item->getFilePath() == inFilePath) {
+            return item;
+        }
+    }
+    
+    return nullptr;
 }

@@ -23,12 +23,11 @@ public:
     
     // Methods
     void addSampleItem(File inFile);
-    void addSampleItem(SampleItem inItem);
-    void removeSampleItem(String inFilePath);
-    void moveSampleItemToTrash(String inFilePath);
+    void loadSampleItem(SampleItem inItem);
+    void removeSampleItem(String inFilePath, bool deletePermanently);
     DirectoryContentsList* getDirectoryList();
     void setDirectory(const File& inFile);
-    void setToParentDirectory();
+    void switchToParentDirectory();
     void changeListenerCallback(ChangeBroadcaster* source) override;
     
 private:
@@ -41,5 +40,5 @@ private:
     std::unique_ptr<SampleAnalyser> mSampleAnalyser;
     
     // Methods
-    
+    SampleItem* getSampleItemWithFilePath(String inFilePath);
 };

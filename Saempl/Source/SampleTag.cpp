@@ -25,3 +25,23 @@ SampleTag::~SampleTag()
 {
     
 }
+
+void SampleTag::setName(String inTagName)
+{
+    mTagName = inTagName;
+}
+
+String SampleTag::getName()
+{
+    return mTagName;
+}
+
+void SampleTag::setValue(double inValue)
+{
+    mTagValue = inValue;
+}
+
+double SampleTag::getValue()
+{
+    return mTagValue;
+}
