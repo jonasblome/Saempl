@@ -53,7 +53,7 @@ void SampleDatabaseTablePanel::setPanelComponents()
     mFileTree->setBounds(Blome_PanelMargin / 2.0, Blome_PanelMargin / 2.0 + Blome_NormalButtonHeight, getWidth() - Blome_PanelMargin, getHeight() - Blome_NormalButtonHeight - Blome_PanelMargin);
     mFileTree->setTitle("Files");
     mFileTree->setColour(FileTreeComponent::backgroundColourId, BlomeColour_Transparent);
-//    mFileTree->setDragAndDropDescription("SampleItemFile");
+    mFileTree->setDragAndDropDescription("SampleItemFile"); // Currently blocked by the mouse drag in BlomeFileTreeView performing an external file drag
     mFileTree->setMultiSelectEnabled(true);
     mFileTree->addListener(this);
     addAndMakeVisible(*mFileTree);

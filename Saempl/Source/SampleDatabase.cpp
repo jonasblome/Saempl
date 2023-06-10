@@ -11,8 +11,10 @@
 #include "SampleDatabase.h"
 
 SampleDatabase::SampleDatabase(TimeSliceThread& inThread)
-:   mDirectoryFilter("*.wav;*.mp3;.m4a", "*", "audio files")
 {
+    // Initially only filter for all audio files in the current directory
+    mDirectoryFilter = std::make_unique<WildcardFileFilter>("*.bsf", "*", "audio files");
+    
     // Set directory path
     mSampleItemDirectoryPath =
     (File::getSpecialLocation(juce::File::userDesktopDirectory)).getFullPathName() + DIRECTORY_SEPARATOR + "SampleItemDirectory";
@@ -23,9 +25,12 @@ SampleDatabase::SampleDatabase(TimeSliceThread& inThread)
     }
     
     // Set directory with path and file filter
-    mDirectoryList = std::make_unique<DirectoryContentsList>(&mDirectoryFilter, inThread);
+    mDirectoryList = std::make_unique<DirectoryContentsList>(&*mDirectoryFilter, inThread);
     mDirectoryList->addChangeListener(this);
     mDirectoryList->setDirectory(File(mSampleItemDirectoryPath), true, true);
+    
+    // Load all sample files that are already in the current directory
+    loadSampleFilesFromDirectory();
     
     mSampleAnalyser = std::make_unique<SampleAnalyser>();
 }
@@ -68,14 +73,10 @@ void SampleDatabase::addSampleItem(File inFile)
         mSampleItems.add(new SampleItem());
         mSampleItems.getLast()->setFilePath(newFile.getFullPathName());
         mSampleItems.getLast()->addSampleTag(new SampleTag("Length", mSampleAnalyser->analyseSampleLength(newFile)));
+        mSampleFileManager->createSampleFile(*mSampleItems.getLast());
     }
     
     mDirectoryList->refresh();
-}
-
-void SampleDatabase::loadSampleItem(SampleItem inItem)
-{
-    
 }
 
 void SampleDatabase::removeSampleItem(String inFilePath, bool deletePermanently = false)
@@ -83,7 +84,8 @@ void SampleDatabase::removeSampleItem(String inFilePath, bool deletePermanently 
     SampleItem* itemToDelete = getSampleItemWithFilePath(inFilePath);
     mSampleItems.removeObject(itemToDelete);
     
-    if (deletePermanently) {
+    if (deletePermanently)
+    {
         File(inFilePath).deleteRecursively();
     }
     else
@@ -118,11 +120,29 @@ void SampleDatabase::changeListenerCallback(ChangeBroadcaster* source)
     }
 }
 
+void SampleDatabase::setFileFilter()
+{
+    // Set current file filter to a chosen filter selection from the database table panel
+}
+
+void SampleDatabase::loadSampleFilesFromDirectory()
+{
+    for (DirectoryEntry entry : RangedDirectoryIterator(mDirectoryList->getDirectory(), true, "*", File::findFiles))
+    {
+        File file = entry.getFile();
+        
+        if (file.getFileExtension() == ".bsf") {
+            mSampleItems.add(mSampleFileManager->loadSampleFile(file.getFullPathName()));
+        }
+    }
+}
+
 SampleItem* SampleDatabase::getSampleItemWithFilePath(String inFilePath)
 {
     for(SampleItem* item : mSampleItems)
     {
-        if (item->getFilePath() == inFilePath) {
+        if (item->getFilePath() == inFilePath)
+        {
             return item;
         }
     }

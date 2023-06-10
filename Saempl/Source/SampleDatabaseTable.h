@@ -11,6 +11,7 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include "SampleFileFilter.h"
 
 class SampleDatabaseTable
 {
@@ -23,6 +24,7 @@ public:
     
 private:
     // Fields
+    SampleFileFilter mSampleFileFilter;
     
     // Methods
     

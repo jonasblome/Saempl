@@ -12,6 +12,7 @@
 #include "SampleItem.h"
 #include "BlomeHelperFunctions.h"
 #include "SampleAnalyser.h"
+#include "SampleFileManager.h"
 
 class SampleDatabase
 :   ChangeListener
@@ -23,21 +24,23 @@ public:
     
     // Methods
     void addSampleItem(File inFile);
-    void loadSampleItem(SampleItem inItem);
     void removeSampleItem(String inFilePath, bool deletePermanently);
     DirectoryContentsList* getDirectoryList();
     void setDirectory(const File& inFile);
     void switchToParentDirectory();
     void changeListenerCallback(ChangeBroadcaster* source) override;
+    void setFileFilter();
+    void loadSampleFilesFromDirectory();
     
 private:
     // Fields
-    WildcardFileFilter mDirectoryFilter;
+    std::unique_ptr<FileFilter> mDirectoryFilter;
     String mSampleItemDirectoryPath;
     std::unique_ptr<DirectoryContentsList> mDirectoryList;
     OwnedArray<SampleItem> mSampleItems;
     String mDirectoryPathToAddFilesTo;
     std::unique_ptr<SampleAnalyser> mSampleAnalyser;
+    std::unique_ptr<SampleFileManager> mSampleFileManager;
     
     // Methods
     SampleItem* getSampleItemWithFilePath(String inFilePath);

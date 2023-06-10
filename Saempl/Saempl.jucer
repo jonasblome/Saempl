@@ -106,6 +106,14 @@
             file="Source/SampleDatabaseTable.cpp"/>
       <FILE id="oEWIDG" name="SampleDatabaseTable.h" compile="0" resource="0"
             file="Source/SampleDatabaseTable.h"/>
+      <FILE id="JlCuO2" name="SampleFileFilter.cpp" compile="1" resource="0"
+            file="Source/SampleFileFilter.cpp"/>
+      <FILE id="krBDMF" name="SampleFileFilter.h" compile="0" resource="0"
+            file="Source/SampleFileFilter.h"/>
+      <FILE id="GzQN7D" name="SampleFileManager.cpp" compile="1" resource="0"
+            file="Source/SampleFileManager.cpp"/>
+      <FILE id="EA3Snn" name="SampleFileManager.h" compile="0" resource="0"
+            file="Source/SampleFileManager.h"/>
       <FILE id="i4IYPu" name="SampleItem.cpp" compile="1" resource="0" file="Source/SampleItem.cpp"/>
       <FILE id="i15BWX" name="SampleItem.h" compile="0" resource="0" file="Source/SampleItem.h"/>
       <FILE id="sz0vSi" name="SampleMap.cpp" compile="1" resource="0" file="Source/SampleMap.cpp"/>

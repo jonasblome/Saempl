@@ -11,6 +11,7 @@
 #include "SampleDatabaseTable.h"
 
 SampleDatabaseTable::SampleDatabaseTable(TimeSliceThread& inThread)
+:   mSampleFileFilter("currentFilter")
 {
     
 }

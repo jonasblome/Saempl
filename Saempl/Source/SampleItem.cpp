@@ -37,6 +37,11 @@ SampleTag* SampleItem::getSampleTag(String inTagName)
     return nullptr;
 }
 
+OwnedArray<SampleTag>* SampleItem::getSampleTags()
+{
+    return &mSampleTags;
+}
+
 void SampleItem::setFilePath(String inFilePath)
 {
     mFilePath = inFilePath;
