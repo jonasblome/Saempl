@@ -13,6 +13,7 @@
 SampleDatabase::SampleDatabase(TimeSliceThread& inThread)
 :   mDirectoryFilter("*.wav;*.mp3;.m4a", "*", "audio files")
 {
+    // Set directory path
     mSampleItemDirectoryPath =
     (File::getSpecialLocation(juce::File::userDesktopDirectory)).getFullPathName() + DIRECTORY_SEPARATOR + "SampleItemDirectory";
     
@@ -21,6 +22,7 @@ SampleDatabase::SampleDatabase(TimeSliceThread& inThread)
         File(mSampleItemDirectoryPath).createDirectory();
     }
     
+    // Set directory with path and file filter
     mDirectoryList = std::make_unique<DirectoryContentsList>(&mDirectoryFilter, inThread);
     mDirectoryList->addChangeListener(this);
     mDirectoryList->setDirectory(File(mSampleItemDirectoryPath), true, true);

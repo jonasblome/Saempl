@@ -36,6 +36,8 @@ const int SAMPLE_CONTROL_HEIGHT = SAMPLE_PANEL_HEIGHT;
 const int SAMPLE_PREVIEW_WIDTH = SAMPLE_PANEL_WIDTH - SAMPLE_CONTROL_WIDTH;
 const int SAMPLE_PREVIEW_HEIGHT = SAMPLE_PANEL_HEIGHT;
 
+// Colour definitions
+
 // Greenish white
 const Colour BlomeColour_BlueishWhite = Colour(235, 255, 235);
 
@@ -77,3 +79,4 @@ const Font font_large("Helvetica Neue", 48.00f, Font::bold);
 // Other
 const float Blome_PanelCornerSize = 6.0;
 const int Blome_PanelMargin = 8;
+const int Blome_NormalButtonHeight = 25;

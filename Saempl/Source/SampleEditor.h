@@ -28,10 +28,6 @@ public:
     bool isPlaying();
     double getCurrentReadheadPosition();
     void stopAudio();
-    void setAudioSource(PositionableAudioSource* const newSource,
-                   int readAheadSize,
-                   TimeSliceThread* readAheadThread,
-                   double sourceSampleRateToCorrectFor);
     bool loadURLIntoTransport(const URL& audioURL, TimeSliceThread& inThread);
     
 private:

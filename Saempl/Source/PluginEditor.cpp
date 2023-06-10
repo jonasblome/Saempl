@@ -20,8 +20,8 @@ SaemplAudioProcessorEditor::SaemplAudioProcessorEditor (SaemplAudioProcessor& p)
     mMainPanel = std::make_unique<MainPanel>(p);
     addAndMakeVisible(mMainPanel.get());
     
+    // Add noise overlay
     mNoiseOverlayPanel = std::make_unique<NoiseOverlayPanel>();
-    mNoiseOverlayPanel->setAlwaysOnTop(true);
     addAndMakeVisible(mNoiseOverlayPanel.get());
     
     // Set styling of plugin UI

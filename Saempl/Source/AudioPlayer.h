@@ -21,7 +21,7 @@ public:
     // Methods
     AudioFormatManager& getFormatManager();
     void startOrStop();
-    void setPosition(double position);
+    void setTransportSourcePosition(double inPosition);
     void start();
     bool isPlaying();
     double getCurrentPosition();

@@ -32,7 +32,7 @@ void SampleEditor::startOrStopAudio()
 
 void SampleEditor::setAudioReadheadPosition(double position)
 {
-    mAudioPlayer->setPosition(position);
+    mAudioPlayer->setTransportSourcePosition(position);
 }
 
 void SampleEditor::startAudio()
@@ -55,13 +55,6 @@ void SampleEditor::stopAudio()
     mAudioPlayer->stop();
 }
 
-void SampleEditor::setAudioSource(PositionableAudioSource* const newSource,
-                             int readAheadSize,
-                             TimeSliceThread* readAheadThread,
-                             double sourceSampleRateToCorrectFor)
-{
-    mAudioPlayer->setSource(newSource, readAheadSize, readAheadThread, sourceSampleRateToCorrectFor);
-}
 
 bool SampleEditor::loadURLIntoTransport(const URL& audioURL, TimeSliceThread& inThread)
 {

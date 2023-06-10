@@ -13,9 +13,15 @@
 class SampleMap
 {
 public:
+    // Constructors
     SampleMap();
     ~SampleMap();
     
+    // Methods
+    
 private:
+    // Fields
+    
+    // Methods
     
 };

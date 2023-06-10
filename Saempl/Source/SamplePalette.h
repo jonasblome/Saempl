@@ -13,9 +13,15 @@
 class SamplePalette
 {
 public:
+    // Constructors
     SamplePalette();
     ~SamplePalette();
     
+    // Methods
+    
 private:
+    // Fields
+    
+    // Methods
     
 };

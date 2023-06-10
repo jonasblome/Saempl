@@ -26,16 +26,24 @@ DirectoryContentsList* SampleDatabaseTableViewModel::getDirectoryList()
     return sampleDatabase.getDirectoryList();
 }
 
-void SampleDatabaseTableViewModel::addSampleItem(String forFile)
+/**
+ Adds a file and sample item to the database
+ */
+void SampleDatabaseTableViewModel::addSampleItem(String inFilePath)
 {
-    File file = File(forFile);
+    File file = File(inFilePath);
     
     sampleDatabase.addSampleItem(file);
 }
 
-void SampleDatabaseTableViewModel::removeSampleItem(String forFile, bool deletePermanently)
+/**
+ Removes the selected file from the current directory and removes the corresponding SampleItem from the database
+ 
+ @param deletePermanently   determines if the item is deleted permanently (true) or just moved to the trash (false)
+ */
+void SampleDatabaseTableViewModel::removeSampleItem(String inFilePath, bool deletePermanently = false)
 {
-    sampleDatabase.removeSampleItem(forFile, deletePermanently);
+    sampleDatabase.removeSampleItem(inFilePath, deletePermanently);
 }
 
 void SampleDatabaseTableViewModel::setDirectory(const File& inFile)
@@ -43,6 +51,9 @@ void SampleDatabaseTableViewModel::setDirectory(const File& inFile)
     sampleDatabase.setDirectory(inFile);
 }
 
+/**
+ Sets the directory to the parent directory of the current one
+ */
 void SampleDatabaseTableViewModel::switchToParentDirectory()
 {
     sampleDatabase.switchToParentDirectory();

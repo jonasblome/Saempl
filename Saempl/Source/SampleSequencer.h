@@ -13,9 +13,15 @@
 class SampleSequencer
 {
 public:
+    // Constructors
     SampleSequencer();
     ~SampleSequencer();
     
+    // Methods
+    
 private:
+    // Fields
+    
+    // Methods
     
 };

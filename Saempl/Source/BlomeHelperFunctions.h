@@ -18,13 +18,11 @@
     static const juce::String DIRECTORY_SEPARATOR = "/";
 #endif
 
-
-
 const StringArray supportedAudioFileFormat = StringArray({ ".mp3", ".wav", ".aiff", ".m4a" });
 
 inline bool isSupportedAudioFileFormat(String inExtension)
 {
-    for(String extension : supportedAudioFileFormat)
+    for (String extension : supportedAudioFileFormat)
     {
         if (extension == inExtension) {
             return true;

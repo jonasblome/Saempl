@@ -30,9 +30,9 @@ void SampleItemViewModel::startOrStopAudio()
     mSampleEditor->startOrStopAudio();
 }
 
-void SampleItemViewModel::setAudioReadheadPosition(double position)
+void SampleItemViewModel::setAudioReadheadPosition(double inPosition)
 {
-    mSampleEditor->setAudioReadheadPosition(position);
+    mSampleEditor->setAudioReadheadPosition(inPosition);
 }
 
 void SampleItemViewModel::startAudio()
@@ -55,15 +55,7 @@ void SampleItemViewModel::stopAudio()
     mSampleEditor->stopAudio();
 }
 
-void SampleItemViewModel::setAudioSource(PositionableAudioSource* const newSource,
-                                    int readAheadSize,
-                                    TimeSliceThread* readAheadThread,
-                                    double sourceSampleRateToCorrectFor)
+bool SampleItemViewModel::loadURLIntoTransport(const URL& inURL, TimeSliceThread& inThread)
 {
-    mSampleEditor->setAudioSource(newSource, readAheadSize, readAheadThread, sourceSampleRateToCorrectFor);
-}
-
-bool SampleItemViewModel::loadURLIntoTransport(const URL& audioURL, TimeSliceThread& inThread)
-{
-    return mSampleEditor->loadURLIntoTransport(audioURL, inThread);
+    return mSampleEditor->loadURLIntoTransport(inURL, inThread);
 }

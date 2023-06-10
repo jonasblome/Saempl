@@ -51,6 +51,9 @@ void CenterPanel::setPanelComponents()
     addAndMakeVisible(*mTogglePanelButton);
 }
 
+/**
+ Toggles the visibility of the SampleItemPanel
+ */
 void CenterPanel::toggleSampleItemPanel()
 {
     mSampleItemPanel->setVisible(!mSampleItemPanel->isVisible());

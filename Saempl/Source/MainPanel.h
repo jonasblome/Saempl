@@ -33,4 +33,6 @@ private:
     std::unique_ptr<HeaderPanel> mHeaderPanel;
     std::unique_ptr<CenterPanel> mCenterPanel;
     
+    // Methods
+    
 };

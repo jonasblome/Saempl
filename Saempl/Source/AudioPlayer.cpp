@@ -50,9 +50,9 @@ void AudioPlayer::startOrStop()
     }
 }
 
-void AudioPlayer::setPosition(double position)
+void AudioPlayer::setTransportSourcePosition(double inPosition)
 {
-    mTransportSource.setPosition(position);
+    mTransportSource.setPosition(inPosition);
 }
 
 void AudioPlayer::start()
@@ -107,7 +107,7 @@ bool AudioPlayer::loadURLIntoTransport(const URL& inURL, TimeSliceThread& inThre
 
     mCurrentAudioFileSource = std::make_unique<AudioFormatReaderSource>(reader.release(), true);
 
-    // ..and plug it into our transport source
+    // Plug new audio source into our transport source
     mTransportSource.setSource(mCurrentAudioFileSource.get(),
                                32768,                   // Tells it to buffer this many samples ahead
                                &inThread,                 // This is the background thread to use for reading-ahead

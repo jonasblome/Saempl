@@ -42,14 +42,17 @@ void AudioPreviewPanel::paint(Graphics& g)
     // Draw audio preview
     g.setColour(BlomeColour_AccentColourLight);
 
-    if(mAudioPreview.getTotalLength() > 0.0)
+    if (mAudioPreview.getTotalLength() > 0.0)
     {
+        // Draw file name on title bar
         g.setFont(font_small_bold);
         String fileName = restoreSpacesFromURLString(lastFileDropped.getFileName());
         g.drawFittedText(fileName,
                          getLocalBounds().removeFromRight(getWidth() - Blome_PanelMargin).removeFromTop(sampleItemTitleHeight),
                          Justification::centredLeft,
                          2);
+        
+        // Draw audio preview
         previewArea.removeFromBottom(mAudioPreviewScrollbar->getHeight() + 4);
         mAudioPreview.drawChannels(g,
                                    previewArea.reduced(Blome_PanelMargin / 2.0),
@@ -89,7 +92,7 @@ void AudioPreviewPanel::setPanelComponents()
 
 void AudioPreviewPanel::setURL(const URL& url)
 {
-    if(auto inputSource = std::make_unique<URLInputSource>(url))
+    if (auto inputSource = std::make_unique<URLInputSource>(url))
     {
         mAudioPreview.setSource(inputSource.release());
 
@@ -113,7 +116,7 @@ void AudioPreviewPanel::setZoomFactor(double amount)
         auto newScale = jmax(0.001, mAudioPreview.getTotalLength() * (1.0 - jlimit(0.0, 0.99, amount)));
         auto timeAtCentre = xToTime((float)getWidth() / 2.0f);
 
-        setRange ({ timeAtCentre - newScale * 0.5, timeAtCentre + newScale * 0.5 });
+        setRange({ timeAtCentre - newScale * 0.5, timeAtCentre + newScale * 0.5 });
     }
 }
 
@@ -146,19 +149,19 @@ void AudioPreviewPanel::filesDropped(const StringArray& files, int x, int y)
     }
 }
 
-bool AudioPreviewPanel::isInterestedInDragSource (const SourceDetails& dragSourceDetails)
+bool AudioPreviewPanel::isInterestedInDragSource(const SourceDetails& dragSourceDetails)
 {
     return true;
 }
 
 void AudioPreviewPanel::itemDropped(const SourceDetails& dragSourceDetails)
 {
-    if(dragSourceDetails.description == "SampleItemFile")
+    if (dragSourceDetails.description == "SampleItemFile")
     {
-        Component* component = dragSourceDetails.sourceComponent.get();
-        if(BlomeFileTreeView* treeView = static_cast<BlomeFileTreeView*>(component))
+        Component* dragSourceComponent = dragSourceDetails.sourceComponent.get();
+        if (BlomeFileTreeView* fileTreeView = static_cast<BlomeFileTreeView*>(dragSourceComponent))
         {
-            File file = treeView->getSelectedFile();
+            File file = fileTreeView->getSelectedFile();
             
             if (!file.isDirectory() && isSupportedAudioFileFormat(file.getFileExtension()))
             {
@@ -176,7 +179,7 @@ void AudioPreviewPanel::mouseDown(const MouseEvent& e)
 
 void AudioPreviewPanel::mouseDrag(const MouseEvent& e)
 {
-    if(canMoveTransport())
+    if (canMoveTransport())
     {
         sampleItemViewModel.setAudioReadheadPosition(jmax(0.0, xToTime((float)e.x)));
     }
@@ -189,6 +192,7 @@ void AudioPreviewPanel::mouseUp(const MouseEvent&)
 
 void AudioPreviewPanel::mouseWheelMove(const MouseEvent&, const MouseWheelDetails& wheel)
 {
+    // Set zoom of audio preview if a file is loaded
     if (mAudioPreview.getTotalLength() > 0.0)
     {
         auto newStart = visibleRange.getStart() - wheel.deltaX * (visibleRange.getLength()) / 10.0;
@@ -230,9 +234,9 @@ bool AudioPreviewPanel::canMoveTransport() const noexcept
 
 void AudioPreviewPanel::scrollBarMoved(ScrollBar* scrollbar, double newRangeStart)
 {
-    if(scrollbar == &*mAudioPreviewScrollbar)
+    if (scrollbar == &*mAudioPreviewScrollbar)
     {
-        if(!(isFollowingTransport && sampleItemViewModel.isPlayingAudio()))
+        if (!(isFollowingTransport && sampleItemViewModel.isPlayingAudio()))
         {
             setRange(visibleRange.movedToStartAt(newRangeStart));
         }
@@ -241,7 +245,7 @@ void AudioPreviewPanel::scrollBarMoved(ScrollBar* scrollbar, double newRangeStar
 
 void AudioPreviewPanel::timerCallback()
 {
-    if(canMoveTransport())
+    if (canMoveTransport())
     {
         updateCursorPosition();
     }
@@ -265,11 +269,14 @@ void AudioPreviewPanel::showAudioResource()
     showAudioResource(resource);
 }
 
+/**
+ Shows the given resource in the audio preview
+ */
 void AudioPreviewPanel::showAudioResource(URL inResource)
 {
     lastFileDropped = inResource;
     
-    if(loadURLIntoTransport(inResource))
+    if (loadURLIntoTransport(inResource))
     {
         mCurrentAudioFile = std::move(inResource);
     }

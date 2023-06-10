@@ -22,12 +22,15 @@ public:
     
     // Methods
     DirectoryContentsList* getDirectoryList();
-    void addSampleItem(String forFile);
-    void removeSampleItem(String forFile, bool deletePermanently);
+    void addSampleItem(String inFilePath);
+    void removeSampleItem(String inFilePath, bool deletePermanently);
     void setDirectory(const File& inFile);
     void switchToParentDirectory();
     
 private:
+    // Fields
     SampleDatabase& sampleDatabase;
+    
+    // Methods
     
 };

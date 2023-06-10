@@ -29,4 +29,7 @@ private:
     // Fields
     OwnedArray<SampleTag> mSampleTags;
     String mFilePath;
+    
+    // Methods
+    
 };

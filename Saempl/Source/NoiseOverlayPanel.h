@@ -30,4 +30,5 @@ private:
     Image mNoiseOverlay;
     
     // Methods
+    
 };

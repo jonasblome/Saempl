@@ -36,10 +36,8 @@ private:
     SaemplAudioProcessor& currentProcessor;
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<SampleDatabaseTableViewModel> mSampleDatabaseTableViewModel;
-    std::unique_ptr<Label> mExplanationLabel;
     std::unique_ptr<BlomeFileTreeView> mFileTree;
     std::unique_ptr<TextButton> mChangeDirectoryButton;
-    int mButtonHeight;
     
     // Methods
     void selectionChanged() override;

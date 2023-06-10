@@ -15,8 +15,15 @@
 class SampleDatabaseTable
 {
 public:
+    // Constructors
     SampleDatabaseTable(TimeSliceThread& inThread);
     ~SampleDatabaseTable();
     
+    // Methods
+    
 private:
+    // Fields
+    
+    // Methods
+    
 };
