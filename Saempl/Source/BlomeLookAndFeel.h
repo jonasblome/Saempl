@@ -16,7 +16,8 @@ class BlomeLookAndFeel
 :   public LookAndFeel_V4
 {
 public:
-    BlomeLookAndFeel()
+    BlomeLookAndFeel(SampleDatabase& inSampleDatabase)
+    :   sampleDatabase(inSampleDatabase)
     {
         // ComboBox Colours
         setColour(ComboBox::backgroundColourId, BlomeColour_BlackLightTransparent);
@@ -325,18 +326,26 @@ public:
         g.fillPath(p, p.getTransformToScaleToFit(area.reduced(2, area.getHeight() / 3), true));
     }
     
-    void drawFileBrowserRow(Graphics& g, int width, int height,
-                                             const File&, const String& filename, Image* icon,
-                                             const String& fileSizeDescription,
-                                             const String& fileTimeDescription,
-                                             bool isDirectory, bool isItemSelected,
-                                             int itemIndex, DirectoryContentsDisplayComponent& dcc) override
+    void drawFileBrowserRow(Graphics& g,
+                            int width,
+                            int height,
+                            const File& file,
+                            const String& filename,
+                            Image* icon,
+                            const String& fileSizeDescription,
+                            const String& fileTimeDescription,
+                            bool isDirectory,
+                            bool isItemSelected,
+                            int itemIndex,
+                            DirectoryContentsDisplayComponent& directoryDisplayer) override
     {
-        auto fileListComp = dynamic_cast<Component*>(&dcc);
-
+        auto fileListComponent = dynamic_cast<Component*>(&directoryDisplayer);
+        SampleItem* linkedSampleItem = sampleDatabase.getSampleItemWithFilePath(file.getFullPathName());
+        
+        // Markup if the row is selected
         if(isItemSelected)
         {
-            g.setColour(fileListComp != nullptr ? BlomeColour_BlackLightTransparent : BlomeColour_BlackMediumTransparent);
+            g.setColour(fileListComponent != nullptr ? BlomeColour_BlackLightTransparent : BlomeColour_BlackMediumTransparent);
             g.fillRoundedRectangle(0, 0, width - 5, height, 3.0);
         }
 
@@ -345,37 +354,44 @@ public:
         g.setColour(BlomeColour_AccentColourLight);
         g.setFont (font_small_bold);
 
-        if(width > 450 && ! isDirectory)
+        if (width > 450 && !isDirectory)
         {
-            auto sizeX = roundToInt ((float) width * 0.7f);
-            auto dateX = roundToInt ((float) width * 0.8f);
+            int propertiesStartX = roundToInt((float)width * 0.8f);
+            int propertiesWidth = roundToInt((float)width * 0.1f);
 
-            g.drawFittedText(filename,
-                              x, 0, sizeX - x, height,
-                              Justification::centredLeft, 1);
+            // Draw file name
+            g.drawFittedText(file.getFileNameWithoutExtension(),
+                             x,
+                             0,
+                             propertiesStartX - x,
+                             height,
+                             Justification::centredLeft,
+                             1);
 
-            g.setFont(font_small_bold);
-
-            if(!isDirectory)
-            {
-                g.drawFittedText(fileSizeDescription,
-                                  sizeX, 0, dateX - sizeX - 8, height,
-                                  Justification::centredRight, 1);
-
-                g.drawFittedText(fileTimeDescription,
-                                  dateX, 0, width - 8 - dateX, height,
-                                  Justification::centredRight, 1);
+            // Draw file properties
+            g.drawFittedText(String(linkedSampleItem->getSampleTag(0)->getName()) + ": " + String(roundToInt(linkedSampleItem->getSampleTag(0)->getValue())) + "s",
+                             propertiesStartX,
+                             0,
+                             propertiesWidth,
+                             height,
+                             Justification::centredLeft,
+                             1);
+            
             }
-        }
         else
         {
             g.drawFittedText(filename,
-                              x, 0, width - x, height,
-                              Justification::centredLeft, 1);
+                             x,
+                             0,
+                             width - x,
+                             height,
+                             Justification::centredLeft,
+                             1);
 
         }
     }
     
 private:
+    SampleDatabase& sampleDatabase;
     
 };

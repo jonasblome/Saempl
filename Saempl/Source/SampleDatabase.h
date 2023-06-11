@@ -28,20 +28,21 @@ public:
     DirectoryContentsList* getDirectoryList();
     void setDirectory(const File& inFile);
     void switchToParentDirectory();
-    void changeListenerCallback(ChangeBroadcaster* source) override;
+    void changeListenerCallback(ChangeBroadcaster* inSource) override;
     void setFileFilter();
-    void loadSampleFilesFromDirectory();
+    void refreshSampleDatabase();
+    SampleItem* getSampleItemWithFilePath(String inFilePath);
     
 private:
     // Fields
     std::unique_ptr<FileFilter> mDirectoryFilter;
     String mSampleItemDirectoryPath;
-    std::unique_ptr<DirectoryContentsList> mDirectoryList;
+    std::unique_ptr<DirectoryContentsList> mDirectoryContent;
     OwnedArray<SampleItem> mSampleItems;
     String mDirectoryPathToAddFilesTo;
     std::unique_ptr<SampleAnalyser> mSampleAnalyser;
     std::unique_ptr<SampleFileManager> mSampleFileManager;
     
     // Methods
-    SampleItem* getSampleItemWithFilePath(String inFilePath);
+    void createSampleItem(File inFile);
 };

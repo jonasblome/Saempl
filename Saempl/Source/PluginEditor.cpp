@@ -25,7 +25,7 @@ SaemplAudioProcessorEditor::SaemplAudioProcessorEditor (SaemplAudioProcessor& p)
     addAndMakeVisible(mNoiseOverlayPanel.get());
     
     // Set styling of plugin UI
-    mLookAndFeel = std::make_unique<BlomeLookAndFeel>();
+    mLookAndFeel = std::make_unique<BlomeLookAndFeel>(p.getSampleDatabase());
     setLookAndFeel(&*mLookAndFeel);
     juce::LookAndFeel::setDefaultLookAndFeel(&*mLookAndFeel);
 }

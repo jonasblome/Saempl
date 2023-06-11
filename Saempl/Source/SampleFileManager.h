@@ -12,8 +12,7 @@
 
 #include "JuceHeader.h"
 #include "SampleItem.h"
-
-#define SAMPLE_FILE_EXTENSION ".bsf"
+#include "BlomeHelperFunctions.h"
 
 class SampleFileManager
 {

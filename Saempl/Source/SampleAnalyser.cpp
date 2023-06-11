@@ -24,7 +24,7 @@ double SampleAnalyser::analyseSampleLength(File inFile)
 {
     loadAudioFileSource(inFile);
     
-    return mCurrentAudioFileSource->getTotalLength();
+    return mCurrentAudioFileSource->getTotalLength() / mCurrentAudioFileSource->getAudioFormatReader()->sampleRate;
 }
 
 void SampleAnalyser::loadAudioFileSource(File inFile)

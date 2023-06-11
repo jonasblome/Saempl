@@ -38,6 +38,7 @@ private:
     std::unique_ptr<SampleDatabaseTableViewModel> mSampleDatabaseTableViewModel;
     std::unique_ptr<BlomeFileTreeView> mFileTree;
     std::unique_ptr<TextButton> mChangeDirectoryButton;
+    std::unique_ptr<TextButton> mRefreshSampleDatabaseButton;
     
     // Methods
     void selectionChanged() override;

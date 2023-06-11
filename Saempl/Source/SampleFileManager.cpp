@@ -26,9 +26,6 @@ void SampleFileManager::createSampleFile(SampleItem& inSampleItem)
     // Create sample file as xml file
     XmlElement sampleFileXml("Blome_SampleFile");
     
-    // Adding file path to sample file xml
-    sampleFileXml.setAttribute("FilePath", inSampleItem.getFilePath());
-    
     // Adding sample tags to sample file xml
     XmlElement* sampleTags = new XmlElement("SampleTags");
     
@@ -42,8 +39,7 @@ void SampleFileManager::createSampleFile(SampleItem& inSampleItem)
     sampleFileXml.addChildElement(sampleTags);
     
     // Write sample file xml to external file
-    File audioFile = File(inSampleItem.getFilePath());
-    File sampleFile = File(audioFile.getParentDirectory().getFullPathName() + audioFile.getFileNameWithoutExtension() + SAMPLE_FILE_EXTENSION);
+    File sampleFile = File(inSampleItem.getFilePath() + SAMPLE_FILE_EXTENSION);
     
     if(!sampleFile.exists()) {
         sampleFile.create();
@@ -70,7 +66,7 @@ SampleItem* SampleFileManager::loadSampleFile(String inFilePath)
     
     if(sampleFileXmlPointer)
     {
-        const String sampleItemFilePath = sampleFileXmlPointer->getAttributeValue(0);
+        const String sampleItemFilePath = sampleFile.getParentDirectory().getFullPathName() + DIRECTORY_SEPARATOR + sampleFile.getFileNameWithoutExtension();
         newSampleItem->setFilePath(sampleItemFilePath);
         
         XmlElement* sampleTagsXml = sampleFileXmlPointer->getChildByName("SampleTags");

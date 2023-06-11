@@ -37,6 +37,11 @@ SampleTag* SampleItem::getSampleTag(String inTagName)
     return nullptr;
 }
 
+SampleTag* SampleItem::getSampleTag(int inTagIndex)
+{
+    return mSampleTags.getUnchecked(inTagIndex);
+}
+
 OwnedArray<SampleTag>* SampleItem::getSampleTags()
 {
     return &mSampleTags;

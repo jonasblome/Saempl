@@ -13,7 +13,7 @@
 SampleDatabase::SampleDatabase(TimeSliceThread& inThread)
 {
     // Initially only filter for all audio files in the current directory
-    mDirectoryFilter = std::make_unique<WildcardFileFilter>("*.bsf", "*", "audio files");
+    mDirectoryFilter = std::make_unique<WildcardFileFilter>("*.bsf", "*", "SampleFiles");
     
     // Set directory path
     mSampleItemDirectoryPath =
@@ -25,19 +25,20 @@ SampleDatabase::SampleDatabase(TimeSliceThread& inThread)
     }
     
     // Set directory with path and file filter
-    mDirectoryList = std::make_unique<DirectoryContentsList>(&*mDirectoryFilter, inThread);
-    mDirectoryList->addChangeListener(this);
-    mDirectoryList->setDirectory(File(mSampleItemDirectoryPath), true, true);
+    mDirectoryContent = std::make_unique<DirectoryContentsList>(&*mDirectoryFilter, inThread);
+    mDirectoryContent->addChangeListener(this);
+    mDirectoryContent->setDirectory(File(mSampleItemDirectoryPath), true, true);
+    
+    // Initialize sample analyser
+    mSampleAnalyser = std::make_unique<SampleAnalyser>();
     
     // Load all sample files that are already in the current directory
-    loadSampleFilesFromDirectory();
-    
-    mSampleAnalyser = std::make_unique<SampleAnalyser>();
+    refreshSampleDatabase();
 }
 
 SampleDatabase::~SampleDatabase()
 {
-    mDirectoryList->removeChangeListener(this);
+    mDirectoryContent->removeChangeListener(this);
 }
 
 void SampleDatabase::addSampleItem(File inFile)
@@ -46,7 +47,7 @@ void SampleDatabase::addSampleItem(File inFile)
     File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
     
     // Don't add files if they already exist
-    if (mDirectoryList->contains(newFile)) {
+    if (!mDirectoryContent->getDirectory().findChildFiles(File::findFiles, false, newFile.getFileName()).isEmpty()) {
         return;
     }
     
@@ -56,7 +57,7 @@ void SampleDatabase::addSampleItem(File inFile)
         mDirectoryPathToAddFilesTo = newFile.getFullPathName();
         bool newDirectoryWasCreated = newFile.createDirectory();
         
-        if(newDirectoryWasCreated)
+        if (newDirectoryWasCreated)
         {
             for (DirectoryEntry entry : RangedDirectoryIterator(inFile, false, "*", File::findFilesAndDirectories))
             {
@@ -66,17 +67,18 @@ void SampleDatabase::addSampleItem(File inFile)
         
         mDirectoryPathToAddFilesTo = newFile.getParentDirectory().getFullPathName();
     }
-    else if(isSupportedAudioFileFormat(newFile.getFileExtension()))
+    else if (isSupportedAudioFileFormat(newFile.getFileExtension()))
     {
         // Add file to current directory and create SampleItem
         inFile.copyFileTo(newFile);
-        mSampleItems.add(new SampleItem());
-        mSampleItems.getLast()->setFilePath(newFile.getFullPathName());
-        mSampleItems.getLast()->addSampleTag(new SampleTag("Length", mSampleAnalyser->analyseSampleLength(newFile)));
-        mSampleFileManager->createSampleFile(*mSampleItems.getLast());
+        createSampleItem(newFile);
+    }
+    else
+    {
+        return;
     }
     
-    mDirectoryList->refresh();
+    mDirectoryContent->refresh();
 }
 
 void SampleDatabase::removeSampleItem(String inFilePath, bool deletePermanently = false)
@@ -84,39 +86,47 @@ void SampleDatabase::removeSampleItem(String inFilePath, bool deletePermanently 
     SampleItem* itemToDelete = getSampleItemWithFilePath(inFilePath);
     mSampleItems.removeObject(itemToDelete);
     
-    if (deletePermanently)
+    File sampleFileToDelete = File(inFilePath);
+    File linkedAudioFile = File(sampleFileToDelete.getParentDirectory().getFullPathName() + DIRECTORY_SEPARATOR + sampleFileToDelete.getFileNameWithoutExtension());
+    
+    deletePermanently ? sampleFileToDelete.deleteRecursively() : sampleFileToDelete.moveToTrash();;
+        
+    // Also delete linked audio file
+    if (!sampleFileToDelete.isDirectory())
     {
-        File(inFilePath).deleteRecursively();
-    }
-    else
-    {
-        File(inFilePath).moveToTrash();
+        deletePermanently ? linkedAudioFile.deleteFile() : linkedAudioFile.moveToTrash();;
     }
     
-    mDirectoryList->refresh();
+    mDirectoryContent->refresh();
 }
 
 DirectoryContentsList* SampleDatabase::getDirectoryList()
 {
-    return &*mDirectoryList;
+    return &*mDirectoryContent;
 }
 
 void SampleDatabase::setDirectory(const File& inFile)
 {
-    mDirectoryList->setDirectory(inFile, true, true);
+    mDirectoryContent->setDirectory(inFile, true, true);
+    mSampleItems.clear();
+    refreshSampleDatabase();
 }
 
 void SampleDatabase::switchToParentDirectory()
 {
-    File parentDirectory = mDirectoryList->getDirectory().getParentDirectory();
-    setDirectory(parentDirectory);
+    File parentDirectory = mDirectoryContent->getDirectory().getParentDirectory();
+    
+    // Only set if the current directory is not the root directory
+    if (parentDirectory != mDirectoryContent->getDirectory()) {
+        setDirectory(parentDirectory);
+    }
 }
 
-void SampleDatabase::changeListenerCallback(ChangeBroadcaster* source)
+void SampleDatabase::changeListenerCallback(ChangeBroadcaster* inSource)
 {
-    if (source == mDirectoryList.get())
+    if (inSource == mDirectoryContent.get())
     {
-        mDirectoryPathToAddFilesTo = mDirectoryList->getDirectory().getFullPathName();
+        mDirectoryPathToAddFilesTo = mDirectoryContent->getDirectory().getFullPathName();
     }
 }
 
@@ -125,27 +135,84 @@ void SampleDatabase::setFileFilter()
     // Set current file filter to a chosen filter selection from the database table panel
 }
 
-void SampleDatabase::loadSampleFilesFromDirectory()
+/**
+ Updates all sample files in the current directory and updates the corresponding SampleItem collection
+ */
+void SampleDatabase::refreshSampleDatabase()
 {
-    for (DirectoryEntry entry : RangedDirectoryIterator(mDirectoryList->getDirectory(), true, "*", File::findFiles))
+    // Loop over all sample files to either load them as sample items or delete them if their audio file doesn't exist
+    for (DirectoryEntry entry : RangedDirectoryIterator(mDirectoryContent->getDirectory(), true, "*.bsf", File::findFiles))
     {
-        File file = entry.getFile();
+        File sampleFile = entry.getFile();
+        File linkedAudioFile = File(sampleFile.getParentDirectory().getFullPathName() + DIRECTORY_SEPARATOR + sampleFile.getFileNameWithoutExtension());
         
-        if (file.getFileExtension() == ".bsf") {
-            mSampleItems.add(mSampleFileManager->loadSampleFile(file.getFullPathName()));
+        File parentDirectory = sampleFile.getParentDirectory();
+        bool linkedAudioFileNotExists = parentDirectory.findChildFiles(File::findFiles, false, linkedAudioFile.getFileName()).isEmpty();
+        if (linkedAudioFileNotExists)
+        {
+            // Delete sample files without corresponding audio file
+            sampleFile.deleteFile();
+            
+            // Delete linked SampleItem
+            mSampleItems.removeObject(getSampleItemWithFilePath(sampleFile.getFullPathName()));
+        }
+        else
+        {
+            // Read in existing sample files
+            if (getSampleItemWithFilePath(sampleFile.getFullPathName()) == nullptr)
+            {
+                mSampleItems.add(mSampleFileManager->loadSampleFile(sampleFile.getFullPathName()));
+            }
         }
     }
+    
+    // Loop over all audio files to
+    for (DirectoryEntry entry : RangedDirectoryIterator(mDirectoryContent->getDirectory(), true, "*.wav;*.mp3;*.m4a;*.aiff"))
+    {
+        File audioFile = entry.getFile();
+        File linkedSampleFile = File(audioFile.getParentDirectory().getFullPathName() + DIRECTORY_SEPARATOR + audioFile.getFileName() + SAMPLE_FILE_EXTENSION);
+        
+        // Create sample file for each audio file without corresponding sample file
+        bool linkedSampleFileNotExists = audioFile.getParentDirectory().findChildFiles(File::findFiles, false, linkedSampleFile.getFileName()).isEmpty();
+        if (linkedSampleFileNotExists)
+        {
+            createSampleItem(audioFile);
+        }
+    }
+    
+    mDirectoryContent->refresh();
 }
 
 SampleItem* SampleDatabase::getSampleItemWithFilePath(String inFilePath)
 {
-    for(SampleItem* item : mSampleItems)
+    for(SampleItem* sampleItem : mSampleItems)
     {
-        if (item->getFilePath() == inFilePath)
+        if (sampleItem->getFilePath() + SAMPLE_FILE_EXTENSION == inFilePath)
         {
-            return item;
+            return sampleItem;
         }
     }
     
     return nullptr;
+}
+
+/**
+ Creates a SampleItem for a file and adds it to the collection.
+ If the corresponding SampleItem already exists,, nothing happens.
+ */
+void SampleDatabase::createSampleItem(File inFile)
+{
+    SampleItem* linkedSampleItem = getSampleItemWithFilePath(inFile.getFullPathName());
+    
+    if (linkedSampleItem == nullptr)
+    {
+        mSampleItems.add(new SampleItem());
+        mSampleItems.getLast()->setFilePath(inFile.getFullPathName());
+        mSampleItems.getLast()->addSampleTag(new SampleTag("Length", mSampleAnalyser->analyseSampleLength(inFile)));
+        mSampleFileManager->createSampleFile(*mSampleItems.getLast());
+    }
+    else
+    {
+        mSampleFileManager->createSampleFile(*linkedSampleItem);
+    }
 }

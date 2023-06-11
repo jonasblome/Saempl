@@ -22,6 +22,7 @@ public:
     // Methods
     void addSampleTag(SampleTag* inSampleTag);
     SampleTag* getSampleTag(String inTagName);
+    SampleTag* getSampleTag(int inTagIndex);
     OwnedArray<SampleTag>* getSampleTags();
     void setFilePath(String inFilePath);
     String getFilePath();

@@ -100,7 +100,7 @@ void AudioPreviewPanel::setURL(const URL& url)
         mAudioPreviewScrollbar->setRangeLimits(newRange);
         setRange(newRange);
 
-        startTimerHz (40);
+        startTimerHz(40);
     }
 }
 
@@ -161,11 +161,12 @@ void AudioPreviewPanel::itemDropped(const SourceDetails& dragSourceDetails)
         Component* dragSourceComponent = dragSourceDetails.sourceComponent.get();
         if (BlomeFileTreeView* fileTreeView = static_cast<BlomeFileTreeView*>(dragSourceComponent))
         {
-            File file = fileTreeView->getSelectedFile();
+            File sampleFile = fileTreeView->getSelectedFile();
+            File linkedAudioFile = File(sampleFile.getParentDirectory().getFullPathName() + DIRECTORY_SEPARATOR + sampleFile.getFileNameWithoutExtension());
             
-            if (!file.isDirectory() && isSupportedAudioFileFormat(file.getFileExtension()))
+            if (!sampleFile.isDirectory() && isSupportedAudioFileFormat(linkedAudioFile.getFileExtension()))
             {
-                lastFileDropped = URL(file);
+                lastFileDropped = URL(sampleFile);
                 sendChangeMessage();
             }
         }

@@ -18,6 +18,8 @@
     static const juce::String DIRECTORY_SEPARATOR = "/";
 #endif
 
+#define SAMPLE_FILE_EXTENSION ".bsf"
+
 const StringArray supportedAudioFileFormat = StringArray({ ".mp3", ".wav", ".aiff", ".m4a" });
 
 inline bool isSupportedAudioFileFormat(String inExtension)

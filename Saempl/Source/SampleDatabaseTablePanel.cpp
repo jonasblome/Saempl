@@ -39,14 +39,23 @@ void SampleDatabaseTablePanel::setPanelComponents()
     // Setting view model
     mSampleDatabaseTableViewModel = std::make_unique<SampleDatabaseTableViewModel>(currentProcessor.getSampleDatabase());
     
-    // Add play button component
-    mChangeDirectoryButton = std::make_unique<TextButton>("<");
+    // Add change directory button component
+    mChangeDirectoryButton = std::make_unique<TextButton>("Go One Folder Up");
     mChangeDirectoryButton->setBounds(Blome_PanelMargin / 2.0,
-                                Blome_PanelMargin / 2.0,
-                                Blome_NormalButtonHeight - Blome_PanelMargin / 2.0,
+                                      Blome_PanelMargin / 2.0,
+                                      150 - Blome_PanelMargin / 2.0,
                                       Blome_NormalButtonHeight - Blome_PanelMargin / 2.0);
     mChangeDirectoryButton->onClick = [this] { mSampleDatabaseTableViewModel->switchToParentDirectory(); };
     addAndMakeVisible(*mChangeDirectoryButton);
+    
+    // Add change directory button component
+    mRefreshSampleDatabaseButton = std::make_unique<TextButton>("Refresh Sample Library");
+    mRefreshSampleDatabaseButton->setBounds(150 + Blome_PanelMargin / 2.0,
+                                            Blome_PanelMargin / 2.0,
+                                            150 - Blome_PanelMargin / 2.0,
+                                            Blome_NormalButtonHeight - Blome_PanelMargin / 2.0);
+    mRefreshSampleDatabaseButton->onClick = [this] { mSampleDatabaseTableViewModel->refreshSampleDatabase(); };
+    addAndMakeVisible(*mRefreshSampleDatabaseButton);
     
     // Set file tree component
     mFileTree = std::make_unique<BlomeFileTreeView>(*mSampleDatabaseTableViewModel);
@@ -90,17 +99,19 @@ void SampleDatabaseTablePanel::fileClicked(const File& file, const MouseEvent& m
     }
 }
 
-void SampleDatabaseTablePanel::fileDoubleClicked(const File& file)
+void SampleDatabaseTablePanel::fileDoubleClicked(const File& inFile)
 {
+    File linkedAudioFile = File(inFile.getParentDirectory().getFullPathName() + DIRECTORY_SEPARATOR + inFile.getFileNameWithoutExtension());
+    
     // Load file into source
-    if (!file.isDirectory() && isSupportedAudioFileFormat(file.getFileExtension()))
+    if (!inFile.isDirectory() && isSupportedAudioFileFormat(linkedAudioFile.getFileExtension()))
     {
-        linkedSampleItemPanel.showAudioResource(URL(file));
+        linkedSampleItemPanel.showAudioResource(URL(linkedAudioFile));
     }
     // Switch to selected directory
-    else if (file.isDirectory())
+    else if (inFile.isDirectory())
     {
-        mSampleDatabaseTableViewModel->setDirectory(file);
+        mSampleDatabaseTableViewModel->setDirectory(inFile);
     }
 }
 

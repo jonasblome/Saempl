@@ -26,6 +26,7 @@ public:
     void removeSampleItem(String inFilePath, bool deletePermanently);
     void setDirectory(const File& inFile);
     void switchToParentDirectory();
+    void refreshSampleDatabase();
     
 private:
     // Fields

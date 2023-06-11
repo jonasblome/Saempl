@@ -58,3 +58,8 @@ void SampleDatabaseTableViewModel::switchToParentDirectory()
 {
     sampleDatabase.switchToParentDirectory();
 }
+
+void SampleDatabaseTableViewModel::refreshSampleDatabase()
+{
+    sampleDatabase.refreshSampleDatabase();
+}
