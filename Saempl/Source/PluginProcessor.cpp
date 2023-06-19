@@ -25,7 +25,7 @@ SaemplAudioProcessor::SaemplAudioProcessor()
     // Create thread for current plugin instance
     mThread = std::make_unique<TimeSliceThread>("audioFilePreview");
     mThread->startThread(Thread::Priority::normal);
-    mSampleDatabase = std::make_unique<SampleDatabase>(*mThread);
+    mSampleDatabase = std::make_unique<SampleLibrary>(*mThread);
 }
 
 SaemplAudioProcessor::~SaemplAudioProcessor()
@@ -200,7 +200,7 @@ TimeSliceThread& SaemplAudioProcessor::getThread()
 }
 
 
-SampleDatabase& SaemplAudioProcessor::getSampleDatabase()
+SampleLibrary& SaemplAudioProcessor::getSampleDatabase()
 {
     return *mSampleDatabase;
 }

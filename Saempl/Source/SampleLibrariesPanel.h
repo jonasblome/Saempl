@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    SampleDatabaseViewPanel.h
+    SampleLibrariesPanel.h
     Created: 22 May 2023 6:32:52am
     Author:  Jonas Blome
 
@@ -12,18 +12,18 @@
 
 #include "PanelBase.h"
 #include "BlomeFileTreeView.h"
-#include "SampleDatabaseTableViewModel.h"
+#include "SampleLibrariesViewModel.h"
 #include "SampleItemPanel.h"
 
-class SampleDatabaseTablePanel
+class SampleLibrariesPanel
 :   public PanelBase,
     private FileBrowserListener,
     private ChangeListener
 {
 public:
     // Constructors
-    SampleDatabaseTablePanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
-    ~SampleDatabaseTablePanel();
+    SampleLibrariesPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
+    ~SampleLibrariesPanel();
     
     // Methods
     void paint(Graphics& g) override;
@@ -35,10 +35,9 @@ private:
     // Fields
     SaemplAudioProcessor& currentProcessor;
     SampleItemPanel& linkedSampleItemPanel;
-    std::unique_ptr<SampleDatabaseTableViewModel> mSampleDatabaseTableViewModel;
+    std::unique_ptr<SampleLibrariesViewModel> mSampleLibrariesViewModel;
     std::unique_ptr<BlomeFileTreeView> mFileTree;
-    std::unique_ptr<TextButton> mChangeDirectoryButton;
-    std::unique_ptr<TextButton> mRefreshSampleDatabaseButton;
+    std::unique_ptr<TextButton> mRefreshSampleLibrariesButton;
     
     // Methods
     void selectionChanged() override;

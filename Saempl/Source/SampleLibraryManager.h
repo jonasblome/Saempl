@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    SampleFileManager.h
+    SampleLibraryManager.h
     Created: 10 Jun 2023 6:16:05pm
     Author:  Jonas Blome
 
@@ -14,12 +14,12 @@
 #include "SampleItem.h"
 #include "BlomeHelperFunctions.h"
 
-class SampleFileManager
+class SampleLibraryManager
 {
 public:
     // Constructors
-    SampleFileManager();
-    ~SampleFileManager();
+    SampleLibraryManager();
+    ~SampleLibraryManager();
     
     // Methods
     void createSampleFile(SampleItem& inSampleItem);

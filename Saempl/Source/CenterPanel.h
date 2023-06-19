@@ -11,7 +11,7 @@
 #pragma once
 
 #include "PanelBase.h"
-#include "SampleDatabaseTablePanel.h"
+#include "SampleLibrariesPanel.h"
 #include "SampleItemPanel.h"
 
 class CenterPanel
@@ -29,7 +29,7 @@ public:
 private:
     // Fields
     SaemplAudioProcessor& currentProcessor;
-    std::unique_ptr<SampleDatabaseTablePanel> mSampleDatabaseTablePanel;
+    std::unique_ptr<SampleLibrariesPanel> mSampleDatabaseTablePanel;
     std::unique_ptr<SampleItemPanel> mSampleItemPanel;
     std::unique_ptr<ToggleButton> mTogglePanelButton;
     

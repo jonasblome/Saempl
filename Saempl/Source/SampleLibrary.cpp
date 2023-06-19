@@ -1,16 +1,16 @@
 /*
   ==============================================================================
 
-    SampleDatabase.cpp
+    SampleLibrary.cpp
     Created: 21 May 2023 2:45:47pm
     Author:  Jonas Blome
 
   ==============================================================================
 */
 
-#include "SampleDatabase.h"
+#include "SampleLibrary.h"
 
-SampleDatabase::SampleDatabase(TimeSliceThread& inThread)
+SampleLibrary::SampleLibrary(TimeSliceThread& inThread)
 {
     // Initially only filter for all audio files in the current directory
     mDirectoryFilter = std::make_unique<WildcardFileFilter>("*.bsf", "*", "SampleFiles");
@@ -36,12 +36,12 @@ SampleDatabase::SampleDatabase(TimeSliceThread& inThread)
     refreshSampleDatabase();
 }
 
-SampleDatabase::~SampleDatabase()
+SampleLibrary::~SampleLibrary()
 {
     mDirectoryContent->removeChangeListener(this);
 }
 
-void SampleDatabase::addSampleItem(File inFile)
+void SampleLibrary::addSampleItem(File inFile)
 {
     String fileName = inFile.getFileName();
     File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
@@ -81,7 +81,7 @@ void SampleDatabase::addSampleItem(File inFile)
     mDirectoryContent->refresh();
 }
 
-void SampleDatabase::removeSampleItem(String inFilePath, bool deletePermanently = false)
+void SampleLibrary::removeSampleItem(String inFilePath, bool deletePermanently = false)
 {
     SampleItem* itemToDelete = getSampleItemWithFilePath(inFilePath);
     mSampleItems.removeObject(itemToDelete);
@@ -100,29 +100,12 @@ void SampleDatabase::removeSampleItem(String inFilePath, bool deletePermanently 
     mDirectoryContent->refresh();
 }
 
-DirectoryContentsList* SampleDatabase::getDirectoryList()
+DirectoryContentsList* SampleLibrary::getDirectoryList()
 {
     return &*mDirectoryContent;
 }
 
-void SampleDatabase::setDirectory(const File& inFile)
-{
-    mDirectoryContent->setDirectory(inFile, true, true);
-    mSampleItems.clear();
-    refreshSampleDatabase();
-}
-
-void SampleDatabase::switchToParentDirectory()
-{
-    File parentDirectory = mDirectoryContent->getDirectory().getParentDirectory();
-    
-    // Only set if the current directory is not the root directory
-    if (parentDirectory != mDirectoryContent->getDirectory()) {
-        setDirectory(parentDirectory);
-    }
-}
-
-void SampleDatabase::changeListenerCallback(ChangeBroadcaster* inSource)
+void SampleLibrary::changeListenerCallback(ChangeBroadcaster* inSource)
 {
     if (inSource == mDirectoryContent.get())
     {
@@ -130,7 +113,7 @@ void SampleDatabase::changeListenerCallback(ChangeBroadcaster* inSource)
     }
 }
 
-void SampleDatabase::setFileFilter()
+void SampleLibrary::setFileFilter()
 {
     // Set current file filter to a chosen filter selection from the database table panel
 }
@@ -138,7 +121,7 @@ void SampleDatabase::setFileFilter()
 /**
  Updates all sample files in the current directory and updates the corresponding SampleItem collection
  */
-void SampleDatabase::refreshSampleDatabase()
+void SampleLibrary::refreshSampleDatabase()
 {
     // Loop over all sample files to either load them as sample items or delete them if their audio file doesn't exist
     for (DirectoryEntry entry : RangedDirectoryIterator(mDirectoryContent->getDirectory(), true, "*.bsf", File::findFiles))
@@ -183,7 +166,7 @@ void SampleDatabase::refreshSampleDatabase()
     mDirectoryContent->refresh();
 }
 
-SampleItem* SampleDatabase::getSampleItemWithFilePath(String inFilePath)
+SampleItem* SampleLibrary::getSampleItemWithFilePath(String inFilePath)
 {
     for(SampleItem* sampleItem : mSampleItems)
     {
@@ -200,7 +183,7 @@ SampleItem* SampleDatabase::getSampleItemWithFilePath(String inFilePath)
  Creates a SampleItem for a file and adds it to the collection.
  If the corresponding SampleItem already exists,, nothing happens.
  */
-void SampleDatabase::createSampleItem(File inFile)
+void SampleLibrary::createSampleItem(File inFile)
 {
     SampleItem* linkedSampleItem = getSampleItemWithFilePath(inFile.getFullPathName());
     

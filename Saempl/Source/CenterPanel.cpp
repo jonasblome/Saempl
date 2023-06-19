@@ -32,11 +32,11 @@ void CenterPanel::setPanelComponents()
 {
     // Add panel for sample item view
     mSampleItemPanel = std::make_unique<SampleItemPanel>(currentProcessor);
-    mSampleItemPanel->setTopLeftPosition(0, TABLE_PANEL_HEIGHT - Blome_PanelMargin / 2.0);
+    mSampleItemPanel->setTopLeftPosition(0, SAMPLE_LIBRARIES_PANEL_HEIGHT - Blome_PanelMargin / 2.0);
     addAndMakeVisible(*mSampleItemPanel);
     
     // Add panel for database views
-    mSampleDatabaseTablePanel = std::make_unique<SampleDatabaseTablePanel>(currentProcessor, *mSampleItemPanel);
+    mSampleDatabaseTablePanel = std::make_unique<SampleLibrariesPanel>(currentProcessor, *mSampleItemPanel);
     mSampleDatabaseTablePanel->setTopLeftPosition(0, 0);
     addAndMakeVisible(*mSampleDatabaseTablePanel);
     
@@ -44,9 +44,9 @@ void CenterPanel::setPanelComponents()
     mTogglePanelButton = std::make_unique<ToggleButton>("Toggle SampleItem Panel");
     mTogglePanelButton->setToggleState(true, NotificationType::dontSendNotification);
     mTogglePanelButton->setBounds(0,
-                                  TABLE_PANEL_HEIGHT + SAMPLE_PANEL_HEIGHT,
-                                  SAMPLE_PANEL_TOGGLE_HEIGHT - Blome_PanelMargin / 2.0,
-                                  SAMPLE_PANEL_TOGGLE_HEIGHT - Blome_PanelMargin / 2.0);
+                                  SAMPLE_LIBRARIES_PANEL_HEIGHT + SAMPLE_ITEM_PANEL_HEIGHT,
+                                  SAMPLE_ITEM_PANEL_TOGGLE_HEIGHT - Blome_PanelMargin / 2.0,
+                                  SAMPLE_ITEM_PANEL_TOGGLE_HEIGHT - Blome_PanelMargin / 2.0);
     mTogglePanelButton->onClick = [this] { toggleSampleItemPanel(); };
     addAndMakeVisible(*mTogglePanelButton);
 }
@@ -60,11 +60,11 @@ void CenterPanel::toggleSampleItemPanel()
     
     if(mSampleItemPanel->isVisible())
     {
-        mSampleDatabaseTablePanel->setSize(TABLE_PANEL_WIDTH - Blome_PanelMargin, TABLE_PANEL_HEIGHT - Blome_PanelMargin);
+        mSampleDatabaseTablePanel->setSize(SAMPLE_LIBRARIES_PANEL_WIDTH - Blome_PanelMargin, SAMPLE_LIBRARIES_PANEL_HEIGHT - Blome_PanelMargin);
     }
     else
     {
-        mSampleDatabaseTablePanel->setSize(TABLE_PANEL_WIDTH - Blome_PanelMargin, CENTER_PANEL_HEIGHT - SAMPLE_PANEL_TOGGLE_HEIGHT - Blome_PanelMargin / 2.0);
+        mSampleDatabaseTablePanel->setSize(SAMPLE_LIBRARIES_PANEL_WIDTH - Blome_PanelMargin, CENTER_PANEL_HEIGHT - SAMPLE_ITEM_PANEL_TOGGLE_HEIGHT - Blome_PanelMargin / 2.0);
     }
     
     mSampleDatabaseTablePanel->repaint();

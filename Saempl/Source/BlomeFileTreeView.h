@@ -12,7 +12,7 @@
 
 #include "JuceHeader.h"
 #include "BlomeHelperFunctions.h"
-#include "SampleDatabaseTableViewModel.h"
+#include "SampleLibrariesViewModel.h"
 
 class BlomeFileTreeView
 :   public FileTreeComponent,
@@ -20,7 +20,7 @@ class BlomeFileTreeView
 {
 public:
     // Constructors
-    BlomeFileTreeView(SampleDatabaseTableViewModel& inSampleDatabaseTableViewModel);
+    BlomeFileTreeView(SampleLibrariesViewModel& inSampleDatabaseTableViewModel);
     ~BlomeFileTreeView();
     
     // Methods
@@ -31,7 +31,7 @@ public:
     
 private:
     // Fields
-    SampleDatabaseTableViewModel& sampleDatabaseTableViewModel;
+    SampleLibrariesViewModel& sampleDatabaseTableViewModel;
     
     // Methods
     

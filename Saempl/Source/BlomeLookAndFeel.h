@@ -16,7 +16,7 @@ class BlomeLookAndFeel
 :   public LookAndFeel_V4
 {
 public:
-    BlomeLookAndFeel(SampleDatabase& inSampleDatabase)
+    BlomeLookAndFeel(SampleLibrary& inSampleDatabase)
     :   sampleDatabase(inSampleDatabase)
     {
         // ComboBox Colours
@@ -392,6 +392,6 @@ public:
     }
     
 private:
-    SampleDatabase& sampleDatabase;
+    SampleLibrary& sampleDatabase;
     
 };

@@ -18,65 +18,40 @@
             file="Source/BlomeFileTreeView.h"/>
     </GROUP>
     <GROUP id="{00D751B1-3FF1-898B-DE28-411892B3B79A}" name="BlomeViewModels">
-      <FILE id="ipExmz" name="SampleDatabaseTableViewModel.cpp" compile="1"
-            resource="0" file="Source/SampleDatabaseTableViewModel.cpp"/>
-      <FILE id="b8vvCa" name="SampleDatabaseTableViewModel.h" compile="0"
-            resource="0" file="Source/SampleDatabaseTableViewModel.h"/>
+      <FILE id="ipExmz" name="SampleLibrariesViewModel.cpp" compile="1" resource="0"
+            file="Source/SampleLibrariesViewModel.cpp"/>
+      <FILE id="b8vvCa" name="SampleLibrariesViewModel.h" compile="0" resource="0"
+            file="Source/SampleLibrariesViewModel.h"/>
       <FILE id="gfsGgl" name="SampleItemViewModel.cpp" compile="1" resource="0"
             file="Source/SampleItemViewModel.cpp"/>
       <FILE id="pvl4h9" name="SampleItemViewModel.h" compile="0" resource="0"
             file="Source/SampleItemViewModel.h"/>
-      <FILE id="S292g2" name="SampleMapViewModel.cpp" compile="1" resource="0"
-            file="Source/SampleMapViewModel.cpp"/>
-      <FILE id="c62PoI" name="SampleMapViewModel.h" compile="0" resource="0"
-            file="Source/SampleMapViewModel.h"/>
-      <FILE id="O8EylA" name="SamplePaletteViewModel.cpp" compile="1" resource="0"
-            file="Source/SamplePaletteViewModel.cpp"/>
-      <FILE id="E4XsXz" name="SamplePaletteViewModel.h" compile="0" resource="0"
-            file="Source/SamplePaletteViewModel.h"/>
-      <FILE id="t8fyD8" name="SampleSequencerViewModel.cpp" compile="1" resource="0"
-            file="Source/SampleSequencerViewModel.cpp"/>
-      <FILE id="gC921k" name="SampleSequencerViewModel.h" compile="0" resource="0"
-            file="Source/SampleSequencerViewModel.h"/>
     </GROUP>
     <GROUP id="{6D66FD26-8F3F-0894-5730-966778E462FE}" name="BlomePanels">
-      <GROUP id="{A8594CF2-3765-47FF-0ED4-07D35CC5C390}" name="New Group"/>
-      <FILE id="AN94IY" name="NoiseOverlayPanel.cpp" compile="1" resource="0"
-            file="Source/NoiseOverlayPanel.cpp"/>
-      <FILE id="bTcNiy" name="NoiseOverlayPanel.h" compile="0" resource="0"
-            file="Source/NoiseOverlayPanel.h"/>
-      <FILE id="ccbkEr" name="CenterPanel.cpp" compile="1" resource="0" file="Source/CenterPanel.cpp"/>
-      <FILE id="YtLVhW" name="CenterPanel.h" compile="0" resource="0" file="Source/CenterPanel.h"/>
-      <FILE id="qSTxfB" name="AudioPreviewPanel.cpp" compile="1" resource="0"
-            file="Source/AudioPreviewPanel.cpp"/>
-      <FILE id="vwfWT5" name="AudioPreviewPanel.h" compile="0" resource="0"
-            file="Source/AudioPreviewPanel.h"/>
-      <FILE id="dcV6X9" name="HeaderPanel.cpp" compile="1" resource="0" file="Source/HeaderPanel.cpp"/>
-      <FILE id="fmjpIw" name="HeaderPanel.h" compile="0" resource="0" file="Source/HeaderPanel.h"/>
       <FILE id="lThgmA" name="PanelBase.cpp" compile="1" resource="0" file="Source/PanelBase.cpp"/>
       <FILE id="EsamqD" name="PanelBase.h" compile="0" resource="0" file="Source/PanelBase.h"/>
       <FILE id="OyVv0E" name="MainPanel.cpp" compile="1" resource="0" file="Source/MainPanel.cpp"/>
       <FILE id="NTzZV2" name="MainPanel.h" compile="0" resource="0" file="Source/MainPanel.h"/>
-      <FILE id="vxYbk9" name="SampleDatabaseTablePanel.cpp" compile="1" resource="0"
-            file="Source/SampleDatabaseTablePanel.cpp"/>
-      <FILE id="dPQ3lJ" name="SampleDatabaseTablePanel.h" compile="0" resource="0"
-            file="Source/SampleDatabaseTablePanel.h"/>
+      <FILE id="dcV6X9" name="HeaderPanel.cpp" compile="1" resource="0" file="Source/HeaderPanel.cpp"/>
+      <FILE id="fmjpIw" name="HeaderPanel.h" compile="0" resource="0" file="Source/HeaderPanel.h"/>
+      <FILE id="ccbkEr" name="CenterPanel.cpp" compile="1" resource="0" file="Source/CenterPanel.cpp"/>
+      <FILE id="YtLVhW" name="CenterPanel.h" compile="0" resource="0" file="Source/CenterPanel.h"/>
+      <FILE id="vxYbk9" name="SampleLibrariesPanel.cpp" compile="1" resource="0"
+            file="Source/SampleLibrariesPanel.cpp"/>
+      <FILE id="dPQ3lJ" name="SampleLibrariesPanel.h" compile="0" resource="0"
+            file="Source/SampleLibrariesPanel.h"/>
       <FILE id="blGuS9" name="SampleItemPanel.cpp" compile="1" resource="0"
             file="Source/SampleItemPanel.cpp"/>
       <FILE id="EGnlFh" name="SampleItemPanel.h" compile="0" resource="0"
             file="Source/SampleItemPanel.h"/>
-      <FILE id="VLTU4P" name="SampleMapPanel.cpp" compile="1" resource="0"
-            file="Source/SampleMapPanel.cpp"/>
-      <FILE id="IpOYzh" name="SampleMapPanel.h" compile="0" resource="0"
-            file="Source/SampleMapPanel.h"/>
-      <FILE id="CN52fB" name="SamplePalettePanel.cpp" compile="1" resource="0"
-            file="Source/SamplePalettePanel.cpp"/>
-      <FILE id="tTex4a" name="SamplePalettePanel.h" compile="0" resource="0"
-            file="Source/SamplePalettePanel.h"/>
-      <FILE id="VTBxKL" name="SampleSequencerPanel.cpp" compile="1" resource="0"
-            file="Source/SampleSequencerPanel.cpp"/>
-      <FILE id="evdUNf" name="SampleSequencerPanel.h" compile="0" resource="0"
-            file="Source/SampleSequencerPanel.h"/>
+      <FILE id="qSTxfB" name="AudioPreviewPanel.cpp" compile="1" resource="0"
+            file="Source/AudioPreviewPanel.cpp"/>
+      <FILE id="vwfWT5" name="AudioPreviewPanel.h" compile="0" resource="0"
+            file="Source/AudioPreviewPanel.h"/>
+      <FILE id="AN94IY" name="NoiseOverlayPanel.cpp" compile="1" resource="0"
+            file="Source/NoiseOverlayPanel.cpp"/>
+      <FILE id="bTcNiy" name="NoiseOverlayPanel.h" compile="0" resource="0"
+            file="Source/NoiseOverlayPanel.h"/>
     </GROUP>
     <GROUP id="{F1D19C9D-5976-FA7E-4145-99A46D7DB6D2}" name="BlomeHelpers">
       <FILE id="EkzFp4" name="BlomeHelperFunctions.h" compile="0" resource="0"
@@ -98,33 +73,19 @@
       <FILE id="eGotgT" name="SampleEditor.h" compile="0" resource="0" file="Source/SampleEditor.h"/>
     </GROUP>
     <GROUP id="{E9B1E780-95F6-8A24-1076-4F173F69A7D1}" name="BlomeSampleManagement">
-      <FILE id="UMdojm" name="SampleDatabase.cpp" compile="1" resource="0"
-            file="Source/SampleDatabase.cpp"/>
-      <FILE id="ijfj3H" name="SampleDatabase.h" compile="0" resource="0"
-            file="Source/SampleDatabase.h"/>
-      <FILE id="hhjzmX" name="SampleDatabaseTable.cpp" compile="1" resource="0"
-            file="Source/SampleDatabaseTable.cpp"/>
-      <FILE id="oEWIDG" name="SampleDatabaseTable.h" compile="0" resource="0"
-            file="Source/SampleDatabaseTable.h"/>
+      <FILE id="UMdojm" name="SampleLibrary.cpp" compile="1" resource="0"
+            file="Source/SampleLibrary.cpp"/>
+      <FILE id="ijfj3H" name="SampleLibrary.h" compile="0" resource="0" file="Source/SampleLibrary.h"/>
       <FILE id="JlCuO2" name="SampleFileFilter.cpp" compile="1" resource="0"
             file="Source/SampleFileFilter.cpp"/>
       <FILE id="krBDMF" name="SampleFileFilter.h" compile="0" resource="0"
             file="Source/SampleFileFilter.h"/>
-      <FILE id="GzQN7D" name="SampleFileManager.cpp" compile="1" resource="0"
-            file="Source/SampleFileManager.cpp"/>
-      <FILE id="EA3Snn" name="SampleFileManager.h" compile="0" resource="0"
-            file="Source/SampleFileManager.h"/>
+      <FILE id="GzQN7D" name="SampleLibraryManager.cpp" compile="1" resource="0"
+            file="Source/SampleLibraryManager.cpp"/>
+      <FILE id="EA3Snn" name="SampleLibraryManager.h" compile="0" resource="0"
+            file="Source/SampleLibraryManager.h"/>
       <FILE id="i4IYPu" name="SampleItem.cpp" compile="1" resource="0" file="Source/SampleItem.cpp"/>
       <FILE id="i15BWX" name="SampleItem.h" compile="0" resource="0" file="Source/SampleItem.h"/>
-      <FILE id="sz0vSi" name="SampleMap.cpp" compile="1" resource="0" file="Source/SampleMap.cpp"/>
-      <FILE id="ImiwPX" name="SampleMap.h" compile="0" resource="0" file="Source/SampleMap.h"/>
-      <FILE id="rL8BEY" name="SamplePalette.cpp" compile="1" resource="0"
-            file="Source/SamplePalette.cpp"/>
-      <FILE id="XS1oDS" name="SamplePalette.h" compile="0" resource="0" file="Source/SamplePalette.h"/>
-      <FILE id="mcLyPh" name="SampleSequencer.cpp" compile="1" resource="0"
-            file="Source/SampleSequencer.cpp"/>
-      <FILE id="pIRzDZ" name="SampleSequencer.h" compile="0" resource="0"
-            file="Source/SampleSequencer.h"/>
       <FILE id="GKZbDK" name="SampleTag.cpp" compile="1" resource="0" file="Source/SampleTag.cpp"/>
       <FILE id="b8CCnT" name="SampleTag.h" compile="0" resource="0" file="Source/SampleTag.h"/>
     </GROUP>

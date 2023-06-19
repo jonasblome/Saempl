@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    SampleDatabase.h
+    SampleLibrary.h
     Created: 21 May 2023 2:45:47pm
     Author:  Jonas Blome
 
@@ -12,22 +12,20 @@
 #include "SampleItem.h"
 #include "BlomeHelperFunctions.h"
 #include "SampleAnalyser.h"
-#include "SampleFileManager.h"
+#include "SampleLibraryManager.h"
 
-class SampleDatabase
+class SampleLibrary
 :   ChangeListener
 {
 public:
     // Constructors
-    SampleDatabase(TimeSliceThread& inThread);
-    ~SampleDatabase();
+    SampleLibrary(TimeSliceThread& inThread);
+    ~SampleLibrary();
     
     // Methods
     void addSampleItem(File inFile);
     void removeSampleItem(String inFilePath, bool deletePermanently);
     DirectoryContentsList* getDirectoryList();
-    void setDirectory(const File& inFile);
-    void switchToParentDirectory();
     void changeListenerCallback(ChangeBroadcaster* inSource) override;
     void setFileFilter();
     void refreshSampleDatabase();
@@ -41,7 +39,7 @@ private:
     OwnedArray<SampleItem> mSampleItems;
     String mDirectoryPathToAddFilesTo;
     std::unique_ptr<SampleAnalyser> mSampleAnalyser;
-    std::unique_ptr<SampleFileManager> mSampleFileManager;
+    std::unique_ptr<SampleLibraryManager> mSampleFileManager;
     
     // Methods
     void createSampleItem(File inFile);

@@ -14,7 +14,7 @@ SampleItemPanel::SampleItemPanel(SaemplAudioProcessor& inProcessor)
 :   PanelBase(inProcessor),
     currentProcessor(inProcessor)
 {
-    setSize(SAMPLE_PANEL_WIDTH - Blome_PanelMargin, SAMPLE_PANEL_HEIGHT);
+    setSize(SAMPLE_ITEM_PANEL_WIDTH - Blome_PanelMargin, SAMPLE_ITEM_PANEL_HEIGHT);
     setPanelComponents();
 }
 
@@ -41,7 +41,7 @@ void SampleItemPanel::setPanelComponents()
     int followTransportButtonHeight = 25;
     
     // Add play button component
-    mStartStopButton = std::make_unique<TextButton>("Play/Stop");
+    mStartStopButton = std::make_unique<TextButton>(">");
     mStartStopButton->setBounds(Blome_PanelMargin / 2.0,
                                 Blome_PanelMargin / 2.0,
                                 SAMPLE_CONTROL_WIDTH - Blome_PanelMargin / 2.0,

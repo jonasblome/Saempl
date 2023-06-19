@@ -1,27 +1,27 @@
 /*
   ==============================================================================
 
-    SampleDatabaseTableViewModel.cpp
+    SampleLibrariesViewModel.cpp
     Created: 21 May 2023 3:14:48pm
     Author:  Jonas Blome
 
   ==============================================================================
 */
 
-#include "SampleDatabaseTableViewModel.h"
+#include "SampleLibrariesViewModel.h"
 
-SampleDatabaseTableViewModel::SampleDatabaseTableViewModel(SampleDatabase& inSampleDatabaseTable)
+SampleLibrariesViewModel::SampleLibrariesViewModel(SampleLibrary& inSampleDatabaseTable)
 :   sampleDatabase(inSampleDatabaseTable)
 {
     
 }
 
-SampleDatabaseTableViewModel::~SampleDatabaseTableViewModel()
+SampleLibrariesViewModel::~SampleLibrariesViewModel()
 {
     
 }
 
-DirectoryContentsList* SampleDatabaseTableViewModel::getDirectoryList()
+DirectoryContentsList* SampleLibrariesViewModel::getDirectoryList()
 {
     return sampleDatabase.getDirectoryList();
 }
@@ -29,7 +29,7 @@ DirectoryContentsList* SampleDatabaseTableViewModel::getDirectoryList()
 /**
  Adds a file and sample item to the database
  */
-void SampleDatabaseTableViewModel::addSampleItem(String inFilePath)
+void SampleLibrariesViewModel::addSampleItem(String inFilePath)
 {
     File file = File(inFilePath);
     
@@ -41,25 +41,12 @@ void SampleDatabaseTableViewModel::addSampleItem(String inFilePath)
  
  @param deletePermanently   determines if the item is deleted permanently (true) or just moved to the trash (false)
  */
-void SampleDatabaseTableViewModel::removeSampleItem(String inFilePath, bool deletePermanently = false)
+void SampleLibrariesViewModel::removeSampleItem(String inFilePath, bool deletePermanently = false)
 {
     sampleDatabase.removeSampleItem(inFilePath, deletePermanently);
 }
 
-void SampleDatabaseTableViewModel::setDirectory(const File& inFile)
-{
-    sampleDatabase.setDirectory(inFile);
-}
-
-/**
- Sets the directory to the parent directory of the current one
- */
-void SampleDatabaseTableViewModel::switchToParentDirectory()
-{
-    sampleDatabase.switchToParentDirectory();
-}
-
-void SampleDatabaseTableViewModel::refreshSampleDatabase()
+void SampleLibrariesViewModel::refreshSampleDatabase()
 {
     sampleDatabase.refreshSampleDatabase();
 }

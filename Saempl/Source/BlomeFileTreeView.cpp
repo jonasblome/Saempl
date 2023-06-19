@@ -10,7 +10,7 @@
 
 #include "BlomeFileTreeView.h"
 
-BlomeFileTreeView::BlomeFileTreeView(SampleDatabaseTableViewModel& inSampleDatabaseTableViewModel)
+BlomeFileTreeView::BlomeFileTreeView(SampleLibrariesViewModel& inSampleDatabaseTableViewModel)
 :   FileTreeComponent(*inSampleDatabaseTableViewModel.getDirectoryList()),
     sampleDatabaseTableViewModel(inSampleDatabaseTableViewModel)
 {

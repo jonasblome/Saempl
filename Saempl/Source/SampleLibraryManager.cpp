@@ -1,27 +1,27 @@
 /*
   ==============================================================================
 
-    SampleFileManager.cpp
+    SampleLibraryManager.cpp
     Created: 10 Jun 2023 6:16:05pm
     Author:  Jonas Blome
 
   ==============================================================================
 */
 
-#include "SampleFileManager.h"
+#include "SampleLibraryManager.h"
 
 
-SampleFileManager::SampleFileManager()
+SampleLibraryManager::SampleLibraryManager()
 {
     
 }
 
-SampleFileManager::~SampleFileManager()
+SampleLibraryManager::~SampleLibraryManager()
 {
     
 }
 
-void SampleFileManager::createSampleFile(SampleItem& inSampleItem)
+void SampleLibraryManager::createSampleFile(SampleItem& inSampleItem)
 {
     // Create sample file as xml file
     XmlElement sampleFileXml("Blome_SampleFile");
@@ -54,7 +54,7 @@ void SampleFileManager::createSampleFile(SampleItem& inSampleItem)
                           destinationData.getSize());
 }
 
-SampleItem* SampleFileManager::loadSampleFile(String inFilePath)
+SampleItem* SampleLibraryManager::loadSampleFile(String inFilePath)
 {
     File sampleFile = File(inFilePath);
     MemoryBlock sampleFileMemoryBlock;
@@ -88,7 +88,7 @@ SampleItem* SampleFileManager::loadSampleFile(String inFilePath)
     }
 }
 
-void SampleFileManager::getXmlForSampleItem(SampleItem& inSampleItem, XmlElement* inElement)
+void SampleLibraryManager::getXmlForSampleItem(SampleItem& inSampleItem, XmlElement* inElement)
 {
     
 }
