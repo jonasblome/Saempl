@@ -19,6 +19,8 @@ SampleLibrary::SampleLibrary(TimeSliceThread& inThread)
     mLibraryFileDirectoryPath =
         (File::getSpecialLocation(juce::File::userMusicDirectory)).getFullPathName()
         + DIRECTORY_SEPARATOR
+        + "Plugins"
+        + DIRECTORY_SEPARATOR
         + "Saempl"
         + DIRECTORY_SEPARATOR
         + "SampleLibrary";
@@ -30,6 +32,8 @@ SampleLibrary::SampleLibrary(TimeSliceThread& inThread)
     
     mCurrentLibraryPath =
         (File::getSpecialLocation(juce::File::userMusicDirectory)).getFullPathName()
+        + DIRECTORY_SEPARATOR
+        + "Plugins"
         + DIRECTORY_SEPARATOR
         + "Saempl"
         + DIRECTORY_SEPARATOR
