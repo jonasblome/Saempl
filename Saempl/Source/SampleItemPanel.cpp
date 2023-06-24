@@ -14,7 +14,7 @@ SampleItemPanel::SampleItemPanel(SaemplAudioProcessor& inProcessor)
 :   PanelBase(inProcessor),
     currentProcessor(inProcessor)
 {
-    setSize(SAMPLE_ITEM_PANEL_WIDTH - Blome_PanelMargin, SAMPLE_ITEM_PANEL_HEIGHT);
+    setSize(SAMPLE_ITEM_PANEL_WIDTH - PANEL_MARGIN, SAMPLE_ITEM_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
     setPanelComponents();
 }
 
@@ -42,25 +42,25 @@ void SampleItemPanel::setPanelComponents()
     
     // Add play button component
     mStartStopButton = std::make_unique<TextButton>(">");
-    mStartStopButton->setBounds(Blome_PanelMargin / 2.0,
-                                Blome_PanelMargin / 2.0,
-                                SAMPLE_CONTROL_WIDTH - Blome_PanelMargin / 2.0,
-                                SAMPLE_CONTROL_WIDTH - Blome_PanelMargin / 2.0);
+    mStartStopButton->setBounds(PANEL_MARGIN / 2.0,
+                                PANEL_MARGIN / 2.0,
+                                Blome_NormalButtonHeight - PANEL_MARGIN / 2.0,
+                                Blome_NormalButtonHeight - PANEL_MARGIN / 2.0);
     mStartStopButton->onClick = [this] { mAudioPreviewPanel->startOrStop(); };
     addAndMakeVisible(*mStartStopButton);
     
     // Add follow transport button
     mFollowTransportButton = std::make_unique<ToggleButton>("Follow Transport");
-    mFollowTransportButton->setBounds(Blome_PanelMargin / 2.0,
-                                      SAMPLE_CONTROL_WIDTH + Blome_PanelMargin / 2.0,
-                                      SAMPLE_CONTROL_WIDTH - Blome_PanelMargin / 2.0,
-                                      followTransportButtonHeight - Blome_PanelMargin / 2.0);
+    mFollowTransportButton->setBounds(PANEL_MARGIN / 2.0,
+                                      SAMPLE_CONTROL_WIDTH + PANEL_MARGIN / 2.0,
+                                      SAMPLE_CONTROL_WIDTH - PANEL_MARGIN / 2.0,
+                                      followTransportButtonHeight - PANEL_MARGIN / 2.0);
     mFollowTransportButton->onClick = [this] { mAudioPreviewPanel->setFollowsTransport(mFollowTransportButton->getToggleState()); };
     addAndMakeVisible(*mFollowTransportButton);
     
     // Add zoom slider
     mZoomSlider = std::make_unique<Slider>(Slider::LinearVertical, Slider::NoTextBox);
-    mZoomSlider->setBounds(Blome_PanelMargin / 2.0,
+    mZoomSlider->setBounds(2,
                            SAMPLE_CONTROL_WIDTH + followTransportButtonHeight,
                            SAMPLE_CONTROL_WIDTH,
                            controlsHeight - SAMPLE_CONTROL_WIDTH - followTransportButtonHeight);
@@ -71,7 +71,7 @@ void SampleItemPanel::setPanelComponents()
     
     // Add audio thumbnail component
     mAudioPreviewPanel = std::make_unique<AudioPreviewPanel>(currentProcessor, *mZoomSlider, *mSampleItemViewModel);
-    mAudioPreviewPanel->setTopLeftPosition(Blome_PanelMargin / 2.0 + SAMPLE_CONTROL_WIDTH, Blome_PanelMargin / 2.0);
+    mAudioPreviewPanel->setTopLeftPosition(PANEL_MARGIN / 2.0 + SAMPLE_CONTROL_WIDTH, PANEL_MARGIN / 2.0);
     addAndMakeVisible(mAudioPreviewPanel.get());
     mAudioPreviewPanel->addChangeListener(this);
     

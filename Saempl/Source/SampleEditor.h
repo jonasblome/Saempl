@@ -31,6 +31,8 @@ public:
     bool loadURLIntoTransport(const URL& audioURL, TimeSliceThread& inThread);
     
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleEditor)
+    
     // Fields
     std::unique_ptr<AudioPlayer> mAudioPlayer;
     

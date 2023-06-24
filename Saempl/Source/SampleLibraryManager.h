@@ -22,11 +22,12 @@ public:
     ~SampleLibraryManager();
     
     // Methods
-    void createSampleFile(SampleItem& inSampleItem);
-    SampleItem* loadSampleFile(String inFilePath);
-    void getXmlForSampleItem(SampleItem& inSampleItem, juce::XmlElement* inElement);
+    void updateSampleLibraryFile(String inFilePath, OwnedArray<SampleItem>* inSampleItem);
+    void loadSampleLibraryFile(String inFilePath, OwnedArray<SampleItem>* inSampleItems);
     
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibraryManager)
+    
     // Fields
     
     // Methods

@@ -50,6 +50,8 @@ public:
     void updateFollowTransportState();
 
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(AudioPreviewPanel)
+    
     // Fields
     int sampleItemTitleHeight = 25;
     SaemplAudioProcessor& currentProcessor;

@@ -28,18 +28,21 @@ public:
     DirectoryContentsList* getDirectoryList();
     void changeListenerCallback(ChangeBroadcaster* inSource) override;
     void setFileFilter();
-    void refreshSampleDatabase();
+    void refreshSampleLibrary();
     SampleItem* getSampleItemWithFilePath(String inFilePath);
     
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibrary)
+    
     // Fields
     std::unique_ptr<FileFilter> mDirectoryFilter;
-    String mSampleItemDirectoryPath;
+    String mLibraryFileDirectoryPath;
+    String mCurrentLibraryPath;
     std::unique_ptr<DirectoryContentsList> mDirectoryContent;
     OwnedArray<SampleItem> mSampleItems;
     String mDirectoryPathToAddFilesTo;
     std::unique_ptr<SampleAnalyser> mSampleAnalyser;
-    std::unique_ptr<SampleLibraryManager> mSampleFileManager;
+    std::unique_ptr<SampleLibraryManager> mSampleLibraryManager;
     
     // Methods
     void createSampleItem(File inFile);

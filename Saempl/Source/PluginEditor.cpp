@@ -13,6 +13,11 @@
 SaemplAudioProcessorEditor::SaemplAudioProcessorEditor (SaemplAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
+    // Set styling of plugin UI
+    mLookAndFeel = std::make_unique<BlomeLookAndFeel>(p.getSampleLibrary());
+    // setLookAndFeel(&*mLookAndFeel);
+    LookAndFeel::setDefaultLookAndFeel(&*mLookAndFeel);
+    
     // Set plugin window size
     setSize(MAIN_PANEL_WIDTH, MAIN_PANEL_HEIGHT);
     
@@ -23,11 +28,6 @@ SaemplAudioProcessorEditor::SaemplAudioProcessorEditor (SaemplAudioProcessor& p)
     // Add noise overlay
     mNoiseOverlayPanel = std::make_unique<NoiseOverlayPanel>();
     addAndMakeVisible(mNoiseOverlayPanel.get());
-    
-    // Set styling of plugin UI
-    mLookAndFeel = std::make_unique<BlomeLookAndFeel>(p.getSampleDatabase());
-    setLookAndFeel(&*mLookAndFeel);
-    juce::LookAndFeel::setDefaultLookAndFeel(&*mLookAndFeel);
 }
 
 SaemplAudioProcessorEditor::~SaemplAudioProcessorEditor()

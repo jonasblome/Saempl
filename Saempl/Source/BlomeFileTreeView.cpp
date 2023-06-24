@@ -71,9 +71,7 @@ void BlomeFileTreeView::mouseDrag(const MouseEvent& e)
                 
                 // Add all selected files to external drag
                 for (int f = 0; f < getNumSelectedFiles(); f++) {
-                    File selectedSampleFile = getSelectedFile(f);
-                    String linkedAudioFilePath = selectedSampleFile.getParentDirectory().getFullPathName() + DIRECTORY_SEPARATOR + selectedSampleFile.getFileNameWithoutExtension();
-                    selectedFilePaths.add(linkedAudioFilePath);
+                    selectedFilePaths.add(getSelectedFile(f).getFullPathName());
                 }
                 
                 DragAndDropContainer* dragContainer = DragAndDropContainer::findParentDragContainerFor(this);

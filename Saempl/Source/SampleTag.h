@@ -27,6 +27,8 @@ public:
     double getValue();
     
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleTag)
+    
     // Fields
     String mTagName;
     double mTagValue;

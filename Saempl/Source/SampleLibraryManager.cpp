@@ -21,75 +21,98 @@ SampleLibraryManager::~SampleLibraryManager()
     
 }
 
-void SampleLibraryManager::createSampleFile(SampleItem& inSampleItem)
+void SampleLibraryManager::updateSampleLibraryFile(String inLibraryFilePath, OwnedArray<SampleItem>* inSampleItems)
 {
-    // Create sample file as xml file
-    XmlElement sampleFileXml("Blome_SampleFile");
+    // Create sample library file as xml
+    XmlElement sampleLibraryXml("SampleLibrary");
     
-    // Adding sample tags to sample file xml
-    XmlElement* sampleTags = new XmlElement("SampleTags");
+    // Adding sample items xml to sample library xml
+    XmlElement* sampleItemsXml = new XmlElement("SampleItems");
     
-    for(SampleTag* tag : *inSampleItem.getSampleTags())
+    for (SampleItem* sampleItem : *inSampleItems)
     {
-        XmlElement* sampleTag = new XmlElement(tag->getName());
-        sampleTag->setAttribute("TagValue", tag->getValue());
-        sampleTags->addChildElement(sampleTag);
+        XmlElement* sampleItemXml = new XmlElement("SampleItem");
+        
+        // Adding file path xml to sample item xml
+        sampleItemXml->setAttribute("FilePath", sampleItem->getFilePath());
+        
+        // Adding sample tags xml to sample item xml
+        XmlElement* sampleTagsXml = new XmlElement("SampleTags");
+        
+        for (SampleTag* sampleTag : *sampleItem->getSampleTags())
+        {
+            XmlElement* sampleTagXml = new XmlElement(sampleTag->getName());
+            sampleTagXml->setAttribute("TagValue", sampleTag->getValue());
+            sampleTagsXml->prependChildElement(sampleTagXml);
+        }
+        
+        sampleItemXml->addChildElement(sampleTagsXml);
+        
+        sampleItemsXml->prependChildElement(sampleItemXml);
     }
     
-    sampleFileXml.addChildElement(sampleTags);
+    sampleLibraryXml.addChildElement(sampleItemsXml);
     
-    // Write sample file xml to external file
-    File sampleFile = File(inSampleItem.getFilePath() + SAMPLE_FILE_EXTENSION);
+    // Write sample library xml to external file
+    File sampleLibraryFile = File(inLibraryFilePath);
     
-    if(!sampleFile.exists()) {
-        sampleFile.create();
+    if(!sampleLibraryFile.exists()) {
+        sampleLibraryFile.create();
     }
     else {
-        sampleFile.deleteFile();
+        sampleLibraryFile.deleteFile();
     }
     
     MemoryBlock destinationData;
-    AudioPluginInstance::copyXmlToBinary(sampleFileXml, destinationData);
-    sampleFile.appendData(destinationData.getData(),
+    AudioPluginInstance::copyXmlToBinary(sampleLibraryXml, destinationData);
+    sampleLibraryFile.appendData(destinationData.getData(),
                           destinationData.getSize());
+    destinationData.reset();
 }
 
-SampleItem* SampleLibraryManager::loadSampleFile(String inFilePath)
+void SampleLibraryManager::loadSampleLibraryFile(String inFilePath, OwnedArray<SampleItem>* inSampleItems)
 {
-    File sampleFile = File(inFilePath);
-    MemoryBlock sampleFileMemoryBlock;
-    sampleFile.loadFileAsData(sampleFileMemoryBlock);
-    XmlElement sampleFileXml = *AudioPluginInstance::getXmlFromBinary(sampleFileMemoryBlock.getData(), (int) sampleFileMemoryBlock.getSize());
-    XmlElement* sampleFileXmlPointer = &sampleFileXml;
+    File libraryFile = File(inFilePath);
     
-    SampleItem* newSampleItem = new SampleItem();
-    
-    if(sampleFileXmlPointer)
+    if (libraryFile.exists())
     {
-        const String sampleItemFilePath = sampleFile.getParentDirectory().getFullPathName() + DIRECTORY_SEPARATOR + sampleFile.getFileNameWithoutExtension();
-        newSampleItem->setFilePath(sampleItemFilePath);
+        MemoryBlock libraryFileData;
+        libraryFile.loadFileAsData(libraryFileData);
+        XmlElement sampleLibraryXml = *AudioPluginInstance::getXmlFromBinary(libraryFileData.getData(), (int) libraryFileData.getSize());
+        libraryFileData.reset();
+        XmlElement* libraryXmlPointer = &sampleLibraryXml;
         
-        XmlElement* sampleTagsXml = sampleFileXmlPointer->getChildByName("SampleTags");
-        
-        for (auto* sampleTagXml: sampleTagsXml->getChildIterator())
+        if(libraryXmlPointer)
         {
-            String tagName = sampleTagXml->getTagName();
-            float tagValue = sampleTagXml->getDoubleAttribute("TagValue");
+            XmlElement* sampleItemsXml = libraryXmlPointer->getChildByName("SampleItems");
             
-            newSampleItem->addSampleTag(new SampleTag(tagName, tagValue));
+            for (auto* sampleItemXml : sampleItemsXml->getChildIterator())
+            {
+                SampleItem* sampleItem = new SampleItem();
+                sampleItem->setFilePath(sampleItemXml->getStringAttribute("FilePath"));
+                XmlElement* sampleTagsXml = sampleItemXml->getChildByName("SampleTags");
+                
+                for (auto* sampleTagXml : sampleTagsXml->getChildIterator())
+                {
+                    String tagName = sampleTagXml->getTagName();
+                    float tagValue = sampleTagXml->getDoubleAttribute("TagValue");
+                    
+                    sampleItem->addSampleTag(new SampleTag(tagName, tagValue));
+                }
+                
+                inSampleItems->add(sampleItem);
+            }
         }
-        
-        return newSampleItem;
+        else
+        {
+            jassertfalse;
+            return;
+        }
     }
     else
     {
         jassertfalse;
-        return nullptr;
+        return;
     }
-}
-
-void SampleLibraryManager::getXmlForSampleItem(SampleItem& inSampleItem, XmlElement* inElement)
-{
-    
 }
 

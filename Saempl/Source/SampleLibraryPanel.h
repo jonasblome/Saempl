@@ -12,18 +12,18 @@
 
 #include "PanelBase.h"
 #include "BlomeFileTreeView.h"
-#include "SampleLibrariesViewModel.h"
+#include "SampleLibraryViewModel.h"
 #include "SampleItemPanel.h"
 
-class SampleLibrariesPanel
+class SampleLibraryPanel
 :   public PanelBase,
     private FileBrowserListener,
     private ChangeListener
 {
 public:
     // Constructors
-    SampleLibrariesPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
-    ~SampleLibrariesPanel();
+    SampleLibraryPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
+    ~SampleLibraryPanel();
     
     // Methods
     void paint(Graphics& g) override;
@@ -32,12 +32,13 @@ public:
 
     
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibraryPanel)
+    
     // Fields
     SaemplAudioProcessor& currentProcessor;
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<SampleLibrariesViewModel> mSampleLibrariesViewModel;
     std::unique_ptr<BlomeFileTreeView> mFileTree;
-    std::unique_ptr<TextButton> mRefreshSampleLibrariesButton;
     
     // Methods
     void selectionChanged() override;

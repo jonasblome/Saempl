@@ -33,11 +33,11 @@ void MainPanel::setPanelComponents()
 {
     // Add header panel
     mHeaderPanel = std::make_unique<HeaderPanel>(currentProcessor);
-    mHeaderPanel->setTopLeftPosition(Blome_PanelMargin / 2.0, Blome_PanelMargin / 2.0);
+    mHeaderPanel->setTopLeftPosition(PANEL_MARGIN / 2.0, PANEL_MARGIN / 2.0);
     addAndMakeVisible(*mHeaderPanel);
     
     // Add center panel
     mCenterPanel = std::make_unique<CenterPanel>(currentProcessor);
-    mCenterPanel->setTopLeftPosition(Blome_PanelMargin / 2.0, HEADER_PANEL_HEIGHT);
+    mCenterPanel->setTopLeftPosition(PANEL_MARGIN / 2.0, HEADER_PANEL_HEIGHT + PANEL_MARGIN / 2.0);
     addAndMakeVisible(*mCenterPanel);
 }

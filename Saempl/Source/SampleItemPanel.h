@@ -29,6 +29,8 @@ public:
     void showAudioResource(URL inResource);
 
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleItemPanel)
+    
     // Fields
     SaemplAudioProcessor& currentProcessor;
     std::unique_ptr<SampleItemViewModel> mSampleItemViewModel;
@@ -39,6 +41,4 @@ private:
     
     // Methods
     void changeListenerCallback (ChangeBroadcaster* source) override;
-    
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SampleItemPanel)
 };

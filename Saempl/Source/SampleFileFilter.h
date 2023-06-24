@@ -26,6 +26,8 @@ public:
     void addFilteredFilePath(String inFilePath);
     
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleFileFilter)
+    
     // Fields
     OwnedArray<String> mFilteredFilePaths;
     

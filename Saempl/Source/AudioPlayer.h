@@ -33,6 +33,8 @@ public:
     bool loadURLIntoTransport(const URL& inURL, TimeSliceThread& inThread);
     
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(AudioPlayer)
+    
     // Fields
     std::unique_ptr<AudioDeviceManager> mAudioDeviceManager;
     AudioFormatManager mFormatManager;

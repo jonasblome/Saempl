@@ -11,7 +11,7 @@
 #pragma once
 
 #include "PanelBase.h"
-#include "SampleLibrariesPanel.h"
+#include "SampleNavigationPanel.h"
 #include "SampleItemPanel.h"
 
 class CenterPanel
@@ -27,11 +27,13 @@ public:
     void setPanelComponents() override;
     
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(CenterPanel)
+    
     // Fields
     SaemplAudioProcessor& currentProcessor;
-    std::unique_ptr<SampleLibrariesPanel> mSampleDatabaseTablePanel;
+    std::unique_ptr<SampleNavigationPanel> mSampleNavigationPanel;
     std::unique_ptr<SampleItemPanel> mSampleItemPanel;
-    std::unique_ptr<ToggleButton> mTogglePanelButton;
+    std::unique_ptr<ToggleButton> mToggleSampleItemPanelButton;
     
     // Methods
     void toggleSampleItemPanel();

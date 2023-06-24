@@ -31,6 +31,8 @@ public:
     virtual void resizePanelComponents() {};
     
 protected:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(PanelBase)
+    
     // Fields
     
     // Methods

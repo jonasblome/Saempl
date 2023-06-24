@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    HeaderPanel.h
-    Created: 27 May 2023 11:12:36am
+    SampleNavigationPanel.h
+    Created: 24 Jun 2023 4:28:16pm
     Author:  Jonas Blome
 
   ==============================================================================
@@ -11,25 +11,29 @@
 #pragma once
 
 #include "PanelBase.h"
+#include "SampleLibraryPanel.h"
+#include "SampleItemPanel.h"
 
-class HeaderPanel
+class SampleNavigationPanel
 :   public PanelBase
 {
 public:
     // Constructors
-    HeaderPanel(SaemplAudioProcessor& inProcessor);
-    ~HeaderPanel();
+    SampleNavigationPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
+    ~SampleNavigationPanel();
     
     // Methods
     void paint(Graphics& g) override;
     void setPanelComponents() override;
+    void resizePanelComponents() override;
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(HeaderPanel)
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleNavigationPanel)
     
     // Fields
     SaemplAudioProcessor& currentProcessor;
-    std::unique_ptr<TextButton> mRefreshSampleLibrariesButton;
+    SampleItemPanel& linkedSampleItemPanel;
+    std::unique_ptr<SampleLibraryPanel> mSampleLibrariesPanel;
     
     // Methods
     

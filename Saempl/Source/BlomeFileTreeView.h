@@ -12,7 +12,7 @@
 
 #include "JuceHeader.h"
 #include "BlomeHelperFunctions.h"
-#include "SampleLibrariesViewModel.h"
+#include "SampleLibraryViewModel.h"
 
 class BlomeFileTreeView
 :   public FileTreeComponent,
@@ -30,6 +30,8 @@ public:
     void mouseDrag(const MouseEvent& e) override;
     
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeFileTreeView)
+    
     // Fields
     SampleLibrariesViewModel& sampleDatabaseTableViewModel;
     

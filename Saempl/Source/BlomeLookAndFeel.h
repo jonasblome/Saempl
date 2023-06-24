@@ -32,7 +32,8 @@ public:
         setColour(TextButton::textColourOffId, BlomeColour_AccentColourLight);
     }
     
-    virtual ~BlomeLookAndFeel() {
+    virtual ~BlomeLookAndFeel()
+    {
         
     }
     
@@ -360,7 +361,7 @@ public:
             int propertiesWidth = roundToInt((float)width * 0.1f);
 
             // Draw file name
-            g.drawFittedText(file.getFileNameWithoutExtension(),
+            g.drawFittedText(filename,
                              x,
                              0,
                              propertiesStartX - x,

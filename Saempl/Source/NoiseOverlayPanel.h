@@ -26,6 +26,8 @@ public:
     void setPanelComponents();
     
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(NoiseOverlayPanel)
+    
     // Fields
     Image mNoiseOverlay;
     

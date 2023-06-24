@@ -28,6 +28,8 @@ public:
     String getFilePath();
     
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleItem)
+    
     // Fields
     OwnedArray<SampleTag> mSampleTags;
     String mFilePath;

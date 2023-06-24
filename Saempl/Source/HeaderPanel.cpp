@@ -14,7 +14,7 @@ HeaderPanel::HeaderPanel(SaemplAudioProcessor& inProcessor)
 :   PanelBase(inProcessor),
     currentProcessor(inProcessor)
 {
-    setSize(HEADER_PANEL_WIDTH - Blome_PanelMargin, HEADER_PANEL_HEIGHT - Blome_PanelMargin);
+    setSize(HEADER_PANEL_WIDTH - PANEL_MARGIN, HEADER_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
     setPanelComponents();
 }
 
@@ -36,15 +36,22 @@ void HeaderPanel::paint(Graphics& g)
     g.setColour(BlomeColour_AccentColourDark);
     g.setFont(font_medium);
     g.drawFittedText("Blome Audio",
-                     HEADER_PANEL_WIDTH - logoWidth - 20 - Blome_PanelMargin,
-                     Blome_PanelMargin / 2.0,
+                     HEADER_PANEL_WIDTH - logoWidth - 20 - PANEL_MARGIN,
+                     PANEL_MARGIN / 2.0,
                      logoWidth,
-                     getHeight() - Blome_PanelMargin,
+                     getHeight() - PANEL_MARGIN,
                      Justification::centredRight,
                      1);
 }
 
 void HeaderPanel::setPanelComponents()
 {
-    
+    // Add change directory button component
+    mRefreshSampleLibrariesButton = std::make_unique<TextButton>("Refresh");
+    mRefreshSampleLibrariesButton->setBounds(PANEL_MARGIN / 2.0,
+                                            PANEL_MARGIN / 2.0,
+                                            50,
+                                            getHeight() - PANEL_MARGIN);
+    mRefreshSampleLibrariesButton->onClick = [this] { currentProcessor.getSampleLibrary().refreshSampleLibrary(); };
+    addAndMakeVisible(*mRefreshSampleLibrariesButton);
 }

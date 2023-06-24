@@ -8,10 +8,10 @@
   ==============================================================================
 */
 
-#include "SampleLibrariesViewModel.h"
+#include "SampleLibraryViewModel.h"
 
 SampleLibrariesViewModel::SampleLibrariesViewModel(SampleLibrary& inSampleDatabaseTable)
-:   sampleDatabase(inSampleDatabaseTable)
+:   sampleLibrary(inSampleDatabaseTable)
 {
     
 }
@@ -23,7 +23,7 @@ SampleLibrariesViewModel::~SampleLibrariesViewModel()
 
 DirectoryContentsList* SampleLibrariesViewModel::getDirectoryList()
 {
-    return sampleDatabase.getDirectoryList();
+    return sampleLibrary.getDirectoryList();
 }
 
 /**
@@ -33,7 +33,7 @@ void SampleLibrariesViewModel::addSampleItem(String inFilePath)
 {
     File file = File(inFilePath);
     
-    sampleDatabase.addSampleItem(file);
+    sampleLibrary.addSampleItem(file);
 }
 
 /**
@@ -43,10 +43,10 @@ void SampleLibrariesViewModel::addSampleItem(String inFilePath)
  */
 void SampleLibrariesViewModel::removeSampleItem(String inFilePath, bool deletePermanently = false)
 {
-    sampleDatabase.removeSampleItem(inFilePath, deletePermanently);
+    sampleLibrary.removeSampleItem(inFilePath, deletePermanently);
 }
 
-void SampleLibrariesViewModel::refreshSampleDatabase()
+void SampleLibrariesViewModel::refreshSampleLibrary()
 {
-    sampleDatabase.refreshSampleDatabase();
+    sampleLibrary.refreshSampleLibrary();
 }

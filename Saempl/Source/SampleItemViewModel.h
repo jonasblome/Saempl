@@ -32,6 +32,8 @@ public:
     
     
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleItemViewModel)
+    
     // Fields
     std::unique_ptr<SampleEditor> mSampleEditor;
     SampleItem mLoadedSample;

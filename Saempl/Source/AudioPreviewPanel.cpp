@@ -20,7 +20,7 @@ AudioPreviewPanel::AudioPreviewPanel(SaemplAudioProcessor& inProcessor, Slider& 
     mAudioPreview(512, sampleItemViewModel.getAudioFormatManager(), thumbnailCache),
     isFollowingTransport(false)
 {
-    setSize(SAMPLE_PREVIEW_WIDTH - Blome_PanelMargin * 2, SAMPLE_PREVIEW_HEIGHT - Blome_PanelMargin);
+    setSize(SAMPLE_PREVIEW_WIDTH - PANEL_MARGIN * 2, SAMPLE_PREVIEW_HEIGHT - PANEL_MARGIN * 1.5);
     setPanelComponents();
 }
 
@@ -48,14 +48,14 @@ void AudioPreviewPanel::paint(Graphics& g)
         g.setFont(font_small_bold);
         String fileName = restoreSpacesFromURLString(lastFileDropped.getFileName());
         g.drawFittedText(fileName,
-                         getLocalBounds().removeFromRight(getWidth() - Blome_PanelMargin).removeFromTop(sampleItemTitleHeight),
+                         getLocalBounds().removeFromRight(getWidth() - PANEL_MARGIN).removeFromTop(sampleItemTitleHeight),
                          Justification::centredLeft,
                          2);
         
         // Draw audio preview
         previewArea.removeFromBottom(mAudioPreviewScrollbar->getHeight() + 4);
         mAudioPreview.drawChannels(g,
-                                   previewArea.reduced(Blome_PanelMargin / 2.0),
+                                   previewArea.reduced(PANEL_MARGIN / 2.0),
                                    visibleRange.getStart(),
                                    visibleRange.getEnd(),
                                    1.0f);
@@ -64,7 +64,7 @@ void AudioPreviewPanel::paint(Graphics& g)
     {
         g.setFont(font_small_bold);
         g.drawFittedText("No audio file selected",
-                         getLocalBounds().removeFromRight(getWidth() - Blome_PanelMargin).removeFromTop(sampleItemTitleHeight),
+                         getLocalBounds().removeFromRight(getWidth() - PANEL_MARGIN).removeFromTop(sampleItemTitleHeight),
                          Justification::centredLeft,
                          1);
         g.setFont(font_medium);
@@ -162,7 +162,7 @@ void AudioPreviewPanel::itemDropped(const SourceDetails& dragSourceDetails)
         if (BlomeFileTreeView* fileTreeView = static_cast<BlomeFileTreeView*>(dragSourceComponent))
         {
             File sampleFile = fileTreeView->getSelectedFile();
-            File linkedAudioFile = File(sampleFile.getParentDirectory().getFullPathName() + DIRECTORY_SEPARATOR + sampleFile.getFileNameWithoutExtension());
+            File linkedAudioFile = File(sampleFile.getParentDirectory().getFullPathName() +  DIRECTORY_SEPARATOR + sampleFile.getFileNameWithoutExtension());
             
             if (!sampleFile.isDirectory() && isSupportedAudioFileFormat(linkedAudioFile.getFileExtension()))
             {
@@ -260,8 +260,8 @@ void AudioPreviewPanel::updateCursorPosition()
 {
     mAudioPositionMarker.setVisible(sampleItemViewModel.isPlayingAudio() || isMouseButtonDown());
 
-    mAudioPositionMarker.setRectangle(Rectangle<float>(timeToX(sampleItemViewModel.getCurrentPosition()) - 0.75f, sampleItemTitleHeight + Blome_PanelMargin / 2.0,
-                                                          1.5f, (float)(getHeight() - Blome_PanelMargin - sampleItemTitleHeight - mAudioPreviewScrollbar->getHeight())));
+    mAudioPositionMarker.setRectangle(Rectangle<float>(timeToX(sampleItemViewModel.getCurrentPosition()) - 0.75f, sampleItemTitleHeight + PANEL_MARGIN / 2.0,
+                                                          1.5f, (float)(getHeight() - PANEL_MARGIN - sampleItemTitleHeight - mAudioPreviewScrollbar->getHeight())));
 }
 
 void AudioPreviewPanel::showAudioResource()

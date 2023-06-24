@@ -14,7 +14,7 @@ CenterPanel::CenterPanel(SaemplAudioProcessor& inProcessor)
 :   PanelBase(inProcessor),
     currentProcessor(inProcessor)
 {
-    setSize(CENTER_PANEL_WIDTH, CENTER_PANEL_HEIGHT);
+    setSize(CENTER_PANEL_WIDTH - PANEL_MARGIN / 2.0, CENTER_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
     setPanelComponents();
 }
 
@@ -32,23 +32,23 @@ void CenterPanel::setPanelComponents()
 {
     // Add panel for sample item view
     mSampleItemPanel = std::make_unique<SampleItemPanel>(currentProcessor);
-    mSampleItemPanel->setTopLeftPosition(0, SAMPLE_LIBRARIES_PANEL_HEIGHT - Blome_PanelMargin / 2.0);
+    mSampleItemPanel->setTopLeftPosition(0, SAMPLE_NAVIGATION_PANEL_HEIGHT);
     addAndMakeVisible(*mSampleItemPanel);
     
     // Add panel for database views
-    mSampleDatabaseTablePanel = std::make_unique<SampleLibrariesPanel>(currentProcessor, *mSampleItemPanel);
-    mSampleDatabaseTablePanel->setTopLeftPosition(0, 0);
-    addAndMakeVisible(*mSampleDatabaseTablePanel);
+    mSampleNavigationPanel = std::make_unique<SampleNavigationPanel>(currentProcessor, *mSampleItemPanel);
+    mSampleNavigationPanel->setTopLeftPosition(0, 0);
+    addAndMakeVisible(*mSampleNavigationPanel);
     
     // Add toggle panel button
-    mTogglePanelButton = std::make_unique<ToggleButton>("Toggle SampleItem Panel");
-    mTogglePanelButton->setToggleState(true, NotificationType::dontSendNotification);
-    mTogglePanelButton->setBounds(0,
-                                  SAMPLE_LIBRARIES_PANEL_HEIGHT + SAMPLE_ITEM_PANEL_HEIGHT,
-                                  SAMPLE_ITEM_PANEL_TOGGLE_HEIGHT - Blome_PanelMargin / 2.0,
-                                  SAMPLE_ITEM_PANEL_TOGGLE_HEIGHT - Blome_PanelMargin / 2.0);
-    mTogglePanelButton->onClick = [this] { toggleSampleItemPanel(); };
-    addAndMakeVisible(*mTogglePanelButton);
+    mToggleSampleItemPanelButton = std::make_unique<ToggleButton>("Toggle SampleItem Panel");
+    mToggleSampleItemPanelButton->setToggleState(true, NotificationType::dontSendNotification);
+    mToggleSampleItemPanelButton->setBounds(0,
+                                            SAMPLE_NAVIGATION_PANEL_HEIGHT + SAMPLE_ITEM_PANEL_HEIGHT,
+                                            SAMPLE_ITEM_PANEL_TOGGLE_HEIGHT - PANEL_MARGIN,
+                                            SAMPLE_ITEM_PANEL_TOGGLE_HEIGHT - PANEL_MARGIN);
+    mToggleSampleItemPanelButton->onClick = [this] { toggleSampleItemPanel(); };
+    addAndMakeVisible(*mToggleSampleItemPanelButton);
 }
 
 /**
@@ -60,12 +60,12 @@ void CenterPanel::toggleSampleItemPanel()
     
     if(mSampleItemPanel->isVisible())
     {
-        mSampleDatabaseTablePanel->setSize(SAMPLE_LIBRARIES_PANEL_WIDTH - Blome_PanelMargin, SAMPLE_LIBRARIES_PANEL_HEIGHT - Blome_PanelMargin);
+        mSampleNavigationPanel->setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN, SAMPLE_NAVIGATION_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
     }
     else
     {
-        mSampleDatabaseTablePanel->setSize(SAMPLE_LIBRARIES_PANEL_WIDTH - Blome_PanelMargin, CENTER_PANEL_HEIGHT - SAMPLE_ITEM_PANEL_TOGGLE_HEIGHT - Blome_PanelMargin / 2.0);
+        mSampleNavigationPanel->setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN, CENTER_PANEL_HEIGHT - SAMPLE_ITEM_PANEL_TOGGLE_HEIGHT - PANEL_MARGIN / 2.0);
     }
     
-    mSampleDatabaseTablePanel->repaint();
+    mSampleNavigationPanel->repaint();
 }

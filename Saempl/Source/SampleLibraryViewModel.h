@@ -24,11 +24,13 @@ public:
     DirectoryContentsList* getDirectoryList();
     void addSampleItem(String inFilePath);
     void removeSampleItem(String inFilePath, bool deletePermanently);
-    void refreshSampleDatabase();
+    void refreshSampleLibrary();
     
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibrariesViewModel)
+    
     // Fields
-    SampleLibrary& sampleDatabase;
+    SampleLibrary& sampleLibrary;
     
     // Methods
     
