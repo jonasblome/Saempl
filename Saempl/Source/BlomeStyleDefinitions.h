@@ -36,47 +36,45 @@ const int SAMPLE_CONTROL_HEIGHT = SAMPLE_ITEM_PANEL_HEIGHT;
 const int SAMPLE_PREVIEW_WIDTH = SAMPLE_ITEM_PANEL_WIDTH - SAMPLE_CONTROL_WIDTH;
 const int SAMPLE_PREVIEW_HEIGHT = SAMPLE_ITEM_PANEL_HEIGHT;
 
+
 // Colour definitions
+const Colour COLOUR_GREENISH_WHITE = Colour(235, 255, 235);
 
-// Greenish white
-const Colour BlomeColour_BlueishWhite = Colour(235, 255, 235);
+const Colour COLOUR_LIGHT_GRAY = Colour(155, 155, 175);
+const Colour COLOUR_LIGHT_GRAY_LIGHT_TRANSPARENT = Colour(COLOUR_LIGHT_GRAY).withAlpha(0.5f);
 
-// Light gray
-const Colour BlomeColour_LightGray = Colour(155, 155, 175);
-const Colour BlomeColour_LightGrayLightTransparent = Colour(BlomeColour_LightGray).withAlpha(0.5f);
+const Colour COLOUR_GRAY = Colour(70, 70, 70);
 
-// Gray
-const Colour BlomeColour_Gray = Colour(70, 70, 70);
+const Colour COLOUR_DARK_GRAY = Colour(40, 40, 40);
 
-// Dark gray
-const Colour BlomeColour_DarkGray = Colour(40, 40, 40);
+const Colour COLOUR_BLACK = Colour(0, 0, 0);
+const Colour COLOUR_BLACK_LIGHT_TRANSPARENT = Colour(COLOUR_BLACK).withAlpha(0.35f);
+const Colour COLOUR_BLACK_MEDIUM_TRANSPARENT = Colour(COLOUR_BLACK).withAlpha(0.78f);
+const Colour COLOUR_BLACK_STRONG_TRANSPARENT = Colour(COLOUR_BLACK).withAlpha(0.95f);
 
-// Black
-const Colour BlomeColour_Black = Colour(0, 0, 0);
-const Colour BlomeColour_Transparent = Colour(BlomeColour_Black).withAlpha(0.0f);
-const Colour BlomeColour_BlackLightTransparent = Colour(BlomeColour_Black).withAlpha(0.35f);
-const Colour BlomeColour_BlackMediumTransparent = Colour(BlomeColour_Black).withAlpha(0.78f);
-const Colour BlomeColour_BlackStrongTransparent = Colour(BlomeColour_Black).withAlpha(0.95f);
+const Colour COLOUR_TRANSPARENT = Colour(0, 0, 0).withAlpha(0.0f);
 
-// Blueish black
-const Colour BlomeColour_BlueishBlack = Colour(0, 0, 20);
+const Colour COLOUR_GREENISH_BLACK = Colour(0, 25, 0);
 
-// Accent colour palette
-const Colour BlomeColour_AccentColourLight = Colour(216, 219, 167);
-const Colour BlomeColour_AccentColourLightStrongTransparent = Colour(BlomeColour_AccentColourLight).withAlpha(0.99f);
-const Colour BlomeColour_AccentColourMedium = Colour(19, 69, 43);
-const Colour BlomeColour_AccentColourMediumStrongTransparent = Colour(BlomeColour_AccentColourMedium).withAlpha(0.99f);
-const Colour BlomeColour_AccentColourDark = Colour(11, 41, 25);
-const Colour BlomeColour_AccentColourDarkStrongTransparent = Colour(BlomeColour_AccentColourDark).withAlpha(0.99f);
+const Colour COLOUR_ACCENT_LIGHT = Colour(216, 219, 167);
+const Colour COLOUR_ACCENT_LIGHT_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_LIGHT).withAlpha(0.99f);
+
+const Colour COLOUR_ACCENT_MEDIUM = Colour(19, 69, 43);
+const Colour COLOUR_ACCENT_MEDIUM_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_MEDIUM).withAlpha(0.99f);
+
+const Colour COLOUR_ACCENT_DARK = Colour(11, 41, 25);
+const Colour COLOUR_ACCENT_DARK_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_DARK).withAlpha(0.99f);
+
 
 // Fonts
-const Font font_small_bold("Helvetica Neue", 12.00f, Font::bold);
-const Font font_small_accentuated("Helvetica Neue", 12.30f, Font::bold);
-const Font font_medium_small_bold("Helvetica Neue", 16.00f, Font::bold);
-const Font font_medium("Helvetica Neue", 22.00f, Font::bold);
-const Font font_large("Helvetica Neue", 48.00f, Font::bold);
+const Font FONT_SMALL_BOLD("Helvetica Neue", 12.00f, Font::bold);
+const Font FONT_SMALL_ACCENTUATED("Helvetica Neue", 12.30f, Font::bold);
+const Font FONT_MEDIUM_SMALL_BOLD("Helvetica Neue", 16.00f, Font::bold);
+const Font FONT_MEDIUM("Helvetica Neue", 22.00f, Font::bold);
+const Font FONT_LARGE("Helvetica Neue", 48.00f, Font::bold);
+
 
 // Other
-const float Blome_PanelCornerSize = 6.0;
+const float MEDIUM_CORNER_SIZE = 6.0;
 const int PANEL_MARGIN = 8;
-const int Blome_NormalButtonHeight = 25;
+const int MEDIUM_BUTTON_HEIGHT = 25;

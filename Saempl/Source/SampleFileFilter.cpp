@@ -10,7 +10,7 @@
 
 #include "SampleFileFilter.h"
 
-SampleFileFilter::SampleFileFilter(String inDescription)
+SampleFileFilter::SampleFileFilter(String& inDescription)
 :   FileFilter(inDescription)
 {
     
@@ -37,7 +37,7 @@ bool SampleFileFilter::isDirectorySuitable(const File& file) const
     return false;
 }
 
-void SampleFileFilter::addFilteredFilePath(String inFilePath)
+void SampleFileFilter::addFilteredFilePath(SampleItem* inSampleItem)
 {
-    
+    mFilteredFilePaths.add(inSampleItem);
 }

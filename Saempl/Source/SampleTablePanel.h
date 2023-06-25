@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    CenterPanel.h
-    Created: 27 May 2023 9:07:59pm
+    SampleTablePanel.h
+    Created: 25 Jun 2023 5:51:12pm
     Author:  Jonas Blome
 
   ==============================================================================
@@ -11,32 +11,28 @@
 #pragma once
 
 #include "PanelBase.h"
-#include "SampleNavigationPanel.h"
+#include "SampleLibraryViewModel.h"
 #include "SampleItemPanel.h"
 
-class CenterPanel
+class SampleTablePanel
 :   public PanelBase
 {
 public:
     // Constructors
-    CenterPanel(SaemplAudioProcessor& inProcessor);
-    ~CenterPanel();
+    SampleTablePanel(SaemplAudioProcessor& inProcessor, SampleLibraryViewModel& inSampleLibraryViewModel);
+    ~SampleTablePanel();
     
     // Methods
     void paint(Graphics& g) override;
     void setPanelComponents() override;
-    void showNavigationPanel(int inType);
+    void resizePanelComponents() override;
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(CenterPanel)
-    
     // Fields
     SaemplAudioProcessor& currentProcessor;
-    std::unique_ptr<SampleNavigationPanel> mSampleNavigationPanel;
-    std::unique_ptr<SampleItemPanel> mSampleItemPanel;
-    std::unique_ptr<ToggleButton> mToggleSampleItemPanelButton;
+    SampleLibraryViewModel& sampleLibraryViewModel;
+    std::unique_ptr<TableListBox> mSampleItemTable;
     
     // Methods
-    void toggleSampleItemPanel();
     
 };

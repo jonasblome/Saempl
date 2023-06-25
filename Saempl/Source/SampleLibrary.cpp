@@ -15,54 +15,23 @@ SampleLibrary::SampleLibrary(TimeSliceThread& inThread)
     // Initialize sample analyser
     mSampleAnalyser = std::make_unique<SampleAnalyser>();
     
-    // Set directory path
-    mLibraryFileDirectoryPath =
-        (File::getSpecialLocation(juce::File::userMusicDirectory)).getFullPathName()
-        + DIRECTORY_SEPARATOR
-        + "Plugins"
-        + DIRECTORY_SEPARATOR
-        + "Saempl"
-        + DIRECTORY_SEPARATOR
-        + "SampleLibrary";
-    
-    if(!File(mLibraryFileDirectoryPath).exists())
-    {
-        File(mLibraryFileDirectoryPath).createDirectory();
-    }
-    
-    mCurrentLibraryPath =
-        (File::getSpecialLocation(juce::File::userMusicDirectory)).getFullPathName()
-        + DIRECTORY_SEPARATOR
-        + "Plugins"
-        + DIRECTORY_SEPARATOR
-        + "Saempl"
-        + DIRECTORY_SEPARATOR
-        + "DefaultSampleLibrary";
-    
-    // Load current library file
-    File sampleLibraryFile = File(mLibraryFileDirectoryPath + DIRECTORY_SEPARATOR + "DefaultSampleLibrary" + SAMPLE_LIBRARY_FILE_EXTENSION);
-    
-    if (sampleLibraryFile.exists())
-    {
-        mSampleLibraryManager->loadSampleLibraryFile(sampleLibraryFile.getFullPathName(), &mSampleItems);
-    }
+    // Initialize library manager
+    mSampleLibraryManager = std::make_unique<SampleLibraryManager>();
     
     // Set directory with path and file filter
-    mDirectoryFilter = std::make_unique<WildcardFileFilter>(supportedAudioFileFormatsWildcard, "*", "AudioFormatsFilter");
+    mDirectoryFilter = std::make_unique<WildcardFileFilter>(SUPPORTED_AUDIO_FORMATS_WILDCARD, "*", "AudioFormatsFilter");
     mDirectoryContent = std::make_unique<DirectoryContentsList>(&*mDirectoryFilter, inThread);
     mDirectoryContent->addChangeListener(this);
-    mDirectoryContent->setDirectory(File(mCurrentLibraryPath), true, true);
-    
-    refreshSampleLibrary();
+    setDirectory("");
 }
 
 SampleLibrary::~SampleLibrary()
 {
     mDirectoryContent->removeChangeListener(this);
-    mSampleLibraryManager->updateSampleLibraryFile(mLibraryFileDirectoryPath + DIRECTORY_SEPARATOR + "DefaultSampleLibrary.bslf", &mSampleItems);
+    mSampleLibraryManager->updateSampleLibraryFile(mCurrentLibraryPath, &mSampleItems);
 }
 
-void SampleLibrary::addSampleItem(File inFile)
+void SampleLibrary::addSampleItem(const File& inFile)
 {
     String fileName = inFile.getFileName();
     File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
@@ -102,7 +71,7 @@ void SampleLibrary::addSampleItem(File inFile)
     mDirectoryContent->refresh();
 }
 
-void SampleLibrary::removeSampleItem(String inFilePath, bool deletePermanently = false)
+void SampleLibrary::removeSampleItem(const String& inFilePath, bool deletePermanently = false)
 {
     // Delete sample item
     SampleItem* itemToDelete = getSampleItemWithFilePath(inFilePath);
@@ -132,15 +101,10 @@ void SampleLibrary::changeListenerCallback(ChangeBroadcaster* inSource)
     }
 }
 
-void SampleLibrary::setFileFilter()
-{
-    // Set current file filter to a chosen filter selection from the database table panel
-}
-
 /**
  Updates all sample files in the current directory and updates the corresponding SampleItem collection
  */
-void SampleLibrary::refreshSampleLibrary()
+void SampleLibrary::refresh()
 {
     // Go through all current sample items, check if corresponding audio file still exists and if not, delete sample item
     for (SampleItem* item : mSampleItems)
@@ -151,7 +115,7 @@ void SampleLibrary::refreshSampleLibrary()
     }
     
     // Go through all files in directory, check if a corresponding sample item now exists in the sample item list, if not add it
-    for (DirectoryEntry entry : RangedDirectoryIterator(mDirectoryContent->getDirectory(), true, supportedAudioFileFormatsWildcard, File::findFiles))
+    for (DirectoryEntry entry : RangedDirectoryIterator(mDirectoryContent->getDirectory(), true, SUPPORTED_AUDIO_FORMATS_WILDCARD, File::findFiles))
     {
         bool linkedSampleItemExists = getSampleItemWithFilePath(entry.getFile().getFullPathName()) == nullptr;
         if (linkedSampleItemExists)
@@ -163,7 +127,7 @@ void SampleLibrary::refreshSampleLibrary()
     mDirectoryContent->refresh();
 }
 
-SampleItem* SampleLibrary::getSampleItemWithFilePath(String inFilePath)
+SampleItem* SampleLibrary::getSampleItemWithFilePath(const String& inFilePath)
 {
     for(SampleItem* sampleItem : mSampleItems)
     {
@@ -174,6 +138,39 @@ SampleItem* SampleLibrary::getSampleItemWithFilePath(String inFilePath)
     }
     
     return nullptr;
+}
+
+void SampleLibrary::setDirectory(String inDirectoryPath)
+{
+    if (inDirectoryPath != "")
+    {
+        // Store current library
+        mSampleLibraryManager->updateSampleLibraryFile(mCurrentLibraryPath, &mSampleItems);
+        mCurrentLibraryPath = inDirectoryPath;
+    }
+    else
+    {
+        // Set library to default path
+        mCurrentLibraryPath =
+            (File::getSpecialLocation(juce::File::userMusicDirectory)).getFullPathName()
+            + DIRECTORY_SEPARATOR
+            + "Plugins"
+            + DIRECTORY_SEPARATOR
+            + "Saempl"
+            + DIRECTORY_SEPARATOR
+            + "DefaultSampleLibrary";
+        
+        if(!File(mCurrentLibraryPath).exists())
+        {
+            File(mCurrentLibraryPath).createDirectory();
+        }
+    }
+    
+    // Load new library
+    mSampleItems.clear();
+    mSampleLibraryManager->loadSampleLibraryFile(mCurrentLibraryPath, &mSampleItems);
+    mDirectoryContent->setDirectory(File(mCurrentLibraryPath), true, true);
+    refresh();
 }
 
 /**

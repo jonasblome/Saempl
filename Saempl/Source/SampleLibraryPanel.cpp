@@ -10,9 +10,10 @@
 
 #include "SampleLibraryPanel.h"
 
-SampleLibraryPanel::SampleLibraryPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
+SampleLibraryPanel::SampleLibraryPanel(SaemplAudioProcessor& inProcessor, SampleLibraryViewModel& inSampleLibraryViewModel, SampleItemPanel& inSampleItemPanel)
 :   PanelBase(inProcessor),
     currentProcessor(inProcessor),
+    sampleLibraryViewModel(inSampleLibraryViewModel),
     linkedSampleItemPanel(inSampleItemPanel)
 {
     setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN, SAMPLE_NAVIGATION_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
@@ -22,7 +23,7 @@ SampleLibraryPanel::SampleLibraryPanel(SaemplAudioProcessor& inProcessor, Sample
 SampleLibraryPanel::~SampleLibraryPanel()
 {
     mFileTree->removeListener(this);
-    mSampleLibrariesViewModel->getDirectoryList()->removeChangeListener(&*mFileTree);
+    sampleLibraryViewModel.getDirectoryList()->removeChangeListener(&*mFileTree);
 }
 
 void SampleLibraryPanel::paint(Graphics& g)
@@ -30,27 +31,24 @@ void SampleLibraryPanel::paint(Graphics& g)
     PanelBase::paint(g);
     
     // Set background
-    g.setColour(BlomeColour_AccentColourMedium);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), Blome_PanelCornerSize);
+    g.setColour(COLOUR_ACCENT_MEDIUM);
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), MEDIUM_CORNER_SIZE);
 }
 
 void SampleLibraryPanel::setPanelComponents()
 {
-    // Setting view model
-    mSampleLibrariesViewModel = std::make_unique<SampleLibrariesViewModel>(currentProcessor.getSampleLibrary());
-    
     // Set file tree component
-    mFileTree = std::make_unique<BlomeFileTreeView>(*mSampleLibrariesViewModel);
+    mFileTree = std::make_unique<BlomeFileTreeView>(sampleLibraryViewModel);
     mFileTree->setBounds(PANEL_MARGIN / 2.0,
                          PANEL_MARGIN / 2.0,
                          getWidth() - PANEL_MARGIN,
                          getHeight() - PANEL_MARGIN);
     mFileTree->setTitle("Files");
-    mFileTree->setColour(FileTreeComponent::backgroundColourId, BlomeColour_Transparent);
+    mFileTree->setColour(FileTreeComponent::backgroundColourId, COLOUR_TRANSPARENT);
     mFileTree->setMultiSelectEnabled(true);
     mFileTree->addListener(this);
     addAndMakeVisible(*mFileTree);
-    mSampleLibrariesViewModel->getDirectoryList()->addChangeListener(&*mFileTree);
+    sampleLibraryViewModel.getDirectoryList()->addChangeListener(&*mFileTree);
     
     // Repaint panel
     repaint();
@@ -60,7 +58,7 @@ void SampleLibraryPanel::resizePanelComponents()
 {
     if (mFileTree != nullptr)
     {
-        mFileTree->setBounds(PANEL_MARGIN / 2.0, PANEL_MARGIN / 2.0 + Blome_NormalButtonHeight, getWidth() - PANEL_MARGIN, getHeight() - PANEL_MARGIN);
+        mFileTree->setBounds(PANEL_MARGIN / 2.0, PANEL_MARGIN / 2.0, getWidth() - PANEL_MARGIN, getHeight() - PANEL_MARGIN);
     }
 }
 
@@ -86,9 +84,13 @@ void SampleLibraryPanel::fileClicked(const File& file, const MouseEvent& mouseEv
 void SampleLibraryPanel::fileDoubleClicked(const File& inFile)
 {
     // Load file into source
-    if (!inFile.isDirectory() && isSupportedAudioFileFormat(inFile.getFileExtension()))
+    if (inFile.exists() && !inFile.isDirectory() && isSupportedAudioFileFormat(inFile.getFileExtension()))
     {
         linkedSampleItemPanel.showAudioResource(URL(inFile));
+    }
+    else if (!inFile.exists())
+    {
+        linkedSampleItemPanel.showAudioResource(URL());
     }
 }
 
@@ -108,7 +110,7 @@ void SampleLibraryPanel::deleteFile(bool deletePermanently = false)
     // Delete all selected files
     for (int f = 0; f < mFileTree->getNumSelectedItems(); f++)
     {
-        mSampleLibrariesViewModel->removeSampleItem(mFileTree->getSelectedFile(f).getFullPathName(), deletePermanently);
+        sampleLibraryViewModel.removeSampleItem(mFileTree->getSelectedFile(f).getFullPathName(), deletePermanently);
     }
 };
 

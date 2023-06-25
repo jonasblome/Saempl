@@ -17,19 +17,20 @@ class BlomeLookAndFeel
 {
 public:
     BlomeLookAndFeel(SampleLibrary& inSampleDatabase)
-    :   sampleDatabase(inSampleDatabase)
+    :   sampleLibrary(inSampleDatabase)
     {
         // ComboBox Colours
-        setColour(ComboBox::backgroundColourId, BlomeColour_BlackLightTransparent);
-        setColour(ComboBox::outlineColourId, BlomeColour_Black);
-        setColour(ComboBox::arrowColourId, BlomeColour_LightGray);
-        setColour(ComboBox::textColourId, BlomeColour_LightGray);
-        setColour(PopupMenu::backgroundColourId, BlomeColour_AccentColourLightStrongTransparent);
+        setColour(ComboBox::backgroundColourId, COLOUR_BLACK_LIGHT_TRANSPARENT);
+        setColour(ComboBox::outlineColourId, COLOUR_BLACK);
+        setColour(ComboBox::arrowColourId, COLOUR_LIGHT_GRAY);
+        setColour(ComboBox::textColourId, COLOUR_LIGHT_GRAY);
+        setColour(PopupMenu::backgroundColourId, COLOUR_ACCENT_LIGHT_STRONG_TRANSPARENT);
+        setColour(AlertWindow::textColourId, COLOUR_BLACK_MEDIUM_TRANSPARENT);
         
         // Button Text Colours
-        setColour(TextButton::buttonColourId, BlomeColour_AccentColourLight);
-        setColour(TextButton::textColourOnId, BlomeColour_AccentColourLight);
-        setColour(TextButton::textColourOffId, BlomeColour_AccentColourLight);
+        setColour(TextButton::buttonColourId, COLOUR_ACCENT_LIGHT);
+        setColour(TextButton::textColourOnId, COLOUR_ACCENT_LIGHT);
+        setColour(TextButton::textColourOffId, COLOUR_ACCENT_LIGHT);
     }
     
     virtual ~BlomeLookAndFeel()
@@ -40,7 +41,7 @@ public:
     /** Buttons */
     Font getTextButtonFont (TextButton&, int buttonHeight) override
     {
-        return font_small_bold;
+        return FONT_SMALL_BOLD;
     }
     
     void drawButtonBackground (Graphics& g, Button& button,
@@ -52,15 +53,15 @@ public:
         
         if(shouldDrawButtonAsDown)
         {
-            fillColour = BlomeColour_BlackStrongTransparent;
+            fillColour = COLOUR_BLACK_STRONG_TRANSPARENT;
         }
         else if(shouldDrawButtonAsHighlighted)
         {
-            fillColour = BlomeColour_BlackMediumTransparent;
+            fillColour = COLOUR_BLACK_MEDIUM_TRANSPARENT;
         }
         else
         {
-            fillColour = BlomeColour_BlackLightTransparent;
+            fillColour = COLOUR_BLACK_LIGHT_TRANSPARENT;
         }
         
         const float cornerSize = 6.0f;
@@ -80,11 +81,11 @@ public:
          
          if(shouldDrawButtonAsHighlighted)
          {
-             fillColour = BlomeColour_BlackMediumTransparent;
+             fillColour = COLOUR_BLACK_MEDIUM_TRANSPARENT;
          }
          else
          {
-             fillColour = BlomeColour_BlackLightTransparent;
+             fillColour = COLOUR_BLACK_LIGHT_TRANSPARENT;
          }
 
          if (!button.isEnabled())
@@ -98,7 +99,7 @@ public:
          if(button.getToggleState())
          {
              cornerSize = 4.0f;
-             g.setColour(BlomeColour_AccentColourLight);
+             g.setColour(COLOUR_ACCENT_LIGHT);
              g.fillRoundedRectangle(bounds.reduced(3), cornerSize);
          }
      }
@@ -106,7 +107,7 @@ public:
     /** ComboBoxes */
     Font getLabelFont(Label& label) override
     {
-        return font_small_bold;
+        return FONT_SMALL_BOLD;
     }
     
     void drawPopupMenuBackgroundWithOptions(Graphics& g,
@@ -115,7 +116,11 @@ public:
                                             const PopupMenu::Options& options) override
     {
         g.setColour(findColour(PopupMenu::backgroundColourId));
-        g.fillRoundedRectangle(0, 2, width, height - 2, 3.0f);
+        g.fillRoundedRectangle(0,
+                               2,
+                               width,
+                               height - 2,
+                               3.0f);
     }
     
     void drawPopupMenuItem (Graphics& g, const Rectangle<int>& area,
@@ -127,13 +132,13 @@ public:
         
         if(isHighlighted)
         {
-            g.setColour(BlomeColour_BlackLightTransparent);
+            g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
             g.fillRoundedRectangle(r.reduced(1).toFloat(), 3.0);
         }
         
-        Colour fontColour = isTicked ? BlomeColour_BlackStrongTransparent : BlomeColour_BlackMediumTransparent;
+        Colour fontColour = isTicked ? COLOUR_BLACK_STRONG_TRANSPARENT : COLOUR_BLACK_MEDIUM_TRANSPARENT;
         g.setColour(fontColour);
-        g.setFont(isTicked ? font_small_accentuated : font_small_bold);
+        g.setFont(isTicked ? FONT_SMALL_ACCENTUATED : FONT_SMALL_BOLD);
         
         r.setLeft(10);
         r.setY(1);
@@ -147,7 +152,7 @@ public:
         const float cornerSize = 3.0f;
         const Rectangle<int> boxBounds (0, 0, width, height);
         
-        g.setColour(BlomeColour_BlackLightTransparent);
+        g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
         g.fillRoundedRectangle(boxBounds.toFloat(), cornerSize);
         
         Rectangle<int> arrow (width - 30, 0, 20, height);
@@ -175,9 +180,9 @@ public:
                            float sliderPosProportional, float rotaryStartAngle,
                            float rotaryEndAngle, Slider& slider) override
     {
-        g.setColour(BlomeColour_BlackMediumTransparent);
+        g.setColour(COLOUR_BLACK_MEDIUM_TRANSPARENT);
         g.fillEllipse(x + 6, y + 6, width - 14, height - 14);
-        g.setColour(BlomeColour_LightGray);
+        g.setColour(COLOUR_LIGHT_GRAY);
         Line<float> sliderTick = Line<float>::fromStartAndAngle(Point<float>(width * 0.5 - 1, height * 0.5 - 1), (width - 19) * 0.5, sliderPosProportional * M_PI * 1.5 - (M_PI * 0.75));
         g.drawLine(sliderTick, 2.0);
     }
@@ -195,7 +200,7 @@ public:
     {
         if (slider.isBar())
         {
-            g.setColour(BlomeColour_BlackMediumTransparent);
+            g.setColour(COLOUR_BLACK_MEDIUM_TRANSPARENT);
             g.fillRect(slider.isHorizontal() ? Rectangle<float>(static_cast<float> (x), (float)y + 0.5f, sliderPos - (float) x, (float) height - 1.0f)
                        : Rectangle<float>((float)x + 0.5f, sliderPos, (float)width - 1.0f, (float)y + ((float)height - sliderPos)));
         }
@@ -215,7 +220,7 @@ public:
             Path backgroundTrack;
             backgroundTrack.startNewSubPath(startPoint);
             backgroundTrack.lineTo(endPoint);
-            g.setColour(BlomeColour_BlackLightTransparent);
+            g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
             g.strokePath(backgroundTrack, { trackWidth, PathStrokeType::curved, PathStrokeType::rounded });
             
             Path valueTrack;
@@ -246,12 +251,12 @@ public:
             
             valueTrack.startNewSubPath (minPoint);
             valueTrack.lineTo(isThreeVal ? thumbPoint : maxPoint);
-            g.setColour(BlomeColour_AccentColourLight);
+            g.setColour(COLOUR_ACCENT_LIGHT);
             g.strokePath(valueTrack, { trackWidth - 4, PathStrokeType::curved, PathStrokeType::rounded });
             
             if (! isTwoVal)
             {
-                g.setColour(BlomeColour_AccentColourLight);
+                g.setColour(COLOUR_ACCENT_LIGHT);
                 g.fillEllipse (Rectangle<float> (static_cast<float> (thumbWidth), static_cast<float> (thumbWidth)).withCentre (isThreeVal ? thumbPoint : maxPoint));
             }
             
@@ -309,7 +314,7 @@ public:
         else
             thumbBounds = { thumbStartPosition, y, thumbSize, height };
 
-        g.setColour (isMouseOver ? BlomeColour_BlackLightTransparent : BlomeColour_AccentColourLight);
+        g.setColour (isMouseOver ? COLOUR_BLACK_LIGHT_TRANSPARENT : COLOUR_ACCENT_LIGHT);
         g.fillRoundedRectangle (thumbBounds.reduced(1).toFloat(), 4.0f);
     }
     
@@ -323,7 +328,7 @@ public:
         Path p;
         p.addTriangle(0.0f, 0.0f, 1.0f, isOpen ? 0.0f : 0.5f, isOpen ? 0.5f : 0.0f, 1.0f);
 
-        g.setColour(isMouseOver ? BlomeColour_BlackLightTransparent : BlomeColour_AccentColourLight);
+        g.setColour(isMouseOver ? COLOUR_BLACK_LIGHT_TRANSPARENT : COLOUR_ACCENT_LIGHT);
         g.fillPath(p, p.getTransformToScaleToFit(area.reduced(2, area.getHeight() / 3), true));
     }
     
@@ -341,58 +346,63 @@ public:
                             DirectoryContentsDisplayComponent& directoryDisplayer) override
     {
         auto fileListComponent = dynamic_cast<Component*>(&directoryDisplayer);
-        SampleItem* linkedSampleItem = sampleDatabase.getSampleItemWithFilePath(file.getFullPathName());
         
         // Markup if the row is selected
         if(isItemSelected)
         {
-            g.setColour(fileListComponent != nullptr ? BlomeColour_BlackLightTransparent : BlomeColour_BlackMediumTransparent);
+            g.setColour(fileListComponent != nullptr ? COLOUR_BLACK_LIGHT_TRANSPARENT : COLOUR_BLACK_MEDIUM_TRANSPARENT);
             g.fillRoundedRectangle(0, 0, width - 5, height, 3.0);
         }
 
         const int x = 5;
         
-        g.setColour(BlomeColour_AccentColourLight);
-        g.setFont (font_small_bold);
+        g.setColour(COLOUR_ACCENT_LIGHT);
+        g.setFont (FONT_SMALL_BOLD);
 
-        if (width > 450 && !isDirectory)
-        {
-            int propertiesStartX = roundToInt((float)width * 0.8f);
-            int propertiesWidth = roundToInt((float)width * 0.1f);
+        
+        g.drawFittedText(filename,
+                         x,
+                         0,
+                         width - x,
+                         height,
+                         Justification::centredLeft,
+                         1);
+    }
+    
+    void drawAlertBox(Graphics& g,
+                      AlertWindow& alert,
+                      const Rectangle<int>& textArea,
+                      TextLayout& textLayout) override
+    {
+        // Draw alert box background
+        auto cornerSize = MEDIUM_CORNER_SIZE;
+        g.setColour(COLOUR_ACCENT_LIGHT_STRONG_TRANSPARENT);
+        g.fillRoundedRectangle(alert.getLocalBounds().toFloat(), cornerSize);
 
-            // Draw file name
-            g.drawFittedText(filename,
-                             x,
-                             0,
-                             propertiesStartX - x,
-                             height,
-                             Justification::centredLeft,
-                             1);
-
-            // Draw file properties
-            g.drawFittedText(String(linkedSampleItem->getSampleTag(0)->getName()) + ": " + String(roundToInt(linkedSampleItem->getSampleTag(0)->getValue())) + "s",
-                             propertiesStartX,
-                             0,
-                             propertiesWidth,
-                             height,
-                             Justification::centredLeft,
-                             1);
-            
-            }
-        else
-        {
-            g.drawFittedText(filename,
-                             x,
-                             0,
-                             width - x,
-                             height,
-                             Justification::centredLeft,
-                             1);
-
-        }
+        // Draw alert text
+        Rectangle<int> alertBounds(alert.getLocalBounds().getX(),
+                                   30,
+                                   alert.getLocalBounds().getWidth(),
+                                   alert.getLocalBounds().getHeight() - getAlertWindowButtonHeight() - 20);
+        textLayout.draw(g, alertBounds.toFloat());
+    }
+    
+    Font getAlertWindowTitleFont() override
+    {
+        return FONT_MEDIUM_SMALL_BOLD;
+    }
+    
+    Font getAlertWindowMessageFont() override
+    {
+        return FONT_MEDIUM_SMALL_BOLD;
+    }
+    
+    Font getAlertWindowFont() override
+    {
+        return FONT_MEDIUM_SMALL_BOLD;
     }
     
 private:
-    SampleLibrary& sampleDatabase;
+    SampleLibrary& sampleLibrary;
     
 };

@@ -38,7 +38,7 @@ SaemplAudioProcessorEditor::~SaemplAudioProcessorEditor()
 void SaemplAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // The plugin background
-    g.fillAll(BlomeColour_AccentColourDark);
+    g.fillAll(COLOUR_ACCENT_DARK);
 }
 
 void SaemplAudioProcessorEditor::resized()

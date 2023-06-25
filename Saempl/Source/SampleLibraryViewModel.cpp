@@ -10,18 +10,18 @@
 
 #include "SampleLibraryViewModel.h"
 
-SampleLibrariesViewModel::SampleLibrariesViewModel(SampleLibrary& inSampleDatabaseTable)
-:   sampleLibrary(inSampleDatabaseTable)
+SampleLibraryViewModel::SampleLibraryViewModel(SampleLibrary& inSampleLibrary)
+:   sampleLibrary(inSampleLibrary)
 {
     
 }
 
-SampleLibrariesViewModel::~SampleLibrariesViewModel()
+SampleLibraryViewModel::~SampleLibraryViewModel()
 {
     
 }
 
-DirectoryContentsList* SampleLibrariesViewModel::getDirectoryList()
+DirectoryContentsList* SampleLibraryViewModel::getDirectoryList()
 {
     return sampleLibrary.getDirectoryList();
 }
@@ -29,7 +29,7 @@ DirectoryContentsList* SampleLibrariesViewModel::getDirectoryList()
 /**
  Adds a file and sample item to the database
  */
-void SampleLibrariesViewModel::addSampleItem(String inFilePath)
+void SampleLibraryViewModel::addSampleItem(const String& inFilePath)
 {
     File file = File(inFilePath);
     
@@ -41,12 +41,12 @@ void SampleLibrariesViewModel::addSampleItem(String inFilePath)
  
  @param deletePermanently   determines if the item is deleted permanently (true) or just moved to the trash (false)
  */
-void SampleLibrariesViewModel::removeSampleItem(String inFilePath, bool deletePermanently = false)
+void SampleLibraryViewModel::removeSampleItem(const String& inFilePath, bool deletePermanently = false)
 {
     sampleLibrary.removeSampleItem(inFilePath, deletePermanently);
 }
 
-void SampleLibrariesViewModel::refreshSampleLibrary()
+void SampleLibraryViewModel::refreshSampleLibrary()
 {
-    sampleLibrary.refreshSampleLibrary();
+    sampleLibrary.refresh();
 }

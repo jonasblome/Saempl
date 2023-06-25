@@ -48,6 +48,10 @@
             file="Source/SampleLibraryPanel.cpp"/>
       <FILE id="dPQ3lJ" name="SampleLibraryPanel.h" compile="0" resource="0"
             file="Source/SampleLibraryPanel.h"/>
+      <FILE id="oOrBsC" name="SampleTablePanel.cpp" compile="1" resource="0"
+            file="Source/SampleTablePanel.cpp"/>
+      <FILE id="JuadLI" name="SampleTablePanel.h" compile="0" resource="0"
+            file="Source/SampleTablePanel.h"/>
       <FILE id="blGuS9" name="SampleItemPanel.cpp" compile="1" resource="0"
             file="Source/SampleItemPanel.cpp"/>
       <FILE id="EGnlFh" name="SampleItemPanel.h" compile="0" resource="0"

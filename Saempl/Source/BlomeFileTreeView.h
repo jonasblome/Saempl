@@ -20,7 +20,7 @@ class BlomeFileTreeView
 {
 public:
     // Constructors
-    BlomeFileTreeView(SampleLibrariesViewModel& inSampleDatabaseTableViewModel);
+    BlomeFileTreeView(SampleLibraryViewModel& inSampleLibraryViewModel);
     ~BlomeFileTreeView();
     
     // Methods
@@ -33,7 +33,7 @@ private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeFileTreeView)
     
     // Fields
-    SampleLibrariesViewModel& sampleDatabaseTableViewModel;
+    SampleLibraryViewModel& sampleLibraryViewModel;
     
     // Methods
     

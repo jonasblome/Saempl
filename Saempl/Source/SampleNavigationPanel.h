@@ -12,6 +12,7 @@
 
 #include "PanelBase.h"
 #include "SampleLibraryPanel.h"
+#include "SampleTablePanel.h"
 #include "SampleItemPanel.h"
 
 class SampleNavigationPanel
@@ -26,6 +27,7 @@ public:
     void paint(Graphics& g) override;
     void setPanelComponents() override;
     void resizePanelComponents() override;
+    void showNavigationPanel(int inType);
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleNavigationPanel)
@@ -33,7 +35,9 @@ private:
     // Fields
     SaemplAudioProcessor& currentProcessor;
     SampleItemPanel& linkedSampleItemPanel;
-    std::unique_ptr<SampleLibraryPanel> mSampleLibrariesPanel;
+    std::unique_ptr<SampleLibraryPanel> mSampleLibraryPanel;
+    std::unique_ptr<SampleTablePanel> mSampleTablePanel;
+    std::unique_ptr<SampleLibraryViewModel> mSampleLibraryViewModel;
     
     // Methods
     

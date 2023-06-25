@@ -22,7 +22,7 @@ class SampleLibraryPanel
 {
 public:
     // Constructors
-    SampleLibraryPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
+    SampleLibraryPanel(SaemplAudioProcessor& inProcessor, SampleLibraryViewModel& inSampleLibraryViewModel, SampleItemPanel& inSampleItemPanel);
     ~SampleLibraryPanel();
     
     // Methods
@@ -36,8 +36,8 @@ private:
     
     // Fields
     SaemplAudioProcessor& currentProcessor;
+    SampleLibraryViewModel& sampleLibraryViewModel;
     SampleItemPanel& linkedSampleItemPanel;
-    std::unique_ptr<SampleLibrariesViewModel> mSampleLibrariesViewModel;
     std::unique_ptr<BlomeFileTreeView> mFileTree;
     
     // Methods

@@ -23,20 +23,19 @@ public:
     ~SampleLibrary();
     
     // Methods
-    void addSampleItem(File inFile);
-    void removeSampleItem(String inFilePath, bool deletePermanently);
+    void addSampleItem(const File& inFile);
+    void removeSampleItem(const String& inFilePath, bool deletePermanently);
     DirectoryContentsList* getDirectoryList();
     void changeListenerCallback(ChangeBroadcaster* inSource) override;
-    void setFileFilter();
-    void refreshSampleLibrary();
-    SampleItem* getSampleItemWithFilePath(String inFilePath);
+    void refresh();
+    SampleItem* getSampleItemWithFilePath(const String& inFilePath);
+    void setDirectory(String inDirectoryPath);
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibrary)
     
     // Fields
     std::unique_ptr<FileFilter> mDirectoryFilter;
-    String mLibraryFileDirectoryPath;
     String mCurrentLibraryPath;
     std::unique_ptr<DirectoryContentsList> mDirectoryContent;
     OwnedArray<SampleItem> mSampleItems;

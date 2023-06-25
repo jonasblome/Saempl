@@ -11,25 +11,26 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include "SampleItem.h"
 
 class SampleFileFilter
 :   public FileFilter
 {
 public:
     // Constructors
-    SampleFileFilter(String inDescription);
+    SampleFileFilter(String& inDescription);
     ~SampleFileFilter();
     
     // Methods
     bool isFileSuitable (const File& file) const override;
     bool isDirectorySuitable (const File& file) const override;
-    void addFilteredFilePath(String inFilePath);
+    void addFilteredFilePath(SampleItem* inSampleItem);
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleFileFilter)
     
     // Fields
-    OwnedArray<String> mFilteredFilePaths;
+    OwnedArray<SampleItem> mFilteredFilePaths;
     
     // Methods
     

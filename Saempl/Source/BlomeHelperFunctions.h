@@ -20,12 +20,12 @@
 
 #define SAMPLE_LIBRARY_FILE_EXTENSION ".bslf"
 
-const StringArray supportedAudioFileFormats = StringArray({ ".mp3", ".wav", ".aiff", ".m4a" });
-const String supportedAudioFileFormatsWildcard = "*.wav;*.mp3;*.aiff;*.m4a";
+const StringArray SUPPORTED_AUDIO_FORMATS = StringArray({ ".mp3", ".wav", ".aiff", ".m4a" });
+const String SUPPORTED_AUDIO_FORMATS_WILDCARD = "*.wav;*.mp3;*.aiff;*.m4a";
 
 inline bool isSupportedAudioFileFormat(String inExtension)
 {
-    for (String extension : supportedAudioFileFormats)
+    for (String extension : SUPPORTED_AUDIO_FORMATS)
     {
         if (extension == inExtension) {
             return true;

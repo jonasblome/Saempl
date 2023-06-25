@@ -41,7 +41,7 @@ void CenterPanel::setPanelComponents()
     addAndMakeVisible(*mSampleNavigationPanel);
     
     // Add toggle panel button
-    mToggleSampleItemPanelButton = std::make_unique<ToggleButton>("Toggle SampleItem Panel");
+    mToggleSampleItemPanelButton = std::make_unique<ToggleButton>("Toggle SampleItemPanel");
     mToggleSampleItemPanelButton->setToggleState(true, NotificationType::dontSendNotification);
     mToggleSampleItemPanelButton->setBounds(0,
                                             SAMPLE_NAVIGATION_PANEL_HEIGHT + SAMPLE_ITEM_PANEL_HEIGHT,
@@ -68,4 +68,9 @@ void CenterPanel::toggleSampleItemPanel()
     }
     
     mSampleNavigationPanel->repaint();
+}
+
+void CenterPanel::showNavigationPanel(int inType)
+{
+    mSampleNavigationPanel->showNavigationPanel(inType);
 }

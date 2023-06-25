@@ -31,16 +31,43 @@ void SampleNavigationPanel::paint(Graphics& g)
 
 void SampleNavigationPanel::setPanelComponents()
 {
-    // Add panel for database views
-    mSampleLibrariesPanel = std::make_unique<SampleLibraryPanel>(currentProcessor, linkedSampleItemPanel);
-    mSampleLibrariesPanel->setTopLeftPosition(0, 0);
-    addAndMakeVisible(*mSampleLibrariesPanel);
+    // Setting view model
+    mSampleLibraryViewModel = std::make_unique<SampleLibraryViewModel>(currentProcessor.getSampleLibrary());
+    
+    // Add library panel
+    mSampleLibraryPanel = std::make_unique<SampleLibraryPanel>(currentProcessor, *mSampleLibraryViewModel, linkedSampleItemPanel);
+    mSampleLibraryPanel->setTopLeftPosition(0, 0);
+    addAndMakeVisible(*mSampleLibraryPanel);
+    
+    // Add sample table panel
+    mSampleTablePanel = std::make_unique<SampleTablePanel>(currentProcessor, *mSampleLibraryViewModel);
+    mSampleLibraryPanel->setTopLeftPosition(0, 0);
+    addChildComponent(*mSampleTablePanel);
 }
 
 void SampleNavigationPanel::resizePanelComponents()
 {
-    if (mSampleLibrariesPanel != nullptr)
+    if (mSampleLibraryPanel != nullptr)
     {
-        mSampleLibrariesPanel->setBounds(0, 0, getWidth(), getHeight());
+        mSampleLibraryPanel->setBounds(0, 0, getWidth(), getHeight());
+    }
+    
+    if (mSampleTablePanel != nullptr)
+    {
+        mSampleTablePanel->setBounds(0, 0, getWidth(), getHeight());
+    }
+}
+
+void SampleNavigationPanel::showNavigationPanel(int inType)
+{
+    if (inType == 0)
+    {
+        mSampleLibraryPanel->setVisible(true);
+        mSampleTablePanel->setVisible(false);
+    }
+    else if (inType == 1)
+    {
+        mSampleLibraryPanel->setVisible(false);
+        mSampleTablePanel->setVisible(true);
     }
 }

@@ -11,13 +11,14 @@
 #pragma once
 
 #include "PanelBase.h"
+#include "CenterPanel.h"
 
 class HeaderPanel
 :   public PanelBase
 {
 public:
     // Constructors
-    HeaderPanel(SaemplAudioProcessor& inProcessor);
+    HeaderPanel(SaemplAudioProcessor& inProcessor, CenterPanel& inCenterPanel);
     ~HeaderPanel();
     
     // Methods
@@ -29,8 +30,14 @@ private:
     
     // Fields
     SaemplAudioProcessor& currentProcessor;
-    std::unique_ptr<TextButton> mRefreshSampleLibrariesButton;
+    CenterPanel& linkedCenterPanel;
+    std::unique_ptr<TextButton> mRefreshLibraryButton;
+    std::unique_ptr<TextButton> mChooseLibraryFolderButton;
+    std::unique_ptr<FileChooser> mFileChooser;
+    std::unique_ptr<ToggleButton> mToggleLibraryPanelButton;
+    std::unique_ptr<ToggleButton> mToggleSampleTablePanelButton;
     
     // Methods
+    void showLibraryChooser();
     
 };

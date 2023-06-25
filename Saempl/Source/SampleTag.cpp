@@ -26,7 +26,7 @@ SampleTag::~SampleTag()
     
 }
 
-void SampleTag::setName(String inTagName)
+void SampleTag::setName(String& inTagName)
 {
     mTagName = inTagName;
 }

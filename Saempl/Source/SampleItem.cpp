@@ -25,7 +25,7 @@ void SampleItem::addSampleTag(SampleTag* inSampleTag)
     mSampleTags.add(inSampleTag);
 }
 
-SampleTag* SampleItem::getSampleTag(String inTagName)
+SampleTag* SampleItem::getSampleTag(String& inTagName)
 {
     for(SampleTag* tag : mSampleTags)
     {
@@ -47,7 +47,7 @@ OwnedArray<SampleTag>* SampleItem::getSampleTags()
     return &mSampleTags;
 }
 
-void SampleItem::setFilePath(String inFilePath)
+void SampleItem::setFilePath(const String& inFilePath)
 {
     mFilePath = inFilePath;
 }

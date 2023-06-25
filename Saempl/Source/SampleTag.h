@@ -21,7 +21,7 @@ public:
     ~SampleTag();
     
     // Methods
-    void setName(String inTagName);
+    void setName(String& inTagName);
     String getName();
     void setValue(double inValue);
     double getValue();

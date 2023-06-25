@@ -13,21 +13,21 @@
 #include "SampleLibrary.h"
 #include "SampleAnalyser.h"
 
-class SampleLibrariesViewModel
+class SampleLibraryViewModel
 {
 public:
     // Constructors
-    SampleLibrariesViewModel(SampleLibrary& inSampleDatabase);
-    ~SampleLibrariesViewModel();
+    SampleLibraryViewModel(SampleLibrary& inSampleLibrary);
+    ~SampleLibraryViewModel();
     
     // Methods
     DirectoryContentsList* getDirectoryList();
-    void addSampleItem(String inFilePath);
-    void removeSampleItem(String inFilePath, bool deletePermanently);
+    void addSampleItem(const String& inFilePath);
+    void removeSampleItem(const String& inFilePath, bool deletePermanently);
     void refreshSampleLibrary();
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibrariesViewModel)
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibraryViewModel)
     
     // Fields
     SampleLibrary& sampleLibrary;

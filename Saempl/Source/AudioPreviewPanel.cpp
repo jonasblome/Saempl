@@ -36,16 +36,16 @@ void AudioPreviewPanel::paint(Graphics& g)
     auto previewArea = getLocalBounds().removeFromBottom(getHeight() - sampleItemTitleHeight);
 
     // Draw background
-    g.setColour(BlomeColour_BlackLightTransparent);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), Blome_PanelCornerSize);
+    g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), MEDIUM_CORNER_SIZE);
     
     // Draw audio preview
-    g.setColour(BlomeColour_AccentColourLight);
+    g.setColour(COLOUR_ACCENT_LIGHT);
 
     if (mAudioPreview.getTotalLength() > 0.0)
     {
         // Draw file name on title bar
-        g.setFont(font_small_bold);
+        g.setFont(FONT_SMALL_BOLD);
         String fileName = restoreSpacesFromURLString(lastFileDropped.getFileName());
         g.drawFittedText(fileName,
                          getLocalBounds().removeFromRight(getWidth() - PANEL_MARGIN).removeFromTop(sampleItemTitleHeight),
@@ -62,12 +62,12 @@ void AudioPreviewPanel::paint(Graphics& g)
     }
     else
     {
-        g.setFont(font_small_bold);
+        g.setFont(FONT_SMALL_BOLD);
         g.drawFittedText("No audio file selected",
                          getLocalBounds().removeFromRight(getWidth() - PANEL_MARGIN).removeFromTop(sampleItemTitleHeight),
                          Justification::centredLeft,
                          1);
-        g.setFont(font_medium);
+        g.setFont(FONT_MEDIUM);
         g.drawFittedText("No audio file selected", getLocalBounds(), Justification::centred, 2);
     }
 }
@@ -83,7 +83,7 @@ void AudioPreviewPanel::setPanelComponents()
     addAndMakeVisible(*mAudioPreviewScrollbar);
 
     // Add position marker
-    mAudioPositionMarker.setFill(BlomeColour_BlueishWhite);
+    mAudioPositionMarker.setFill(COLOUR_GREENISH_WHITE);
     addAndMakeVisible(mAudioPositionMarker);
     
     // Repaint panel components

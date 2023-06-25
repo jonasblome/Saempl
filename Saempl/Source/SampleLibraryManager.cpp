@@ -13,7 +13,7 @@
 
 SampleLibraryManager::SampleLibraryManager()
 {
-    
+    mLibraryFilesDirectoryPath = "";
 }
 
 SampleLibraryManager::~SampleLibraryManager()
@@ -21,10 +21,20 @@ SampleLibraryManager::~SampleLibraryManager()
     
 }
 
-void SampleLibraryManager::updateSampleLibraryFile(String inLibraryFilePath, OwnedArray<SampleItem>* inSampleItems)
+void SampleLibraryManager::updateSampleLibraryFile(String& inLibraryPath, OwnedArray<SampleItem>* inSampleItems)
 {
-    // Create sample library file as xml
+    // Set library file directory path
+    mLibraryFilesDirectoryPath = getLibraryFilesDirectoryPath();
+    File librayDirectory = File(inLibraryPath);
+    
+    if(!librayDirectory.exists())
+    {
+        librayDirectory.createDirectory();
+    }
+    
+    // Create sample library file as xml and store path to library
     XmlElement sampleLibraryXml("SampleLibrary");
+    sampleLibraryXml.setAttribute("LibraryPath", inLibraryPath);
     
     // Adding sample items xml to sample library xml
     XmlElement* sampleItemsXml = new XmlElement("SampleItems");
@@ -54,7 +64,7 @@ void SampleLibraryManager::updateSampleLibraryFile(String inLibraryFilePath, Own
     sampleLibraryXml.addChildElement(sampleItemsXml);
     
     // Write sample library xml to external file
-    File sampleLibraryFile = File(inLibraryFilePath);
+    File sampleLibraryFile = File(mLibraryFilesDirectoryPath + DIRECTORY_SEPARATOR + librayDirectory.getFileNameWithoutExtension() + SAMPLE_LIBRARY_FILE_EXTENSION);
     
     if(!sampleLibraryFile.exists()) {
         sampleLibraryFile.create();
@@ -70,9 +80,10 @@ void SampleLibraryManager::updateSampleLibraryFile(String inLibraryFilePath, Own
     destinationData.reset();
 }
 
-void SampleLibraryManager::loadSampleLibraryFile(String inFilePath, OwnedArray<SampleItem>* inSampleItems)
+void SampleLibraryManager::loadSampleLibraryFile(String& inLibraryPath, OwnedArray<SampleItem>* inSampleItems)
 {
-    File libraryFile = File(inFilePath);
+    File libraryDirectory = File(inLibraryPath);
+    File libraryFile = File(getLibraryFilesDirectoryPath() + DIRECTORY_SEPARATOR + libraryDirectory.getFileNameWithoutExtension() + SAMPLE_LIBRARY_FILE_EXTENSION);
     
     if (libraryFile.exists())
     {
@@ -89,7 +100,8 @@ void SampleLibraryManager::loadSampleLibraryFile(String inFilePath, OwnedArray<S
             for (auto* sampleItemXml : sampleItemsXml->getChildIterator())
             {
                 SampleItem* sampleItem = new SampleItem();
-                sampleItem->setFilePath(sampleItemXml->getStringAttribute("FilePath"));
+                String filePath = sampleItemXml->getStringAttribute("FilePath");
+                sampleItem->setFilePath(filePath);
                 XmlElement* sampleTagsXml = sampleItemXml->getChildByName("SampleTags");
                 
                 for (auto* sampleTagXml : sampleTagsXml->getChildIterator())
@@ -105,14 +117,23 @@ void SampleLibraryManager::loadSampleLibraryFile(String inFilePath, OwnedArray<S
         }
         else
         {
-            jassertfalse;
             return;
         }
     }
     else
     {
-        jassertfalse;
         return;
     }
 }
 
+String SampleLibraryManager::getLibraryFilesDirectoryPath()
+{
+    return
+        (File::getSpecialLocation(juce::File::userMusicDirectory)).getFullPathName()
+        + DIRECTORY_SEPARATOR
+        + "Plugins"
+        + DIRECTORY_SEPARATOR
+        + "Saempl"
+        + DIRECTORY_SEPARATOR
+        + "SampleLibraryFiles";
+}

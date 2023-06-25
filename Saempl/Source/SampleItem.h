@@ -21,10 +21,10 @@ public:
     
     // Methods
     void addSampleTag(SampleTag* inSampleTag);
-    SampleTag* getSampleTag(String inTagName);
+    SampleTag* getSampleTag(String& inTagName);
     SampleTag* getSampleTag(int inTagIndex);
     OwnedArray<SampleTag>* getSampleTags();
-    void setFilePath(String inFilePath);
+    void setFilePath(const String& inFilePath);
     String getFilePath();
     
 private:

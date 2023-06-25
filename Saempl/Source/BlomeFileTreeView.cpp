@@ -10,9 +10,9 @@
 
 #include "BlomeFileTreeView.h"
 
-BlomeFileTreeView::BlomeFileTreeView(SampleLibrariesViewModel& inSampleDatabaseTableViewModel)
-:   FileTreeComponent(*inSampleDatabaseTableViewModel.getDirectoryList()),
-    sampleDatabaseTableViewModel(inSampleDatabaseTableViewModel)
+BlomeFileTreeView::BlomeFileTreeView(SampleLibraryViewModel& inSampleLibraryViewModel)
+:   FileTreeComponent(*inSampleLibraryViewModel.getDirectoryList()),
+    sampleLibraryViewModel(inSampleLibraryViewModel)
 {
     // Mouse listener catches events from the tree view's children
     addMouseListener(this, true);
@@ -31,7 +31,7 @@ void BlomeFileTreeView::filesDropped(const StringArray& files, int x, int y)
     // Adding all the dropped files to the database
     for(int f = 0; f < files.size(); f++)
     {
-        sampleDatabaseTableViewModel.addSampleItem(files[f]);
+        sampleLibraryViewModel.addSampleItem(files[f]);
     }
 }
 
@@ -70,7 +70,8 @@ void BlomeFileTreeView::mouseDrag(const MouseEvent& e)
                 StringArray selectedFilePaths;
                 
                 // Add all selected files to external drag
-                for (int f = 0; f < getNumSelectedFiles(); f++) {
+                for (int f = 0; f < getNumSelectedFiles(); f++)
+                {
                     selectedFilePaths.add(getSelectedFile(f).getFullPathName());
                 }
                 
