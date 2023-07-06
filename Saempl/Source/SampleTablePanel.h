@@ -13,6 +13,7 @@
 #include "PanelBase.h"
 #include "SampleLibraryViewModel.h"
 #include "SampleItemPanel.h"
+#include "BlomeTableView.h"
 
 class SampleTablePanel
 :   public PanelBase
@@ -31,7 +32,7 @@ private:
     // Fields
     SaemplAudioProcessor& currentProcessor;
     SampleLibraryViewModel& sampleLibraryViewModel;
-    std::unique_ptr<TableListBox> mSampleItemTable;
+    std::unique_ptr<BlomeTableView> mSampleItemTable;
     
     // Methods
     

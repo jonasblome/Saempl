@@ -173,6 +173,11 @@ void SampleLibrary::setDirectory(String inDirectoryPath)
     refresh();
 }
 
+OwnedArray<SampleItem>* SampleLibrary::getSampleItems()
+{
+    return &mSampleItems;
+}
+
 /**
  Creates a SampleItem for a file and adds it to the collection.
  If the corresponding SampleItem already exists, nothing happens.

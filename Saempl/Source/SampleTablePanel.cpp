@@ -36,11 +36,11 @@ void SampleTablePanel::paint(Graphics& g)
 void SampleTablePanel::setPanelComponents()
 {
     // Set file tree component
-    mSampleItemTable = std::make_unique<TableListBox>();
+    mSampleItemTable = std::make_unique<BlomeTableView>(sampleLibraryViewModel);
     mSampleItemTable->setBounds(PANEL_MARGIN / 2.0,
-                         PANEL_MARGIN / 2.0,
-                         getWidth() - PANEL_MARGIN,
-                         getHeight() - PANEL_MARGIN);
+                                PANEL_MARGIN / 2.0,
+                                getWidth() - PANEL_MARGIN,
+                                getHeight() - PANEL_MARGIN);
     addAndMakeVisible(*mSampleItemTable);
     
     // Repaint panel

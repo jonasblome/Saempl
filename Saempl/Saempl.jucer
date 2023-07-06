@@ -16,6 +16,10 @@
             file="Source/BlomeFileTreeView.cpp"/>
       <FILE id="eHx4JX" name="BlomeFileTreeView.h" compile="0" resource="0"
             file="Source/BlomeFileTreeView.h"/>
+      <FILE id="dENz96" name="BlomeTableView.cpp" compile="1" resource="0"
+            file="Source/BlomeTableView.cpp"/>
+      <FILE id="Vf7dQl" name="BlomeTableView.h" compile="0" resource="0"
+            file="Source/BlomeTableView.h"/>
     </GROUP>
     <GROUP id="{00D751B1-3FF1-898B-DE28-411892B3B79A}" name="BlomeViewModels">
       <FILE id="ipExmz" name="SampleLibraryViewModel.cpp" compile="1" resource="0"

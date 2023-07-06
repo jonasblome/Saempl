@@ -30,6 +30,7 @@ public:
     void refresh();
     SampleItem* getSampleItemWithFilePath(const String& inFilePath);
     void setDirectory(String inDirectoryPath);
+    OwnedArray<SampleItem>* getSampleItems();
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibrary)

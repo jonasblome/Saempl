@@ -3,4 +3,180 @@
    uuid = "56713FB6-8A5F-402A-915B-54A14F825C36"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1D6CC2A0-C014-40FF-B68E-A54A2ED87948"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../Source/BlomeTableView.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "BlomeTableView::paintRowBackground(g, rowNumber, width, height, rowIsSelected)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "1D6CC2A0-C014-40FF-B68E-A54A2ED87948 - 4a95a14f3ccfdf40"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BlomeTableView::paintRowBackground(juce::Graphics&amp;, int, int, int, bool)"
+                  moduleName = "Auto_Sample"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jonasblome/Documents/Musikproduktion/Plugins/Saempl/Saempl/Source/BlomeTableView.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "49"
+                  endingLineNumber = "49"
+                  offsetFromSymbolStart = "88">
+               </Location>
+               <Location
+                  uuid = "1D6CC2A0-C014-40FF-B68E-A54A2ED87948 - 4a95a14f3ccfdf40"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BlomeTableView::paintRowBackground(juce::Graphics&amp;, int, int, int, bool)"
+                  moduleName = "Auto_Sample"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jonasblome/Documents/Musikproduktion/Plugins/Saempl/Saempl/Source/BlomeTableView.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "49"
+                  endingLineNumber = "49"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  uuid = "1D6CC2A0-C014-40FF-B68E-A54A2ED87948 - 4a95a14f3ccfdfab"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BlomeTableView::paintRowBackground(juce::Graphics&amp;, int, int, int, bool)"
+                  moduleName = "Auto_Sample"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jonasblome/Documents/Musikproduktion/Plugins/Saempl/Saempl/Source/BlomeTableView.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "54"
+                  endingLineNumber = "54"
+                  offsetFromSymbolStart = "52">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4F0B0A33-D2BC-4C26-B986-757E36C0C801"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../Source/BlomeTableView.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
+            landmarkName = "BlomeTableView::paintCell(g, rowNumber, columnId, width, height, rowIsSelected)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "4F0B0A33-D2BC-4C26-B986-757E36C0C801 - a1fba996d1d54935"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BlomeTableView::paintCell(juce::Graphics&amp;, int, int, int, int, bool)"
+                  moduleName = "Auto_Sample"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jonasblome/Documents/Musikproduktion/Plugins/Saempl/Saempl/Source/BlomeTableView.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "71"
+                  endingLineNumber = "71"
+                  offsetFromSymbolStart = "164">
+               </Location>
+               <Location
+                  uuid = "4F0B0A33-D2BC-4C26-B986-757E36C0C801 - a1fba996d1d5486a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BlomeTableView::paintCell(juce::Graphics&amp;, int, int, int, int, bool)"
+                  moduleName = "Auto_Sample"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jonasblome/Documents/Musikproduktion/Plugins/Saempl/Saempl/Source/BlomeTableView.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "76"
+                  endingLineNumber = "76"
+                  offsetFromSymbolStart = "56">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A3455987-F43B-46E4-9BD8-57254379206D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../Source/BlomeTableView.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
+            landmarkName = "BlomeTableView::getColumnAutoSizeWidth(columnId)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A3455987-F43B-46E4-9BD8-57254379206D - e305f9194ef92992"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BlomeTableView::getColumnAutoSizeWidth(int)"
+                  moduleName = "Auto_Sample"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jonasblome/Documents/Musikproduktion/Plugins/Saempl/Saempl/Source/BlomeTableView.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "88">
+               </Location>
+               <Location
+                  uuid = "A3455987-F43B-46E4-9BD8-57254379206D - e305f9194ef92992"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BlomeTableView::getColumnAutoSizeWidth(int)"
+                  moduleName = "Auto_Sample"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jonasblome/Documents/Musikproduktion/Plugins/Saempl/Saempl/Source/BlomeTableView.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "120">
+               </Location>
+               <Location
+                  uuid = "A3455987-F43B-46E4-9BD8-57254379206D - e305f9194ef928f7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BlomeTableView::getColumnAutoSizeWidth(int)"
+                  moduleName = "Auto_Sample"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jonasblome/Documents/Musikproduktion/Plugins/Saempl/Saempl/Source/BlomeTableView.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "103"
+                  endingLineNumber = "103"
+                  offsetFromSymbolStart = "32">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

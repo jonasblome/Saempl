@@ -40,4 +40,7 @@ void MainPanel::setPanelComponents()
     mHeaderPanel = std::make_unique<HeaderPanel>(currentProcessor, *mCenterPanel);
     mHeaderPanel->setTopLeftPosition(PANEL_MARGIN / 2.0, PANEL_MARGIN / 2.0);
     addAndMakeVisible(*mHeaderPanel);
+    
+    // Repaint panel
+    repaint();
 }

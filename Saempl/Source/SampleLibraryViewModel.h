@@ -22,6 +22,7 @@ public:
     
     // Methods
     DirectoryContentsList* getDirectoryList();
+    OwnedArray<SampleItem>* getSampleItems();
     void addSampleItem(const String& inFilePath);
     void removeSampleItem(const String& inFilePath, bool deletePermanently);
     void refreshSampleLibrary();

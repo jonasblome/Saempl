@@ -49,6 +49,9 @@ void CenterPanel::setPanelComponents()
                                             SAMPLE_ITEM_PANEL_TOGGLE_HEIGHT - PANEL_MARGIN);
     mToggleSampleItemPanelButton->onClick = [this] { toggleSampleItemPanel(); };
     addAndMakeVisible(*mToggleSampleItemPanelButton);
+    
+    // Repaint panel
+    repaint();
 }
 
 /**

@@ -26,6 +26,11 @@ DirectoryContentsList* SampleLibraryViewModel::getDirectoryList()
     return sampleLibrary.getDirectoryList();
 }
 
+OwnedArray<SampleItem>* SampleLibraryViewModel::getSampleItems()
+{
+    return sampleLibrary.getSampleItems();
+}
+
 /**
  Adds a file and sample item to the database
  */
