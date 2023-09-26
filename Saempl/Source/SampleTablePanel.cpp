@@ -31,11 +31,12 @@ void SampleTablePanel::paint(Graphics& g)
     // Set background
     g.setColour(COLOUR_ACCENT_MEDIUM);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), MEDIUM_CORNER_SIZE);
+    mSampleItemTable->refresh();
 }
 
 void SampleTablePanel::setPanelComponents()
 {
-    // Set file tree component
+    // Set sample table component
     mSampleItemTable = std::make_unique<BlomeTableView>(sampleLibraryViewModel);
     mSampleItemTable->setBounds(PANEL_MARGIN / 2.0,
                                 PANEL_MARGIN / 2.0,

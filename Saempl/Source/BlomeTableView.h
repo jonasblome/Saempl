@@ -37,6 +37,7 @@ public:
                    int height,
                    bool rowIsSelected) override;
     int getColumnAutoSizeWidth(int columnId) override;
+    void refresh();
     
 private:
     // Fields

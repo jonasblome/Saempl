@@ -41,7 +41,7 @@ void SampleNavigationPanel::setPanelComponents()
     
     // Add sample table panel
     mSampleTablePanel = std::make_unique<SampleTablePanel>(currentProcessor, *mSampleLibraryViewModel);
-    mSampleLibraryPanel->setTopLeftPosition(0, 0);
+    mSampleTablePanel->setTopLeftPosition(0, 0);
     addChildComponent(*mSampleTablePanel);
     
     // Repaint panel
@@ -65,9 +65,9 @@ void SampleNavigationPanel::showNavigationPanel(int inType)
 {
     if (inType == 0)
     {
+        mSampleTablePanel->setVisible(false);
         mSampleLibraryPanel->setVisible(true);
         mSampleLibraryPanel->repaint();
-        mSampleTablePanel->setVisible(false);
     }
     else if (inType == 1)
     {
