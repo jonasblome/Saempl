@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1430"
+   LastUpgradeVersion = "1500"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "86C3A28AF421105374359E8C"
-               BuildableName = "Auto_Sample.vst3"
-               BlueprintName = "Saempl - VST3"
+               BlueprintIdentifier = "3F93F72C4CB567E35D4EDF8E"
+               BuildableName = "libAuto_Sample.a"
+               BlueprintName = "Saempl - Shared Code"
                ReferencedContainer = "container:Saempl.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -31,19 +31,14 @@
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
-      selectedDebuggerIdentifier = ""
-      selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <PathRunnable
-         runnableDebuggingMode = "0"
-         BundleIdentifier = "com.ableton.live"
-         FilePath = "/Applications/Ableton Live 11 Suite.app">
-      </PathRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -54,9 +49,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "86C3A28AF421105374359E8C"
-            BuildableName = "Auto_Sample.vst3"
-            BlueprintName = "Saempl - VST3"
+            BlueprintIdentifier = "3F93F72C4CB567E35D4EDF8E"
+            BuildableName = "libAuto_Sample.a"
+            BlueprintName = "Saempl - Shared Code"
             ReferencedContainer = "container:Saempl.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
