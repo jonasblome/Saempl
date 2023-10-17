@@ -11,7 +11,6 @@
 #pragma once
 
 #include "JuceHeader.h"
-#include "BlomeHelperFunctions.h"
 #include "SampleLibraryViewModel.h"
 
 class BlomeFileTreeView

@@ -27,6 +27,7 @@
 /* Begin PBXBuildFile section */
 		0446910E91D427262CE204C3 /* PluginProcessor.cpp */ = {isa = PBXBuildFile; fileRef = 70EF1301C335310728757BD2; };
 		0993F9E096CAE8CD19DB68A2 /* include_juce_audio_basics.mm */ = {isa = PBXBuildFile; fileRef = E66ACD00546680631EBAF8DA; };
+		0A998606A71EC45BD10E2A39 /* MetalKit.framework */ = {isa = PBXBuildFile; fileRef = 2086B7E9A9D5983BE56D8E82; settings = { ATTRIBUTES = (Weak, ); }; };
 		0D49DE69BA00EEDED8452020 /* Security.framework */ = {isa = PBXBuildFile; fileRef = 03422605513C5E57CC9CF37D; };
 		136BF0EBC597B8653C463D25 /* SampleLibraryViewModel.cpp */ = {isa = PBXBuildFile; fileRef = 1DF3788D6F28BA471C9AAF98; };
 		1EF84598234FEADFE922C34E /* PluginEditor.cpp */ = {isa = PBXBuildFile; fileRef = 143B41D5D8F463FD85572884; };
@@ -82,6 +83,7 @@
 		D675328685E9567600658A95 /* include_juce_audio_processors_ara.cpp */ = {isa = PBXBuildFile; fileRef = 79705D27DECBAFCD15ECF7A7; };
 		DA35CE94951B946647F959EC /* HeaderPanel.cpp */ = {isa = PBXBuildFile; fileRef = 196F80CDD2C4D2049C497446; };
 		DB8D7575512ABA19E1316906 /* include_juce_gui_extra.mm */ = {isa = PBXBuildFile; fileRef = E3CA6609EAD8D1C1C097D518; };
+		DBE047097E01BB05FFB541D4 /* Metal.framework */ = {isa = PBXBuildFile; fileRef = 89E5280F103D260980F0E841; settings = { ATTRIBUTES = (Weak, ); }; };
 		DF160FBE26137E23AEF1B604 /* SampleItemPanel.cpp */ = {isa = PBXBuildFile; fileRef = 141FF7E55AB5082D4BD7344B; };
 		DF22279E5C69ABEACFB5CC8F /* include_juce_audio_plugin_client_ARA.cpp */ = {isa = PBXBuildFile; fileRef = 6CBF7DBA8D1E27F60C29E5D7; };
 		ECF8669E07178558DD019480 /* SampleLibraryPanel.cpp */ = {isa = PBXBuildFile; fileRef = E848AF781122A38CA9B232EC; };
@@ -104,6 +106,7 @@
 		196F80CDD2C4D2049C497446 /* HeaderPanel.cpp */ /* HeaderPanel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HeaderPanel.cpp; path = ../../Source/HeaderPanel.cpp; sourceTree = SOURCE_ROOT; };
 		1DF3788D6F28BA471C9AAF98 /* SampleLibraryViewModel.cpp */ /* SampleLibraryViewModel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SampleLibraryViewModel.cpp; path = ../../Source/SampleLibraryViewModel.cpp; sourceTree = SOURCE_ROOT; };
 		1F7544D03A082520A9BFCF34 /* CenterPanel.cpp */ /* CenterPanel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CenterPanel.cpp; path = ../../Source/CenterPanel.cpp; sourceTree = SOURCE_ROOT; };
+		2086B7E9A9D5983BE56D8E82 /* MetalKit.framework */ /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		212B73884D4C5DCE51202313 /* SampleLibraryViewModel.h */ /* SampleLibraryViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleLibraryViewModel.h; path = ../../Source/SampleLibraryViewModel.h; sourceTree = SOURCE_ROOT; };
 		21DFC28DB07F141478D0C7D8 /* RecentFilesMenuTemplate.nib */ /* RecentFilesMenuTemplate.nib */ = {isa = PBXFileReference; lastKnownFileType = file.nib; name = RecentFilesMenuTemplate.nib; path = RecentFilesMenuTemplate.nib; sourceTree = SOURCE_ROOT; };
 		2388439AF96675A3FA8A5EB3 /* juce_core */ /* juce_core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_core; path = /Users/jonasblome/Documents/JUCE/modules/juce_core; sourceTree = "<absolute>"; };
@@ -153,6 +156,7 @@
 		7CAFDB97D20F9E166EB9CA80 /* SampleNavigationPanel.cpp */ /* SampleNavigationPanel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SampleNavigationPanel.cpp; path = ../../Source/SampleNavigationPanel.cpp; sourceTree = SOURCE_ROOT; };
 		838A535AD159DA2C5BD98814 /* SampleItemViewModel.h */ /* SampleItemViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleItemViewModel.h; path = ../../Source/SampleItemViewModel.h; sourceTree = SOURCE_ROOT; };
 		85C47484DE7C401233629ECB /* CoreAudioKit.framework */ /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
+		89E5280F103D260980F0E841 /* Metal.framework */ /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		8D5470FD34C5CF2A38DEA191 /* include_juce_audio_processors_lv2_libs.cpp */ /* include_juce_audio_processors_lv2_libs.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_audio_processors_lv2_libs.cpp; path = ../../JuceLibraryCode/include_juce_audio_processors_lv2_libs.cpp; sourceTree = SOURCE_ROOT; };
 		8E3E1EA07A10E19D67348717 /* PluginEditor.h */ /* PluginEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginEditor.h; path = ../../Source/PluginEditor.h; sourceTree = SOURCE_ROOT; };
 		92A1F5A4C4E8E0C6478648D1 /* SampleItem.cpp */ /* SampleItem.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SampleItem.cpp; path = ../../Source/SampleItem.cpp; sourceTree = SOURCE_ROOT; };
@@ -220,6 +224,8 @@
 				FA4DC91EB7F019A0E3C7048C,
 				0D49DE69BA00EEDED8452020,
 				8A1668777AB64BD5A4820991,
+				DBE047097E01BB05FFB541D4,
+				0A998606A71EC45BD10E2A39,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +245,8 @@
 				FA4DC91EB7F019A0E3C7048C,
 				0D49DE69BA00EEDED8452020,
 				8A1668777AB64BD5A4820991,
+				DBE047097E01BB05FFB541D4,
+				0A998606A71EC45BD10E2A39,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,6 +266,8 @@
 				FA4DC91EB7F019A0E3C7048C,
 				0D49DE69BA00EEDED8452020,
 				8A1668777AB64BD5A4820991,
+				DBE047097E01BB05FFB541D4,
+				0A998606A71EC45BD10E2A39,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,6 +288,8 @@
 				FA4DC91EB7F019A0E3C7048C,
 				0D49DE69BA00EEDED8452020,
 				8A1668777AB64BD5A4820991,
+				DBE047097E01BB05FFB541D4,
+				0A998606A71EC45BD10E2A39,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +312,8 @@
 				7BE1CF1F224CC8F734487388,
 				03422605513C5E57CC9CF37D,
 				59320E9AD337C3B24DC20BD4,
+				89E5280F103D260980F0E841,
+				2086B7E9A9D5983BE56D8E82,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -538,6 +552,7 @@
 				743624AA6321D38613D8A491,
 				360B679389F969B16F6E1E2F,
 				3B05105738733D1526A73B1C,
+				852193B9D6C5C32DACAB145D,
 			);
 			buildRules = (
 			);
@@ -557,6 +572,7 @@
 				F6F1AE32D13341FE15C176C1,
 				80906C86384924EFA4F7A0C2,
 				F8E15423087E14227EF11BAD,
+				8E2DE10B8466226976136416,
 			);
 			buildRules = (
 			);
@@ -608,6 +624,7 @@
 		B1B843F91E248598F18110B2 = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1340;
 				ORGANIZATIONNAME = "Blome";
 				TargetAttributes = {
@@ -803,7 +820,29 @@
 			name = "Update manifest";
 			alwaysOutOfDate = 1;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nrm -f \"$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME/Contents/moduleinfo.json\"\nxcrun codesign --verify \"$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME\" || xcrun codesign -f -s - \"$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME\"\n\"$CONFIGURATION_BUILD_DIR/juce_vst3_helper\" -create -version \"0.1\" -path \"$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME\" -output \"$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME/Contents/Resources/moduleinfo.json\"\n";
+			shellScript = "set -e\nrm -f \"$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME/Contents/moduleinfo.json\"\n\nxcrun codesign --verify \"$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME\" || xcrun codesign -f -s - \"$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME\"\n\"$CONFIGURATION_BUILD_DIR/juce_vst3_helper\" -create -version \"0.1\" -path \"$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME\" -output \"$CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME/Contents/Resources/moduleinfo.json\"\n";
+		};
+		852193B9D6C5C32DACAB145D /* Plugin Copy Step */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			name = "Plugin Copy Step";
+			alwaysOutOfDate = 1;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n\nxcrun codesign --verify \"${TARGET_BUILD_DIR}/${FULL_PRODUCT_NAME}\" || xcrun codesign -f -s - \"${TARGET_BUILD_DIR}/${FULL_PRODUCT_NAME}\"\n\nif [ -e \"$HOME/Library/Audio/Plug-Ins/VST3/${FULL_PRODUCT_NAME}\" ]; then :\n  echo \"Destination '$HOME/Library/Audio/Plug-Ins/VST3/${FULL_PRODUCT_NAME}' exists, overwriting\"\n  rm -rf \"$HOME/Library/Audio/Plug-Ins/VST3/${FULL_PRODUCT_NAME}\"\nfi\nmkdir -p \"$HOME/Library/Audio/Plug-Ins/VST3/\"\ncp -r \"${TARGET_BUILD_DIR}/${FULL_PRODUCT_NAME}\" \"$HOME/Library/Audio/Plug-Ins/VST3/\"\n\nfi\n\n\nif test \"$CONFIGURATION\" = \"Release\"; then :\n\nxcrun codesign --verify \"${TARGET_BUILD_DIR}/${FULL_PRODUCT_NAME}\" || xcrun codesign -f -s - \"${TARGET_BUILD_DIR}/${FULL_PRODUCT_NAME}\"\n\nif [ -e \"$HOME/Library/Audio/Plug-Ins/VST3/${FULL_PRODUCT_NAME}\" ]; then :\n  echo \"Destination '$HOME/Library/Audio/Plug-Ins/VST3/${FULL_PRODUCT_NAME}' exists, overwriting\"\n  rm -rf \"$HOME/Library/Audio/Plug-Ins/VST3/${FULL_PRODUCT_NAME}\"\nfi\nmkdir -p \"$HOME/Library/Audio/Plug-Ins/VST3/\"\ncp -r \"${TARGET_BUILD_DIR}/${FULL_PRODUCT_NAME}\" \"$HOME/Library/Audio/Plug-Ins/VST3/\"\n\nfi\n";
+		};
+		8E2DE10B8466226976136416 /* Plugin Copy Step */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			name = "Plugin Copy Step";
+			alwaysOutOfDate = 1;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n\nxcrun codesign --verify \"${TARGET_BUILD_DIR}/${FULL_PRODUCT_NAME}\" || xcrun codesign -f -s - \"${TARGET_BUILD_DIR}/${FULL_PRODUCT_NAME}\"\n\nif [ -e \"$HOME/Library/Audio/Plug-Ins/Components/${FULL_PRODUCT_NAME}\" ]; then :\n  echo \"Destination '$HOME/Library/Audio/Plug-Ins/Components/${FULL_PRODUCT_NAME}' exists, overwriting\"\n  rm -rf \"$HOME/Library/Audio/Plug-Ins/Components/${FULL_PRODUCT_NAME}\"\nfi\nmkdir -p \"$HOME/Library/Audio/Plug-Ins/Components/\"\ncp -r \"${TARGET_BUILD_DIR}/${FULL_PRODUCT_NAME}\" \"$HOME/Library/Audio/Plug-Ins/Components/\"\n\nfi\n\n\nif test \"$CONFIGURATION\" = \"Release\"; then :\n\nxcrun codesign --verify \"${TARGET_BUILD_DIR}/${FULL_PRODUCT_NAME}\" || xcrun codesign -f -s - \"${TARGET_BUILD_DIR}/${FULL_PRODUCT_NAME}\"\n\nif [ -e \"$HOME/Library/Audio/Plug-Ins/Components/${FULL_PRODUCT_NAME}\" ]; then :\n  echo \"Destination '$HOME/Library/Audio/Plug-Ins/Components/${FULL_PRODUCT_NAME}' exists, overwriting\"\n  rm -rf \"$HOME/Library/Audio/Plug-Ins/Components/${FULL_PRODUCT_NAME}\"\nfi\nmkdir -p \"$HOME/Library/Audio/Plug-Ins/Components/\"\ncp -r \"${TARGET_BUILD_DIR}/${FULL_PRODUCT_NAME}\" \"$HOME/Library/Audio/Plug-Ins/Components/\"\n\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1029,7 +1068,7 @@
 				INFOPLIST_PREPROCESS = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_HEADER_SEARCH_PATHS = "/Users/jonasblome/Documents/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jonasblome/Documents/JUCE/modules /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/AU";
-				OTHER_LDFLAGS = "-lAuto_Sample -weak_framework Metal -weak_framework MetalKit";
+				OTHER_LDFLAGS = "-lAuto_Sample";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Blome.Saempl;
 				PRODUCT_NAME = "Auto_Sample";
 				USE_HEADERMAP = NO;
@@ -1046,8 +1085,6 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
 				COPY_PHASE_STRIP = NO;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
 				EXCLUDED_ARCHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1142,7 +1179,7 @@
 				LIBRARY_STYLE = Bundle;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_HEADER_SEARCH_PATHS = "/Users/jonasblome/Documents/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jonasblome/Documents/JUCE/modules /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/AU";
-				OTHER_LDFLAGS = "-bundle -lAuto_Sample -weak_framework Metal -weak_framework MetalKit";
+				OTHER_LDFLAGS = "-bundle -lAuto_Sample";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Blome.Saempl;
 				PRODUCT_NAME = "Auto_Sample";
 				USE_HEADERMAP = NO;
@@ -1168,8 +1205,6 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
 				DEAD_CODE_STRIPPING = YES;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
 				EXCLUDED_ARCHS = "";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_OPTIMIZATION_LEVEL = 3;
@@ -1265,7 +1300,7 @@
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_HEADER_SEARCH_PATHS = "/Users/jonasblome/Documents/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jonasblome/Documents/JUCE/modules /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/AU";
-				OTHER_LDFLAGS = "-bundle -lAuto_Sample -weak_framework Metal -weak_framework MetalKit";
+				OTHER_LDFLAGS = "-bundle -lAuto_Sample";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Blome.Saempl;
 				PRODUCT_NAME = "Auto_Sample";
 				USE_HEADERMAP = NO;
@@ -1375,7 +1410,6 @@
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_HEADER_SEARCH_PATHS = "/Users/jonasblome/Documents/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jonasblome/Documents/JUCE/modules /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/AU";
-				OTHER_LDFLAGS = "-weak_framework Metal -weak_framework MetalKit";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Blome.Saempl;
 				PRODUCT_NAME = "Auto_Sample";
 				SKIP_INSTALL = YES;
@@ -1485,7 +1519,6 @@
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_HEADER_SEARCH_PATHS = "/Users/jonasblome/Documents/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jonasblome/Documents/JUCE/modules /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/AU";
-				OTHER_LDFLAGS = "-weak_framework Metal -weak_framework MetalKit";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Blome.Saempl;
 				PRODUCT_NAME = "juce_vst3_helper";
 				USE_HEADERMAP = NO;
@@ -1640,7 +1673,6 @@
 				INFOPLIST_PREPROCESS = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_HEADER_SEARCH_PATHS = "/Users/jonasblome/Documents/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jonasblome/Documents/JUCE/modules /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/AU";
-				OTHER_LDFLAGS = "-weak_framework Metal -weak_framework MetalKit";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Blome.Saempl;
 				PRODUCT_NAME = "juce_vst3_helper";
 				USE_HEADERMAP = NO;
@@ -1748,7 +1780,6 @@
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_HEADER_SEARCH_PATHS = "/Users/jonasblome/Documents/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jonasblome/Documents/JUCE/modules /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/AU";
-				OTHER_LDFLAGS = "-weak_framework Metal -weak_framework MetalKit";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Blome.Saempl;
 				PRODUCT_NAME = "Auto_Sample";
 				SKIP_INSTALL = YES;
@@ -1766,8 +1797,6 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
 				DEAD_CODE_STRIPPING = YES;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
 				EXCLUDED_ARCHS = "";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_OPTIMIZATION_LEVEL = 3;
@@ -1863,7 +1892,7 @@
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_HEADER_SEARCH_PATHS = "/Users/jonasblome/Documents/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jonasblome/Documents/JUCE/modules /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/AU";
-				OTHER_LDFLAGS = "-bundle -lAuto_Sample -weak_framework Metal -weak_framework MetalKit";
+				OTHER_LDFLAGS = "-bundle -lAuto_Sample";
 				OTHER_REZFLAGS = "-d ppc_$ppc -d i386_$i386 -d ppc64_$ppc64 -d x86_64_$x86_64 -d arm64_$arm64 -I /System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Versions/A/Headers -I \"$(DEVELOPER_DIR)/Extras/CoreAudio/AudioUnits/AUPublic/AUBase\" -I \"$(DEVELOPER_DIR)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioUnit.framework/Headers\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Blome.Saempl;
 				PRODUCT_NAME = "Auto_Sample";
@@ -1974,7 +2003,7 @@
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_HEADER_SEARCH_PATHS = "/Users/jonasblome/Documents/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jonasblome/Documents/JUCE/modules /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/AU";
-				OTHER_LDFLAGS = "-lAuto_Sample -weak_framework Metal -weak_framework MetalKit";
+				OTHER_LDFLAGS = "-lAuto_Sample";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Blome.Saempl;
 				PRODUCT_NAME = "Auto_Sample";
 				USE_HEADERMAP = NO;
@@ -2047,8 +2076,6 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
 				COPY_PHASE_STRIP = NO;
-				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = /;
 				EXCLUDED_ARCHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2143,7 +2170,7 @@
 				LIBRARY_STYLE = Bundle;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_HEADER_SEARCH_PATHS = "/Users/jonasblome/Documents/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jonasblome/Documents/JUCE/modules /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/AU";
-				OTHER_LDFLAGS = "-bundle -lAuto_Sample -weak_framework Metal -weak_framework MetalKit";
+				OTHER_LDFLAGS = "-bundle -lAuto_Sample";
 				OTHER_REZFLAGS = "-d ppc_$ppc -d i386_$i386 -d ppc64_$ppc64 -d x86_64_$x86_64 -d arm64_$arm64 -I /System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Versions/A/Headers -I \"$(DEVELOPER_DIR)/Extras/CoreAudio/AudioUnits/AUPublic/AUBase\" -I \"$(DEVELOPER_DIR)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioUnit.framework/Headers\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Blome.Saempl;
 				PRODUCT_NAME = "Auto_Sample";
