@@ -17,17 +17,17 @@
 		<key>Saempl - Shared Code.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>5</integer>
+			<integer>4</integer>
 		</dict>
 		<key>Saempl - Standalone Plugin.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>4</integer>
+			<integer>2</integer>
 		</dict>
 		<key>Saempl - VST3 Manifest Helper.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>5</integer>
 		</dict>
 		<key>Saempl - VST3.xcscheme_^#shared#^_</key>
 		<dict>
@@ -43,6 +43,11 @@
 			<true/>
 		</dict>
 		<key>B3CA331BDE36AD6CBED72754</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DD1D6B2DC451B786A2C4923C</key>
 		<dict>
 			<key>primary</key>
 			<true/>

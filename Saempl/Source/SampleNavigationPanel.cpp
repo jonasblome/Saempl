@@ -71,8 +71,8 @@ void SampleNavigationPanel::showNavigationPanel(int inType)
     }
     else if (inType == 1)
     {
-        mSampleLibraryPanel->setVisible(false);
         mSampleTablePanel->setVisible(true);
+        mSampleLibraryPanel->setVisible(false);
         mSampleTablePanel->repaint();
     }
 }

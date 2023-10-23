@@ -32,7 +32,7 @@ private:
     // Fields
     SaemplAudioProcessor& currentProcessor;
     SampleLibraryViewModel& sampleLibraryViewModel;
-    std::unique_ptr<BlomeTableView> mSampleItemTable;
+    std::unique_ptr<BlomeTableView> mSampleTable;
     
     // Methods
     

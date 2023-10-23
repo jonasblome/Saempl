@@ -15,8 +15,8 @@
 #include "BlomeStyleDefinitions.h"
 
 class BlomeTableView
-:   public Component,
-    public TableListBoxModel
+:   public TableListBoxModel,
+    public TableListBox
 {
 public:
     // Constructors
@@ -42,7 +42,6 @@ public:
 private:
     // Fields
     SampleLibraryViewModel& libraryViewModel;
-    std::unique_ptr<TableListBox> mTable;
     int numRows;
     
     // Methods

@@ -13,21 +13,20 @@
 BlomeTableView::BlomeTableView(SampleLibraryViewModel& inLibraryViewModel)
 :   libraryViewModel(inLibraryViewModel)
 {
-    mTable = std::make_unique<TableListBox>();
-    mTable->setBounds(0, 0, getWidth(), getHeight());
-    mTable->setColour(ListBox::outlineColourId, COLOUR_ACCENT_LIGHT);
-    mTable->setOutlineThickness(1);
-    mTable->getHeader().addColumn("Filename",
+    setModel(this);
+    setBounds(0, 0, getWidth(), getHeight());
+    setColour(ListBox::outlineColourId, COLOUR_ACCENT_LIGHT);
+    setOutlineThickness(1);
+    getHeader().addColumn("Filename",
                                   1,
                                   200,
                                   50,
                                   400,
-                                  TableHeaderComponent::defaultFlags);
-//    mTable->getHeader().setSortColumnId(1, true);
-    mTable->getHeader().setStretchToFitActive(true);
-    mTable->setMultipleSelectionEnabled(true);
-    mTable->setModel(this);
-    addAndMakeVisible(*mTable);
+                                  TableHeaderComponent::defaultFlags,
+                                  0);
+    getHeader().setSortColumnId(1, true);
+    getHeader().setStretchToFitActive(true);
+    setMultipleSelectionEnabled(true);
 }
 
 BlomeTableView::~BlomeTableView()
@@ -38,7 +37,8 @@ BlomeTableView::~BlomeTableView()
 // This is overloaded from TableListBoxModel, and must return the total number of rows in our table
 int BlomeTableView::getNumRows()
 {
-    return libraryViewModel.getSampleItems()->size();
+    numRows = libraryViewModel.getSampleItems()->size();
+    return numRows;
 }
 
 // This is overloaded from TableListBoxModel, and should fill in the background of the whole row
@@ -65,11 +65,21 @@ void BlomeTableView::paintCell(Graphics& g,
                                int height,
                                bool rowIsSelected)
 {
-    g.setColour(getLookAndFeel().findColour(ListBox::textColourId));
-    g.setFont(FONT_SMALL_BOLD);
-
+    if (rowNumber > libraryViewModel.getSampleItems()->size()) {
+        return;
+    }
+    
     if (SampleItem* rowElement = libraryViewModel.getSampleItems()->getUnchecked(rowNumber))
     {
+        g.setColour(COLOUR_ACCENT_MEDIUM);
+        g.fillRect(width - 1,
+                   0,
+                   1,
+                   height);
+        
+        g.setColour(getLookAndFeel().findColour(ListBox::textColourId));
+        g.setFont(FONT_SMALL_BOLD);
+
         g.drawText(rowElement->getFilePath(),
                    2,
                    0,
@@ -78,12 +88,6 @@ void BlomeTableView::paintCell(Graphics& g,
                    Justification::centredLeft,
                    true);
     }
-
-    g.setColour(COLOUR_ACCENT_MEDIUM);
-    g.fillRect(width - 1,
-               0,
-               1,
-               height);
 }
 
 // This is overloaded from TableListBoxModel, and should choose the best width for the specified
@@ -107,5 +111,5 @@ int BlomeTableView::getColumnAutoSizeWidth(int columnId)
 
 void BlomeTableView::refresh()
 {
-    mTable->updateContent();
+    updateContent();
 }

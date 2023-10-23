@@ -31,18 +31,18 @@ void SampleTablePanel::paint(Graphics& g)
     // Set background
     g.setColour(COLOUR_ACCENT_MEDIUM);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), MEDIUM_CORNER_SIZE);
-    mSampleItemTable->refresh();
+    mSampleTable->refresh();
 }
 
 void SampleTablePanel::setPanelComponents()
 {
     // Set sample table component
-    mSampleItemTable = std::make_unique<BlomeTableView>(sampleLibraryViewModel);
-    mSampleItemTable->setBounds(PANEL_MARGIN / 2.0,
+    mSampleTable = std::make_unique<BlomeTableView>(sampleLibraryViewModel);
+    mSampleTable->setBounds(PANEL_MARGIN / 2.0,
                                 PANEL_MARGIN / 2.0,
                                 getWidth() - PANEL_MARGIN,
                                 getHeight() - PANEL_MARGIN);
-    addAndMakeVisible(*mSampleItemTable);
+    addAndMakeVisible(*mSampleTable);
     
     // Repaint panel
     repaint();
@@ -50,8 +50,11 @@ void SampleTablePanel::setPanelComponents()
 
 void SampleTablePanel::resizePanelComponents()
 {
-    if (mSampleItemTable != nullptr)
+    if (mSampleTable != nullptr)
     {
-        mSampleItemTable->setBounds(PANEL_MARGIN / 2.0, PANEL_MARGIN / 2.0, getWidth() - PANEL_MARGIN, getHeight() - PANEL_MARGIN);
+        mSampleTable->setBounds(PANEL_MARGIN / 2.0,
+                                PANEL_MARGIN / 2.0,
+                                getWidth() - PANEL_MARGIN,
+                                getHeight() - PANEL_MARGIN);
     }
 }
