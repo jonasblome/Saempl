@@ -20,6 +20,7 @@ public:
     ~SampleAnalyser();
     
     // Methods
+    double analyseCategory(int inTagCategory, File inFile);
     double analyseSampleLength(File inFile);
     void loadAudioFileSource(File inFile);
     

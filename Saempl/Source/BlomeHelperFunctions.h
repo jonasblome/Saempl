@@ -13,9 +13,9 @@
 #include "JuceHeader.h"
 
 #if JUCE_WINDOWS
-    static const juce::String DIRECTORY_SEPARATOR = "\\";
+    static const String DIRECTORY_SEPARATOR = "\\";
 #elif JUCE_MAC
-    static const juce::String DIRECTORY_SEPARATOR = "/";
+    static const String DIRECTORY_SEPARATOR = "/";
 #endif
 
 #define SAMPLE_LIBRARY_FILE_EXTENSION ".bslf"

@@ -70,6 +70,8 @@
             file="Source/BlomeHelperFunctions.h"/>
       <FILE id="Ioam49" name="BlomeLookAndFeel.h" compile="0" resource="0"
             file="Source/BlomeLookAndFeel.h"/>
+      <FILE id="nFClCP" name="BlomeSampleTagCategories.h" compile="0" resource="0"
+            file="Source/BlomeSampleTagCategories.h"/>
       <FILE id="bDidRl" name="BlomeStyleDefinitions.h" compile="0" resource="0"
             file="Source/BlomeStyleDefinitions.h"/>
     </GROUP>
@@ -85,6 +87,10 @@
       <FILE id="eGotgT" name="SampleEditor.h" compile="0" resource="0" file="Source/SampleEditor.h"/>
     </GROUP>
     <GROUP id="{E9B1E780-95F6-8A24-1076-4F173F69A7D1}" name="BlomeSampleManagement">
+      <FILE id="fjhQHu" name="SampleItemComparator.cpp" compile="1" resource="0"
+            file="Source/SampleItemComparator.cpp"/>
+      <FILE id="yTJLPC" name="SampleItemComparator.h" compile="0" resource="0"
+            file="Source/SampleItemComparator.h"/>
       <FILE id="UMdojm" name="SampleLibrary.cpp" compile="1" resource="0"
             file="Source/SampleLibrary.cpp"/>
       <FILE id="ijfj3H" name="SampleLibrary.h" compile="0" resource="0" file="Source/SampleLibrary.h"/>

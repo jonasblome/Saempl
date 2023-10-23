@@ -129,7 +129,7 @@ void SampleLibraryManager::loadSampleLibraryFile(String& inLibraryPath, OwnedArr
 String SampleLibraryManager::getLibraryFilesDirectoryPath()
 {
     return
-        (File::getSpecialLocation(juce::File::userMusicDirectory)).getFullPathName()
+        (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
         + DIRECTORY_SEPARATOR
         + "Plugins"
         + DIRECTORY_SEPARATOR

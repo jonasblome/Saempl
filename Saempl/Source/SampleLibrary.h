@@ -9,10 +9,12 @@
 */
 
 #pragma once
+
 #include "SampleItem.h"
 #include "BlomeHelperFunctions.h"
 #include "SampleAnalyser.h"
 #include "SampleLibraryManager.h"
+#include "BlomeSampleTagCategories.h"
 
 class SampleLibrary
 :   ChangeListener

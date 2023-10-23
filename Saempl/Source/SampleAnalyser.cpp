@@ -20,11 +20,22 @@ SampleAnalyser::~SampleAnalyser()
     
 }
 
+double SampleAnalyser::analyseCategory(int inTagCategory, File inFile)
+{
+    switch (inTagCategory)
+    {
+        case 3:
+            return analyseSampleLength(inFile);
+        default:
+            return 0;
+    }
+}
+
 double SampleAnalyser::analyseSampleLength(File inFile)
 {
     loadAudioFileSource(inFile);
-    
-    return mCurrentAudioFileSource->getTotalLength() / mCurrentAudioFileSource->getAudioFormatReader()->sampleRate;
+    double length = mCurrentAudioFileSource->getTotalLength() / mCurrentAudioFileSource->getAudioFormatReader()->sampleRate;
+    return length;
 }
 
 void SampleAnalyser::loadAudioFileSource(File inFile)

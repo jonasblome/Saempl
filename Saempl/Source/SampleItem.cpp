@@ -56,3 +56,10 @@ String SampleItem::getFilePath()
 {
     return mFilePath;
 }
+
+String SampleItem::getTitle()
+{
+    File itemFile = mFilePath;
+    String itemTitle = itemFile.getFileNameWithoutExtension();
+    return itemTitle;
+}

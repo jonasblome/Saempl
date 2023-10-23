@@ -14,17 +14,29 @@ BlomeTableView::BlomeTableView(SampleLibraryViewModel& inLibraryViewModel)
 :   libraryViewModel(inLibraryViewModel)
 {
     setModel(this);
-    setBounds(0, 0, getWidth(), getHeight());
+    setBounds(PANEL_MARGIN / 2.0, PANEL_MARGIN / 2.0, getWidth() - PANEL_MARGIN, getHeight() - PANEL_MARGIN);
     setColour(ListBox::outlineColourId, COLOUR_ACCENT_LIGHT);
-    setOutlineThickness(1);
-    getHeader().addColumn("Filename",
-                                  1,
-                                  200,
-                                  50,
-                                  400,
-                                  TableHeaderComponent::defaultFlags,
-                                  0);
-    getHeader().setSortColumnId(1, true);
+    setOutlineThickness(0);
+    
+    for (int c = 0; c < TAG_CATEGORIES.size(); c++)
+    {
+        getHeader().addColumn(TAG_CATEGORIES[c],
+                              getHeader().getNumColumns(false) + 1,
+                              200,
+                              50,
+                              400,
+                              TableHeaderComponent::defaultFlags,
+                              0);
+    }
+    
+    getHeader().addColumn("Title",
+                          getHeader().getNumColumns(false) + 1,
+                          200,
+                          50,
+                          400,
+                          TableHeaderComponent::defaultFlags,
+                          0);
+    getHeader().setSortColumnId(5, true);
     getHeader().setStretchToFitActive(true);
     setMultipleSelectionEnabled(true);
 }
@@ -65,11 +77,12 @@ void BlomeTableView::paintCell(Graphics& g,
                                int height,
                                bool rowIsSelected)
 {
-    if (rowNumber > libraryViewModel.getSampleItems()->size()) {
+    if (rowNumber > libraryViewModel.getSampleItems()->size())
+    {
         return;
     }
     
-    if (SampleItem* rowElement = libraryViewModel.getSampleItems()->getUnchecked(rowNumber))
+    if (SampleItem* rowSampleItem = libraryViewModel.getSampleItems()->getUnchecked(rowNumber))
     {
         g.setColour(COLOUR_ACCENT_MEDIUM);
         g.fillRect(width - 1,
@@ -77,16 +90,46 @@ void BlomeTableView::paintCell(Graphics& g,
                    1,
                    height);
         
-        g.setColour(getLookAndFeel().findColour(ListBox::textColourId));
+        g.setColour(COLOUR_ACCENT_LIGHT);
         g.setFont(FONT_SMALL_BOLD);
 
-        g.drawText(rowElement->getFilePath(),
+        g.drawText(getCellText(rowSampleItem, columnId),
                    2,
                    0,
                    width - 4,
                    height,
                    Justification::centredLeft,
                    true);
+    }
+}
+
+String BlomeTableView::getCellText(SampleItem* inSampleItem, int columnId)
+{
+    if (columnId == TAG_CATEGORIES.size() + 1)
+    {
+        return inSampleItem->getTitle();
+    }
+    else if (columnId <= TAG_CATEGORIES.size())
+    {
+        return std::to_string(inSampleItem->getSampleTag(columnId - 1)->getValue());
+    }
+    else
+    {
+        return "unknown";
+    }
+}
+
+// This is overloaded from TableListBoxModel, and tells us that the user has clicked a table header
+// to change the sort order.
+void BlomeTableView::sortOrderChanged (int newSortColumnId, bool isForwards)
+{
+    if (newSortColumnId != 0)
+    {
+        String categoryName = newSortColumnId <= TAG_CATEGORIES.size() ? TAG_CATEGORIES[newSortColumnId - 1] : "Title";
+        mComparator.setCompareCategory(categoryName);
+        mComparator.setSortingDirection(isForwards);
+        libraryViewModel.getSampleItems()->sort(mComparator);
+        updateContent();
     }
 }
 

@@ -152,7 +152,7 @@ void SampleLibrary::setDirectory(String inDirectoryPath)
     {
         // Set library to default path
         mCurrentLibraryPath =
-            (File::getSpecialLocation(juce::File::userMusicDirectory)).getFullPathName()
+            (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
             + DIRECTORY_SEPARATOR
             + "Plugins"
             + DIRECTORY_SEPARATOR
@@ -190,6 +190,10 @@ void SampleLibrary::createSampleItem(File inFile)
     {
         mSampleItems.add(new SampleItem());
         mSampleItems.getLast()->setFilePath(inFile.getFullPathName());
-        mSampleItems.getLast()->addSampleTag(new SampleTag("Length", mSampleAnalyser->analyseSampleLength(inFile)));
+        
+        for (int c = 0; c < TAG_CATEGORIES.size(); c++)
+        {
+            mSampleItems.getLast()->addSampleTag(new SampleTag(TAG_CATEGORIES[c], mSampleAnalyser->analyseCategory(c, inFile)));
+        }
     }
 }

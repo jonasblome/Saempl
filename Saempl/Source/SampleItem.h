@@ -26,6 +26,7 @@ public:
     OwnedArray<SampleTag>* getSampleTags();
     void setFilePath(const String& inFilePath);
     String getFilePath();
+    String getTitle();
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleItem)
