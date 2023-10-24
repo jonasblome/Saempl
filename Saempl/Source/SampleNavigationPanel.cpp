@@ -40,7 +40,7 @@ void SampleNavigationPanel::setPanelComponents()
     addAndMakeVisible(*mSampleLibraryPanel);
     
     // Add sample table panel
-    mSampleTablePanel = std::make_unique<SampleTablePanel>(currentProcessor, *mSampleLibraryViewModel);
+    mSampleTablePanel = std::make_unique<SampleTablePanel>(currentProcessor, *mSampleLibraryViewModel, linkedSampleItemPanel);
     mSampleTablePanel->setTopLeftPosition(0, 0);
     addChildComponent(*mSampleTablePanel);
     

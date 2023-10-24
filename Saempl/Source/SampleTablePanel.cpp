@@ -10,10 +10,11 @@
 
 #include "SampleTablePanel.h"
 
-SampleTablePanel::SampleTablePanel(SaemplAudioProcessor& inProcessor, SampleLibraryViewModel& inSampleLibraryViewModel)
+SampleTablePanel::SampleTablePanel(SaemplAudioProcessor& inProcessor, SampleLibraryViewModel& inSampleLibraryViewModel, SampleItemPanel& inSampleItemPanel)
 :   PanelBase(inProcessor),
     currentProcessor(inProcessor),
-    sampleLibraryViewModel(inSampleLibraryViewModel)
+    sampleLibraryViewModel(inSampleLibraryViewModel),
+    linkedSampleItemPanel(inSampleItemPanel)
 {
     setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN, SAMPLE_NAVIGATION_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
     setPanelComponents();
@@ -31,17 +32,17 @@ void SampleTablePanel::paint(Graphics& g)
     // Set background
     g.setColour(COLOUR_ACCENT_MEDIUM);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), MEDIUM_CORNER_SIZE);
-    mSampleTable->refresh();
+    mSampleTable->updateContent();
 }
 
 void SampleTablePanel::setPanelComponents()
 {
     // Set sample table component
-    mSampleTable = std::make_unique<BlomeTableView>(sampleLibraryViewModel);
+    mSampleTable = std::make_unique<BlomeTableView>(sampleLibraryViewModel, linkedSampleItemPanel);
     mSampleTable->setBounds(PANEL_MARGIN / 2.0,
-                                PANEL_MARGIN / 2.0,
-                                getWidth() - PANEL_MARGIN,
-                                getHeight() - PANEL_MARGIN);
+                            PANEL_MARGIN / 2.0,
+                            getWidth() - PANEL_MARGIN,
+                            getHeight() - PANEL_MARGIN);
     addAndMakeVisible(*mSampleTable);
     
     // Repaint panel

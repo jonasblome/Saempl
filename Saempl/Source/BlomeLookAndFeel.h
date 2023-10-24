@@ -369,6 +369,55 @@ public:
                          1);
     }
     
+    void drawTableHeaderBackground (Graphics& g, TableHeaderComponent& header) override
+    {
+        Rectangle<int> r = header.getLocalBounds();
+        g.setColour(COLOUR_ACCENT_LIGHT);
+        g.fillRoundedRectangle(r.toFloat(), MEDIUM_CORNER_SIZE);
+        g.setColour(COLOUR_ACCENT_DARK);
+
+        for (int i = header.getNumColumns(true); --i >= 0;)
+        {
+            g.fillRect(header.getColumnPosition(i).removeFromRight(1));
+        }
+    }
+    
+    void drawTableHeaderColumn (Graphics& g,
+                                TableHeaderComponent& header,
+                                const String& columnName,
+                                int columnId,
+                                int width,
+                                int height,
+                                bool isMouseOver,
+                                bool isMouseDown,
+                                int columnFlags) override
+    {
+        auto highlightColour = COLOUR_LIGHT_GRAY_LIGHT_TRANSPARENT;
+
+        if (isMouseDown)
+            g.fillAll (highlightColour);
+        else if (isMouseOver)
+            g.fillAll (highlightColour.withMultipliedAlpha (0.625f));
+
+        Rectangle<int> area (width, height);
+        area.reduce (4, 0);
+
+        if ((columnFlags & (TableHeaderComponent::sortedForwards | TableHeaderComponent::sortedBackwards)) != 0)
+        {
+            Path sortArrow;
+            sortArrow.addTriangle (0.0f, 0.0f,
+                                   0.5f, (columnFlags & TableHeaderComponent::sortedForwards) != 0 ? -0.8f : 0.8f,
+                                   1.0f, 0.0f);
+            
+            g.setColour(COLOUR_ACCENT_DARK);
+            g.fillPath (sortArrow, sortArrow.getTransformToScaleToFit (area.removeFromRight (height / 2).reduced (2).toFloat(), true));
+        }
+        
+        g.setColour(COLOUR_ACCENT_DARK);
+        g.setFont(FONT_MEDIUM_SMALL_BOLD);
+        g.drawFittedText(columnName, area, Justification::centredLeft, 1);
+    }
+    
     void drawAlertBox(Graphics& g,
                       AlertWindow& alert,
                       const Rectangle<int>& textArea,

@@ -83,15 +83,7 @@ void SampleLibraryPanel::fileClicked(const File& file, const MouseEvent& mouseEv
 
 void SampleLibraryPanel::fileDoubleClicked(const File& inFile)
 {
-    // Load file into source
-    if (inFile.exists() && !inFile.isDirectory() && isSupportedAudioFileFormat(inFile.getFileExtension()))
-    {
-        linkedSampleItemPanel.showAudioResource(URL(inFile));
-    }
-    else if (!inFile.exists())
-    {
-        linkedSampleItemPanel.showAudioResource(URL());
-    }
+    linkedSampleItemPanel.tryShowAudioResource(inFile);
 }
 
 void SampleLibraryPanel::browserRootChanged(const File&)

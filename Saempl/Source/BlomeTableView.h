@@ -15,6 +15,7 @@
 #include "BlomeStyleDefinitions.h"
 #include "SampleItemComparator.h"
 #include "SampleItem.h"
+#include "SampleItemPanel.h"
 
 class BlomeTableView
 :   public TableListBoxModel,
@@ -22,7 +23,7 @@ class BlomeTableView
 {
 public:
     // Constructors
-    BlomeTableView(SampleLibraryViewModel& inLibraryViewModel);
+    BlomeTableView(SampleLibraryViewModel& inSampleLibraryViewModel, SampleItemPanel& inSampleItemPanel);
     ~BlomeTableView();
     
     // Methods
@@ -41,11 +42,13 @@ public:
     String getCellText(SampleItem* inSampleItem, int columnId);
     void sortOrderChanged (int newSortColumnId, bool isForwards) override;
     int getColumnAutoSizeWidth(int columnId) override;
-    void refresh();
+    void cellDoubleClicked (int rowNumber, int columnId, const MouseEvent&) override;
+    void mouseDrag(const MouseEvent& e) override;
     
 private:
     // Fields
     SampleLibraryViewModel& libraryViewModel;
+    SampleItemPanel& linkedSampleItemPanel;
     int numRows;
     SampleItemComparator mComparator;
     

@@ -26,6 +26,7 @@ public:
     // Methods
     void paint(Graphics& g) override;
     void setPanelComponents() override;
+    void tryShowAudioResource(File inFile);
     void showAudioResource(URL inResource);
 
 private:

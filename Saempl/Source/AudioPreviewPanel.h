@@ -58,7 +58,7 @@ private:
     SampleItemViewModel& sampleItemViewModel;
     Slider* mZoomSlider;
     std::unique_ptr<ScrollBar> mAudioPreviewScrollbar;
-    AudioThumbnailCache thumbnailCache;
+    AudioThumbnailCache mThumbnailCache;
     AudioThumbnail mAudioPreview;
     Range<double> visibleRange;
     bool isFollowingTransport;

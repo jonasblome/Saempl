@@ -117,8 +117,8 @@ void SampleLibrary::refresh()
     // Go through all files in directory, check if a corresponding sample item now exists in the sample item list, if not add it
     for (DirectoryEntry entry : RangedDirectoryIterator(mDirectoryContent->getDirectory(), true, SUPPORTED_AUDIO_FORMATS_WILDCARD, File::findFiles))
     {
-        bool linkedSampleItemExists = getSampleItemWithFilePath(entry.getFile().getFullPathName()) == nullptr;
-        if (linkedSampleItemExists)
+        bool linkedSampleItemExists = getSampleItemWithFilePath(entry.getFile().getFullPathName()) != nullptr;
+        if (!linkedSampleItemExists)
         {
             createSampleItem(entry.getFile());
         }
@@ -188,12 +188,12 @@ void SampleLibrary::createSampleItem(File inFile)
     
     if (linkedSampleItemExists)
     {
-        mSampleItems.add(new SampleItem());
-        mSampleItems.getLast()->setFilePath(inFile.getFullPathName());
+        SampleItem* newItem = mSampleItems.add(new SampleItem());
+        newItem->setFilePath(inFile.getFullPathName());
         
         for (int c = 0; c < TAG_CATEGORIES.size(); c++)
         {
-            mSampleItems.getLast()->addSampleTag(new SampleTag(TAG_CATEGORIES[c], mSampleAnalyser->analyseCategory(c, inFile)));
+            newItem->addSampleTag(new SampleTag(TAG_CATEGORIES[c], mSampleAnalyser->analyseCategory(c, inFile)));
         }
     }
 }

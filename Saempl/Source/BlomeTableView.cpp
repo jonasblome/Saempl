@@ -10,18 +10,19 @@
 
 #include "BlomeTableView.h"
 
-BlomeTableView::BlomeTableView(SampleLibraryViewModel& inLibraryViewModel)
-:   libraryViewModel(inLibraryViewModel)
+BlomeTableView::BlomeTableView(SampleLibraryViewModel& inSampleLibraryViewModel, SampleItemPanel& inSampleItemPanel)
+:   libraryViewModel(inSampleLibraryViewModel),
+    linkedSampleItemPanel(inSampleItemPanel)
 {
     setModel(this);
-    setBounds(PANEL_MARGIN / 2.0, PANEL_MARGIN / 2.0, getWidth() - PANEL_MARGIN, getHeight() - PANEL_MARGIN);
     setColour(ListBox::outlineColourId, COLOUR_ACCENT_LIGHT);
     setOutlineThickness(0);
+    setColour(backgroundColourId, COLOUR_TRANSPARENT);
     
     for (int c = 0; c < TAG_CATEGORIES.size(); c++)
     {
         getHeader().addColumn(TAG_CATEGORIES[c],
-                              getHeader().getNumColumns(false) + 1,
+                              c + 1,
                               200,
                               50,
                               400,
@@ -30,7 +31,7 @@ BlomeTableView::BlomeTableView(SampleLibraryViewModel& inLibraryViewModel)
     }
     
     getHeader().addColumn("Title",
-                          getHeader().getNumColumns(false) + 1,
+                          TAG_CATEGORIES.size() + 1,
                           200,
                           50,
                           400,
@@ -39,11 +40,14 @@ BlomeTableView::BlomeTableView(SampleLibraryViewModel& inLibraryViewModel)
     getHeader().setSortColumnId(5, true);
     getHeader().setStretchToFitActive(true);
     setMultipleSelectionEnabled(true);
+    
+    // Mouse listener catches events from the table's children
+    addMouseListener(this, true);
 }
 
 BlomeTableView::~BlomeTableView()
 {
-    
+    removeMouseListener(this);
 }
 
 // This is overloaded from TableListBoxModel, and must return the total number of rows in our table
@@ -111,7 +115,8 @@ String BlomeTableView::getCellText(SampleItem* inSampleItem, int columnId)
     }
     else if (columnId <= TAG_CATEGORIES.size())
     {
-        return std::to_string(inSampleItem->getSampleTag(columnId - 1)->getValue());
+        String tagName = TAG_CATEGORIES[columnId - 1];
+        return std::to_string(inSampleItem->getSampleTag(tagName)->getValue());
     }
     else
     {
@@ -152,7 +157,40 @@ int BlomeTableView::getColumnAutoSizeWidth(int columnId)
     return widest + 8;
 }
 
-void BlomeTableView::refresh()
+void BlomeTableView::cellDoubleClicked (int rowNumber, int columnId, const MouseEvent&)
 {
-    updateContent();
+    File inFile = libraryViewModel.getSampleItems()->getUnchecked(rowNumber)->getFilePath();
+    linkedSampleItemPanel.tryShowAudioResource(inFile);
+}
+
+/**
+ Determines the components behaviour when the mouse is being dragged on it.
+ */
+void BlomeTableView::mouseDrag(const MouseEvent& e)
+{
+    // If the drag was at least 50ms after the mouse was pressed
+    if (e.getLengthOfMousePress() > 50) {
+        Point<int> mousePosition = e.getEventRelativeTo(this).position.toInt();
+        
+        // Check if any of the selected rows was dragged
+        for (int s = 0; s < getNumSelectedRows(); s++) {
+            Rectangle<int> itemBounds = getRowPosition(getSelectedRow(s), false);
+            
+            if (itemBounds.contains(mousePosition))
+            {
+                StringArray selectedFilePaths;
+                
+                // Add all selected rows to external drag
+                for (int r = 0; r < getNumSelectedRows(); r++)
+                {
+                    selectedFilePaths.add(libraryViewModel.getSampleItems()->getUnchecked(getSelectedRow(r))->getFilePath());
+                }
+                
+                DragAndDropContainer* dragContainer = DragAndDropContainer::findParentDragContainerFor(this);
+                dragContainer->performExternalDragDropOfFiles(selectedFilePaths, false, this);
+                
+                return;
+            }
+        }
+    }
 }

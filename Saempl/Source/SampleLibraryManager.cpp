@@ -97,17 +97,17 @@ void SampleLibraryManager::loadSampleLibraryFile(String& inLibraryPath, OwnedArr
         {
             XmlElement* sampleItemsXml = libraryXmlPointer->getChildByName("SampleItems");
             
-            for (auto* sampleItemXml : sampleItemsXml->getChildIterator())
+            for (XmlElement* sampleItemXml : sampleItemsXml->getChildIterator())
             {
                 SampleItem* sampleItem = new SampleItem();
                 String filePath = sampleItemXml->getStringAttribute("FilePath");
                 sampleItem->setFilePath(filePath);
                 XmlElement* sampleTagsXml = sampleItemXml->getChildByName("SampleTags");
                 
-                for (auto* sampleTagXml : sampleTagsXml->getChildIterator())
+                for (XmlElement* sampleTagXml : sampleTagsXml->getChildIterator())
                 {
                     String tagName = sampleTagXml->getTagName();
-                    float tagValue = sampleTagXml->getDoubleAttribute("TagValue");
+                    double tagValue = sampleTagXml->getDoubleAttribute("TagValue");
                     
                     sampleItem->addSampleTag(new SampleTag(tagName, tagValue));
                 }

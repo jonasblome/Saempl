@@ -16,8 +16,8 @@ AudioPreviewPanel::AudioPreviewPanel(SaemplAudioProcessor& inProcessor, Slider& 
     currentProcessor(inProcessor),
     sampleItemViewModel(inSampleItemViewModel),
     mZoomSlider(&inSlider),
-    thumbnailCache(5),
-    mAudioPreview(512, sampleItemViewModel.getAudioFormatManager(), thumbnailCache),
+    mThumbnailCache(5),
+    mAudioPreview(512, sampleItemViewModel.getAudioFormatManager(), mThumbnailCache),
     isFollowingTransport(false)
 {
     setSize(SAMPLE_PREVIEW_WIDTH - PANEL_MARGIN * 2, SAMPLE_PREVIEW_HEIGHT - PANEL_MARGIN * 1.5);

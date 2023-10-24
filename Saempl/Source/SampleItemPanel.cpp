@@ -88,6 +88,19 @@ void SampleItemPanel::changeListenerCallback(ChangeBroadcaster* source)
     }
 }
 
+void SampleItemPanel::tryShowAudioResource(File inFile)
+{
+    // Load file into source
+    if (inFile.exists() && !inFile.isDirectory() && isSupportedAudioFileFormat(inFile.getFileExtension()))
+    {
+        showAudioResource(URL(inFile));
+    }
+    else if (!inFile.exists())
+    {
+        showAudioResource(URL());
+    }
+}
+
 void SampleItemPanel::showAudioResource(URL inResource)
 {
     mAudioPreviewPanel->showAudioResource(inResource);

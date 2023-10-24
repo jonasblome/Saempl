@@ -20,7 +20,7 @@ class SampleTablePanel
 {
 public:
     // Constructors
-    SampleTablePanel(SaemplAudioProcessor& inProcessor, SampleLibraryViewModel& inSampleLibraryViewModel);
+    SampleTablePanel(SaemplAudioProcessor& inProcessor, SampleLibraryViewModel& inSampleLibraryViewModel, SampleItemPanel& inSampleItemPanel);
     ~SampleTablePanel();
     
     // Methods
@@ -32,6 +32,7 @@ private:
     // Fields
     SaemplAudioProcessor& currentProcessor;
     SampleLibraryViewModel& sampleLibraryViewModel;
+    SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<BlomeTableView> mSampleTable;
     
     // Methods
