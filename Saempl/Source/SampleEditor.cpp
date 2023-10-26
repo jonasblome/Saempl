@@ -56,7 +56,7 @@ void SampleEditor::stopAudio()
 }
 
 
-bool SampleEditor::loadURLIntoTransport(const URL& audioURL, TimeSliceThread& inThread)
+bool SampleEditor::loadURLIntoTransport(URL const & audioURL, TimeSliceThread& inThread)
 {
     return mAudioPlayer->loadURLIntoTransport(audioURL, inThread);
 }

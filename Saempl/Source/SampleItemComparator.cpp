@@ -22,23 +22,7 @@ SampleItemComparator::~SampleItemComparator()
 
 int SampleItemComparator::compareElements(SampleItem* first, SampleItem* second)
 {
-    if (mCompareCategoryName == "Title")
-    {
-        String firstTitle = first->getTitle();
-        String secondTitle = second->getTitle();
-        return compareElements(firstTitle, secondTitle);
-    }
-    else
-    {
-        double firstTagValue = first->getSampleTag(mCompareCategoryName)->getValue();
-        double secondTagValue = second->getSampleTag(mCompareCategoryName)->getValue();
-        return compareElements(firstTagValue, secondTagValue);
-    }
-}
-
-template <typename T> int SampleItemComparator::compareElements(T first, T second)
-{
-    int result =  (first < second) ? -1 : ((first > second) ? 1 : 0);
+    int result = first->getSampleProperty(mComparePropertyName)->compareTo(*second->getSampleProperty(mComparePropertyName));
     
     if (!mIsForwards)
     {
@@ -48,12 +32,12 @@ template <typename T> int SampleItemComparator::compareElements(T first, T secon
     return result;
 }
 
-void SampleItemComparator::setCompareCategory(String inCategory)
+void SampleItemComparator::setCompareProperty(String inProperty)
 {
-    mCompareCategoryName = inCategory;
+    mComparePropertyName = inProperty;
 }
 
-void SampleItemComparator::setSortingDirection(bool isForwards)
+void SampleItemComparator::setSortingDirection(bool inIsForwards)
 {
-    mIsForwards = isForwards;
+    mIsForwards = inIsForwards;
 }

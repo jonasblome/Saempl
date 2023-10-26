@@ -26,7 +26,7 @@ BlomeFileTreeView::~BlomeFileTreeView()
 /**
  Handles what happens when files are dropped onto the tree view.
  */
-void BlomeFileTreeView::filesDropped(const StringArray& files, int x, int y)
+void BlomeFileTreeView::filesDropped(StringArray const & files, int x, int y)
 {
     // Adding all the dropped files to the database
     for(int f = 0; f < files.size(); f++)
@@ -38,7 +38,7 @@ void BlomeFileTreeView::filesDropped(const StringArray& files, int x, int y)
 /**
  Sets a flag if the tree view is interested in drag and drop of files.
  */
-bool BlomeFileTreeView::isInterestedInFileDrag(const StringArray& files)
+bool BlomeFileTreeView::isInterestedInFileDrag(StringArray const & files)
 {
     return true;
 }
@@ -55,7 +55,7 @@ void BlomeFileTreeView::changeListenerCallback(ChangeBroadcaster* source)
 /**
  Determines the components behaviour when the mouse is being dragged on it.
  */
-void BlomeFileTreeView::mouseDrag(const MouseEvent& e)
+void BlomeFileTreeView::mouseDrag(MouseEvent const & e)
 {
     // If the drag was at least 50ms after the mouse was pressed
     if (e.getLengthOfMousePress() > 50) {

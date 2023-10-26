@@ -21,12 +21,12 @@ PanelBase::~PanelBase()
     
 }
 
-void PanelBase::mouseEnter(const MouseEvent& event)
+void PanelBase::mouseEnter(MouseEvent const & event)
 {
     repaint();
 }
 
-void PanelBase::mouseExit(const MouseEvent& event)
+void PanelBase::mouseExit(MouseEvent const & event)
 {
     repaint();
 }

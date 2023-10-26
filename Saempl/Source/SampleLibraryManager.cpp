@@ -46,17 +46,17 @@ void SampleLibraryManager::updateSampleLibraryFile(String& inLibraryPath, OwnedA
         // Adding file path xml to sample item xml
         sampleItemXml->setAttribute("FilePath", sampleItem->getFilePath());
         
-        // Adding sample tags xml to sample item xml
-        XmlElement* sampleTagsXml = new XmlElement("SampleTags");
+        // Adding sample properties xml to sample item xml
+        XmlElement* samplePropertiesXml = new XmlElement("SampleProperties");
         
-        for (SampleTag* sampleTag : *sampleItem->getSampleTags())
+        for (SampleProperty* sampleProperty : *sampleItem->getSampleProperties())
         {
-            XmlElement* sampleTagXml = new XmlElement(sampleTag->getName());
-            sampleTagXml->setAttribute("TagValue", sampleTag->getValue());
-            sampleTagsXml->prependChildElement(sampleTagXml);
+            XmlElement* samplePropertyXml = new XmlElement(sampleProperty->getName());
+            samplePropertyXml->setAttribute("PropertyValue", sampleProperty->getValue());
+            samplePropertiesXml->prependChildElement(samplePropertyXml);
         }
         
-        sampleItemXml->addChildElement(sampleTagsXml);
+        sampleItemXml->addChildElement(samplePropertiesXml);
         
         sampleItemsXml->prependChildElement(sampleItemXml);
     }
@@ -102,14 +102,35 @@ void SampleLibraryManager::loadSampleLibraryFile(String& inLibraryPath, OwnedArr
                 SampleItem* sampleItem = new SampleItem();
                 String filePath = sampleItemXml->getStringAttribute("FilePath");
                 sampleItem->setFilePath(filePath);
-                XmlElement* sampleTagsXml = sampleItemXml->getChildByName("SampleTags");
+                XmlElement* samplePropertiesXml = sampleItemXml->getChildByName("SampleProperties");
                 
-                for (XmlElement* sampleTagXml : sampleTagsXml->getChildIterator())
+                for (XmlElement* samplePropertyXml : samplePropertiesXml->getChildIterator())
                 {
-                    String tagName = sampleTagXml->getTagName();
-                    double tagValue = sampleTagXml->getDoubleAttribute("TagValue");
+                    String propertyName = samplePropertyXml->getTagName();
                     
-                    sampleItem->addSampleTag(new SampleTag(tagName, tagValue));
+                    switch (PROPERTY_NAME_TYPES.at(propertyName))
+                    {
+                        case 0:
+                        {
+                            int propertyValue = samplePropertyXml->getIntAttribute("PropertyValue");
+                            sampleItem->addSampleProperty(new SamplePropertyInt(propertyName, propertyValue));
+                            break;
+                        }
+                        case 1:
+                        {
+                            double propertyValue = samplePropertyXml->getDoubleAttribute("PropertyValue");
+                            sampleItem->addSampleProperty(new SamplePropertyDouble(propertyName, propertyValue));
+                            break;
+                        }
+                        case 2:
+                        {
+                            String propertyValue = samplePropertyXml->getStringAttribute("PropertyValue");
+                            sampleItem->addSampleProperty(new SamplePropertyString(propertyName, propertyValue));
+                            break;
+                        }
+                        default:
+                            break;
+                    }
                 }
                 
                 inSampleItems->add(sampleItem);

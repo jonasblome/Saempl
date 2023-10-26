@@ -34,7 +34,7 @@ OwnedArray<SampleItem>* SampleLibraryViewModel::getSampleItems()
 /**
  Adds a file and sample item to the database
  */
-void SampleLibraryViewModel::addSampleItem(const String& inFilePath)
+void SampleLibraryViewModel::addSampleItem(String const & inFilePath)
 {
     File file = File(inFilePath);
     
@@ -46,7 +46,7 @@ void SampleLibraryViewModel::addSampleItem(const String& inFilePath)
  
  @param deletePermanently   determines if the item is deleted permanently (true) or just moved to the trash (false)
  */
-void SampleLibraryViewModel::removeSampleItem(const String& inFilePath, bool deletePermanently = false)
+void SampleLibraryViewModel::removeSampleItem(String const & inFilePath, bool deletePermanently = false)
 {
     sampleLibrary.removeSampleItem(inFilePath, deletePermanently);
 }

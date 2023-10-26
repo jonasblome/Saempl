@@ -33,7 +33,7 @@ void HeaderPanel::paint(Graphics& g)
     g.fillRoundedRectangle(getLocalBounds().toFloat(), MEDIUM_CORNER_SIZE);
     
     // Draw logo text
-    const int logoWidth = 220;
+    int const logoWidth = 220;
     g.setColour(COLOUR_ACCENT_DARK);
     g.setFont(FONT_MEDIUM);
     g.drawFittedText("Blome Audio",
@@ -125,7 +125,7 @@ void HeaderPanel::showLibraryChooser()
     mFileChooser->launchAsync
     (
         FileBrowserComponent::openMode | FileBrowserComponent::canSelectDirectories,
-        [&] (const FileChooser& chooser)
+        [&] (FileChooser const & chooser)
         {
             URL result = chooser.getURLResult();
             String name = result.isLocalFile() ? result.getLocalFile().getFullPathName() : result.toString(true);

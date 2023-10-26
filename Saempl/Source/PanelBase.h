@@ -23,8 +23,8 @@ public:
     ~PanelBase();
     
     // Methods
-    void mouseEnter(const MouseEvent& event) override;
-    void mouseExit(const MouseEvent& event) override;
+    void mouseEnter(MouseEvent const & event) override;
+    void mouseExit(MouseEvent const & event) override;
     void paint(Graphics& g) override;
     void resized() override;
     virtual void setPanelComponents() {};

@@ -11,10 +11,10 @@
 #pragma once
 
 #include "SampleItem.h"
-#include "BlomeHelperFunctions.h"
+#include "BlomeHelpers.h"
 #include "SampleAnalyser.h"
 #include "SampleLibraryManager.h"
-#include "BlomeSampleTagCategories.h"
+#include "SampleFileFilter.h"
 
 class SampleLibrary
 :   ChangeListener
@@ -25,12 +25,12 @@ public:
     ~SampleLibrary();
     
     // Methods
-    void addSampleItem(const File& inFile);
-    void removeSampleItem(const String& inFilePath, bool deletePermanently);
+    void addSampleItem(File const & inFile);
+    void removeSampleItem(String const & inFilePath, bool deletePermanently);
     DirectoryContentsList* getDirectoryList();
     void changeListenerCallback(ChangeBroadcaster* inSource) override;
     void refresh();
-    SampleItem* getSampleItemWithFilePath(const String& inFilePath);
+    SampleItem* getSampleItemWithFilePath(String const & inFilePath);
     void setDirectory(String inDirectoryPath);
     OwnedArray<SampleItem>* getSampleItems();
     

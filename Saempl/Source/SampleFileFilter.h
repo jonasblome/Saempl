@@ -12,25 +12,25 @@
 
 #include "JuceHeader.h"
 #include "SampleItem.h"
+#include "BlomeHelpers.h"
+#include "SampleFileFilterRule.h"
 
 class SampleFileFilter
-:   public FileFilter
 {
 public:
     // Constructors
-    SampleFileFilter(String& inDescription);
+    SampleFileFilter();
     ~SampleFileFilter();
     
     // Methods
-    bool isFileSuitable (const File& file) const override;
-    bool isDirectorySuitable (const File& file) const override;
-    void addFilteredFilePath(SampleItem* inSampleItem);
+    bool rulesApply(SampleItem& inFile);
+    void addFilterRule(SampleFileFilterRule* inRule);
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleFileFilter)
     
     // Fields
-    OwnedArray<SampleItem> mFilteredFilePaths;
+    OwnedArray<SampleFileFilterRule> mFilterRules;
     
     // Methods
     

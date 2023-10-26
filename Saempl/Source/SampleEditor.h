@@ -28,7 +28,7 @@ public:
     bool isPlaying();
     double getCurrentReadheadPosition();
     void stopAudio();
-    bool loadURLIntoTransport(const URL& audioURL, TimeSliceThread& inThread);
+    bool loadURLIntoTransport(URL const & audioURL, TimeSliceThread& inThread);
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleEditor)

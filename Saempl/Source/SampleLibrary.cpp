@@ -31,13 +31,14 @@ SampleLibrary::~SampleLibrary()
     mSampleLibraryManager->updateSampleLibraryFile(mCurrentLibraryPath, &mSampleItems);
 }
 
-void SampleLibrary::addSampleItem(const File& inFile)
+void SampleLibrary::addSampleItem(File const & inFile)
 {
     String fileName = inFile.getFileName();
     File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
     
     // Don't add files if they already exist in the current library
-    if (!mDirectoryContent->getDirectory().findChildFiles(File::findFiles, true, newFile.getFileName()).isEmpty()) {
+    if (!mDirectoryContent->getDirectory().findChildFiles(File::findFiles, true, newFile.getFileName()).isEmpty())
+    {
         return;
     }
     
@@ -71,7 +72,7 @@ void SampleLibrary::addSampleItem(const File& inFile)
     mDirectoryContent->refresh();
 }
 
-void SampleLibrary::removeSampleItem(const String& inFilePath, bool deletePermanently = false)
+void SampleLibrary::removeSampleItem(String const& inFilePath, bool deletePermanently = false)
 {
     // Delete sample item
     SampleItem* itemToDelete = getSampleItemWithFilePath(inFilePath);
@@ -127,9 +128,9 @@ void SampleLibrary::refresh()
     mDirectoryContent->refresh();
 }
 
-SampleItem* SampleLibrary::getSampleItemWithFilePath(const String& inFilePath)
+SampleItem* SampleLibrary::getSampleItemWithFilePath(String const & inFilePath)
 {
-    for(SampleItem* sampleItem : mSampleItems)
+    for (SampleItem* sampleItem : mSampleItems)
     {
         if (sampleItem->getFilePath() == inFilePath)
         {
@@ -160,7 +161,7 @@ void SampleLibrary::setDirectory(String inDirectoryPath)
             + DIRECTORY_SEPARATOR
             + "DefaultSampleLibrary";
         
-        if(!File(mCurrentLibraryPath).exists())
+        if (!File(mCurrentLibraryPath).exists())
         {
             File(mCurrentLibraryPath).createDirectory();
         }
@@ -191,9 +192,28 @@ void SampleLibrary::createSampleItem(File inFile)
         SampleItem* newItem = mSampleItems.add(new SampleItem());
         newItem->setFilePath(inFile.getFullPathName());
         
-        for (int c = 0; c < TAG_CATEGORIES.size(); c++)
+        for (int c = 0; c < PROPERTY_NAMES.size(); c++)
         {
-            newItem->addSampleTag(new SampleTag(TAG_CATEGORIES[c], mSampleAnalyser->analyseCategory(c, inFile)));
+            switch (PROPERTY_NAME_TYPES.at(PROPERTY_NAMES[c]))
+            {
+                case 0:
+                {
+                    SamplePropertyInt* newProperty = dynamic_cast<SamplePropertyInt*>(newItem->addSampleProperty(new SamplePropertyInt()));
+                    newProperty->setName(PROPERTY_NAMES[c]);
+                    newProperty->setValue(mSampleAnalyser->analyseProperty(c, inFile));
+                    break;
+                }
+                case 1:
+                {
+                    break;
+                }
+                case 2:
+                {
+                    break;
+                }
+                default:
+                    break;
+            }
         }
     }
 }

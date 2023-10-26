@@ -19,9 +19,9 @@ BlomeTableView::BlomeTableView(SampleLibraryViewModel& inSampleLibraryViewModel,
     setOutlineThickness(0);
     setColour(backgroundColourId, COLOUR_TRANSPARENT);
     
-    for (int c = 0; c < TAG_CATEGORIES.size(); c++)
+    for (int c = 0; c < PROPERTY_NAMES.size(); c++)
     {
-        getHeader().addColumn(TAG_CATEGORIES[c],
+        getHeader().addColumn(PROPERTY_NAMES[c],
                               c + 1,
                               200,
                               50,
@@ -30,14 +30,7 @@ BlomeTableView::BlomeTableView(SampleLibraryViewModel& inSampleLibraryViewModel,
                               0);
     }
     
-    getHeader().addColumn("Title",
-                          TAG_CATEGORIES.size() + 1,
-                          200,
-                          50,
-                          400,
-                          TableHeaderComponent::defaultFlags,
-                          0);
-    getHeader().setSortColumnId(5, true);
+    getHeader().setSortColumnId(PROPERTY_NAMES.size(), true);
     getHeader().setStretchToFitActive(true);
     setMultipleSelectionEnabled(true);
     
@@ -109,14 +102,10 @@ void BlomeTableView::paintCell(Graphics& g,
 
 String BlomeTableView::getCellText(SampleItem* inSampleItem, int columnId)
 {
-    if (columnId == TAG_CATEGORIES.size() + 1)
+    if (columnId <= PROPERTY_NAMES.size())
     {
-        return inSampleItem->getTitle();
-    }
-    else if (columnId <= TAG_CATEGORIES.size())
-    {
-        String tagName = TAG_CATEGORIES[columnId - 1];
-        return std::to_string(inSampleItem->getSampleTag(tagName)->getValue());
+        String propertyName = PROPERTY_NAMES[columnId - 1];
+        return inSampleItem->getSampleProperty(propertyName)->getValue();
     }
     else
     {
@@ -130,8 +119,8 @@ void BlomeTableView::sortOrderChanged (int newSortColumnId, bool isForwards)
 {
     if (newSortColumnId != 0)
     {
-        String categoryName = newSortColumnId <= TAG_CATEGORIES.size() ? TAG_CATEGORIES[newSortColumnId - 1] : "Title";
-        mComparator.setCompareCategory(categoryName);
+        String propertyName = newSortColumnId <= PROPERTY_NAMES.size() ? PROPERTY_NAMES[newSortColumnId - 1] : "Title";
+        mComparator.setCompareProperty(propertyName);
         mComparator.setSortingDirection(isForwards);
         libraryViewModel.getSampleItems()->sort(mComparator);
         updateContent();
@@ -157,7 +146,7 @@ int BlomeTableView::getColumnAutoSizeWidth(int columnId)
     return widest + 8;
 }
 
-void BlomeTableView::cellDoubleClicked (int rowNumber, int columnId, const MouseEvent&)
+void BlomeTableView::cellDoubleClicked (int rowNumber, int columnId, MouseEvent const &)
 {
     File inFile = libraryViewModel.getSampleItems()->getUnchecked(rowNumber)->getFilePath();
     linkedSampleItemPanel.tryShowAudioResource(inFile);
@@ -166,7 +155,7 @@ void BlomeTableView::cellDoubleClicked (int rowNumber, int columnId, const Mouse
 /**
  Determines the components behaviour when the mouse is being dragged on it.
  */
-void BlomeTableView::mouseDrag(const MouseEvent& e)
+void BlomeTableView::mouseDrag(MouseEvent const & e)
 {
     // If the drag was at least 50ms after the mouse was pressed
     if (e.getLengthOfMousePress() > 50) {

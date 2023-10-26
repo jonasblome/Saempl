@@ -28,7 +28,7 @@ public:
     bool isPlayingAudio();
     double getCurrentPosition();
     void stopAudio();
-    bool loadURLIntoTransport(const URL& inURL, TimeSliceThread& inThread);
+    bool loadURLIntoTransport(URL const & inURL, TimeSliceThread& inThread);
     
     
 private:

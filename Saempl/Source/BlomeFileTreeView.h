@@ -23,10 +23,10 @@ public:
     ~BlomeFileTreeView();
     
     // Methods
-    void filesDropped(const StringArray& files, int x, int y) override;
-    bool isInterestedInFileDrag(const StringArray& files) override;
+    void filesDropped(StringArray const & files, int x, int y) override;
+    bool isInterestedInFileDrag(StringArray const & files) override;
     void changeListenerCallback(ChangeBroadcaster* source) override;
-    void mouseDrag(const MouseEvent& e) override;
+    void mouseDrag(MouseEvent const & e) override;
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeFileTreeView)

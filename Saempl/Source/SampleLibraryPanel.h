@@ -42,9 +42,9 @@ private:
     
     // Methods
     void selectionChanged() override;
-    void fileClicked (const File& file, const MouseEvent& mouseEvent) override;
-    void fileDoubleClicked (const File&) override;
-    void browserRootChanged (const File&) override;
+    void fileClicked (File const & file, MouseEvent const & mouseEvent) override;
+    void fileDoubleClicked (File const &) override;
+    void browserRootChanged (File const &) override;
     void changeListenerCallback (ChangeBroadcaster* source) override;
     void deleteFile(bool deletePermanently);
 };

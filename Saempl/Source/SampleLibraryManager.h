@@ -12,7 +12,10 @@
 
 #include "JuceHeader.h"
 #include "SampleItem.h"
-#include "BlomeHelperFunctions.h"
+#include "BlomeHelpers.h"
+#include "SamplePropertyInt.h"
+#include "SamplePropertyDouble.h"
+#include "SamplePropertyString.h"
 
 class SampleLibraryManager
 {

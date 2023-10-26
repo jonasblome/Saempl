@@ -83,14 +83,14 @@ void AudioPlayer::setSource(PositionableAudioSource* const newSource,
     mTransportSource.setSource(newSource, readAheadSize, readAheadThread, sourceSampleRateToCorrectFor);
 }
 
-bool AudioPlayer::loadURLIntoTransport(const URL& inURL, TimeSliceThread& inThread)
+bool AudioPlayer::loadURLIntoTransport(URL const & inURL, TimeSliceThread& inThread)
 {
     // Unload the previous file source and delete it
     mTransportSource.stop();
     mTransportSource.setSource(nullptr);
     mCurrentAudioFileSource.reset();
 
-    const auto source = std::make_unique<URLInputSource>(inURL);
+    auto const source = std::make_unique<URLInputSource>(inURL);
 
     if (source == nullptr)
         return false;

@@ -42,8 +42,8 @@ public:
     String getCellText(SampleItem* inSampleItem, int columnId);
     void sortOrderChanged (int newSortColumnId, bool isForwards) override;
     int getColumnAutoSizeWidth(int columnId) override;
-    void cellDoubleClicked (int rowNumber, int columnId, const MouseEvent&) override;
-    void mouseDrag(const MouseEvent& e) override;
+    void cellDoubleClicked (int rowNumber, int columnId, MouseEvent const &) override;
+    void mouseDrag(MouseEvent const & e) override;
     
 private:
     // Fields

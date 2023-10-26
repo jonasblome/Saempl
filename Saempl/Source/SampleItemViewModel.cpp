@@ -55,7 +55,7 @@ void SampleItemViewModel::stopAudio()
     mSampleEditor->stopAudio();
 }
 
-bool SampleItemViewModel::loadURLIntoTransport(const URL& inURL, TimeSliceThread& inThread)
+bool SampleItemViewModel::loadURLIntoTransport(URL const & inURL, TimeSliceThread& inThread)
 {
     return mSampleEditor->loadURLIntoTransport(inURL, inThread);
 }

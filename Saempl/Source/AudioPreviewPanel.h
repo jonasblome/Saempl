@@ -11,7 +11,7 @@
 #pragma once
 
 #include "PanelBase.h"
-#include "BlomeHelperFunctions.h"
+#include "BlomeHelpers.h"
 #include "SampleItemViewModel.h"
 
 class AudioPreviewPanel
@@ -30,15 +30,15 @@ public:
     // Methods
     void paint(Graphics& g) override;
     void setPanelComponents() override;
-    bool isInterestedInFileDrag(const StringArray& files) override;
-    void filesDropped(const StringArray& files, int x, int y) override;
-    bool isInterestedInDragSource(const SourceDetails& dragSourceDetails) override;
-    void itemDropped(const SourceDetails& dragSourceDetails) override;
-    void mouseDown(const MouseEvent& e) override;
-    void mouseDrag(const MouseEvent& e) override;
-    void mouseUp(const MouseEvent&) override;
-    void mouseWheelMove(const MouseEvent&, const MouseWheelDetails& wheel) override;
-    void setURL(const URL& url);
+    bool isInterestedInFileDrag(StringArray const & files) override;
+    void filesDropped(StringArray const & files, int x, int y) override;
+    bool isInterestedInDragSource(SourceDetails const& dragSourceDetails) override;
+    void itemDropped(SourceDetails const & dragSourceDetails) override;
+    void mouseDown(MouseEvent const & e) override;
+    void mouseDrag(MouseEvent const & e) override;
+    void mouseUp(MouseEvent const &) override;
+    void mouseWheelMove(MouseEvent const &, MouseWheelDetails const & wheel) override;
+    void setURL(URL const & url);
     URL getLastDroppedFile() const noexcept;
     void setZoomFactor(double amount);
     void setRange(Range<double> newRange);
@@ -46,7 +46,7 @@ public:
     void showAudioResource();
     void showAudioResource(URL inResource);
     void startOrStop();
-    bool loadURLIntoTransport(const URL& audioURL);
+    bool loadURLIntoTransport(URL const & audioURL);
     void updateFollowTransportState();
 
 private:
@@ -67,8 +67,8 @@ private:
     URL mCurrentAudioFile;
     
     // Methods
-    float timeToX(const double time) const;
-    double xToTime(const float x) const;
+    float timeToX(double const time) const;
+    double xToTime(float const x) const;
     bool canMoveTransport() const noexcept;
     void scrollBarMoved(ScrollBar* scrollBarThatHasMoved, double newRangeStart) override;
     void timerCallback() override;

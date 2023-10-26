@@ -20,8 +20,8 @@ public:
     ~SampleAnalyser();
     
     // Methods
-    double analyseCategory(int inTagCategory, File inFile);
-    double analyseSampleLength(File inFile);
+    String analyseProperty(int inPropertyProperty, File inFile);
+    int analyseSampleLength(File inFile);
     void loadAudioFileSource(File inFile);
     
 private:

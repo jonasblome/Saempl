@@ -20,34 +20,34 @@ SampleItem::~SampleItem()
     
 }
 
-void SampleItem::addSampleTag(SampleTag* inSampleTag)
+SampleProperty* SampleItem::addSampleProperty(SampleProperty* inSampleProperty)
 {
-    mSampleTags.add(inSampleTag);
+    return mSampleProperties.add(inSampleProperty);
 }
 
-SampleTag* SampleItem::getSampleTag(String& inTagName)
+SampleProperty* SampleItem::getSampleProperty(String& inPropertyName)
 {
-    for(SampleTag* tag : mSampleTags)
+    for(SampleProperty* property : mSampleProperties)
     {
-        if (tag->getName() == inTagName) {
-            return tag;
+        if (property->getName() == inPropertyName) {
+            return property;
         }
     }
     
     return nullptr;
 }
 
-SampleTag* SampleItem::getSampleTag(int inTagIndex)
+SampleProperty* SampleItem::getSampleProperty(int inPropertyIndex)
 {
-    return mSampleTags.getUnchecked(inTagIndex);
+    return mSampleProperties.getUnchecked(inPropertyIndex);
 }
 
-OwnedArray<SampleTag>* SampleItem::getSampleTags()
+OwnedArray<SampleProperty>* SampleItem::getSampleProperties()
 {
-    return &mSampleTags;
+    return &mSampleProperties;
 }
 
-void SampleItem::setFilePath(const String& inFilePath)
+void SampleItem::setFilePath(String const & inFilePath)
 {
     mFilePath = inFilePath;
 }

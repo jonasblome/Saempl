@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "SampleTag.h"
+#include "SampleProperty.h"
 
 class SampleItem
 {
@@ -20,11 +20,11 @@ public:
     ~SampleItem();
     
     // Methods
-    void addSampleTag(SampleTag* inSampleTag);
-    SampleTag* getSampleTag(String& inTagName);
-    SampleTag* getSampleTag(int inTagIndex);
-    OwnedArray<SampleTag>* getSampleTags();
-    void setFilePath(const String& inFilePath);
+    SampleProperty* addSampleProperty(SampleProperty* inSampleProperty);
+    SampleProperty* getSampleProperty(String& inPropertyName);
+    SampleProperty* getSampleProperty(int inPropertyIndex);
+    OwnedArray<SampleProperty>* getSampleProperties();
+    void setFilePath(String const & inFilePath);
     String getFilePath();
     String getTitle();
     
@@ -32,7 +32,7 @@ private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleItem)
     
     // Fields
-    OwnedArray<SampleTag> mSampleTags;
+    OwnedArray<SampleProperty> mSampleProperties;
     String mFilePath;
     
     // Methods

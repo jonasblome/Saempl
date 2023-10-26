@@ -23,8 +23,8 @@ public:
     // Methods
     DirectoryContentsList* getDirectoryList();
     OwnedArray<SampleItem>* getSampleItems();
-    void addSampleItem(const String& inFilePath);
-    void removeSampleItem(const String& inFilePath, bool deletePermanently);
+    void addSampleItem(String const & inFilePath);
+    void removeSampleItem(String const & inFilePath, bool deletePermanently);
     void refreshSampleLibrary();
     
 private:

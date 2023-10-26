@@ -20,21 +20,32 @@ SampleAnalyser::~SampleAnalyser()
     
 }
 
-double SampleAnalyser::analyseCategory(int inTagCategory, File inFile)
+int SampleAnalyser::analyseProperty(int inPropertyName, File inFile)
 {
-    switch (inTagCategory)
+    switch (inPropertyName)
     {
+        case 0:
+            return 0;
+        case 1:
+            return 0;
+        case 2:
+            return 0;
         case 3:
+        {
             return analyseSampleLength(inFile);
+        }
+        case 4:
+            return inFile.getFileNameWithoutExtension();
         default:
             return 0;
     }
 }
 
-double SampleAnalyser::analyseSampleLength(File inFile)
+int SampleAnalyser::analyseSampleLength(File inFile)
 {
     loadAudioFileSource(inFile);
-    double length = mCurrentAudioFileSource->getTotalLength() / mCurrentAudioFileSource->getAudioFormatReader()->sampleRate;
+    int length = mCurrentAudioFileSource->getTotalLength() / mCurrentAudioFileSource->getAudioFormatReader()->sampleRate;
+    
     return length;
 }
 

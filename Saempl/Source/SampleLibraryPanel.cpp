@@ -67,7 +67,7 @@ void SampleLibraryPanel::selectionChanged()
     
 }
 
-void SampleLibraryPanel::fileClicked(const File& file, const MouseEvent& mouseEvent)
+void SampleLibraryPanel::fileClicked(File const & file, MouseEvent const & mouseEvent)
 {
     // Show options pop up menu
     if (mouseEvent.mods.isRightButtonDown())
@@ -81,12 +81,12 @@ void SampleLibraryPanel::fileClicked(const File& file, const MouseEvent& mouseEv
     }
 }
 
-void SampleLibraryPanel::fileDoubleClicked(const File& inFile)
+void SampleLibraryPanel::fileDoubleClicked(File const & inFile)
 {
     linkedSampleItemPanel.tryShowAudioResource(inFile);
 }
 
-void SampleLibraryPanel::browserRootChanged(const File&)
+void SampleLibraryPanel::browserRootChanged(File const&)
 {
     
 }

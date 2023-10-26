@@ -44,10 +44,11 @@ public:
         return FONT_SMALL_BOLD;
     }
     
-    void drawButtonBackground (Graphics& g, Button& button,
-                               const Colour& backgroundColour,
-                               bool shouldDrawButtonAsHighlighted,
-                               bool shouldDrawButtonAsDown) override
+    void drawButtonBackground(Graphics& g,
+                              Button& button,
+                              Colour const & backgroundColour,
+                              bool shouldDrawButtonAsHighlighted,
+                              bool shouldDrawButtonAsDown) override
     {
         Colour fillColour;
         
@@ -64,8 +65,8 @@ public:
             fillColour = COLOUR_BLACK_LIGHT_TRANSPARENT;
         }
         
-        const float cornerSize = 6.0f;
-        const Rectangle<float> bounds = button.getLocalBounds().toFloat();
+        float const cornerSize = 6.0f;
+        Rectangle<float> const bounds = button.getLocalBounds().toFloat();
         g.setColour(fillColour);
         g.fillRoundedRectangle(bounds, cornerSize);
     }
@@ -77,7 +78,7 @@ public:
      {
          Colour fillColour;
          float cornerSize = 6.0f;
-         const Rectangle<float> bounds = button.getLocalBounds().toFloat();
+         Rectangle<float> const bounds = button.getLocalBounds().toFloat();
          
          if(shouldDrawButtonAsHighlighted)
          {
@@ -113,7 +114,7 @@ public:
     void drawPopupMenuBackgroundWithOptions(Graphics& g,
                                             int width,
                                             int height,
-                                            const PopupMenu::Options& options) override
+                                            PopupMenu::Options const & options) override
     {
         g.setColour(findColour(PopupMenu::backgroundColourId));
         g.fillRoundedRectangle(0,
@@ -123,10 +124,17 @@ public:
                                3.0f);
     }
     
-    void drawPopupMenuItem (Graphics& g, const Rectangle<int>& area,
-                            bool isSeparator, bool isActive, bool isHighlighted, bool isTicked, bool hasSubMenu,
-                            const String& text, const String& shortcutKeyText,
-                            const Drawable* icon, const Colour* textColour) override
+    void drawPopupMenuItem (Graphics& g,
+                            Rectangle<int> const & area,
+                            bool isSeparator,
+                            bool isActive,
+                            bool isHighlighted,
+                            bool isTicked,
+                            bool hasSubMenu,
+                            String const & text,
+                            String const & shortcutKeyText,
+                            Drawable const * icon,
+                            Colour const * textColour) override
     {
         Rectangle<int> r (area);
         
@@ -145,12 +153,18 @@ public:
         g.drawFittedText(text, r, Justification::left, 1);
     }
     
-    void drawComboBox (Graphics& g, int width, int height, bool isButtonDown,
-                       int buttonX, int buttonY, int buttonW, int buttonH,
+    void drawComboBox (Graphics& g,
+                       int width,
+                       int height,
+                       bool isButtonDown,
+                       int buttonX,
+                       int buttonY,
+                       int buttonW,
+                       int buttonH,
                        ComboBox& box) override
     {
-        const float cornerSize = 3.0f;
-        const Rectangle<int> boxBounds (0, 0, width, height);
+        float cornerSize = 3.0f;
+        Rectangle<int> const boxBounds (0, 0, width, height);
         
         g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
         g.fillRoundedRectangle(boxBounds.toFloat(), cornerSize);
@@ -195,7 +209,7 @@ public:
                            float sliderPos,
                            float minSliderPos,
                            float maxSliderPos,
-                           const Slider::SliderStyle style,
+                           Slider::SliderStyle const style,
                            Slider& slider) override
     {
         if (slider.isBar())
@@ -320,7 +334,7 @@ public:
     
     /** Tree Views **/
     void drawTreeviewPlusMinusBox(Graphics& g,
-                                  const Rectangle<float>& area,
+                                  Rectangle<float> const & area,
                                   Colour backgroundColour,
                                   bool isOpen,
                                   bool isMouseOver) override
@@ -335,11 +349,11 @@ public:
     void drawFileBrowserRow(Graphics& g,
                             int width,
                             int height,
-                            const File& file,
-                            const String& filename,
+                            File const & file,
+                            String const & filename,
                             Image* icon,
-                            const String& fileSizeDescription,
-                            const String& fileTimeDescription,
+                            String const & fileSizeDescription,
+                            String const & fileTimeDescription,
                             bool isDirectory,
                             bool isItemSelected,
                             int itemIndex,
@@ -354,7 +368,7 @@ public:
             g.fillRoundedRectangle(0, 0, width - 5, height, 3.0);
         }
 
-        const int x = 5;
+        int const x = 5;
         
         g.setColour(COLOUR_ACCENT_LIGHT);
         g.setFont (FONT_SMALL_BOLD);
@@ -384,7 +398,7 @@ public:
     
     void drawTableHeaderColumn (Graphics& g,
                                 TableHeaderComponent& header,
-                                const String& columnName,
+                                String const & columnName,
                                 int columnId,
                                 int width,
                                 int height,
@@ -420,7 +434,7 @@ public:
     
     void drawAlertBox(Graphics& g,
                       AlertWindow& alert,
-                      const Rectangle<int>& textArea,
+                      Rectangle<int> const & textArea,
                       TextLayout& textLayout) override
     {
         // Draw alert box background

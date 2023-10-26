@@ -90,7 +90,7 @@ void AudioPreviewPanel::setPanelComponents()
     repaint();
 }
 
-void AudioPreviewPanel::setURL(const URL& url)
+void AudioPreviewPanel::setURL(URL const & url)
 {
     if (auto inputSource = std::make_unique<URLInputSource>(url))
     {
@@ -133,12 +133,12 @@ void AudioPreviewPanel::setFollowsTransport(bool shouldFollow)
     isFollowingTransport = shouldFollow;
 }
 
-bool AudioPreviewPanel::isInterestedInFileDrag(const StringArray& files)
+bool AudioPreviewPanel::isInterestedInFileDrag(StringArray const & files)
 {
     return true;
 }
 
-void AudioPreviewPanel::filesDropped(const StringArray& files, int x, int y)
+void AudioPreviewPanel::filesDropped(StringArray const & files, int x, int y)
 {
     File file = File(files[0]);
     
@@ -149,17 +149,17 @@ void AudioPreviewPanel::filesDropped(const StringArray& files, int x, int y)
     }
 }
 
-bool AudioPreviewPanel::isInterestedInDragSource(const SourceDetails& dragSourceDetails)
+bool AudioPreviewPanel::isInterestedInDragSource(SourceDetails const & dragSourceDetails)
 {
     return true;
 }
 
-void AudioPreviewPanel::itemDropped(const SourceDetails& dragSourceDetails)
+void AudioPreviewPanel::itemDropped(SourceDetails const & dragSourceDetails)
 {
     if (dragSourceDetails.description == "SampleItemFile")
     {
         Component* dragSourceComponent = dragSourceDetails.sourceComponent.get();
-        if (BlomeFileTreeView* fileTreeView = static_cast<BlomeFileTreeView*>(dragSourceComponent))
+        if (BlomeFileTreeView* fileTreeView = dynamic_cast<BlomeFileTreeView*>(dragSourceComponent))
         {
             File sampleFile = fileTreeView->getSelectedFile();
             File linkedAudioFile = File(sampleFile.getParentDirectory().getFullPathName() +  DIRECTORY_SEPARATOR + sampleFile.getFileNameWithoutExtension());
@@ -173,12 +173,12 @@ void AudioPreviewPanel::itemDropped(const SourceDetails& dragSourceDetails)
     }
 }
 
-void AudioPreviewPanel::mouseDown(const MouseEvent& e)
+void AudioPreviewPanel::mouseDown(MouseEvent const & e)
 {
     mouseDrag(e);
 }
 
-void AudioPreviewPanel::mouseDrag(const MouseEvent& e)
+void AudioPreviewPanel::mouseDrag(MouseEvent const & e)
 {
     if (canMoveTransport())
     {
@@ -186,12 +186,12 @@ void AudioPreviewPanel::mouseDrag(const MouseEvent& e)
     }
 }
 
-void AudioPreviewPanel::mouseUp(const MouseEvent&)
+void AudioPreviewPanel::mouseUp(MouseEvent const &)
 {
     sampleItemViewModel.startAudio();
 }
 
-void AudioPreviewPanel::mouseWheelMove(const MouseEvent&, const MouseWheelDetails& wheel)
+void AudioPreviewPanel::mouseWheelMove(MouseEvent const &, MouseWheelDetails const & wheel)
 {
     // Set zoom of audio preview if a file is loaded
     if (mAudioPreview.getTotalLength() > 0.0)
@@ -213,7 +213,7 @@ void AudioPreviewPanel::mouseWheelMove(const MouseEvent&, const MouseWheelDetail
     }
 }
 
-float AudioPreviewPanel::timeToX(const double time) const
+float AudioPreviewPanel::timeToX(double const time) const
 {
     if (visibleRange.getLength() <= 0)
     {
@@ -223,7 +223,7 @@ float AudioPreviewPanel::timeToX(const double time) const
     return (float) getWidth() * (float) ((time - visibleRange.getStart()) / visibleRange.getLength());
 }
 
-double AudioPreviewPanel::xToTime(const float x) const
+double AudioPreviewPanel::xToTime(float const x) const
 {
     return (x / (float)getWidth()) * (visibleRange.getLength()) + visibleRange.getStart();
 }
@@ -291,7 +291,7 @@ void AudioPreviewPanel::startOrStop()
     sampleItemViewModel.startOrStopAudio();
 }
 
-bool AudioPreviewPanel::loadURLIntoTransport(const URL& audioURL)
+bool AudioPreviewPanel::loadURLIntoTransport(URL const & audioURL)
 {
     return sampleItemViewModel.loadURLIntoTransport(audioURL, currentProcessor.getThread());
 }

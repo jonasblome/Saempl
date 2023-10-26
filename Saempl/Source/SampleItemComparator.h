@@ -23,11 +23,13 @@ public:
     // Methods
     int compareElements (SampleItem* first, SampleItem* second);
     template <typename T> int compareElements(T first, T second);
-    void setCompareCategory(String inCategoryName);
+    void setCompareProperty(String inPropertyName);
     void setSortingDirection(bool isForwards);
     
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleItemComparator)
+    
     // Fields
-    String mCompareCategoryName;
+    String mComparePropertyName;
     bool mIsForwards;
 };
