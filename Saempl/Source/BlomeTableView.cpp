@@ -149,7 +149,7 @@ int BlomeTableView::getColumnAutoSizeWidth(int columnId)
     return widest + 8;
 }
 
-void BlomeTableView::cellDoubleClicked (int rowNumber, int columnId, MouseEvent const &)
+void BlomeTableView::cellDoubleClicked (int rowNumber, int columnId, MouseEvent const & mouseEvent)
 {
     File inFile = sampleLibrary.getFilteredSampleItems().getUnchecked(rowNumber)->getFilePath();
     linkedSampleItemPanel.tryShowAudioResource(inFile);

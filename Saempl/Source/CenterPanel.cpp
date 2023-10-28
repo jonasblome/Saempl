@@ -63,11 +63,13 @@ void CenterPanel::toggleSampleItemPanel()
     
     if(mSampleItemPanel->isVisible())
     {
-        mSampleNavigationPanel->setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN, SAMPLE_NAVIGATION_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
+        mSampleNavigationPanel->setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN,
+                                        SAMPLE_NAVIGATION_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
     }
     else
     {
-        mSampleNavigationPanel->setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN, CENTER_PANEL_HEIGHT - SAMPLE_ITEM_PANEL_TOGGLE_HEIGHT - PANEL_MARGIN / 2.0);
+        mSampleNavigationPanel->setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN,
+                                        CENTER_PANEL_HEIGHT - SAMPLE_ITEM_PANEL_TOGGLE_HEIGHT - PANEL_MARGIN / 2.0);
     }
     
     mSampleNavigationPanel->repaint();

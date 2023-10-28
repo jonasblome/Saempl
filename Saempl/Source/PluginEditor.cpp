@@ -15,7 +15,6 @@ SaemplAudioProcessorEditor::SaemplAudioProcessorEditor (SaemplAudioProcessor& p)
 {
     // Set styling of plugin UI
     mLookAndFeel = std::make_unique<BlomeLookAndFeel>(p.getSampleLibrary());
-    // setLookAndFeel(&*mLookAndFeel);
     LookAndFeel::setDefaultLookAndFeel(&*mLookAndFeel);
     
     // Set plugin window size

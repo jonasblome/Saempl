@@ -396,7 +396,7 @@ public:
         }
     }
     
-    void drawTableHeaderColumn (Graphics& g,
+    void drawTableHeaderColumn(Graphics& g,
                                 TableHeaderComponent& header,
                                 String const & columnName,
                                 int columnId,

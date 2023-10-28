@@ -85,10 +85,18 @@
             file="Source/SampleFileFilter.cpp"/>
       <FILE id="krBDMF" name="SampleFileFilter.h" compile="0" resource="0"
             file="Source/SampleFileFilter.h"/>
-      <FILE id="NFTqs2" name="SampleFileFilterRule.cpp" compile="1" resource="0"
-            file="Source/SampleFileFilterRule.cpp"/>
-      <FILE id="xzn8A3" name="SampleFileFilterRule.h" compile="0" resource="0"
-            file="Source/SampleFileFilterRule.h"/>
+      <FILE id="NFTqs2" name="SampleFileFilterRuleBase.cpp" compile="1" resource="0"
+            file="Source/SampleFileFilterRuleBase.cpp"/>
+      <FILE id="xzn8A3" name="SampleFileFilterRuleBase.h" compile="0" resource="0"
+            file="Source/SampleFileFilterRuleBase.h"/>
+      <FILE id="PoJDHD" name="SampleFileFilterRuleTitle.cpp" compile="1"
+            resource="0" file="Source/SampleFileFilterRuleTitle.cpp"/>
+      <FILE id="Z9NwLN" name="SampleFileFilterRuleTitle.h" compile="0" resource="0"
+            file="Source/SampleFileFilterRuleTitle.h"/>
+      <FILE id="zL5bUL" name="SampleFileFilterRuleLength.cpp" compile="1"
+            resource="0" file="Source/SampleFileFilterRuleLength.cpp"/>
+      <FILE id="fMAOY3" name="SampleFileFilterRuleLength.h" compile="0" resource="0"
+            file="Source/SampleFileFilterRuleLength.h"/>
       <FILE id="i4IYPu" name="SampleItem.cpp" compile="1" resource="0" file="Source/SampleItem.cpp"/>
       <FILE id="i15BWX" name="SampleItem.h" compile="0" resource="0" file="Source/SampleItem.h"/>
       <FILE id="fjhQHu" name="SampleItemComparator.cpp" compile="1" resource="0"

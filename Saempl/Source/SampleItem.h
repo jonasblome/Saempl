@@ -21,10 +21,10 @@ public:
     
     // Methods
     void setFilePath(String const & inFilePath);
-    String getFilePath();
-    String getTitle();
+    String getFilePath() const;
+    String getTitle() const;
     void setTitle(String inTitle);
-    double getLength();
+    double getLength() const;
     void setLength(double inLength);
     
 private:

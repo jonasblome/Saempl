@@ -32,8 +32,8 @@ StringArray const PROPERTY_NAMES = StringArray({ "Length", "Title" });
 // Filter rule compare operators
 enum CompareOperators
 {
-    EqualTo,
     LessThan,
+    EqualTo,
     GreaterThan,
 };
 

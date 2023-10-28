@@ -25,12 +25,12 @@ void SampleItem::setFilePath(String const & inFilePath)
     mFilePath = inFilePath;
 }
 
-String SampleItem::getFilePath()
+String SampleItem::getFilePath() const
 {
     return mFilePath;
 }
 
-String SampleItem::getTitle()
+String SampleItem::getTitle() const
 {
     return mTitle;
 }
@@ -40,7 +40,7 @@ void SampleItem::setTitle(String inTitle)
     mTitle = inTitle;
 }
 
-double SampleItem::getLength()
+double SampleItem::getLength() const
 {
     return mLength;
 }

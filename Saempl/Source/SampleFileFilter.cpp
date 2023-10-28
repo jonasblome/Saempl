@@ -42,9 +42,9 @@ bool SampleFileFilter::isDirectorySuitable (const File& file) const
 
 bool SampleFileFilter::matchesRules(SampleItem& inSampleItem)
 {
-    for (SampleFileFilterRule* rule : mFilterRules)
+    for (SampleFileFilterRuleBase* rule : mFilterRules)
     {
-        if (!rule->ruleApplies(inSampleItem))
+        if (!rule->matches(inSampleItem))
         {
             return false;
         }
@@ -53,7 +53,7 @@ bool SampleFileFilter::matchesRules(SampleItem& inSampleItem)
     return true;
 }
 
-void SampleFileFilter::addFilterRule(SampleFileFilterRule* inFilterRule)
+void SampleFileFilter::addFilterRule(SampleFileFilterRuleBase* inFilterRule)
 {
     mFilterRules.add(inFilterRule);
 }
