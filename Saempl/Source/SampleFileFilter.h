@@ -16,14 +16,17 @@
 #include "SampleFileFilterRule.h"
 
 class SampleFileFilter
+:   public FileFilter
 {
 public:
     // Constructors
-    SampleFileFilter();
+    SampleFileFilter(String const & inDescription, OwnedArray<SampleItem>& inFilteredSampleItems);
     ~SampleFileFilter();
     
     // Methods
-    bool rulesApply(SampleItem& inFile);
+    bool isFileSuitable (const File& file) const override;
+    bool isDirectorySuitable (const File& file) const override;
+    bool matchesRules(SampleItem& inSampleItem);
     void addFilterRule(SampleFileFilterRule* inRule);
     
 private:
@@ -31,6 +34,7 @@ private:
     
     // Fields
     OwnedArray<SampleFileFilterRule> mFilterRules;
+    OwnedArray<SampleItem>& filteredSampleItems;
     
     // Methods
     

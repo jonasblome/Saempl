@@ -11,7 +11,6 @@
 #pragma once
 
 #include "JuceHeader.h"
-#include "SampleLibraryViewModel.h"
 #include "BlomeStyleDefinitions.h"
 #include "SampleItemComparator.h"
 #include "SampleItem.h"
@@ -23,7 +22,7 @@ class BlomeTableView
 {
 public:
     // Constructors
-    BlomeTableView(SampleLibraryViewModel& inSampleLibraryViewModel, SampleItemPanel& inSampleItemPanel);
+    BlomeTableView(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
     ~BlomeTableView();
     
     // Methods
@@ -47,7 +46,7 @@ public:
     
 private:
     // Fields
-    SampleLibraryViewModel& libraryViewModel;
+    SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
     int numRows;
     SampleItemComparator mComparator;

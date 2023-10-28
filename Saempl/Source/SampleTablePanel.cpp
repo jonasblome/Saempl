@@ -10,10 +10,9 @@
 
 #include "SampleTablePanel.h"
 
-SampleTablePanel::SampleTablePanel(SaemplAudioProcessor& inProcessor, SampleLibraryViewModel& inSampleLibraryViewModel, SampleItemPanel& inSampleItemPanel)
-:   PanelBase(inProcessor),
-    currentProcessor(inProcessor),
-    sampleLibraryViewModel(inSampleLibraryViewModel),
+SampleTablePanel::SampleTablePanel(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel)
+:   PanelBase(),
+    sampleLibrary(inSampleLibrary),
     linkedSampleItemPanel(inSampleItemPanel)
 {
     setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN, SAMPLE_NAVIGATION_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
@@ -38,7 +37,7 @@ void SampleTablePanel::paint(Graphics& g)
 void SampleTablePanel::setPanelComponents()
 {
     // Set sample table component
-    mSampleTable = std::make_unique<BlomeTableView>(sampleLibraryViewModel, linkedSampleItemPanel);
+    mSampleTable = std::make_unique<BlomeTableView>(sampleLibrary, linkedSampleItemPanel);
     mSampleTable->setBounds(PANEL_MARGIN / 2.0,
                             PANEL_MARGIN / 2.0,
                             getWidth() - PANEL_MARGIN,

@@ -12,7 +12,6 @@
 
 #include "PanelBase.h"
 #include "AudioPreviewPanel.h"
-#include "SampleItemViewModel.h"
 
 class SampleItemPanel
 :   public PanelBase,
@@ -34,7 +33,7 @@ private:
     
     // Fields
     SaemplAudioProcessor& currentProcessor;
-    std::unique_ptr<SampleItemViewModel> mSampleItemViewModel;
+    std::unique_ptr<SampleEditor> mSampleEditor;
     std::unique_ptr<AudioPreviewPanel> mAudioPreviewPanel;
     std::unique_ptr<Slider> mZoomSlider;
     std::unique_ptr<ToggleButton> mFollowTransportButton;

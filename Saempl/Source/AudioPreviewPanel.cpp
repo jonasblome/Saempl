@@ -11,13 +11,13 @@
 #include "AudioPreviewPanel.h"
 #include "BlomeFileTreeView.h"
 
-AudioPreviewPanel::AudioPreviewPanel(SaemplAudioProcessor& inProcessor, Slider& inSlider, SampleItemViewModel& inSampleItemViewModel)
-:   PanelBase(inProcessor),
+AudioPreviewPanel::AudioPreviewPanel(SaemplAudioProcessor& inProcessor, Slider& inSlider, SampleEditor& inSampleEditor)
+:   PanelBase(),
     currentProcessor(inProcessor),
-    sampleItemViewModel(inSampleItemViewModel),
+    sampleEditor(inSampleEditor),
     mZoomSlider(&inSlider),
     mThumbnailCache(5),
-    mAudioPreview(512, sampleItemViewModel.getAudioFormatManager(), mThumbnailCache),
+    mAudioPreview(512, sampleEditor.getAudioFormatManager(), mThumbnailCache),
     isFollowingTransport(false)
 {
     setSize(SAMPLE_PREVIEW_WIDTH - PANEL_MARGIN * 2, SAMPLE_PREVIEW_HEIGHT - PANEL_MARGIN * 1.5);
@@ -182,13 +182,13 @@ void AudioPreviewPanel::mouseDrag(MouseEvent const & e)
 {
     if (canMoveTransport())
     {
-        sampleItemViewModel.setAudioReadheadPosition(jmax(0.0, xToTime((float)e.x)));
+        sampleEditor.setAudioReadheadPosition(jmax(0.0, xToTime((float)e.x)));
     }
 }
 
 void AudioPreviewPanel::mouseUp(MouseEvent const &)
 {
-    sampleItemViewModel.startAudio();
+    sampleEditor.startAudio();
 }
 
 void AudioPreviewPanel::mouseWheelMove(MouseEvent const &, MouseWheelDetails const & wheel)
@@ -230,14 +230,14 @@ double AudioPreviewPanel::xToTime(float const x) const
 
 bool AudioPreviewPanel::canMoveTransport() const noexcept
 {
-    return !(isFollowingTransport && sampleItemViewModel.isPlayingAudio());
+    return !(isFollowingTransport && sampleEditor.isPlaying());
 }
 
 void AudioPreviewPanel::scrollBarMoved(ScrollBar* scrollbar, double newRangeStart)
 {
     if (scrollbar == &*mAudioPreviewScrollbar)
     {
-        if (!(isFollowingTransport && sampleItemViewModel.isPlayingAudio()))
+        if (!(isFollowingTransport && sampleEditor.isPlaying()))
         {
             setRange(visibleRange.movedToStartAt(newRangeStart));
         }
@@ -252,16 +252,18 @@ void AudioPreviewPanel::timerCallback()
     }
     else
     {
-        setRange(visibleRange.movedToStartAt(sampleItemViewModel.getCurrentPosition() - (visibleRange.getLength() / 2.0)));
+        setRange(visibleRange.movedToStartAt(sampleEditor.getCurrentReadheadPosition() - (visibleRange.getLength() / 2.0)));
     }
 }
 
 void AudioPreviewPanel::updateCursorPosition()
 {
-    mAudioPositionMarker.setVisible(sampleItemViewModel.isPlayingAudio() || isMouseButtonDown());
+    mAudioPositionMarker.setVisible(sampleEditor.isPlaying() || isMouseButtonDown());
 
-    mAudioPositionMarker.setRectangle(Rectangle<float>(timeToX(sampleItemViewModel.getCurrentPosition()) - 0.75f, sampleItemTitleHeight + PANEL_MARGIN / 2.0,
-                                                          1.5f, (float)(getHeight() - PANEL_MARGIN - sampleItemTitleHeight - mAudioPreviewScrollbar->getHeight())));
+    mAudioPositionMarker.setRectangle(Rectangle<float>(timeToX(sampleEditor.getCurrentReadheadPosition()) - 0.75f,
+                                                       sampleItemTitleHeight + PANEL_MARGIN / 2.0,
+                                                       1.5f,
+                                                       (float)(getHeight() - PANEL_MARGIN - sampleItemTitleHeight - mAudioPreviewScrollbar->getHeight())));
 }
 
 void AudioPreviewPanel::showAudioResource()
@@ -288,10 +290,10 @@ void AudioPreviewPanel::showAudioResource(URL inResource)
 
 void AudioPreviewPanel::startOrStop()
 {
-    sampleItemViewModel.startOrStopAudio();
+    sampleEditor.startOrStopAudio();
 }
 
 bool AudioPreviewPanel::loadURLIntoTransport(URL const & audioURL)
 {
-    return sampleItemViewModel.loadURLIntoTransport(audioURL, currentProcessor.getThread());
+    return sampleEditor.loadURLIntoTransport(audioURL, currentProcessor.getThread());
 }

@@ -11,7 +11,7 @@
 #include "PanelBase.h"
 #include "BlomeStyleDefinitions.h"
 
-PanelBase::PanelBase(SaemplAudioProcessor& inProcessor)
+PanelBase::PanelBase()
 {
     
 }

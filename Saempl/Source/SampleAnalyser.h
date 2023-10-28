@@ -20,8 +20,7 @@ public:
     ~SampleAnalyser();
     
     // Methods
-    String analyseProperty(int inPropertyProperty, File inFile);
-    int analyseSampleLength(File inFile);
+    double analyseSampleLength(File inFile);
     void loadAudioFileSource(File inFile);
     
 private:

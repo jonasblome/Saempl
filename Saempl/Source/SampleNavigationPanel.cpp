@@ -11,9 +11,9 @@
 #include "SampleNavigationPanel.h"
 
 SampleNavigationPanel::SampleNavigationPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
-:   PanelBase(inProcessor),
-    currentProcessor(inProcessor),
-    linkedSampleItemPanel(inSampleItemPanel)
+:   PanelBase(),
+    linkedSampleItemPanel(inSampleItemPanel),
+    sampleLibrary(inProcessor.getSampleLibrary())
 {
     setSize(SAMPLE_NAVIGATION_PANEL_WIDTH, SAMPLE_NAVIGATION_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
     setPanelComponents();
@@ -31,16 +31,13 @@ void SampleNavigationPanel::paint(Graphics& g)
 
 void SampleNavigationPanel::setPanelComponents()
 {
-    // Setting view model
-    mSampleLibraryViewModel = std::make_unique<SampleLibraryViewModel>(currentProcessor.getSampleLibrary());
-    
     // Add library panel
-    mSampleLibraryPanel = std::make_unique<SampleLibraryPanel>(currentProcessor, *mSampleLibraryViewModel, linkedSampleItemPanel);
+    mSampleLibraryPanel = std::make_unique<SampleLibraryPanel>(sampleLibrary, linkedSampleItemPanel);
     mSampleLibraryPanel->setTopLeftPosition(0, 0);
     addAndMakeVisible(*mSampleLibraryPanel);
     
     // Add sample table panel
-    mSampleTablePanel = std::make_unique<SampleTablePanel>(currentProcessor, *mSampleLibraryViewModel, linkedSampleItemPanel);
+    mSampleTablePanel = std::make_unique<SampleTablePanel>(sampleLibrary, linkedSampleItemPanel);
     mSampleTablePanel->setTopLeftPosition(0, 0);
     addChildComponent(*mSampleTablePanel);
     
@@ -61,15 +58,15 @@ void SampleNavigationPanel::resizePanelComponents()
     }
 }
 
-void SampleNavigationPanel::showNavigationPanel(int inType)
+void SampleNavigationPanel::showNavigationPanel(int inNavigationType)
 {
-    if (inType == 0)
+    if (inNavigationType == 0)
     {
         mSampleTablePanel->setVisible(false);
         mSampleLibraryPanel->setVisible(true);
         mSampleLibraryPanel->repaint();
     }
-    else if (inType == 1)
+    else if (inNavigationType == 1)
     {
         mSampleTablePanel->setVisible(true);
         mSampleLibraryPanel->setVisible(false);

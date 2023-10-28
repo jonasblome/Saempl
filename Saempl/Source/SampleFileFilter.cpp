@@ -10,7 +10,9 @@
 
 #include "SampleFileFilter.h"
 
-SampleFileFilter::SampleFileFilter()
+SampleFileFilter::SampleFileFilter(String const & inDesciption, OwnedArray<SampleItem>& inFilteredSampleItems)
+:   FileFilter(inDesciption),
+    filteredSampleItems(inFilteredSampleItems)
 {
     
 }
@@ -20,7 +22,25 @@ SampleFileFilter::~SampleFileFilter()
     
 }
 
-bool SampleFileFilter::rulesApply(SampleItem& inSampleItem)
+bool SampleFileFilter::isFileSuitable (const File& file) const
+{
+    for (SampleItem* sampleItem: filteredSampleItems)
+    {
+        if (sampleItem->getFilePath() == file.getFullPathName())
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+bool SampleFileFilter::isDirectorySuitable (const File& file) const
+{
+    return !file.findChildFiles(File::findFiles, true, SUPPORTED_AUDIO_FORMATS_WILDCARD).isEmpty();
+}
+
+bool SampleFileFilter::matchesRules(SampleItem& inSampleItem)
 {
     for (SampleFileFilterRule* rule : mFilterRules)
     {

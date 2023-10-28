@@ -21,7 +21,7 @@ SampleLibraryManager::~SampleLibraryManager()
     
 }
 
-void SampleLibraryManager::updateSampleLibraryFile(String& inLibraryPath, OwnedArray<SampleItem>* inSampleItems)
+void SampleLibraryManager::updateSampleLibraryFile(String& inLibraryPath, OwnedArray<SampleItem>& inSampleItems)
 {
     // Set library file directory path
     mLibraryFilesDirectoryPath = getLibraryFilesDirectoryPath();
@@ -39,7 +39,7 @@ void SampleLibraryManager::updateSampleLibraryFile(String& inLibraryPath, OwnedA
     // Adding sample items xml to sample library xml
     XmlElement* sampleItemsXml = new XmlElement("SampleItems");
     
-    for (SampleItem* sampleItem : *inSampleItems)
+    for (SampleItem* sampleItem : inSampleItems)
     {
         XmlElement* sampleItemXml = new XmlElement("SampleItem");
         
@@ -49,12 +49,15 @@ void SampleLibraryManager::updateSampleLibraryFile(String& inLibraryPath, OwnedA
         // Adding sample properties xml to sample item xml
         XmlElement* samplePropertiesXml = new XmlElement("SampleProperties");
         
-        for (SampleProperty* sampleProperty : *sampleItem->getSampleProperties())
-        {
-            XmlElement* samplePropertyXml = new XmlElement(sampleProperty->getName());
-            samplePropertyXml->setAttribute("PropertyValue", sampleProperty->getValue());
-            samplePropertiesXml->prependChildElement(samplePropertyXml);
-        }
+        // Adding title property
+        XmlElement* samplePropertyXml = new XmlElement(PROPERTY_NAMES[1]);
+        samplePropertyXml->setAttribute("PropertyValue", sampleItem->getTitle());
+        samplePropertiesXml->prependChildElement(samplePropertyXml);
+        
+        // Adding length property
+        samplePropertyXml = new XmlElement(PROPERTY_NAMES[0]);
+        samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLength());
+        samplePropertiesXml->prependChildElement(samplePropertyXml);
         
         sampleItemXml->addChildElement(samplePropertiesXml);
         
@@ -80,7 +83,7 @@ void SampleLibraryManager::updateSampleLibraryFile(String& inLibraryPath, OwnedA
     destinationData.reset();
 }
 
-void SampleLibraryManager::loadSampleLibraryFile(String& inLibraryPath, OwnedArray<SampleItem>* inSampleItems)
+void SampleLibraryManager::loadSampleLibraryFile(String& inLibraryPath, OwnedArray<SampleItem>& inSampleItems)
 {
     File libraryDirectory = File(inLibraryPath);
     File libraryFile = File(getLibraryFilesDirectoryPath() + DIRECTORY_SEPARATOR + libraryDirectory.getFileNameWithoutExtension() + SAMPLE_LIBRARY_FILE_EXTENSION);
@@ -104,36 +107,15 @@ void SampleLibraryManager::loadSampleLibraryFile(String& inLibraryPath, OwnedArr
                 sampleItem->setFilePath(filePath);
                 XmlElement* samplePropertiesXml = sampleItemXml->getChildByName("SampleProperties");
                 
-                for (XmlElement* samplePropertyXml : samplePropertiesXml->getChildIterator())
-                {
-                    String propertyName = samplePropertyXml->getTagName();
-                    
-                    switch (PROPERTY_NAME_TYPES.at(propertyName))
-                    {
-                        case 0:
-                        {
-                            int propertyValue = samplePropertyXml->getIntAttribute("PropertyValue");
-                            sampleItem->addSampleProperty(new SamplePropertyInt(propertyName, propertyValue));
-                            break;
-                        }
-                        case 1:
-                        {
-                            double propertyValue = samplePropertyXml->getDoubleAttribute("PropertyValue");
-                            sampleItem->addSampleProperty(new SamplePropertyDouble(propertyName, propertyValue));
-                            break;
-                        }
-                        case 2:
-                        {
-                            String propertyValue = samplePropertyXml->getStringAttribute("PropertyValue");
-                            sampleItem->addSampleProperty(new SamplePropertyString(propertyName, propertyValue));
-                            break;
-                        }
-                        default:
-                            break;
-                    }
-                }
+                XmlElement* samplePropertyXml = samplePropertiesXml->getChildByName("Title");
+                String title = samplePropertyXml->getStringAttribute("PropertyValue");
+                sampleItem->setTitle(title);
                 
-                inSampleItems->add(sampleItem);
+                samplePropertyXml = samplePropertiesXml->getChildByName("Length");
+                double length = samplePropertyXml->getDoubleAttribute("PropertyValue");
+                sampleItem->setLength(length);
+                
+                inSampleItems.add(sampleItem);
             }
         }
         else

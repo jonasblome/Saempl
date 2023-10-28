@@ -10,10 +10,9 @@
 
 #include "SampleLibraryPanel.h"
 
-SampleLibraryPanel::SampleLibraryPanel(SaemplAudioProcessor& inProcessor, SampleLibraryViewModel& inSampleLibraryViewModel, SampleItemPanel& inSampleItemPanel)
-:   PanelBase(inProcessor),
-    currentProcessor(inProcessor),
-    sampleLibraryViewModel(inSampleLibraryViewModel),
+SampleLibraryPanel::SampleLibraryPanel(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel)
+:   PanelBase(),
+    sampleLibrary(inSampleLibrary),
     linkedSampleItemPanel(inSampleItemPanel)
 {
     setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN, SAMPLE_NAVIGATION_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
@@ -23,7 +22,7 @@ SampleLibraryPanel::SampleLibraryPanel(SaemplAudioProcessor& inProcessor, Sample
 SampleLibraryPanel::~SampleLibraryPanel()
 {
     mFileTree->removeListener(this);
-    sampleLibraryViewModel.getDirectoryList()->removeChangeListener(&*mFileTree);
+    sampleLibrary.getDirectoryList().removeChangeListener(&*mFileTree);
 }
 
 void SampleLibraryPanel::paint(Graphics& g)
@@ -38,7 +37,7 @@ void SampleLibraryPanel::paint(Graphics& g)
 void SampleLibraryPanel::setPanelComponents()
 {
     // Set file tree component
-    mFileTree = std::make_unique<BlomeFileTreeView>(sampleLibraryViewModel);
+    mFileTree = std::make_unique<BlomeFileTreeView>(sampleLibrary);
     mFileTree->setBounds(PANEL_MARGIN / 2.0,
                          PANEL_MARGIN / 2.0,
                          getWidth() - PANEL_MARGIN,
@@ -48,7 +47,7 @@ void SampleLibraryPanel::setPanelComponents()
     mFileTree->setMultiSelectEnabled(true);
     mFileTree->addListener(this);
     addAndMakeVisible(*mFileTree);
-    sampleLibraryViewModel.getDirectoryList()->addChangeListener(&*mFileTree);
+    sampleLibrary.getDirectoryList().addChangeListener(&*mFileTree);
     
     // Repaint panel
     repaint();
@@ -102,7 +101,7 @@ void SampleLibraryPanel::deleteFile(bool deletePermanently = false)
     // Delete all selected files
     for (int f = 0; f < mFileTree->getNumSelectedItems(); f++)
     {
-        sampleLibraryViewModel.removeSampleItem(mFileTree->getSelectedFile(f).getFullPathName(), deletePermanently);
+        sampleLibrary.removeSampleItem(mFileTree->getSelectedFile(f).getFullPathName(), deletePermanently);
     }
 };
 

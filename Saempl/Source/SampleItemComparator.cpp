@@ -22,7 +22,21 @@ SampleItemComparator::~SampleItemComparator()
 
 int SampleItemComparator::compareElements(SampleItem* first, SampleItem* second)
 {
-    int result = first->getSampleProperty(mComparePropertyName)->compareTo(*second->getSampleProperty(mComparePropertyName));
+    if (mComparePropertyName == "Title")
+    {
+        return compareElements<String>(first->getTitle(), second->getTitle());
+    }
+    else if (mComparePropertyName == "Length")
+    {
+        return compareElements<int>(first->getLength(), second->getLength());
+    }
+    
+    return 0;
+}
+
+template <typename T> int SampleItemComparator::compareElements(T first, T second)
+{
+    int result = first < second ? -1 : first > second ? 1 : 0;
     
     if (!mIsForwards)
     {

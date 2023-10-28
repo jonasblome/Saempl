@@ -13,9 +13,6 @@
 #include "JuceHeader.h"
 #include "SampleItem.h"
 #include "BlomeHelpers.h"
-#include "SamplePropertyInt.h"
-#include "SamplePropertyDouble.h"
-#include "SamplePropertyString.h"
 
 class SampleLibraryManager
 {
@@ -25,8 +22,8 @@ public:
     ~SampleLibraryManager();
     
     // Methods
-    void updateSampleLibraryFile(String& inFilePath, OwnedArray<SampleItem>* inSampleItem);
-    void loadSampleLibraryFile(String& inFilePath, OwnedArray<SampleItem>* inSampleItems);
+    void updateSampleLibraryFile(String& inFilePath, OwnedArray<SampleItem>& inSampleItems);
+    void loadSampleLibraryFile(String& inFilePath, OwnedArray<SampleItem>& inSampleItems);
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibraryManager)

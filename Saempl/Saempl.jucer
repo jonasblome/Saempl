@@ -21,16 +21,6 @@
       <FILE id="Vf7dQl" name="BlomeTableView.h" compile="0" resource="0"
             file="Source/BlomeTableView.h"/>
     </GROUP>
-    <GROUP id="{00D751B1-3FF1-898B-DE28-411892B3B79A}" name="BlomeViewModels">
-      <FILE id="ipExmz" name="SampleLibraryViewModel.cpp" compile="1" resource="0"
-            file="Source/SampleLibraryViewModel.cpp"/>
-      <FILE id="b8vvCa" name="SampleLibraryViewModel.h" compile="0" resource="0"
-            file="Source/SampleLibraryViewModel.h"/>
-      <FILE id="gfsGgl" name="SampleItemViewModel.cpp" compile="1" resource="0"
-            file="Source/SampleItemViewModel.cpp"/>
-      <FILE id="pvl4h9" name="SampleItemViewModel.h" compile="0" resource="0"
-            file="Source/SampleItemViewModel.h"/>
-    </GROUP>
     <GROUP id="{6D66FD26-8F3F-0894-5730-966778E462FE}" name="BlomePanels">
       <FILE id="lThgmA" name="PanelBase.cpp" compile="1" resource="0" file="Source/PanelBase.cpp"/>
       <FILE id="EsamqD" name="PanelBase.h" compile="0" resource="0" file="Source/PanelBase.h"/>
@@ -101,22 +91,6 @@
             file="Source/SampleFileFilterRule.h"/>
       <FILE id="i4IYPu" name="SampleItem.cpp" compile="1" resource="0" file="Source/SampleItem.cpp"/>
       <FILE id="i15BWX" name="SampleItem.h" compile="0" resource="0" file="Source/SampleItem.h"/>
-      <FILE id="GKZbDK" name="SampleProperty.cpp" compile="1" resource="0"
-            file="Source/SampleProperty.cpp"/>
-      <FILE id="b8CCnT" name="SampleProperty.h" compile="0" resource="0"
-            file="Source/SampleProperty.h"/>
-      <FILE id="lfpnY5" name="SamplePropertyString.cpp" compile="1" resource="0"
-            file="Source/SamplePropertyString.cpp"/>
-      <FILE id="T1Ni9Z" name="SamplePropertyString.h" compile="0" resource="0"
-            file="Source/SamplePropertyString.h"/>
-      <FILE id="CwyEsn" name="SamplePropertyDouble.cpp" compile="1" resource="0"
-            file="Source/SamplePropertyDouble.cpp"/>
-      <FILE id="JRNafU" name="SamplePropertyDouble.h" compile="0" resource="0"
-            file="Source/SamplePropertyDouble.h"/>
-      <FILE id="lgg0b6" name="SamplePropertyInt.cpp" compile="1" resource="0"
-            file="Source/SamplePropertyInt.cpp"/>
-      <FILE id="Vmy0SJ" name="SamplePropertyInt.h" compile="0" resource="0"
-            file="Source/SamplePropertyInt.h"/>
       <FILE id="fjhQHu" name="SampleItemComparator.cpp" compile="1" resource="0"
             file="Source/SampleItemComparator.cpp"/>
       <FILE id="yTJLPC" name="SampleItemComparator.h" compile="0" resource="0"

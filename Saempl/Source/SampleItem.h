@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "SampleProperty.h"
+#include "JuceHeader.h"
 
 class SampleItem
 {
@@ -20,20 +20,20 @@ public:
     ~SampleItem();
     
     // Methods
-    SampleProperty* addSampleProperty(SampleProperty* inSampleProperty);
-    SampleProperty* getSampleProperty(String& inPropertyName);
-    SampleProperty* getSampleProperty(int inPropertyIndex);
-    OwnedArray<SampleProperty>* getSampleProperties();
     void setFilePath(String const & inFilePath);
     String getFilePath();
     String getTitle();
+    void setTitle(String inTitle);
+    double getLength();
+    void setLength(double inLength);
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleItem)
     
     // Fields
-    OwnedArray<SampleProperty> mSampleProperties;
     String mFilePath;
+    String mTitle;
+    double mLength;
     
     // Methods
     

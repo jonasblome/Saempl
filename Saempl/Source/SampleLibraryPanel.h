@@ -12,7 +12,6 @@
 
 #include "PanelBase.h"
 #include "BlomeFileTreeView.h"
-#include "SampleLibraryViewModel.h"
 #include "SampleItemPanel.h"
 
 class SampleLibraryPanel
@@ -22,7 +21,7 @@ class SampleLibraryPanel
 {
 public:
     // Constructors
-    SampleLibraryPanel(SaemplAudioProcessor& inProcessor, SampleLibraryViewModel& inSampleLibraryViewModel, SampleItemPanel& inSampleItemPanel);
+    SampleLibraryPanel(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
     ~SampleLibraryPanel();
     
     // Methods
@@ -35,8 +34,7 @@ private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibraryPanel)
     
     // Fields
-    SaemplAudioProcessor& currentProcessor;
-    SampleLibraryViewModel& sampleLibraryViewModel;
+    SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<BlomeFileTreeView> mFileTree;
     

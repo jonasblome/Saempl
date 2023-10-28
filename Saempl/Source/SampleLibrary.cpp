@@ -19,16 +19,22 @@ SampleLibrary::SampleLibrary(TimeSliceThread& inThread)
     mSampleLibraryManager = std::make_unique<SampleLibraryManager>();
     
     // Set directory with path and file filter
-    mDirectoryFilter = std::make_unique<WildcardFileFilter>(SUPPORTED_AUDIO_FORMATS_WILDCARD, "*", "AudioFormatsFilter");
-    mDirectoryContent = std::make_unique<DirectoryContentsList>(&*mDirectoryFilter, inThread);
+    mLibraryFilter = std::make_unique<SampleFileFilter>("AudioFormatsFilter", mFilteredSampleItems);
+    mDirectoryContent = std::make_unique<DirectoryContentsList>(&*mLibraryFilter, inThread);
     mDirectoryContent->addChangeListener(this);
-    setDirectory("");
+    setDirectory((File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
+                 + DIRECTORY_SEPARATOR
+                 + "Plugins"
+                 + DIRECTORY_SEPARATOR
+                 + "Saempl"
+                 + DIRECTORY_SEPARATOR
+                 + "DefaultSampleLibrary");
 }
 
 SampleLibrary::~SampleLibrary()
 {
     mDirectoryContent->removeChangeListener(this);
-    mSampleLibraryManager->updateSampleLibraryFile(mCurrentLibraryPath, &mSampleItems);
+    mSampleLibraryManager->updateSampleLibraryFile(mCurrentLibraryPath, mSampleItems);
 }
 
 void SampleLibrary::addSampleItem(File const & inFile)
@@ -89,9 +95,9 @@ void SampleLibrary::removeSampleItem(String const& inFilePath, bool deletePerman
     mDirectoryContent->refresh();
 }
 
-DirectoryContentsList* SampleLibrary::getDirectoryList()
+DirectoryContentsList& SampleLibrary::getDirectoryList()
 {
-    return &*mDirectoryContent;
+    return *mDirectoryContent;
 }
 
 void SampleLibrary::changeListenerCallback(ChangeBroadcaster* inSource)
@@ -119,12 +125,14 @@ void SampleLibrary::refresh()
     for (DirectoryEntry entry : RangedDirectoryIterator(mDirectoryContent->getDirectory(), true, SUPPORTED_AUDIO_FORMATS_WILDCARD, File::findFiles))
     {
         bool linkedSampleItemExists = getSampleItemWithFilePath(entry.getFile().getFullPathName()) != nullptr;
+        
         if (!linkedSampleItemExists)
         {
             createSampleItem(entry.getFile());
         }
     }
     
+    applyFilter();
     mDirectoryContent->refresh();
 }
 
@@ -146,37 +154,27 @@ void SampleLibrary::setDirectory(String inDirectoryPath)
     if (inDirectoryPath != "")
     {
         // Store current library
-        mSampleLibraryManager->updateSampleLibraryFile(mCurrentLibraryPath, &mSampleItems);
-        mCurrentLibraryPath = inDirectoryPath;
+        mSampleLibraryManager->updateSampleLibraryFile(mCurrentLibraryPath, mSampleItems);
     }
-    else
+    
+    mCurrentLibraryPath = inDirectoryPath;
+    
+    if (!File(mCurrentLibraryPath).exists())
     {
-        // Set library to default path
-        mCurrentLibraryPath =
-            (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
-            + DIRECTORY_SEPARATOR
-            + "Plugins"
-            + DIRECTORY_SEPARATOR
-            + "Saempl"
-            + DIRECTORY_SEPARATOR
-            + "DefaultSampleLibrary";
-        
-        if (!File(mCurrentLibraryPath).exists())
-        {
-            File(mCurrentLibraryPath).createDirectory();
-        }
+        File(mCurrentLibraryPath).createDirectory();
     }
     
     // Load new library
+    mFilteredSampleItems.clear(false);
     mSampleItems.clear();
-    mSampleLibraryManager->loadSampleLibraryFile(mCurrentLibraryPath, &mSampleItems);
+    mSampleLibraryManager->loadSampleLibraryFile(mCurrentLibraryPath, mSampleItems);
     mDirectoryContent->setDirectory(File(mCurrentLibraryPath), true, true);
     refresh();
 }
 
-OwnedArray<SampleItem>* SampleLibrary::getSampleItems()
+OwnedArray<SampleItem>& SampleLibrary::getFilteredSampleItems()
 {
-    return &mSampleItems;
+    return mFilteredSampleItems;
 }
 
 /**
@@ -185,35 +183,27 @@ OwnedArray<SampleItem>* SampleLibrary::getSampleItems()
  */
 void SampleLibrary::createSampleItem(File inFile)
 {
-    bool linkedSampleItemExists = getSampleItemWithFilePath(inFile.getFullPathName()) == nullptr;
+    bool linkedSampleItemExists = getSampleItemWithFilePath(inFile.getFullPathName()) != nullptr;
     
-    if (linkedSampleItemExists)
+    if (!linkedSampleItemExists)
     {
         SampleItem* newItem = mSampleItems.add(new SampleItem());
         newItem->setFilePath(inFile.getFullPathName());
         
-        for (int c = 0; c < PROPERTY_NAMES.size(); c++)
+        newItem->setTitle(inFile.getFileNameWithoutExtension());
+        newItem->setLength(mSampleAnalyser->analyseSampleLength(inFile));
+    }
+}
+
+void SampleLibrary::applyFilter()
+{
+    mFilteredSampleItems.clear();
+    
+    for (SampleItem* sampleItem : mSampleItems)
+    {
+        if (mLibraryFilter->matchesRules(*sampleItem))
         {
-            switch (PROPERTY_NAME_TYPES.at(PROPERTY_NAMES[c]))
-            {
-                case 0:
-                {
-                    SamplePropertyInt* newProperty = dynamic_cast<SamplePropertyInt*>(newItem->addSampleProperty(new SamplePropertyInt()));
-                    newProperty->setName(PROPERTY_NAMES[c]);
-                    newProperty->setValue(mSampleAnalyser->analyseProperty(c, inFile));
-                    break;
-                }
-                case 1:
-                {
-                    break;
-                }
-                case 2:
-                {
-                    break;
-                }
-                default:
-                    break;
-            }
+            mFilteredSampleItems.add(sampleItem);
         }
     }
 }

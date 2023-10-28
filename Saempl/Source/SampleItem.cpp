@@ -20,33 +20,6 @@ SampleItem::~SampleItem()
     
 }
 
-SampleProperty* SampleItem::addSampleProperty(SampleProperty* inSampleProperty)
-{
-    return mSampleProperties.add(inSampleProperty);
-}
-
-SampleProperty* SampleItem::getSampleProperty(String& inPropertyName)
-{
-    for(SampleProperty* property : mSampleProperties)
-    {
-        if (property->getName() == inPropertyName) {
-            return property;
-        }
-    }
-    
-    return nullptr;
-}
-
-SampleProperty* SampleItem::getSampleProperty(int inPropertyIndex)
-{
-    return mSampleProperties.getUnchecked(inPropertyIndex);
-}
-
-OwnedArray<SampleProperty>* SampleItem::getSampleProperties()
-{
-    return &mSampleProperties;
-}
-
 void SampleItem::setFilePath(String const & inFilePath)
 {
     mFilePath = inFilePath;
@@ -59,7 +32,20 @@ String SampleItem::getFilePath()
 
 String SampleItem::getTitle()
 {
-    File itemFile = mFilePath;
-    String itemTitle = itemFile.getFileNameWithoutExtension();
-    return itemTitle;
+    return mTitle;
+}
+
+void SampleItem::setTitle(String inTitle)
+{
+    mTitle = inTitle;
+}
+
+double SampleItem::getLength()
+{
+    return mLength;
+}
+
+void SampleItem::setLength(double inLength)
+{
+    mLength = inLength;
 }

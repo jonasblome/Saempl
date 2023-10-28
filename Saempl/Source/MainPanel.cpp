@@ -11,7 +11,7 @@
 #include "MainPanel.h"
 
 MainPanel::MainPanel(SaemplAudioProcessor& inProcessor)
-:   PanelBase(inProcessor),
+:   PanelBase(),
     currentProcessor(inProcessor)
 {
     // Set panel size

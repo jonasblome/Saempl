@@ -30,7 +30,6 @@ private:
     // Fields
     CompareOperators mCompareOperator;
     
-    
     // Methods
     
 };

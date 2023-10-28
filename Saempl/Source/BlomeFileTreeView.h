@@ -11,7 +11,7 @@
 #pragma once
 
 #include "JuceHeader.h"
-#include "SampleLibraryViewModel.h"
+#include "SampleLibrary.h"
 
 class BlomeFileTreeView
 :   public FileTreeComponent,
@@ -19,7 +19,7 @@ class BlomeFileTreeView
 {
 public:
     // Constructors
-    BlomeFileTreeView(SampleLibraryViewModel& inSampleLibraryViewModel);
+    BlomeFileTreeView(SampleLibrary& inSampleLibrary);
     ~BlomeFileTreeView();
     
     // Methods
@@ -32,7 +32,7 @@ private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeFileTreeView)
     
     // Fields
-    SampleLibraryViewModel& sampleLibraryViewModel;
+    SampleLibrary& sampleLibrary;
     
     // Methods
     

@@ -11,7 +11,7 @@
 #include "HeaderPanel.h"
 
 HeaderPanel::HeaderPanel(SaemplAudioProcessor& inProcessor, CenterPanel& inCenterPanel)
-:   PanelBase(inProcessor),
+:   PanelBase(),
     currentProcessor(inProcessor),
     linkedCenterPanel(inCenterPanel)
 {

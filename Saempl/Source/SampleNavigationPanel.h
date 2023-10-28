@@ -27,17 +27,16 @@ public:
     void paint(Graphics& g) override;
     void setPanelComponents() override;
     void resizePanelComponents() override;
-    void showNavigationPanel(int inType);
+    void showNavigationPanel(int inNavigationType);
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleNavigationPanel)
     
     // Fields
-    SaemplAudioProcessor& currentProcessor;
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<SampleLibraryPanel> mSampleLibraryPanel;
     std::unique_ptr<SampleTablePanel> mSampleTablePanel;
-    std::unique_ptr<SampleLibraryViewModel> mSampleLibraryViewModel;
+    SampleLibrary& sampleLibrary;
     
     // Methods
     

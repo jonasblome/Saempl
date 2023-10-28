@@ -11,7 +11,7 @@
 #include "SampleItemPanel.h"
 
 SampleItemPanel::SampleItemPanel(SaemplAudioProcessor& inProcessor)
-:   PanelBase(inProcessor),
+:   PanelBase(),
     currentProcessor(inProcessor)
 {
     setSize(SAMPLE_ITEM_PANEL_WIDTH - PANEL_MARGIN, SAMPLE_ITEM_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
@@ -35,7 +35,7 @@ void SampleItemPanel::paint(Graphics& g)
 void SampleItemPanel::setPanelComponents()
 {
     // Add sample editor component
-    mSampleItemViewModel = std::make_unique<SampleItemViewModel>();
+    mSampleEditor = std::make_unique<SampleEditor>();
     
     int controlsHeight = SAMPLE_CONTROL_HEIGHT;
     int followTransportButtonHeight = 25;
@@ -70,7 +70,7 @@ void SampleItemPanel::setPanelComponents()
     addAndMakeVisible(*mZoomSlider);
     
     // Add audio thumbnail component
-    mAudioPreviewPanel = std::make_unique<AudioPreviewPanel>(currentProcessor, *mZoomSlider, *mSampleItemViewModel);
+    mAudioPreviewPanel = std::make_unique<AudioPreviewPanel>(currentProcessor, *mZoomSlider, *mSampleEditor);
     mAudioPreviewPanel->setTopLeftPosition(PANEL_MARGIN / 2.0 + SAMPLE_CONTROL_WIDTH, PANEL_MARGIN / 2.0);
     addAndMakeVisible(mAudioPreviewPanel.get());
     mAudioPreviewPanel->addChangeListener(this);

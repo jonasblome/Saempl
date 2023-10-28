@@ -11,7 +11,6 @@
 #pragma once
 
 #include "PanelBase.h"
-#include "SampleLibraryViewModel.h"
 #include "SampleItemPanel.h"
 #include "BlomeTableView.h"
 
@@ -20,7 +19,7 @@ class SampleTablePanel
 {
 public:
     // Constructors
-    SampleTablePanel(SaemplAudioProcessor& inProcessor, SampleLibraryViewModel& inSampleLibraryViewModel, SampleItemPanel& inSampleItemPanel);
+    SampleTablePanel(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
     ~SampleTablePanel();
     
     // Methods
@@ -30,8 +29,7 @@ public:
     
 private:
     // Fields
-    SaemplAudioProcessor& currentProcessor;
-    SampleLibraryViewModel& sampleLibraryViewModel;
+    SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<BlomeTableView> mSampleTable;
     

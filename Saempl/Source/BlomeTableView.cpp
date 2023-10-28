@@ -10,8 +10,8 @@
 
 #include "BlomeTableView.h"
 
-BlomeTableView::BlomeTableView(SampleLibraryViewModel& inSampleLibraryViewModel, SampleItemPanel& inSampleItemPanel)
-:   libraryViewModel(inSampleLibraryViewModel),
+BlomeTableView::BlomeTableView(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel)
+:   sampleLibrary(inSampleLibrary),
     linkedSampleItemPanel(inSampleItemPanel)
 {
     setModel(this);
@@ -46,7 +46,7 @@ BlomeTableView::~BlomeTableView()
 // This is overloaded from TableListBoxModel, and must return the total number of rows in our table
 int BlomeTableView::getNumRows()
 {
-    numRows = libraryViewModel.getSampleItems()->size();
+    numRows = sampleLibrary.getFilteredSampleItems().size();
     return numRows;
 }
 
@@ -74,12 +74,12 @@ void BlomeTableView::paintCell(Graphics& g,
                                int height,
                                bool rowIsSelected)
 {
-    if (rowNumber > libraryViewModel.getSampleItems()->size())
+    if (rowNumber > sampleLibrary.getFilteredSampleItems().size())
     {
         return;
     }
     
-    if (SampleItem* rowSampleItem = libraryViewModel.getSampleItems()->getUnchecked(rowNumber))
+    if (SampleItem* rowSampleItem = sampleLibrary.getFilteredSampleItems().getUnchecked(rowNumber))
     {
         g.setColour(COLOUR_ACCENT_MEDIUM);
         g.fillRect(width - 1,
@@ -102,10 +102,13 @@ void BlomeTableView::paintCell(Graphics& g,
 
 String BlomeTableView::getCellText(SampleItem* inSampleItem, int columnId)
 {
-    if (columnId <= PROPERTY_NAMES.size())
+    if (PROPERTY_NAMES[columnId - 1] == "Title")
     {
-        String propertyName = PROPERTY_NAMES[columnId - 1];
-        return inSampleItem->getSampleProperty(propertyName)->getValue();
+        return inSampleItem->getTitle();
+    }
+    else if (PROPERTY_NAMES[columnId - 1] == "Length")
+    {
+        return std::to_string(inSampleItem->getLength());
     }
     else
     {
@@ -122,7 +125,7 @@ void BlomeTableView::sortOrderChanged (int newSortColumnId, bool isForwards)
         String propertyName = newSortColumnId <= PROPERTY_NAMES.size() ? PROPERTY_NAMES[newSortColumnId - 1] : "Title";
         mComparator.setCompareProperty(propertyName);
         mComparator.setSortingDirection(isForwards);
-        libraryViewModel.getSampleItems()->sort(mComparator);
+        sampleLibrary.getFilteredSampleItems().sort(mComparator);
         updateContent();
     }
 }
@@ -136,7 +139,7 @@ int BlomeTableView::getColumnAutoSizeWidth(int columnId)
     // Find the widest bit of text in this column..
     for (int r = getNumRows(); --r >= 0;)
     {
-        if (SampleItem* sampleItem = libraryViewModel.getSampleItems()->getUnchecked(r))
+        if (SampleItem* sampleItem = sampleLibrary.getFilteredSampleItems().getUnchecked(r))
         {
             String text = sampleItem->getFilePath();
             widest = jmax(widest, FONT_SMALL_BOLD.getStringWidth(text));
@@ -148,7 +151,7 @@ int BlomeTableView::getColumnAutoSizeWidth(int columnId)
 
 void BlomeTableView::cellDoubleClicked (int rowNumber, int columnId, MouseEvent const &)
 {
-    File inFile = libraryViewModel.getSampleItems()->getUnchecked(rowNumber)->getFilePath();
+    File inFile = sampleLibrary.getFilteredSampleItems().getUnchecked(rowNumber)->getFilePath();
     linkedSampleItemPanel.tryShowAudioResource(inFile);
 }
 
@@ -172,7 +175,7 @@ void BlomeTableView::mouseDrag(MouseEvent const & e)
                 // Add all selected rows to external drag
                 for (int r = 0; r < getNumSelectedRows(); r++)
                 {
-                    selectedFilePaths.add(libraryViewModel.getSampleItems()->getUnchecked(getSelectedRow(r))->getFilePath());
+                    selectedFilePaths.add(sampleLibrary.getFilteredSampleItems().getUnchecked(getSelectedRow(r))->getFilePath());
                 }
                 
                 DragAndDropContainer* dragContainer = DragAndDropContainer::findParentDragContainerFor(this);

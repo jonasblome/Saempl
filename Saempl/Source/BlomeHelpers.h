@@ -27,15 +27,7 @@ String const SUPPORTED_AUDIO_FORMATS_WILDCARD = "*.wav;*.mp3;*.aiff;*.m4a";
 String const SUPPORTED_AUDIO_FORMATS_EXTENSIONS = ".wav;.mp3;.aiff;.m4a";
 
 // Property names
-StringArray const PROPERTY_NAMES = StringArray({ "Instrument", "Key", "Tempo", "Length", "Title" });
-std::map<String, int> const PROPERTY_NAME_TYPES = // 0 = int, 1 = double, 2 = juce::String
-{
-    {"Instrument", 2},
-    {"Key", 0},
-    {"Tempo", 1},
-    {"Length", 1},
-    {"Title", 2}
-};
+StringArray const PROPERTY_NAMES = StringArray({ "Length", "Title" });
 
 // Filter rule compare operators
 enum CompareOperators

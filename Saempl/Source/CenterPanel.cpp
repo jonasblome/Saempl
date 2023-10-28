@@ -11,7 +11,7 @@
 #include "CenterPanel.h"
 
 CenterPanel::CenterPanel(SaemplAudioProcessor& inProcessor)
-:   PanelBase(inProcessor),
+:   PanelBase(),
     currentProcessor(inProcessor)
 {
     setSize(CENTER_PANEL_WIDTH - PANEL_MARGIN / 2.0, CENTER_PANEL_HEIGHT - PANEL_MARGIN / 2.0);

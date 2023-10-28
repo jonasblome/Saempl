@@ -12,7 +12,7 @@
 
 #include "PanelBase.h"
 #include "BlomeHelpers.h"
-#include "SampleItemViewModel.h"
+#include "SampleEditor.h"
 
 class AudioPreviewPanel
 :   public PanelBase,
@@ -24,7 +24,7 @@ class AudioPreviewPanel
 {
 public:
     // Constructors
-    AudioPreviewPanel(SaemplAudioProcessor& inProcessor, Slider& inSlider, SampleItemViewModel& inSampleItemViewModel);
+    AudioPreviewPanel(SaemplAudioProcessor& inProcessor, Slider& inSlider, SampleEditor& inSampleEditor);
     ~AudioPreviewPanel();
     
     // Methods
@@ -55,7 +55,7 @@ private:
     // Fields
     int sampleItemTitleHeight = 25;
     SaemplAudioProcessor& currentProcessor;
-    SampleItemViewModel& sampleItemViewModel;
+    SampleEditor& sampleEditor;
     Slider* mZoomSlider;
     std::unique_ptr<ScrollBar> mAudioPreviewScrollbar;
     AudioThumbnailCache mThumbnailCache;
