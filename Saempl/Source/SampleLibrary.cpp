@@ -18,9 +18,11 @@ SampleLibrary::SampleLibrary(TimeSliceThread& inThread)
     // Initialize library manager
     mSampleLibraryManager = std::make_unique<SampleLibraryManager>();
     
-    // Set directory with path and file filter
+    // Set file filter
     mLibraryFilter = std::make_unique<SampleFileFilter>("AudioFormatsFilter", mFilteredSampleItems);
     mDirectoryContent = std::make_unique<DirectoryContentsList>(&*mLibraryFilter, inThread);
+    
+    // Set directory
     mDirectoryContent->addChangeListener(this);
     setDirectory((File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
                  + DIRECTORY_SEPARATOR
@@ -37,7 +39,7 @@ SampleLibrary::~SampleLibrary()
     mSampleLibraryManager->updateSampleLibraryFile(mCurrentLibraryPath, mSampleItems);
 }
 
-void SampleLibrary::addSampleItem(File const & inFile)
+void SampleLibrary::addToSampleItems(File const & inFile)
 {
     String fileName = inFile.getFileName();
     File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
@@ -58,7 +60,7 @@ void SampleLibrary::addSampleItem(File const & inFile)
         {
             for (DirectoryEntry entry : RangedDirectoryIterator(inFile, false, "*", File::findFilesAndDirectories))
             {
-                addSampleItem(entry.getFile());
+                addToSampleItems(entry.getFile());
             }
         }
         
@@ -74,8 +76,6 @@ void SampleLibrary::addSampleItem(File const & inFile)
     {
         return;
     }
-    
-    mDirectoryContent->refresh();
 }
 
 void SampleLibrary::removeSampleItem(String const& inFilePath, bool deletePermanently = false)
@@ -91,13 +91,16 @@ void SampleLibrary::removeSampleItem(String const& inFilePath, bool deletePerman
     {
         deletePermanently ? fileToDelete.deleteRecursively() : fileToDelete.moveToTrash();
     }
-    
-    mDirectoryContent->refresh();
 }
 
 DirectoryContentsList& SampleLibrary::getDirectoryList()
 {
     return *mDirectoryContent;
+}
+
+SampleFileFilter& SampleLibrary::getFileFilter()
+{
+    return *mLibraryFilter;
 }
 
 void SampleLibrary::changeListenerCallback(ChangeBroadcaster* inSource)
@@ -116,13 +119,17 @@ void SampleLibrary::refresh()
     // Go through all current sample items, check if corresponding audio file still exists and if not, delete sample item
     for (SampleItem* item : mSampleItems)
     {
-        if (!File(item->getFilePath()).exists()) {
+        if (!File(item->getFilePath()).exists())
+        {
             mSampleItems.removeObject(item);
         }
     }
     
     // Go through all files in directory, check if a corresponding sample item now exists in the sample item list, if not add it
-    for (DirectoryEntry entry : RangedDirectoryIterator(mDirectoryContent->getDirectory(), true, SUPPORTED_AUDIO_FORMATS_WILDCARD, File::findFiles))
+    for (DirectoryEntry entry : RangedDirectoryIterator(mDirectoryContent->getDirectory(),
+                                                        true,
+                                                        SUPPORTED_AUDIO_FORMATS_WILDCARD,
+                                                        File::findFiles))
     {
         bool linkedSampleItemExists = getSampleItemWithFilePath(entry.getFile().getFullPathName()) != nullptr;
         
@@ -197,7 +204,7 @@ void SampleLibrary::createSampleItem(File inFile)
 
 void SampleLibrary::applyFilter()
 {
-    mFilteredSampleItems.clear();
+    mFilteredSampleItems.clear(false);
     
     for (SampleItem* sampleItem : mSampleItems)
     {
@@ -206,4 +213,6 @@ void SampleLibrary::applyFilter()
             mFilteredSampleItems.add(sampleItem);
         }
     }
+    
+    mLibraryFilter->setFilteredSampleItems(mFilteredSampleItems);
 }

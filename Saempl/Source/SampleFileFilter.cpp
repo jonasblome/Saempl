@@ -53,7 +53,17 @@ bool SampleFileFilter::matchesRules(SampleItem& inSampleItem)
     return true;
 }
 
-void SampleFileFilter::addFilterRule(SampleFileFilterRuleBase* inFilterRule)
+SampleFileFilterRuleBase* SampleFileFilter::addFilterRule(SampleFileFilterRuleBase* inFilterRule)
 {
-    mFilterRules.add(inFilterRule);
+    return mFilterRules.add(inFilterRule);
+}
+
+void SampleFileFilter::setFilteredSampleItems(OwnedArray<SampleItem>& inFilteredSampleItems)
+{
+    filteredSampleItems.swapWith(inFilteredSampleItems);
+}
+
+OwnedArray<SampleFileFilterRuleBase>& SampleFileFilter::getFilterRules()
+{
+    return mFilterRules;
 }

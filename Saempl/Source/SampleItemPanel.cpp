@@ -29,7 +29,7 @@ void SampleItemPanel::paint(Graphics& g)
     
     // Draw background
     g.setColour(COLOUR_ACCENT_MEDIUM);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), MEDIUM_CORNER_SIZE);
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);
 }
 
 void SampleItemPanel::setPanelComponents()
@@ -44,8 +44,8 @@ void SampleItemPanel::setPanelComponents()
     mStartStopButton = std::make_unique<TextButton>(">");
     mStartStopButton->setBounds(PANEL_MARGIN / 2.0,
                                 PANEL_MARGIN / 2.0,
-                                MEDIUM_BUTTON_HEIGHT - PANEL_MARGIN / 2.0,
-                                MEDIUM_BUTTON_HEIGHT - PANEL_MARGIN / 2.0);
+                                BUTTON_HEIGHT_MEDIUM - PANEL_MARGIN / 2.0,
+                                BUTTON_HEIGHT_MEDIUM - PANEL_MARGIN / 2.0);
     mStartStopButton->onClick = [this] { mAudioPreviewPanel->startOrStop(); };
     addAndMakeVisible(*mStartStopButton);
     

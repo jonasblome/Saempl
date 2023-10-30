@@ -12,6 +12,18 @@
             file="Assets/noise-texture-1050x800.png"/>
     </GROUP>
     <GROUP id="{42BE264F-73CB-1788-4B66-AF9042EF1615}" name="BlomeComponents">
+      <FILE id="qeGOnn" name="BlomeFileFilterRuleViewBase.cpp" compile="1"
+            resource="0" file="Source/BlomeFileFilterRuleViewBase.cpp"/>
+      <FILE id="eeWtdy" name="BlomeFileFilterRuleViewBase.h" compile="0"
+            resource="0" file="Source/BlomeFileFilterRuleViewBase.h"/>
+      <FILE id="sji7rW" name="BlomeFileFilterRuleViewTitle.cpp" compile="1"
+            resource="0" file="Source/BlomeFileFilterRuleViewTitle.cpp"/>
+      <FILE id="FvL4Ds" name="BlomeFileFilterRuleViewTitle.h" compile="0"
+            resource="0" file="Source/BlomeFileFilterRuleViewTitle.h"/>
+      <FILE id="Eu12LZ" name="BlomeFileFilterRuleViewLength.cpp" compile="1"
+            resource="0" file="Source/BlomeFileFilterRuleViewLength.cpp"/>
+      <FILE id="a5ieSp" name="BlomeFileFilterRuleViewLength.h" compile="0"
+            resource="0" file="Source/BlomeFileFilterRuleViewLength.h"/>
       <FILE id="WxYaGi" name="BlomeFileTreeView.cpp" compile="1" resource="0"
             file="Source/BlomeFileTreeView.cpp"/>
       <FILE id="eHx4JX" name="BlomeFileTreeView.h" compile="0" resource="0"
@@ -32,6 +44,10 @@
       <FILE id="NTzZV2" name="MainPanel.h" compile="0" resource="0" file="Source/MainPanel.h"/>
       <FILE id="dcV6X9" name="HeaderPanel.cpp" compile="1" resource="0" file="Source/HeaderPanel.cpp"/>
       <FILE id="fmjpIw" name="HeaderPanel.h" compile="0" resource="0" file="Source/HeaderPanel.h"/>
+      <FILE id="szHDlD" name="FileFilterPanel.cpp" compile="1" resource="0"
+            file="Source/FileFilterPanel.cpp"/>
+      <FILE id="PleHun" name="FileFilterPanel.h" compile="0" resource="0"
+            file="Source/FileFilterPanel.h"/>
       <FILE id="ccbkEr" name="CenterPanel.cpp" compile="1" resource="0" file="Source/CenterPanel.cpp"/>
       <FILE id="YtLVhW" name="CenterPanel.h" compile="0" resource="0" file="Source/CenterPanel.h"/>
       <FILE id="Wk9vDR" name="SampleNavigationPanel.cpp" compile="1" resource="0"

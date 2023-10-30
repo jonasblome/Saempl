@@ -10,39 +10,28 @@
 
 #include "SampleFileFilterRuleBase.h"
 
-SampleFileFilterRuleBase::SampleFileFilterRuleBase()
+SampleFileFilterRuleBase::SampleFileFilterRuleBase(String inRuleType)
+:   mRuleType(inRuleType)
 {
     
 }
 
-template <typename T> bool SampleFileFilterRuleBase::compare(const T &inPropertyValue,
-                                                             const T &inCompareValue,
-                                                             CompareOperators const inCompareOperator)
+SampleFileFilterRuleBase::~SampleFileFilterRuleBase()
 {
-    switch (inCompareOperator) {
-        case LessThan:
-        {
-            return inPropertyValue < inCompareValue;
-            break;
-        }
-        case EqualTo:
-        {
-            return inPropertyValue == inCompareValue;
-            break;
-        }
-        case GreaterThan:
-        {
-            return inPropertyValue > inCompareValue;
-            break;
-        }
-        default:
-            jassertfalse;
-            return false;
-            break;
-    };
+    
+}
+
+CompareOperators SampleFileFilterRuleBase::getCompareOperator()
+{
+    return mCompareOperator;
 }
 
 void SampleFileFilterRuleBase::setCompareOperator(CompareOperators inCompareOperator)
 {
     mCompareOperator = inCompareOperator;
+}
+
+String SampleFileFilterRuleBase::getRuleType()
+{
+    return mRuleType;
 }

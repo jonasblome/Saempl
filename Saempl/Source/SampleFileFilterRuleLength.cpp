@@ -10,19 +10,46 @@
 
 #include "SampleFileFilterRuleLength.h"
 
-SampleFileFilterRuleLength::~SampleFileFilterRuleLength()
+SampleFileFilterRuleLength::SampleFileFilterRuleLength(String inRuleType)
+:   SampleFileFilterRuleBase(inRuleType)
 {
-    
+    mCompareValue = 0.0;
 }
 
-SampleFileFilterRuleLength::SampleFileFilterRuleLength()
+SampleFileFilterRuleLength::~SampleFileFilterRuleLength()
 {
     
 }
 
 bool SampleFileFilterRuleLength::matches(SampleItem const & inSampleItem)
 {
-    return compare<double>(inSampleItem.getLength(), mCompareValue, mCompareOperator);
+    double propertyValue = inSampleItem.getLength();
+    
+    switch (mCompareOperator) {
+        case LessThan:
+        {
+            return propertyValue < mCompareValue;
+            break;
+        }
+        case EqualTo:
+        {
+            return propertyValue == mCompareValue;
+            break;
+        }
+        case GreaterThan:
+        {
+            return propertyValue > mCompareValue;
+            break;
+        }
+        default:
+            jassertfalse;
+            return false;
+    };
+}
+
+double SampleFileFilterRuleLength::getCompareValue()
+{
+    return mCompareValue;
 }
 
 void SampleFileFilterRuleLength::setCompareValue(double const & inCompareValue)

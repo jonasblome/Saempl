@@ -37,7 +37,7 @@ void AudioPreviewPanel::paint(Graphics& g)
 
     // Draw background
     g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), MEDIUM_CORNER_SIZE);
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);
     
     // Draw audio preview
     g.setColour(COLOUR_ACCENT_LIGHT);

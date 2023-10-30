@@ -12,6 +12,7 @@
 
 #include "PanelBase.h"
 #include "CenterPanel.h"
+#include "FileFilterPanel.h"
 
 class HeaderPanel
 :   public PanelBase
@@ -33,6 +34,7 @@ private:
     CenterPanel& linkedCenterPanel;
     std::unique_ptr<TextButton> mRefreshLibraryButton;
     std::unique_ptr<TextButton> mChooseLibraryFolderButton;
+    std::unique_ptr<TextButton> mChangeFilterButton;
     std::unique_ptr<FileChooser> mFileChooser;
     std::unique_ptr<ToggleButton> mToggleLibraryPanelButton;
     std::unique_ptr<ToggleButton> mToggleSampleTablePanelButton;

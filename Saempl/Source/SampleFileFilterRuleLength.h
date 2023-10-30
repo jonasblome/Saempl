@@ -17,11 +17,12 @@ class SampleFileFilterRuleLength
 {
 public:
     // Constructors
-    SampleFileFilterRuleLength();
+    SampleFileFilterRuleLength(String inRuleType);
     ~SampleFileFilterRuleLength();
     
     // Methods
     bool matches(SampleItem const & inSampleItem) override;
+    double getCompareValue();
     void setCompareValue(double const & inCompareValue);
     
 private:

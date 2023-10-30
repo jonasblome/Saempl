@@ -37,6 +37,14 @@ enum CompareOperators
     GreaterThan,
 };
 
+// Navigation panel names
+enum NavigationPanelType
+{
+    PANELS_LIBRARY_PANEL,
+    PANELS_TABLE_PANEL,
+    PANELS_MAP_PANEL,
+};
+
 // Helper functions
 inline bool isSupportedAudioFileFormat(String inExtension)
 {

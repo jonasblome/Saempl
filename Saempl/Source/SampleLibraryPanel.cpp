@@ -31,7 +31,7 @@ void SampleLibraryPanel::paint(Graphics& g)
     
     // Set background
     g.setColour(COLOUR_ACCENT_MEDIUM);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), MEDIUM_CORNER_SIZE);
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);
 }
 
 void SampleLibraryPanel::setPanelComponents()
@@ -72,10 +72,10 @@ void SampleLibraryPanel::fileClicked(File const & file, MouseEvent const & mouse
     if (mouseEvent.mods.isRightButtonDown())
     {
         PopupMenu popupMenu;
-        popupMenu.addItem("Move File(s) to Trash", [&] { deleteFile(false); });
+        popupMenu.addItem("Move File(s) to Trash", [this] { deleteFile(false); });
         popupMenu.addItem("Placeholder", nullptr);
         popupMenu.addItem("Placeholder", nullptr);
-        popupMenu.addItem("Delete File(s) Permanently", [&] { deleteFile(true); });
+        popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFile(true); });
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
     }
 }
@@ -103,6 +103,8 @@ void SampleLibraryPanel::deleteFile(bool deletePermanently = false)
     {
         sampleLibrary.removeSampleItem(mFileTree->getSelectedFile(f).getFullPathName(), deletePermanently);
     }
+    
+    sampleLibrary.refresh();
 };
 
 

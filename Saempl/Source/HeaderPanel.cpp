@@ -30,7 +30,7 @@ void HeaderPanel::paint(Graphics& g)
     
     // Draw background
     g.setColour(COLOUR_ACCENT_LIGHT);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), MEDIUM_CORNER_SIZE);
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);
     
     // Draw logo text
     int const logoWidth = 220;
@@ -48,71 +48,88 @@ void HeaderPanel::paint(Graphics& g)
 void HeaderPanel::setPanelComponents()
 {
     int x = 0;
-    int buttonWidth = 0;
     
     // Add refresh sample library button
-    buttonWidth = 75;
+    int textButtonWidth = 75;
     mRefreshLibraryButton = std::make_unique<TextButton>("Refresh");
     mRefreshLibraryButton->setBounds(x + PANEL_MARGIN / 2.0,
                                      PANEL_MARGIN / 2.0,
-                                     buttonWidth - PANEL_MARGIN / 2.0,
+                                     textButtonWidth - PANEL_MARGIN / 2.0,
                                      getHeight() - PANEL_MARGIN);
     mRefreshLibraryButton->onClick = [this] { currentProcessor.getSampleLibrary().refresh(); };
     addAndMakeVisible(*mRefreshLibraryButton);
-    x += 75;
+    x += textButtonWidth;
     
     // Add choose library directory button
     mChooseLibraryFolderButton = std::make_unique<TextButton>("Choose Dir");
     mChooseLibraryFolderButton->setBounds(x + PANEL_MARGIN / 2.0,
                                           PANEL_MARGIN / 2.0,
-                                          buttonWidth - PANEL_MARGIN / 2.0,
+                                          textButtonWidth - PANEL_MARGIN / 2.0,
                                           getHeight() - PANEL_MARGIN);
     mChooseLibraryFolderButton->onClick = [this] { showLibraryChooser(); };
     addAndMakeVisible(*mChooseLibraryFolderButton);
-    x += 75;
+    x += textButtonWidth;
     
     // Add toggle for library panel
-    buttonWidth = getHeight();
+    int toggleButtonWidth = getHeight();
     mToggleLibraryPanelButton = std::make_unique<ToggleButton>("Toggle SampleLibraryPanel");
     mToggleLibraryPanelButton->setToggleState(true, NotificationType::dontSendNotification);
     mToggleLibraryPanelButton->setBounds(x + PANEL_MARGIN / 2.0,
                                          PANEL_MARGIN / 2.0,
-                                         buttonWidth - PANEL_MARGIN / 2.0,
+                                         toggleButtonWidth - PANEL_MARGIN / 2.0,
                                          getHeight() - PANEL_MARGIN);
-    mToggleLibraryPanelButton->onClick = [this] {
+    mToggleLibraryPanelButton->onClick = [this]
+    {
         if (!mToggleLibraryPanelButton->getToggleState())
         {
             mToggleLibraryPanelButton->setToggleState(true, NotificationType::dontSendNotification);
         }
         else
         {
-            linkedCenterPanel.showNavigationPanel(0);
+            linkedCenterPanel.showNavigationPanel(PANELS_LIBRARY_PANEL);
             mToggleSampleTablePanelButton->setToggleState(false, NotificationType::dontSendNotification);
         }
     };
     addAndMakeVisible(*mToggleLibraryPanelButton);
-    x += getHeight();
+    x += toggleButtonWidth;
     
     // Add toggle for sample table panel
     mToggleSampleTablePanelButton = std::make_unique<ToggleButton>("Toggle SampleTablePanel");
     mToggleSampleTablePanelButton->setToggleState(false, NotificationType::dontSendNotification);
     mToggleSampleTablePanelButton->setBounds(x + PANEL_MARGIN / 2.0,
-                                         PANEL_MARGIN / 2.0,
-                                         buttonWidth - PANEL_MARGIN / 2.0,
-                                         getHeight() - PANEL_MARGIN);
-    mToggleSampleTablePanelButton->onClick = [this] {
+                                             PANEL_MARGIN / 2.0,
+                                             toggleButtonWidth - PANEL_MARGIN / 2.0,
+                                             getHeight() - PANEL_MARGIN);
+    mToggleSampleTablePanelButton->onClick = [this]
+    {
         if (!mToggleSampleTablePanelButton->getToggleState())
         {
             mToggleSampleTablePanelButton->setToggleState(true, NotificationType::dontSendNotification);
         }
         else
         {
-            linkedCenterPanel.showNavigationPanel(1);
+            linkedCenterPanel.showNavigationPanel(PANELS_TABLE_PANEL);
             mToggleLibraryPanelButton->setToggleState(false, NotificationType::dontSendNotification);
         }
     };
     addAndMakeVisible(*mToggleSampleTablePanelButton);
-    x += getHeight();
+    x += toggleButtonWidth;
+    
+    // Add button for editing the file filter rules
+    mChangeFilterButton = std::make_unique<TextButton>("Filters");
+    mChangeFilterButton->setBounds(x + PANEL_MARGIN / 2.0,
+                                   PANEL_MARGIN / 2.0,
+                                   textButtonWidth - PANEL_MARGIN / 2.0,
+                                   getHeight() - PANEL_MARGIN);
+    mChangeFilterButton->onClick = [this]
+    {
+        std::unique_ptr<FileFilterPanel> fileFilterPanel = std::make_unique<FileFilterPanel>(currentProcessor
+                                                                                             .getSampleLibrary());
+        CallOutBox::launchAsynchronously(std::move(fileFilterPanel), mChangeFilterButton->getScreenBounds(), nullptr);
+    };
+    addAndMakeVisible(*mChangeFilterButton);
+    x += textButtonWidth;
+    
 }
 
 void HeaderPanel::showLibraryChooser()

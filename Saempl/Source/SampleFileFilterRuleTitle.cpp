@@ -10,19 +10,46 @@
 
 #include "SampleFileFilterRuleTitle.h"
 
-SampleFileFilterRuleTitle::~SampleFileFilterRuleTitle()
+SampleFileFilterRuleTitle::SampleFileFilterRuleTitle(String inRuleType)
+:   SampleFileFilterRuleBase(inRuleType)
 {
-    
+    mCompareValue = "";
 }
 
-SampleFileFilterRuleTitle::SampleFileFilterRuleTitle()
+SampleFileFilterRuleTitle::~SampleFileFilterRuleTitle()
 {
     
 }
 
 bool SampleFileFilterRuleTitle::matches(SampleItem const & inSampleItem)
 {
-    return compare<String>(inSampleItem.getTitle(), mCompareValue, mCompareOperator);
+    String propertyValue = inSampleItem.getTitle();
+    
+    switch (mCompareOperator) {
+        case LessThan:
+        {
+            return propertyValue > mCompareValue;
+            break;
+        }
+        case EqualTo:
+        {
+            return propertyValue == mCompareValue;
+            break;
+        }
+        case GreaterThan:
+        {
+            return propertyValue < mCompareValue;
+            break;
+        }
+        default:
+            jassertfalse;
+            return false;
+    };
+}
+
+String SampleFileFilterRuleTitle::getCompareValue()
+{
+    return mCompareValue;
 }
 
 void SampleFileFilterRuleTitle::setCompareValue(String const & inCompareValue)

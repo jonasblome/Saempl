@@ -75,7 +75,7 @@ void CenterPanel::toggleSampleItemPanel()
     mSampleNavigationPanel->repaint();
 }
 
-void CenterPanel::showNavigationPanel(int inType)
+void CenterPanel::showNavigationPanel(NavigationPanelType inPanelType)
 {
-    mSampleNavigationPanel->showNavigationPanel(inType);
+    mSampleNavigationPanel->showNavigationPanel(inPanelType);
 }

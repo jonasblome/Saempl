@@ -18,13 +18,14 @@ class SampleFileFilterRuleBase
 {
 public:
     // Constructors
-    SampleFileFilterRuleBase();
+    SampleFileFilterRuleBase(String inRuleType);
     virtual ~SampleFileFilterRuleBase();
     
     // Methods
     virtual bool matches(SampleItem const & inSampleItem) = 0;
-    template <typename T> static bool compare(T const & inPropertyValue, T const & inCompareValue, CompareOperators inCompareOperator);
+    CompareOperators getCompareOperator();
     void setCompareOperator(CompareOperators inCompareOperator);
+    String getRuleType();
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleFileFilterRuleBase)
@@ -32,6 +33,7 @@ private:
 protected:
     // Fields
     CompareOperators mCompareOperator;
+    String mRuleType;
     
     // Methods
     

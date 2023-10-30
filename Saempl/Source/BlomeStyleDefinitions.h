@@ -19,6 +19,12 @@ int const MAIN_PANEL_HEIGHT = 900;
 int const HEADER_PANEL_WIDTH = MAIN_PANEL_WIDTH;
 int const HEADER_PANEL_HEIGHT = 50;
 
+int const FILTER_PANEL_WIDTH = 400;
+int const FILTER_PANEL_HEIGHT = 50;
+
+int const FILTER_RULE_WIDTH = FILTER_PANEL_WIDTH;
+int const FILTER_RULE_HEIGHT = 35;
+
 int const CENTER_PANEL_WIDTH = MAIN_PANEL_WIDTH;
 int const CENTER_PANEL_HEIGHT = MAIN_PANEL_HEIGHT - HEADER_PANEL_HEIGHT;
 
@@ -68,13 +74,14 @@ Colour const COLOUR_ACCENT_DARK_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_DARK).
 
 // Fonts
 Font const FONT_SMALL_BOLD("Helvetica Neue", 12.00f, Font::bold);
-Font const FONT_SMALL_ACCENTUATED("Helvetica Neue", 12.30f, Font::bold);
+Font const FONT_SMALL_BOLD_ACCENTUATED("Helvetica Neue", 12.70f, Font::bold);
 Font const FONT_MEDIUM_SMALL_BOLD("Helvetica Neue", 16.00f, Font::bold);
 Font const FONT_MEDIUM("Helvetica Neue", 22.00f, Font::bold);
 Font const FONT_LARGE("Helvetica Neue", 48.00f, Font::bold);
 
 
 // Other
-float const MEDIUM_CORNER_SIZE = 6.0;
+float const CORNER_SIZE_MEDIUM = 6.0;
 int const PANEL_MARGIN = 8;
-int const MEDIUM_BUTTON_HEIGHT = 25;
+int const BUTTON_HEIGHT_MEDIUM = 25;
+int const COMBO_BOX_WIDTH_MEDIUM = 180;

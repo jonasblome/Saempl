@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    NoiseOverlayPanel.h
-    Created: 29 May 2023 9:05:27am
+    BlomeFileFilterRuleViewBase.h
+    Created: 29 Oct 2023 12:14:30pm
     Author:  Jonas Blome
 
   ==============================================================================
@@ -12,25 +12,29 @@
 
 #include "JuceHeader.h"
 #include "BlomeStyleDefinitions.h"
+#include "SampleLibrary.h"
 
-class NoiseOverlayPanel
+class BlomeFileFilterRuleViewBase
 :   public Component
 {
 public:
     // Constructors
-    NoiseOverlayPanel();
-    ~NoiseOverlayPanel();
+    BlomeFileFilterRuleViewBase(SampleLibrary& inSampleLibrary);
+    virtual ~BlomeFileFilterRuleViewBase();
     
     // Methods
     void paint(Graphics& g) override;
-    void setPanelComponents();
+    virtual void setPanelComponents() = 0;
+    virtual void resized() override = 0;
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(NoiseOverlayPanel)
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeFileFilterRuleViewBase)
     
+protected:
     // Fields
-    Image mNoiseOverlay;
+    SampleLibrary& linkedSampleLibrary;
     
     // Methods
+    
     
 };

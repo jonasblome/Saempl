@@ -27,7 +27,9 @@ public:
     bool isFileSuitable (const File& file) const override;
     bool isDirectorySuitable (const File& file) const override;
     bool matchesRules(SampleItem& inSampleItem);
-    void addFilterRule(SampleFileFilterRuleBase* inRule);
+    SampleFileFilterRuleBase* addFilterRule(SampleFileFilterRuleBase* inRule);
+    void setFilteredSampleItems(OwnedArray<SampleItem>& inFilteredSampleItems);
+    OwnedArray<SampleFileFilterRuleBase>& getFilterRules();
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleFileFilter)

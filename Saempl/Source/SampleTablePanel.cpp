@@ -30,7 +30,7 @@ void SampleTablePanel::paint(Graphics& g)
     
     // Set background
     g.setColour(COLOUR_ACCENT_MEDIUM);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), MEDIUM_CORNER_SIZE);
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);
     mSampleTable->updateContent();
 }
 

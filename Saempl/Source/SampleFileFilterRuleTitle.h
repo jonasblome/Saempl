@@ -17,11 +17,12 @@ class SampleFileFilterRuleTitle
 {
 public:
     // Constructors
-    SampleFileFilterRuleTitle();
+    SampleFileFilterRuleTitle(String inRuleType);
     ~SampleFileFilterRuleTitle();
     
     // Methods
     bool matches(SampleItem const & inSampleItem) override;
+    String getCompareValue();
     void setCompareValue(String const & inCompareValue);
     
 private:

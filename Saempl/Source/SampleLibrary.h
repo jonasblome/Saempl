@@ -15,6 +15,8 @@
 #include "SampleAnalyser.h"
 #include "SampleLibraryManager.h"
 #include "SampleFileFilter.h"
+#include "SampleFileFilterRuleTitle.h"
+#include "SampleFileFilterRuleLength.h"
 
 class SampleLibrary
 :   ChangeListener
@@ -25,9 +27,10 @@ public:
     ~SampleLibrary();
     
     // Methods
-    void addSampleItem(File const & inFile);
+    void addToSampleItems(File const & inFile);
     void removeSampleItem(String const & inFilePath, bool deletePermanently);
     DirectoryContentsList& getDirectoryList();
+    SampleFileFilter& getFileFilter();
     void changeListenerCallback(ChangeBroadcaster* inSource) override;
     void refresh();
     SampleItem* getSampleItemWithFilePath(String const & inFilePath);
