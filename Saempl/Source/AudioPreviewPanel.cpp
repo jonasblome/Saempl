@@ -20,7 +20,7 @@ AudioPreviewPanel::AudioPreviewPanel(SaemplAudioProcessor& inProcessor, Slider& 
     mAudioPreview(512, sampleEditor.getAudioFormatManager(), mThumbnailCache),
     isFollowingTransport(false)
 {
-    setSize(SAMPLE_PREVIEW_WIDTH - PANEL_MARGIN * 2, SAMPLE_PREVIEW_HEIGHT - PANEL_MARGIN * 1.5);
+    setSize(SAMPLE_PREVIEW_WIDTH - PANEL_MARGIN * 1.5, SAMPLE_PREVIEW_HEIGHT - PANEL_MARGIN * 1.5);
     setPanelComponents();
 }
 
@@ -31,8 +31,6 @@ AudioPreviewPanel::~AudioPreviewPanel()
 
 void AudioPreviewPanel::paint(Graphics& g)
 {
-    PanelBase::paint(g);
-    
     auto previewArea = getLocalBounds().removeFromBottom(getHeight() - SAMPLE_PREVIEW_TITLE_HEIGHT);
 
     // Draw background

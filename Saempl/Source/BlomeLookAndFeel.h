@@ -550,6 +550,9 @@ public:
     }
     
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeLookAndFeel)
+    
+    // Fields
     SampleLibrary& sampleLibrary;
     
 };

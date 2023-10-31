@@ -10,9 +10,12 @@
 
 #include "BlomeTableView.h"
 
-BlomeTableView::BlomeTableView(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel)
+BlomeTableView::BlomeTableView(SampleLibrary& inSampleLibrary,
+                               SampleItemPanel& inSampleItemPanel,
+                               SampleItemCollectionType inSampleItemCollectionType)
 :   sampleLibrary(inSampleLibrary),
-    linkedSampleItemPanel(inSampleItemPanel)
+    linkedSampleItemPanel(inSampleItemPanel),
+    mSampleItemCollectionType(inSampleItemCollectionType)
 {
     setModel(this);
     setColour(ListBox::outlineColourId, COLOUR_ACCENT_LIGHT);
@@ -46,7 +49,7 @@ BlomeTableView::~BlomeTableView()
 // This is overloaded from TableListBoxModel, and must return the total number of rows in our table
 int BlomeTableView::getNumRows()
 {
-    numRows = sampleLibrary.getFilteredSampleItems().size();
+    numRows = sampleLibrary.getSampleItems(mSampleItemCollectionType).size();
     return numRows;
 }
 
@@ -74,12 +77,12 @@ void BlomeTableView::paintCell(Graphics& g,
                                int height,
                                bool rowIsSelected)
 {
-    if (rowNumber > sampleLibrary.getFilteredSampleItems().size())
+    if (rowNumber > sampleLibrary.getSampleItems(mSampleItemCollectionType).size())
     {
         return;
     }
     
-    if (SampleItem* rowSampleItem = sampleLibrary.getFilteredSampleItems().getUnchecked(rowNumber))
+    if (SampleItem* rowSampleItem = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(rowNumber))
     {
         g.setColour(COLOUR_ACCENT_MEDIUM);
         g.fillRect(width - 1,
@@ -125,7 +128,7 @@ void BlomeTableView::sortOrderChanged (int newSortColumnId, bool isForwards)
         String propertyName = newSortColumnId <= PROPERTY_NAMES.size() ? PROPERTY_NAMES[newSortColumnId - 1] : "Title";
         mComparator.setCompareProperty(propertyName);
         mComparator.setSortingDirection(isForwards);
-        sampleLibrary.getFilteredSampleItems().sort(mComparator);
+        sampleLibrary.getSampleItems(mSampleItemCollectionType).sort(mComparator);
         updateContent();
     }
 }
@@ -139,7 +142,7 @@ int BlomeTableView::getColumnAutoSizeWidth(int columnId)
     // Find the widest bit of text in this column..
     for (int r = getNumRows(); --r >= 0;)
     {
-        if (SampleItem* sampleItem = sampleLibrary.getFilteredSampleItems().getUnchecked(r))
+        if (SampleItem* sampleItem = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(r))
         {
             String text = sampleItem->getFilePath();
             widest = jmax(widest, FONT_SMALL_BOLD.getStringWidth(text));
@@ -149,9 +152,38 @@ int BlomeTableView::getColumnAutoSizeWidth(int columnId)
     return widest + 8;
 }
 
-void BlomeTableView::cellDoubleClicked (int rowNumber, int columnId, MouseEvent const & mouseEvent)
+void BlomeTableView::cellClicked(int rowNumber, int columnId, MouseEvent const &mouseEvent)
 {
-    File inFile = sampleLibrary.getFilteredSampleItems().getUnchecked(rowNumber)->getFilePath();
+    // Show options pop up menu
+    if (mouseEvent.mods.isRightButtonDown())
+    {
+        PopupMenu popupMenu;
+        
+        switch (mSampleItemCollectionType)
+        {
+            case ALL_SAMPLES:
+            case FILTERED_SAMPLES:
+            {
+                popupMenu.addItem("Move File(s) to Trash", [this] { deleteFile(false); });
+                popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFile(true); });
+                break;
+            }
+            case PALETTE_SAMPLES:
+            {
+                popupMenu.addItem("Remove Sample from Palette", [this] { removeSampleItemFromPalette(); } );
+                break;
+            }
+            default:
+                break;
+        }
+        
+        popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
+    }
+}
+
+void BlomeTableView::cellDoubleClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent)
+{
+    File inFile = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(rowNumber)->getFilePath();
     linkedSampleItemPanel.tryShowAudioResource(inFile);
 }
 
@@ -165,17 +197,18 @@ void BlomeTableView::mouseDrag(MouseEvent const & e)
         Point<int> mousePosition = e.getEventRelativeTo(this).position.toInt();
         
         // Check if any of the selected rows was dragged
-        for (int s = 0; s < getNumSelectedRows(); s++) {
-            Rectangle<int> itemBounds = getRowPosition(getSelectedRow(s), false);
+        for (int s = 0; s < getNumSelectedRows(); s++)
+        {
+            Rectangle<int> rowBounds = getRowPosition(getSelectedRow(s), true);
             
-            if (itemBounds.contains(mousePosition))
+            if (rowBounds.contains(mousePosition))
             {
                 StringArray selectedFilePaths;
                 
                 // Add all selected rows to external drag
                 for (int r = 0; r < getNumSelectedRows(); r++)
                 {
-                    selectedFilePaths.add(sampleLibrary.getFilteredSampleItems().getUnchecked(getSelectedRow(r))->getFilePath());
+                    selectedFilePaths.add(sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(getSelectedRow(r))->getFilePath());
                 }
                 
                 DragAndDropContainer* dragContainer = DragAndDropContainer::findParentDragContainerFor(this);
@@ -185,4 +218,72 @@ void BlomeTableView::mouseDrag(MouseEvent const & e)
             }
         }
     }
+}
+
+/**
+ Handles what happens when files are dropped onto the tree view.
+ */
+void BlomeTableView::filesDropped(StringArray const & files, int x, int y)
+{
+    // Adding all the dropped files to the database
+    switch (mSampleItemCollectionType)
+    {
+        case ALL_SAMPLES:
+        case FILTERED_SAMPLES:
+        {
+            for (int f = 0; f < files.size(); f++)
+            {
+                sampleLibrary.addToSampleItems(files[f]);
+            }
+            break;
+        }
+        case PALETTE_SAMPLES:
+        {
+            for (int f = 0; f < files.size(); f++)
+            {
+                sampleLibrary.addToSampleItems(files[f]);
+                sampleLibrary.addToPalette(files[f]);
+            }
+            break;
+        }
+        default:
+            break;
+    }
+    
+    sampleLibrary.refresh();
+}
+
+/**
+ Sets a flag if the tree view is interested in drag and drop of files.
+ */
+bool BlomeTableView::isInterestedInFileDrag(StringArray const & files)
+{
+    return true;
+}
+
+void BlomeTableView::deleteFile(bool deletePermanently = false)
+{
+    // Delete all selected files
+    for (int r = getNumSelectedRows() - 1; r >= 0; r--)
+    {
+        sampleLibrary.removeSampleItem(sampleLibrary
+                                       .getSampleItems(mSampleItemCollectionType)
+                                       .getUnchecked(getSelectedRow(r))->getFilePath(),
+                                       deletePermanently);
+    }
+    
+    sampleLibrary.refresh();
+};
+
+void BlomeTableView::removeSampleItemFromPalette()
+{
+    // Delete all selected items from palette
+    for (int r = getNumSelectedRows() - 1; r >= 0; r--)
+    {
+        sampleLibrary.removeSampleItemFromPalette(*sampleLibrary
+                                       .getSampleItems(mSampleItemCollectionType)
+                                       .getUnchecked(getSelectedRow(r)));
+    }
+    
+    sampleLibrary.refresh();
 }

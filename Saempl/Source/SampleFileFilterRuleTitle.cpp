@@ -14,7 +14,7 @@ SampleFileFilterRuleTitle::SampleFileFilterRuleTitle(String inRuleType)
 :   SampleFileFilterRuleBase(inRuleType)
 {
     mCompareValue = "";
-    mCompareOperator = Contains;
+    mCompareOperator = CONTAINS;
 }
 
 SampleFileFilterRuleTitle::~SampleFileFilterRuleTitle()
@@ -27,22 +27,22 @@ bool SampleFileFilterRuleTitle::matches(SampleItem const & inSampleItem)
     String propertyValue = inSampleItem.getTitle();
     
     switch (mCompareOperator) {
-        case LessThan:
+        case LESS_THAN:
         {
             return propertyValue > mCompareValue;
             break;
         }
-        case EqualTo:
+        case EQUAL_TO:
         {
             return propertyValue == mCompareValue;
             break;
         }
-        case GreaterThan:
+        case GREATER_THAN:
         {
             return propertyValue < mCompareValue;
             break;
         }
-        case Contains:
+        case CONTAINS:
         {
             return propertyValue.toLowerCase().contains(mCompareValue.toLowerCase());
         }

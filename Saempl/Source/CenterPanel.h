@@ -13,6 +13,7 @@
 #include "PanelBase.h"
 #include "SampleNavigationPanel.h"
 #include "SampleItemPanel.h"
+#include "SamplePalettePanel.h"
 
 class CenterPanel
 :   public PanelBase
@@ -33,6 +34,7 @@ private:
     // Fields
     SaemplAudioProcessor& currentProcessor;
     std::unique_ptr<SampleNavigationPanel> mSampleNavigationPanel;
+    std::unique_ptr<SamplePalettePanel> mSamplePalettePanel;
     std::unique_ptr<SampleItemPanel> mSampleItemPanel;
     std::unique_ptr<ToggleButton> mToggleSampleItemPanelButton;
     

@@ -25,7 +25,7 @@ CenterPanel::~CenterPanel()
 
 void CenterPanel::paint(Graphics& g)
 {
-    PanelBase::paint(g);
+    
 }
 
 void CenterPanel::setPanelComponents()
@@ -35,10 +35,15 @@ void CenterPanel::setPanelComponents()
     mSampleItemPanel->setTopLeftPosition(0, SAMPLE_NAVIGATION_PANEL_HEIGHT);
     addAndMakeVisible(*mSampleItemPanel);
     
-    // Add panel for database views
+    // Add panel for sample library views
     mSampleNavigationPanel = std::make_unique<SampleNavigationPanel>(currentProcessor, *mSampleItemPanel);
     mSampleNavigationPanel->setTopLeftPosition(0, 0);
     addAndMakeVisible(*mSampleNavigationPanel);
+    
+    // Add panel for sample palette view
+    mSamplePalettePanel = std::make_unique<SamplePalettePanel>(currentProcessor.getSampleLibrary(), *mSampleItemPanel);
+    mSamplePalettePanel->setTopLeftPosition(SAMPLE_NAVIGATION_PANEL_WIDTH, 0);
+    addAndMakeVisible(*mSamplePalettePanel);
     
     // Add toggle panel button
     mToggleSampleItemPanelButton = std::make_unique<ToggleButton>("Toggle SampleItemPanel");
@@ -63,12 +68,12 @@ void CenterPanel::toggleSampleItemPanel()
     
     if(mSampleItemPanel->isVisible())
     {
-        mSampleNavigationPanel->setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN,
+        mSampleNavigationPanel->setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN / 2.0,
                                         SAMPLE_NAVIGATION_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
     }
     else
     {
-        mSampleNavigationPanel->setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN,
+        mSampleNavigationPanel->setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN / 2.0,
                                         CENTER_PANEL_HEIGHT - BUTTON_SIZE_SMALL - PANEL_MARGIN / 2.0);
     }
     

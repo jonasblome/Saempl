@@ -115,16 +115,16 @@ void BlomeFileFilterRuleViewTitle::comboBoxChanged(ComboBox* comboBoxThatHasChan
     switch (comboBoxThatHasChanged->getSelectedItemIndex())
     {
         case 0:
-            linkedFilterRule.setCompareOperator(CompareOperators::LessThan);
+            linkedFilterRule.setCompareOperator(CompareOperators::LESS_THAN);
             break;
         case 1:
-            linkedFilterRule.setCompareOperator(CompareOperators::EqualTo);
+            linkedFilterRule.setCompareOperator(CompareOperators::EQUAL_TO);
             break;
         case 2:
-            linkedFilterRule.setCompareOperator(CompareOperators::GreaterThan);
+            linkedFilterRule.setCompareOperator(CompareOperators::GREATER_THAN);
             break;
         case 3:
-            linkedFilterRule.setCompareOperator(CompareOperators::Contains);
+            linkedFilterRule.setCompareOperator(CompareOperators::CONTAINS);
         default:
             break;
     }

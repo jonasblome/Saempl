@@ -15,7 +15,7 @@ SampleNavigationPanel::SampleNavigationPanel(SaemplAudioProcessor& inProcessor, 
     linkedSampleItemPanel(inSampleItemPanel),
     sampleLibrary(inProcessor.getSampleLibrary())
 {
-    setSize(SAMPLE_NAVIGATION_PANEL_WIDTH, SAMPLE_NAVIGATION_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
+    setSize(SAMPLE_NAVIGATION_PANEL_WIDTH, SAMPLE_NAVIGATION_PANEL_HEIGHT);
     setPanelComponents();
 }
 
@@ -26,7 +26,7 @@ SampleNavigationPanel::~SampleNavigationPanel()
 
 void SampleNavigationPanel::paint(Graphics& g)
 {
-    PanelBase::paint(g);
+    
 }
 
 void SampleNavigationPanel::setPanelComponents()

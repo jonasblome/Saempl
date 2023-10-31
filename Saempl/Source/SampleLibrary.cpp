@@ -36,7 +36,7 @@ SampleLibrary::SampleLibrary(TimeSliceThread& inThread)
 SampleLibrary::~SampleLibrary()
 {
     mDirectoryContent->removeChangeListener(this);
-    mSampleLibraryManager->updateSampleLibraryFile(mCurrentLibraryPath, mSampleItems);
+    mSampleLibraryManager->updateSampleLibraryFile(mCurrentLibraryPath, mAllSampleItems);
 }
 
 void SampleLibrary::addToSampleItems(File const & inFile)
@@ -78,11 +78,22 @@ void SampleLibrary::addToSampleItems(File const & inFile)
     }
 }
 
-void SampleLibrary::removeSampleItem(String const& inFilePath, bool deletePermanently = false)
+void SampleLibrary::addToPalette(File const & inFile)
+{
+    SampleItem* itemToAdd = getSampleItemWithFileName(inFile.getFileName());
+    
+    if (!mPaletteSampleItems.contains(itemToAdd))
+    {
+        mPaletteSampleItems.add(itemToAdd);
+    }
+}
+
+void SampleLibrary::removeSampleItem(String const & inFilePath, bool deletePermanently = false)
 {
     // Delete sample item
-    SampleItem* itemToDelete = getSampleItemWithFilePath(inFilePath);
-    mSampleItems.removeObject(itemToDelete);
+    SampleItem* itemToDelete = getSampleItemWithFileName(File(inFilePath).getFileName());
+    mAllSampleItems.removeObject(itemToDelete);
+    removeSampleItemFromPalette(*itemToDelete);
     
     // Delete audio file
     File fileToDelete = File(inFilePath);
@@ -91,6 +102,11 @@ void SampleLibrary::removeSampleItem(String const& inFilePath, bool deletePerman
     {
         deletePermanently ? fileToDelete.deleteRecursively() : fileToDelete.moveToTrash();
     }
+}
+
+void SampleLibrary::removeSampleItemFromPalette(SampleItem& inSampleItem)
+{
+    mPaletteSampleItems.removeObject(&inSampleItem, false);
 }
 
 DirectoryContentsList& SampleLibrary::getDirectoryList()
@@ -117,21 +133,22 @@ void SampleLibrary::changeListenerCallback(ChangeBroadcaster* inSource)
 void SampleLibrary::refresh()
 {
     // Go through all current sample items, check if corresponding audio file still exists and if not, delete sample item
-    for (SampleItem* item : mSampleItems)
+    for (SampleItem* sampleItem : mAllSampleItems)
     {
-        if (!File(item->getFilePath()).exists())
+        if (!File(sampleItem->getFilePath()).exists())
         {
-            mSampleItems.removeObject(item);
+            mPaletteSampleItems.removeObject(sampleItem, false);
+            mAllSampleItems.removeObject(sampleItem);
         }
     }
     
-    // Go through all files in directory, check if a corresponding sample item now exists in the sample item list, if not add it
+    // Go through all files in directory, check if a corresponding sample item already exists in the sample item list, if not add it
     for (DirectoryEntry entry : RangedDirectoryIterator(mDirectoryContent->getDirectory(),
                                                         true,
                                                         SUPPORTED_AUDIO_FORMATS_WILDCARD,
                                                         File::findFiles))
     {
-        bool linkedSampleItemExists = getSampleItemWithFilePath(entry.getFile().getFullPathName()) != nullptr;
+        bool linkedSampleItemExists = getSampleItemWithFileName(entry.getFile().getFileName()) != nullptr;
         
         if (!linkedSampleItemExists)
         {
@@ -143,11 +160,11 @@ void SampleLibrary::refresh()
     mDirectoryContent->refresh();
 }
 
-SampleItem* SampleLibrary::getSampleItemWithFilePath(String const & inFilePath)
+SampleItem* SampleLibrary::getSampleItemWithFileName(String const & inFileName)
 {
-    for (SampleItem* sampleItem : mSampleItems)
+    for (SampleItem* sampleItem : mAllSampleItems)
     {
-        if (sampleItem->getFilePath() == inFilePath)
+        if (File(sampleItem->getFilePath()).getFileName() == inFileName)
         {
             return sampleItem;
         }
@@ -161,7 +178,7 @@ void SampleLibrary::setDirectory(String inDirectoryPath)
     if (inDirectoryPath != "")
     {
         // Store current library
-        mSampleLibraryManager->updateSampleLibraryFile(mCurrentLibraryPath, mSampleItems);
+        mSampleLibraryManager->updateSampleLibraryFile(mCurrentLibraryPath, mAllSampleItems);
     }
     
     mCurrentLibraryPath = inDirectoryPath;
@@ -173,15 +190,28 @@ void SampleLibrary::setDirectory(String inDirectoryPath)
     
     // Load new library
     mFilteredSampleItems.clear(false);
-    mSampleItems.clear();
-    mSampleLibraryManager->loadSampleLibraryFile(mCurrentLibraryPath, mSampleItems);
+    mAllSampleItems.clear();
+    mSampleLibraryManager->loadSampleLibraryFile(mCurrentLibraryPath, mAllSampleItems);
     mDirectoryContent->setDirectory(File(mCurrentLibraryPath), true, true);
     refresh();
 }
 
-OwnedArray<SampleItem>& SampleLibrary::getFilteredSampleItems()
+OwnedArray<SampleItem>& SampleLibrary::getSampleItems(SampleItemCollectionType inCollectionType)
 {
-    return mFilteredSampleItems;
+    switch (inCollectionType)
+    {
+        case ALL_SAMPLES:
+            return mAllSampleItems;
+            break;
+        case FILTERED_SAMPLES:
+            return mFilteredSampleItems;
+            break;
+        case PALETTE_SAMPLES:
+            return mPaletteSampleItems;
+            break;
+        default:
+            break;
+    }
 }
 
 /**
@@ -190,13 +220,12 @@ OwnedArray<SampleItem>& SampleLibrary::getFilteredSampleItems()
  */
 void SampleLibrary::createSampleItem(File inFile)
 {
-    bool linkedSampleItemExists = getSampleItemWithFilePath(inFile.getFullPathName()) != nullptr;
+    bool linkedSampleItemExists = getSampleItemWithFileName(inFile.getFileName()) != nullptr;
     
     if (!linkedSampleItemExists)
     {
-        SampleItem* newItem = mSampleItems.add(new SampleItem());
+        SampleItem* newItem = mAllSampleItems.add(new SampleItem());
         newItem->setFilePath(inFile.getFullPathName());
-        
         newItem->setTitle(inFile.getFileNameWithoutExtension());
         newItem->setLength(mSampleAnalyser->analyseSampleLength(inFile));
     }
@@ -206,7 +235,7 @@ void SampleLibrary::applyFilter()
 {
     mFilteredSampleItems.clear(false);
     
-    for (SampleItem* sampleItem : mSampleItems)
+    for (SampleItem* sampleItem : mAllSampleItems)
     {
         if (mLibraryFilter->matchesRules(*sampleItem))
         {
@@ -215,4 +244,9 @@ void SampleLibrary::applyFilter()
     }
     
     mLibraryFilter->setFilteredSampleItems(mFilteredSampleItems);
+}
+
+String SampleLibrary::getCurrentLibraryPath()
+{
+    return mCurrentLibraryPath;
 }

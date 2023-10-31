@@ -18,11 +18,14 @@
 
 class BlomeTableView
 :   public TableListBoxModel,
-    public TableListBox
+    public TableListBox,
+    public FileDragAndDropTarget
 {
 public:
     // Constructors
-    BlomeTableView(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
+    BlomeTableView(SampleLibrary& inSampleLibrary,
+                   SampleItemPanel& inSampleItemPanel,
+                   SampleItemCollectionType inSampleItemCollectionType);
     ~BlomeTableView();
     
     // Methods
@@ -39,17 +42,25 @@ public:
                    int height,
                    bool rowIsSelected) override;
     String getCellText(SampleItem* inSampleItem, int columnId);
-    void sortOrderChanged (int newSortColumnId, bool isForwards) override;
+    void sortOrderChanged(int newSortColumnId, bool isForwards) override;
     int getColumnAutoSizeWidth(int columnId) override;
-    void cellDoubleClicked (int rowNumber, int columnId, MouseEvent const & mouseEvent) override;
+    void cellClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent) override;
+    void cellDoubleClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent) override;
     void mouseDrag(MouseEvent const & e) override;
+    void filesDropped(StringArray const & files, int x, int y) override;
+    bool isInterestedInFileDrag(StringArray const & files) override;
+    void deleteFile(bool deletePermanently);
+    void removeSampleItemFromPalette();
     
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeTableView)
+    
     // Fields
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
     int numRows;
     SampleItemComparator mComparator;
+    SampleItemCollectionType mSampleItemCollectionType;
     
     // Methods
     

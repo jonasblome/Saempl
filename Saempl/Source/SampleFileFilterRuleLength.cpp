@@ -14,7 +14,7 @@ SampleFileFilterRuleLength::SampleFileFilterRuleLength(String inRuleType)
 :   SampleFileFilterRuleBase(inRuleType)
 {
     mCompareValue = 0.0;
-    mCompareOperator = GreaterThan;
+    mCompareOperator = GREATER_THAN;
 }
 
 SampleFileFilterRuleLength::~SampleFileFilterRuleLength()
@@ -27,17 +27,17 @@ bool SampleFileFilterRuleLength::matches(SampleItem const & inSampleItem)
     double propertyValue = inSampleItem.getLength();
     
     switch (mCompareOperator) {
-        case LessThan:
+        case LESS_THAN:
         {
             return propertyValue < mCompareValue;
             break;
         }
-        case EqualTo:
+        case EQUAL_TO:
         {
             return propertyValue == mCompareValue;
             break;
         }
-        case GreaterThan:
+        case GREATER_THAN:
         {
             return propertyValue > mCompareValue;
             break;

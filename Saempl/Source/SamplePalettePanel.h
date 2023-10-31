@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    SampleTablePanel.h
-    Created: 25 Jun 2023 5:51:12pm
+    SamplePalettePanel.h
+    Created: 31 Oct 2023 3:49:49pm
     Author:  Jonas Blome
 
   ==============================================================================
@@ -11,24 +11,22 @@
 #pragma once
 
 #include "PanelBase.h"
-#include "SampleItemPanel.h"
 #include "BlomeTableView.h"
 
-class SampleTablePanel
+class SamplePalettePanel
 :   public PanelBase
 {
 public:
     // Constructors
-    SampleTablePanel(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
-    ~SampleTablePanel();
+    SamplePalettePanel(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
+    ~SamplePalettePanel();
     
     // Methods
     void paint(Graphics& g) override;
     void setPanelComponents() override;
-    void resizePanelComponents() override;
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleTablePanel)
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SamplePalettePanel)
     
     // Fields
     SampleLibrary& sampleLibrary;

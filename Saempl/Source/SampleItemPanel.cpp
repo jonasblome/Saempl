@@ -14,7 +14,7 @@ SampleItemPanel::SampleItemPanel(SaemplAudioProcessor& inProcessor)
 :   PanelBase(),
     currentProcessor(inProcessor)
 {
-    setSize(SAMPLE_ITEM_PANEL_WIDTH - PANEL_MARGIN, SAMPLE_ITEM_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
+    setSize(SAMPLE_ITEM_PANEL_WIDTH - PANEL_MARGIN / 2.0, SAMPLE_ITEM_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
     setPanelComponents();
 }
 
@@ -25,8 +25,6 @@ SampleItemPanel::~SampleItemPanel()
 
 void SampleItemPanel::paint(Graphics& g)
 {
-    PanelBase::paint(g);
-    
     // Draw background
     g.setColour(COLOUR_ACCENT_MEDIUM);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);

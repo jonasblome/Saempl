@@ -1,32 +1,32 @@
 /*
   ==============================================================================
 
-    SampleTablePanel.cpp
-    Created: 25 Jun 2023 5:51:12pm
+    SamplePalettePanel.cpp
+    Created: 31 Oct 2023 3:49:50pm
     Author:  Jonas Blome
 
   ==============================================================================
 */
 
-#include "SampleTablePanel.h"
+#include "SamplePalettePanel.h"
 
-SampleTablePanel::SampleTablePanel(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel)
+SamplePalettePanel::SamplePalettePanel(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel)
 :   PanelBase(),
     sampleLibrary(inSampleLibrary),
     linkedSampleItemPanel(inSampleItemPanel)
 {
-    setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN / 2.0, SAMPLE_NAVIGATION_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
+    setSize(SAMPLE_PALETTE_PANEL_WIDTH - PANEL_MARGIN, SAMPLE_PALETTE_PANEL_HEIGHT - PANEL_MARGIN);
     setPanelComponents();
 }
 
-SampleTablePanel::~SampleTablePanel()
+SamplePalettePanel::~SamplePalettePanel()
 {
     
 }
 
-void SampleTablePanel::paint(Graphics& g)
+void SamplePalettePanel::paint(Graphics& g)
 {
-    // Set background
+    // Draw background
     g.setColour(COLOUR_ACCENT_MEDIUM);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);
     
@@ -39,7 +39,7 @@ void SampleTablePanel::paint(Graphics& g)
                            CORNER_SIZE_MEDIUM);
     g.setFont(FONT_MEDIUM_SMALL_BOLD);
     g.setColour(COLOUR_ACCENT_LIGHT);
-    g.drawFittedText("Sample Table - " + sampleLibrary.getCurrentLibraryPath(),
+    g.drawFittedText("Sample Palette",
                      PANEL_MARGIN / 2.0,
                      PANEL_MARGIN / 2.0,
                      getWidth() - PANEL_MARGIN,
@@ -50,24 +50,13 @@ void SampleTablePanel::paint(Graphics& g)
     mSampleTable->updateContent();
 }
 
-void SampleTablePanel::setPanelComponents()
+void SamplePalettePanel::setPanelComponents()
 {
     // Set sample table component
-    mSampleTable = std::make_unique<BlomeTableView>(sampleLibrary, linkedSampleItemPanel, FILTERED_SAMPLES);
+    mSampleTable = std::make_unique<BlomeTableView>(sampleLibrary, linkedSampleItemPanel, PALETTE_SAMPLES);
     mSampleTable->setBounds(PANEL_MARGIN / 2.0,
                             PANEL_TITLE_HEIGHT,
                             getWidth() - PANEL_MARGIN,
                             getHeight() - PANEL_TITLE_HEIGHT - PANEL_MARGIN / 2.0);
     addAndMakeVisible(*mSampleTable);
-}
-
-void SampleTablePanel::resizePanelComponents()
-{
-    if (mSampleTable != nullptr)
-    {
-        mSampleTable->setBounds(PANEL_MARGIN / 2.0,
-                                PANEL_TITLE_HEIGHT,
-                                getWidth() - PANEL_MARGIN,
-                                getHeight() - PANEL_TITLE_HEIGHT - PANEL_MARGIN / 2.0);
-    }
 }

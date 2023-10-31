@@ -26,8 +26,6 @@ HeaderPanel::~HeaderPanel()
 
 void HeaderPanel::paint(Graphics& g)
 {
-    PanelBase::paint(g);
-    
     // Draw background
     g.setColour(COLOUR_ACCENT_LIGHT);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);
@@ -61,7 +59,7 @@ void HeaderPanel::setPanelComponents()
     x += textButtonWidth;
     
     // Add choose library directory button
-    mChooseLibraryFolderButton = std::make_unique<TextButton>("Choose Dir");
+    mChooseLibraryFolderButton = std::make_unique<TextButton>("Choose Dir.");
     mChooseLibraryFolderButton->setBounds(x + PANEL_MARGIN / 2.0,
                                           PANEL_MARGIN / 2.0,
                                           textButtonWidth - PANEL_MARGIN / 2.0,
@@ -116,7 +114,7 @@ void HeaderPanel::setPanelComponents()
     x += toggleButtonWidth;
     
     // Add button for editing the file filter rules
-    mChangeFilterButton = std::make_unique<TextButton>("Filters");
+    mChangeFilterButton = std::make_unique<TextButton>("Filter");
     mChangeFilterButton->setBounds(x + PANEL_MARGIN / 2.0,
                                    PANEL_MARGIN / 2.0,
                                    textButtonWidth - PANEL_MARGIN / 2.0,

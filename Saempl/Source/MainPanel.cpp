@@ -26,7 +26,7 @@ MainPanel::~MainPanel()
 
 void MainPanel::paint(Graphics &g)
 {
-    PanelBase::paint(g);
+    
 }
 
 void MainPanel::setPanelComponents()

@@ -32,10 +32,10 @@ StringArray const PROPERTY_NAMES = StringArray({ "Length", "Title" });
 // Filter rule compare operators
 enum CompareOperators
 {
-    LessThan,
-    EqualTo,
-    GreaterThan,
-    Contains
+    LESS_THAN,
+    EQUAL_TO,
+    GREATER_THAN,
+    CONTAINS,
 };
 
 // Navigation panel names
@@ -44,6 +44,14 @@ enum NavigationPanelType
     PANELS_LIBRARY_PANEL,
     PANELS_TABLE_PANEL,
     PANELS_MAP_PANEL,
+};
+
+// Sample library collection types
+enum SampleItemCollectionType
+{
+    ALL_SAMPLES,
+    FILTERED_SAMPLES,
+    PALETTE_SAMPLES,
 };
 
 // Helper functions

@@ -28,15 +28,18 @@ public:
     
     // Methods
     void addToSampleItems(File const & inFile);
+    void addToPalette(File const & inFile);
     void removeSampleItem(String const & inFilePath, bool deletePermanently);
+    void removeSampleItemFromPalette(SampleItem& inSampleItem);
     DirectoryContentsList& getDirectoryList();
     SampleFileFilter& getFileFilter();
     void changeListenerCallback(ChangeBroadcaster* inSource) override;
     void refresh();
-    SampleItem* getSampleItemWithFilePath(String const & inFilePath);
+    SampleItem* getSampleItemWithFileName(String const & inFilePath);
     void setDirectory(String inDirectoryPath);
-    OwnedArray<SampleItem>& getFilteredSampleItems();
+    OwnedArray<SampleItem>& getSampleItems(SampleItemCollectionType inCollectionType);
     void applyFilter();
+    String getCurrentLibraryPath();
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibrary)
@@ -45,8 +48,9 @@ private:
     std::unique_ptr<SampleFileFilter> mLibraryFilter;
     String mCurrentLibraryPath;
     std::unique_ptr<DirectoryContentsList> mDirectoryContent;
-    OwnedArray<SampleItem> mSampleItems;
+    OwnedArray<SampleItem> mAllSampleItems;
     OwnedArray<SampleItem> mFilteredSampleItems;
+    OwnedArray<SampleItem> mPaletteSampleItems;
     String mDirectoryPathToAddFilesTo;
     std::unique_ptr<SampleAnalyser> mSampleAnalyser;
     std::unique_ptr<SampleLibraryManager> mSampleLibraryManager;

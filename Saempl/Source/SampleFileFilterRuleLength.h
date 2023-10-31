@@ -26,6 +26,8 @@ public:
     void setCompareValue(double const & inCompareValue);
     
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleFileFilterRuleLength)
+    
     // Fields
     double mCompareValue;
     

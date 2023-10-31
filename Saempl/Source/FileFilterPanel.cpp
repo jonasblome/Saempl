@@ -34,8 +34,6 @@ FileFilterPanel::~FileFilterPanel()
 
 void FileFilterPanel::paint(Graphics &g)
 {
-    PanelBase::paint(g);
-    
     // Draw background
     g.setColour(COLOUR_ACCENT_MEDIUM);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);

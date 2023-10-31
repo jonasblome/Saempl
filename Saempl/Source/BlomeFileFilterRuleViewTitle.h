@@ -36,6 +36,8 @@ public:
     void removeDeleteButtonListener(Button::Listener* inListener);
     
 private:
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeFileFilterRuleViewTitle)
+    
     // Fields
     SampleFileFilterRuleTitle& linkedFilterRule;
     std::unique_ptr<ToggleButton> mActivateRuleButton;
