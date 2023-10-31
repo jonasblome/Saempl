@@ -13,7 +13,7 @@
 SampleFileFilterRuleBase::SampleFileFilterRuleBase(String inRuleType)
 :   mRuleType(inRuleType)
 {
-    
+    isActive = true;
 }
 
 SampleFileFilterRuleBase::~SampleFileFilterRuleBase()
@@ -34,4 +34,14 @@ void SampleFileFilterRuleBase::setCompareOperator(CompareOperators inCompareOper
 String SampleFileFilterRuleBase::getRuleType()
 {
     return mRuleType;
+}
+
+bool SampleFileFilterRuleBase::getIsActive()
+{
+    return isActive;
+}
+
+void SampleFileFilterRuleBase::setIsActive(bool inIsActive)
+{
+    isActive = inIsActive;
 }

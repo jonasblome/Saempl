@@ -33,7 +33,7 @@ void AudioPreviewPanel::paint(Graphics& g)
 {
     PanelBase::paint(g);
     
-    auto previewArea = getLocalBounds().removeFromBottom(getHeight() - sampleItemTitleHeight);
+    auto previewArea = getLocalBounds().removeFromBottom(getHeight() - SAMPLE_PREVIEW_TITLE_HEIGHT);
 
     // Draw background
     g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
@@ -48,7 +48,7 @@ void AudioPreviewPanel::paint(Graphics& g)
         g.setFont(FONT_SMALL_BOLD);
         String fileName = restoreSpacesFromURLString(lastFileDropped.getFileName());
         g.drawFittedText(fileName,
-                         getLocalBounds().removeFromRight(getWidth() - PANEL_MARGIN).removeFromTop(sampleItemTitleHeight),
+                         getLocalBounds().removeFromRight(getWidth() - PANEL_MARGIN).removeFromTop(SAMPLE_PREVIEW_TITLE_HEIGHT),
                          Justification::centredLeft,
                          2);
         
@@ -64,7 +64,7 @@ void AudioPreviewPanel::paint(Graphics& g)
     {
         g.setFont(FONT_SMALL_BOLD);
         g.drawFittedText("No audio file selected",
-                         getLocalBounds().removeFromRight(getWidth() - PANEL_MARGIN).removeFromTop(sampleItemTitleHeight),
+                         getLocalBounds().removeFromRight(getWidth() - PANEL_MARGIN).removeFromTop(SAMPLE_PREVIEW_TITLE_HEIGHT),
                          Justification::centredLeft,
                          1);
         g.setFont(FONT_MEDIUM);
@@ -197,7 +197,7 @@ void AudioPreviewPanel::mouseWheelMove(MouseEvent const &, MouseWheelDetails con
     if (mAudioPreview.getTotalLength() > 0.0)
     {
         auto newStart = visibleRange.getStart() - wheel.deltaX * (visibleRange.getLength()) / 10.0;
-        newStart = jlimit (0.0, jmax (0.0, mAudioPreview.getTotalLength() - (visibleRange.getLength())), newStart);
+        newStart = jlimit(0.0, jmax(0.0, mAudioPreview.getTotalLength() - (visibleRange.getLength())), newStart);
 
         if (canMoveTransport())
         {
@@ -260,10 +260,15 @@ void AudioPreviewPanel::updateCursorPosition()
 {
     mAudioPositionMarker.setVisible(sampleEditor.isPlaying() || isMouseButtonDown());
 
-    mAudioPositionMarker.setRectangle(Rectangle<float>(timeToX(sampleEditor.getCurrentReadheadPosition()) - 0.75f,
-                                                       sampleItemTitleHeight + PANEL_MARGIN / 2.0,
+    mAudioPositionMarker.setRectangle(Rectangle<float>(timeToX(sampleEditor.getCurrentReadheadPosition())
+                                                       - 0.75f,
+                                                       SAMPLE_PREVIEW_TITLE_HEIGHT
+                                                       + PANEL_MARGIN / 2.0,
                                                        1.5f,
-                                                       (float)(getHeight() - PANEL_MARGIN - sampleItemTitleHeight - mAudioPreviewScrollbar->getHeight())));
+                                                       (float) (getHeight()
+                                                               - PANEL_MARGIN
+                                                               - SAMPLE_PREVIEW_TITLE_HEIGHT
+                                                               - mAudioPreviewScrollbar->getHeight())));
 }
 
 void AudioPreviewPanel::showAudioResource()

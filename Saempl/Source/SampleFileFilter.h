@@ -30,6 +30,8 @@ public:
     SampleFileFilterRuleBase* addFilterRule(SampleFileFilterRuleBase* inRule);
     void setFilteredSampleItems(OwnedArray<SampleItem>& inFilteredSampleItems);
     OwnedArray<SampleFileFilterRuleBase>& getFilterRules();
+    bool getIsActive();
+    void setIsActive(bool inIsActive);
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleFileFilter)
@@ -37,6 +39,7 @@ private:
     // Fields
     OwnedArray<SampleFileFilterRuleBase> mFilterRules;
     OwnedArray<SampleItem>& filteredSampleItems;
+    bool isActive;
     
     // Methods
     

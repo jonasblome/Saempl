@@ -14,6 +14,7 @@ SampleFileFilterRuleTitle::SampleFileFilterRuleTitle(String inRuleType)
 :   SampleFileFilterRuleBase(inRuleType)
 {
     mCompareValue = "";
+    mCompareOperator = Contains;
 }
 
 SampleFileFilterRuleTitle::~SampleFileFilterRuleTitle()
@@ -40,6 +41,10 @@ bool SampleFileFilterRuleTitle::matches(SampleItem const & inSampleItem)
         {
             return propertyValue < mCompareValue;
             break;
+        }
+        case Contains:
+        {
+            return propertyValue.toLowerCase().contains(mCompareValue.toLowerCase());
         }
         default:
             jassertfalse;

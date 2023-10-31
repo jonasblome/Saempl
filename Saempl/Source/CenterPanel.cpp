@@ -45,8 +45,8 @@ void CenterPanel::setPanelComponents()
     mToggleSampleItemPanelButton->setToggleState(true, NotificationType::dontSendNotification);
     mToggleSampleItemPanelButton->setBounds(0,
                                             SAMPLE_NAVIGATION_PANEL_HEIGHT + SAMPLE_ITEM_PANEL_HEIGHT,
-                                            SAMPLE_ITEM_PANEL_TOGGLE_HEIGHT - PANEL_MARGIN,
-                                            SAMPLE_ITEM_PANEL_TOGGLE_HEIGHT - PANEL_MARGIN);
+                                            BUTTON_SIZE_SMALL - PANEL_MARGIN,
+                                            BUTTON_SIZE_SMALL - PANEL_MARGIN);
     mToggleSampleItemPanelButton->onClick = [this] { toggleSampleItemPanel(); };
     addAndMakeVisible(*mToggleSampleItemPanelButton);
     
@@ -69,7 +69,7 @@ void CenterPanel::toggleSampleItemPanel()
     else
     {
         mSampleNavigationPanel->setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN,
-                                        CENTER_PANEL_HEIGHT - SAMPLE_ITEM_PANEL_TOGGLE_HEIGHT - PANEL_MARGIN / 2.0);
+                                        CENTER_PANEL_HEIGHT - BUTTON_SIZE_SMALL - PANEL_MARGIN / 2.0);
     }
     
     mSampleNavigationPanel->repaint();

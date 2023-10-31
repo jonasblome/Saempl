@@ -20,7 +20,7 @@ class BlomeFileFilterRuleViewTitle
 {
 public:
     // Constructors
-    BlomeFileFilterRuleViewTitle(SampleFileFilterRuleTitle& inTitleFilterRule, SampleLibrary& inSampleLibrary);
+    BlomeFileFilterRuleViewTitle(SampleFileFilterRuleTitle& inFilterRule, SampleLibrary& inSampleLibrary);
     ~BlomeFileFilterRuleViewTitle();
     
     // Methods
@@ -31,12 +31,17 @@ public:
     void textEditorReturnKeyPressed(TextEditor&) override;
     void textEditorEscapeKeyPressed(TextEditor&) override;
     void textEditorFocusLost(TextEditor&) override;
+    SampleFileFilterRuleTitle& getLinkedFilterRule();
+    void addDeleteButtonListener(Button::Listener* inListener);
+    void removeDeleteButtonListener(Button::Listener* inListener);
     
 private:
     // Fields
-    SampleFileFilterRuleTitle& linkedTitleFilterRule;
+    SampleFileFilterRuleTitle& linkedFilterRule;
+    std::unique_ptr<ToggleButton> mActivateRuleButton;
     std::unique_ptr<ComboBox> mCompareOperatorChooser;
     std::unique_ptr<TextEditor> mCompareValueEditor;
+    std::unique_ptr<TextButton> mDeleteRuleButton;
     
     // Methods
     

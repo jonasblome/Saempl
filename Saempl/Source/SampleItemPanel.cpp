@@ -44,8 +44,8 @@ void SampleItemPanel::setPanelComponents()
     mStartStopButton = std::make_unique<TextButton>(">");
     mStartStopButton->setBounds(PANEL_MARGIN / 2.0,
                                 PANEL_MARGIN / 2.0,
-                                BUTTON_HEIGHT_MEDIUM - PANEL_MARGIN / 2.0,
-                                BUTTON_HEIGHT_MEDIUM - PANEL_MARGIN / 2.0);
+                                BUTTON_SIZE_MEDIUM - PANEL_MARGIN / 2.0,
+                                BUTTON_SIZE_MEDIUM - PANEL_MARGIN / 2.0);
     mStartStopButton->onClick = [this] { mAudioPreviewPanel->startOrStop(); };
     addAndMakeVisible(*mStartStopButton);
     

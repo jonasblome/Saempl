@@ -123,7 +123,7 @@ public:
         g.fillRoundedRectangle(0,
                                2,
                                width,
-                               height - 2,
+                               height - 4,
                                CORNER_SIZE_MEDIUM);
     }
     

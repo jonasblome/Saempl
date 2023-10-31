@@ -16,7 +16,8 @@
 #include "BlomeFileFilterRuleViewLength.h"
 
 class FileFilterPanel
-:   public PanelBase
+:   public PanelBase,
+    public TextButton::Listener
 {
 public:
     // Constructors
@@ -25,7 +26,11 @@ public:
     
     // Methods
     void paint(Graphics& g) override;
+    void generateRuleView(SampleFileFilterRuleBase *rule);
+    void addFilterRuleView();
+    void removeFilterRule(SampleFileFilterRuleBase const & inFilterRule);
     void setPanelComponents() override;
+    void buttonClicked(Button* button) override;
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(FileFilterPanel)

@@ -26,6 +26,8 @@ public:
     CompareOperators getCompareOperator();
     void setCompareOperator(CompareOperators inCompareOperator);
     String getRuleType();
+    bool getIsActive();
+    void setIsActive(bool inIsActive);
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleFileFilterRuleBase)
@@ -34,6 +36,7 @@ protected:
     // Fields
     CompareOperators mCompareOperator;
     String mRuleType;
+    bool isActive;
     
     // Methods
     

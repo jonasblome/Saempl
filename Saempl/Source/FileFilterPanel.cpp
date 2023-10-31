@@ -19,7 +19,17 @@ FileFilterPanel::FileFilterPanel(SampleLibrary& inSampleLibrary)
 
 FileFilterPanel::~FileFilterPanel()
 {
-    
+    for (BlomeFileFilterRuleViewBase* ruleView : mFilterRuleViews)
+    {
+        if (BlomeFileFilterRuleViewTitle* ruleViewTitle = dynamic_cast<BlomeFileFilterRuleViewTitle*>(ruleView))
+        {
+            ruleViewTitle->removeDeleteButtonListener(this);
+        }
+        else if (BlomeFileFilterRuleViewLength* ruleViewLength = dynamic_cast<BlomeFileFilterRuleViewLength*>(ruleView))
+        {
+            ruleViewLength->removeDeleteButtonListener(this);
+        }
+    }
 }
 
 void FileFilterPanel::paint(Graphics &g)
@@ -35,10 +45,88 @@ void FileFilterPanel::paint(Graphics &g)
                getWidth() - PANEL_MARGIN / 2.0,
                FILTER_RULE_HEIGHT + 9);
     
+    
+    if (libraryFileFilter.getFilterRules().isEmpty())
+    {
+        g.setColour(COLOUR_ACCENT_LIGHT);
+        g.setFont(FONT_SMALL_BOLD_ACCENTUATED);
+        g.drawFittedText("Add filter rules to see them here",
+                         getLocalBounds().removeFromBottom(FILTER_RULE_HEIGHT),
+                         Justification::centred,
+                         2);
+    }
+    
+    int combinedFilterRuleViewHeight = 0;
+    
     for (BlomeFileFilterRuleViewBase* newRuleView : mFilterRuleViews)
     {
+        newRuleView->setBounds(PANEL_MARGIN / 2.0,
+                               PANEL_MARGIN / 2.0 + FILTER_PANEL_HEIGHT + combinedFilterRuleViewHeight,
+                               FILTER_RULE_WIDTH - PANEL_MARGIN,
+                               FILTER_RULE_HEIGHT - PANEL_MARGIN / 2.0);
         addAndMakeVisible(*newRuleView);
+        combinedFilterRuleViewHeight += FILTER_RULE_HEIGHT;
     }
+}
+
+void FileFilterPanel::generateRuleView(SampleFileFilterRuleBase *rule)
+{
+    BlomeFileFilterRuleViewBase* newRuleView = nullptr;
+    
+    switch (PROPERTY_NAMES.indexOf(rule->getRuleType()))
+    {
+        case 0:
+        {
+            newRuleView = mFilterRuleViews
+                .add(std::make_unique<BlomeFileFilterRuleViewLength>(*dynamic_cast<SampleFileFilterRuleLength*>(rule),
+                                                                     linkedLibrary));
+            dynamic_cast<BlomeFileFilterRuleViewLength*>(newRuleView)->addDeleteButtonListener(this);
+            break;
+        }
+        case 1:
+            newRuleView = mFilterRuleViews
+                .add(std::make_unique<BlomeFileFilterRuleViewTitle>(*dynamic_cast<SampleFileFilterRuleTitle*>(rule),
+                                                                    linkedLibrary));
+            dynamic_cast<BlomeFileFilterRuleViewTitle*>(newRuleView)->addDeleteButtonListener(this);
+            break;
+        default:
+            break;
+    }
+}
+
+void FileFilterPanel::addFilterRuleView()
+{
+    if (mNewRuleTypeChooser->getSelectedItemIndex() == -1 || libraryFileFilter.getFilterRules().size() >= 12)
+    {
+        return;
+    }
+    
+    // Add view for filter rule
+    int combinedFilterRuleViewHeight = FILTER_RULE_HEIGHT * libraryFileFilter.getFilterRules().size();
+    SampleFileFilterRuleBase* newRule;
+    
+    switch (mNewRuleTypeChooser->getSelectedItemIndex())
+    {
+        case 0:
+            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleTitle("Title"));
+            break;
+        case 1:
+            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleLength("Length"));
+            break;
+    }
+    
+    generateRuleView(newRule);
+    setSize(FILTER_PANEL_WIDTH,
+            FILTER_PANEL_HEIGHT
+            + combinedFilterRuleViewHeight + FILTER_RULE_HEIGHT
+            + PANEL_MARGIN / 2.0);
+    repaint();
+    linkedLibrary.refresh();
+}
+
+void FileFilterPanel::removeFilterRule(SampleFileFilterRuleBase const & inFilterRule)
+{
+    libraryFileFilter.getFilterRules().removeObject(&inFilterRule);
 }
 
 void FileFilterPanel::setPanelComponents()
@@ -54,7 +142,7 @@ void FileFilterPanel::setPanelComponents()
     mNewRuleTypeChooser->setTextWhenNothingSelected("Choose new rule type");
     addAndMakeVisible(*mNewRuleTypeChooser);
     
-    // New rule button
+    // New filter rule button
     mAddFilterRuleButton = std::make_unique<TextButton>("Add filter");
     mAddFilterRuleButton->setBounds(COMBO_BOX_WIDTH_MEDIUM + PANEL_MARGIN * 0.75,
                                     PANEL_MARGIN / 2.0,
@@ -62,27 +150,7 @@ void FileFilterPanel::setPanelComponents()
                                     FILTER_RULE_HEIGHT - PANEL_MARGIN / 2.0);
     mAddFilterRuleButton->onClick = [this]
     {
-        switch (mNewRuleTypeChooser->getSelectedItemIndex())
-        {
-            case 0:
-            {
-                SampleFileFilterRuleTitle* newTitleRule = static_cast<SampleFileFilterRuleTitle*>(libraryFileFilter.addFilterRule(new SampleFileFilterRuleTitle("Title")));
-                newTitleRule->setCompareOperator(CompareOperators::GreaterThan);
-                linkedLibrary.refresh();
-                break;
-            }
-            case 1:
-            {
-                SampleFileFilterRuleLength* newLengthRule = static_cast<SampleFileFilterRuleLength*>(libraryFileFilter.addFilterRule(new SampleFileFilterRuleLength("Length")));
-                newLengthRule->setCompareOperator(CompareOperators::GreaterThan);
-                linkedLibrary.refresh();
-                break;
-            }
-            default:
-                break;
-        }
-        
-        mNewRuleTypeChooser->setSelectedItemIndex(-1);
+        addFilterRuleView();
     };
     addAndMakeVisible(*mAddFilterRuleButton);
     
@@ -91,34 +159,33 @@ void FileFilterPanel::setPanelComponents()
     
     for (SampleFileFilterRuleBase* rule : libraryFileFilter.getFilterRules())
     {
-        BlomeFileFilterRuleViewBase* newRuleView = nullptr;
-        
-        switch (PROPERTY_NAMES.indexOf(rule->getRuleType()))
-        {
-            case 0:
-            {
-                newRuleView = mFilterRuleViews.add(std::make_unique<BlomeFileFilterRuleViewLength>(*dynamic_cast<SampleFileFilterRuleLength*>(rule), linkedLibrary));
-                break;
-            }
-            case 1:
-            {
-                newRuleView = mFilterRuleViews.add(std::make_unique<BlomeFileFilterRuleViewTitle>(*dynamic_cast<SampleFileFilterRuleTitle*>(rule), linkedLibrary));
-                break;
-            }
-            default:
-                break;
-        }
-        
-        if (newRuleView != nullptr)
-        {
-            newRuleView->setBounds(PANEL_MARGIN / 2.0,
-                                   PANEL_MARGIN / 2.0 + FILTER_PANEL_HEIGHT + combinedFilterRuleViewHeight,
-                                   FILTER_RULE_WIDTH - PANEL_MARGIN,
-                                   FILTER_RULE_HEIGHT - PANEL_MARGIN / 2.0);
-        }
+        generateRuleView(rule);
         
         combinedFilterRuleViewHeight += FILTER_RULE_HEIGHT;
     }
     
+    // Add space for info text if there are no filter rules
+    combinedFilterRuleViewHeight = combinedFilterRuleViewHeight == 0 ? FILTER_RULE_HEIGHT : combinedFilterRuleViewHeight;
+    setSize(FILTER_PANEL_WIDTH, FILTER_PANEL_HEIGHT + combinedFilterRuleViewHeight + PANEL_MARGIN / 2.0);
+}
+
+void FileFilterPanel::buttonClicked(Button* button)
+{
+    if (BlomeFileFilterRuleViewTitle* ruleView = dynamic_cast<BlomeFileFilterRuleViewTitle*>(button->getParentComponent()))
+    {
+        ruleView->removeDeleteButtonListener(this);
+        removeFilterRule(ruleView->getLinkedFilterRule());
+        mFilterRuleViews.removeObject(ruleView);
+    }
+    else if (BlomeFileFilterRuleViewLength* ruleView = dynamic_cast<BlomeFileFilterRuleViewLength*>(button->getParentComponent()))
+    {
+        ruleView->removeDeleteButtonListener(this);
+        removeFilterRule(ruleView->getLinkedFilterRule());
+        mFilterRuleViews.removeObject(ruleView);
+    }
+    
+    // Remove leftover space
+    int combinedFilterRuleViewHeight = FILTER_RULE_HEIGHT * libraryFileFilter.getFilterRules().size();
+    combinedFilterRuleViewHeight = combinedFilterRuleViewHeight == 0 ? FILTER_RULE_HEIGHT : combinedFilterRuleViewHeight;
     setSize(FILTER_PANEL_WIDTH, FILTER_PANEL_HEIGHT + combinedFilterRuleViewHeight + PANEL_MARGIN / 2.0);
 }

@@ -130,6 +130,24 @@ void HeaderPanel::setPanelComponents()
     addAndMakeVisible(*mChangeFilterButton);
     x += textButtonWidth;
     
+    // Add button for toggling filter on and off
+    mActivateFilterButton = std::make_unique<ToggleButton>("ToggleFilterButton");
+    mActivateFilterButton->setBounds(x + PANEL_MARGIN / 2.0,
+                                     PANEL_MARGIN / 2.0,
+                                     getHeight() - PANEL_MARGIN,
+                                     getHeight() - PANEL_MARGIN);
+    mActivateFilterButton->setToggleState(currentProcessor
+                                          .getSampleLibrary()
+                                          .getFileFilter()
+                                          .getIsActive(),
+                                          NotificationType::dontSendNotification);
+    mActivateFilterButton->onClick = [this]
+    {
+        currentProcessor.getSampleLibrary().getFileFilter().setIsActive(mActivateFilterButton->getToggleState());
+        currentProcessor.getSampleLibrary().refresh();
+    };
+    addAndMakeVisible(*mActivateFilterButton);
+    x += getHeight();
 }
 
 void HeaderPanel::showLibraryChooser()

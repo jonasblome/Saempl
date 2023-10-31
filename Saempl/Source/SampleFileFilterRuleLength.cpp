@@ -14,6 +14,7 @@ SampleFileFilterRuleLength::SampleFileFilterRuleLength(String inRuleType)
 :   SampleFileFilterRuleBase(inRuleType)
 {
     mCompareValue = 0.0;
+    mCompareOperator = GreaterThan;
 }
 
 SampleFileFilterRuleLength::~SampleFileFilterRuleLength()

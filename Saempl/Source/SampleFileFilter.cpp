@@ -14,7 +14,7 @@ SampleFileFilter::SampleFileFilter(String const & inDesciption, OwnedArray<Sampl
 :   FileFilter(inDesciption),
     filteredSampleItems(inFilteredSampleItems)
 {
-    
+    isActive = true;
 }
 
 SampleFileFilter::~SampleFileFilter()
@@ -42,9 +42,14 @@ bool SampleFileFilter::isDirectorySuitable (const File& file) const
 
 bool SampleFileFilter::matchesRules(SampleItem& inSampleItem)
 {
+    if (!isActive)
+    {
+        return true;
+    }
+    
     for (SampleFileFilterRuleBase* rule : mFilterRules)
     {
-        if (!rule->matches(inSampleItem))
+        if (rule->getIsActive() && !rule->matches(inSampleItem))
         {
             return false;
         }
@@ -66,4 +71,14 @@ void SampleFileFilter::setFilteredSampleItems(OwnedArray<SampleItem>& inFiltered
 OwnedArray<SampleFileFilterRuleBase>& SampleFileFilter::getFilterRules()
 {
     return mFilterRules;
+}
+
+bool SampleFileFilter::getIsActive()
+{
+    return isActive;
+}
+
+void SampleFileFilter::setIsActive(bool inIsActive)
+{
+    isActive = inIsActive;
 }

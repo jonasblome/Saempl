@@ -10,9 +10,9 @@
 
 #include "BlomeFileFilterRuleViewTitle.h"
 
-BlomeFileFilterRuleViewTitle::BlomeFileFilterRuleViewTitle(SampleFileFilterRuleTitle& inTitleFilterRule, SampleLibrary& inSampleLibrary)
+BlomeFileFilterRuleViewTitle::BlomeFileFilterRuleViewTitle(SampleFileFilterRuleTitle& inFilterRule, SampleLibrary& inSampleLibrary)
 :   BlomeFileFilterRuleViewBase(inSampleLibrary),
-    linkedTitleFilterRule(inTitleFilterRule)
+    linkedFilterRule(inFilterRule)
 {
     setPanelComponents();
 }
@@ -24,38 +24,90 @@ BlomeFileFilterRuleViewTitle::~BlomeFileFilterRuleViewTitle()
 
 void BlomeFileFilterRuleViewTitle::paint(Graphics &g)
 {
+    Rectangle<int> area = getLocalBounds()
+        .removeFromLeft(FILTER_RULE_TITLE_WIDTH + BUTTON_SIZE_SMALL)
+        .removeFromRight(FILTER_RULE_TITLE_WIDTH);
+    area.reduce(PANEL_MARGIN / 2.0, 0);
     
+    g.setFont(FONT_SMALL_BOLD);
+    g.setColour(COLOUR_ACCENT_LIGHT);
+    g.drawFittedText(linkedFilterRule.getRuleType(),
+                     area,
+                     Justification::right,
+                     1);
 }
 
 void BlomeFileFilterRuleViewTitle::setPanelComponents()
 {
+    mActivateRuleButton = std::make_unique<ToggleButton>("ActivateRuleButton");
+    mActivateRuleButton->setToggleState(linkedFilterRule.getIsActive(), NotificationType::dontSendNotification);
+    mActivateRuleButton->onClick = [this]
+    {
+        linkedFilterRule.setIsActive(mActivateRuleButton->getToggleState());
+    };
+    addAndMakeVisible(*mActivateRuleButton);
+    
     mCompareOperatorChooser = std::make_unique<ComboBox>("CompareOperatorChooser");
-    mCompareOperatorChooser->addItem("Less than:", 1);
-    mCompareOperatorChooser->addItem("Equal to:", 2);
-    mCompareOperatorChooser->addItem("Greater than:", 3);
-    mCompareOperatorChooser->setSelectedItemIndex(linkedTitleFilterRule.getCompareOperator());
+    mCompareOperatorChooser->addItem("is less than", 1);
+    mCompareOperatorChooser->addItem("is equal to", 2);
+    mCompareOperatorChooser->addItem("is greater than", 3);
+    mCompareOperatorChooser->addItem("contains", 4);
+    mCompareOperatorChooser->setSelectedItemIndex(linkedFilterRule.getCompareOperator());
     mCompareOperatorChooser->addListener(this);
     addAndMakeVisible(*mCompareOperatorChooser);
     
     mCompareValueEditor = std::make_unique<TextEditor>("CompareValueEditor");
     mCompareValueEditor->setFont(FONT_SMALL_BOLD);
     mCompareValueEditor->setJustification(Justification::centredLeft);
-    mCompareValueEditor->setText(linkedTitleFilterRule.getCompareValue());
+    mCompareValueEditor->setText(linkedFilterRule.getCompareValue());
     mCompareValueEditor->addListener(this);
     addAndMakeVisible(*mCompareValueEditor);
+    
+    mDeleteRuleButton = std::make_unique<TextButton>("Delete");
+    mDeleteRuleButton->onClick = [this]
+    {
+        
+    };
+    addAndMakeVisible(*mDeleteRuleButton);
 }
 
 void BlomeFileFilterRuleViewTitle::resized()
 {
-    mCompareOperatorChooser->setBounds(0,
+    int deleteButtonWidth = 50;
+    
+    mActivateRuleButton->setBounds(FILTER_RULE_HEIGHT / 2.0
+                                   - BUTTON_SIZE_SMALL / 2.0
+                                   + PANEL_MARGIN / 2.0,
+                                   FILTER_RULE_HEIGHT / 2.0
+                                   - BUTTON_SIZE_SMALL / 2.0
+                                   + PANEL_MARGIN / 4.0,
+                                   BUTTON_SIZE_SMALL - PANEL_MARGIN,
+                                   BUTTON_SIZE_SMALL - PANEL_MARGIN);
+    
+    mCompareOperatorChooser->setBounds(BUTTON_SIZE_SMALL
+                                       + FILTER_RULE_TITLE_WIDTH,
                                        0,
-                                       COMBO_BOX_WIDTH_MEDIUM - PANEL_MARGIN / 4.0,
+                                       COMBO_BOX_WIDTH_MEDIUM
+                                       - PANEL_MARGIN / 4.0,
                                        getHeight());
     
-    mCompareValueEditor->setBounds(COMBO_BOX_WIDTH_MEDIUM + PANEL_MARGIN / 4.0,
+    mCompareValueEditor->setBounds(BUTTON_SIZE_SMALL
+                                   + FILTER_RULE_TITLE_WIDTH
+                                   + COMBO_BOX_WIDTH_MEDIUM
+                                   + PANEL_MARGIN / 4.0,
                                    0,
-                                   getWidth() - COMBO_BOX_WIDTH_MEDIUM - PANEL_MARGIN / 4.0,
+                                   getWidth()
+                                   - BUTTON_SIZE_SMALL
+                                   - FILTER_RULE_TITLE_WIDTH
+                                   - COMBO_BOX_WIDTH_MEDIUM
+                                   - PANEL_MARGIN * 0.75
+                                   - deleteButtonWidth,
                                    getHeight());
+    
+    mDeleteRuleButton->setBounds(getWidth() - deleteButtonWidth,
+                                 0,
+                                 deleteButtonWidth,
+                                 getHeight());
 }
 
 void BlomeFileFilterRuleViewTitle::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
@@ -63,14 +115,16 @@ void BlomeFileFilterRuleViewTitle::comboBoxChanged(ComboBox* comboBoxThatHasChan
     switch (comboBoxThatHasChanged->getSelectedItemIndex())
     {
         case 0:
-            linkedTitleFilterRule.setCompareOperator(CompareOperators::LessThan);
+            linkedFilterRule.setCompareOperator(CompareOperators::LessThan);
             break;
         case 1:
-            linkedTitleFilterRule.setCompareOperator(CompareOperators::EqualTo);
+            linkedFilterRule.setCompareOperator(CompareOperators::EqualTo);
             break;
         case 2:
-            linkedTitleFilterRule.setCompareOperator(CompareOperators::GreaterThan);
+            linkedFilterRule.setCompareOperator(CompareOperators::GreaterThan);
             break;
+        case 3:
+            linkedFilterRule.setCompareOperator(CompareOperators::Contains);
         default:
             break;
     }
@@ -91,6 +145,21 @@ void BlomeFileFilterRuleViewTitle::textEditorEscapeKeyPressed(TextEditor& textEd
 void BlomeFileFilterRuleViewTitle::textEditorFocusLost(TextEditor& textEditor)
 {
     mCompareValueEditor->giveAwayKeyboardFocus();
-    linkedTitleFilterRule.setCompareValue(textEditor.getText());
+    linkedFilterRule.setCompareValue(textEditor.getText());
     linkedSampleLibrary.refresh();
+}
+
+SampleFileFilterRuleTitle& BlomeFileFilterRuleViewTitle::getLinkedFilterRule()
+{
+    return linkedFilterRule;
+}
+
+void BlomeFileFilterRuleViewTitle::addDeleteButtonListener(Button::Listener* inListener)
+{
+    mDeleteRuleButton->addListener(inListener);
+}
+
+void BlomeFileFilterRuleViewTitle::removeDeleteButtonListener(Button::Listener* inListener)
+{
+    mDeleteRuleButton->removeListener(inListener);
 }
