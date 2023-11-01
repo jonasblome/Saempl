@@ -11,7 +11,7 @@
 #pragma once
 
 #include "PanelBase.h"
-#include "BlomeTableView.h"
+#include "BlomeTableViewPalette.h"
 
 class SamplePalettePanel
 :   public PanelBase
@@ -31,7 +31,7 @@ private:
     // Fields
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
-    std::unique_ptr<BlomeTableView> mSampleTable;
+    std::unique_ptr<BlomeTableViewPalette> mSampleTable;
     
     // Methods
     

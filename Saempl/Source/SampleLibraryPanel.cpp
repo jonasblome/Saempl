@@ -40,7 +40,7 @@ void SampleLibraryPanel::paint(Graphics& g)
                            CORNER_SIZE_MEDIUM);
     g.setFont(FONT_MEDIUM_SMALL_BOLD);
     g.setColour(COLOUR_ACCENT_LIGHT);
-    g.drawFittedText("Sample Library - " + sampleLibrary.getCurrentLibraryPath(),
+    g.drawFittedText("Folders - " + sampleLibrary.getCurrentLibraryPath(),
                      PANEL_MARGIN / 2.0,
                      PANEL_MARGIN / 2.0,
                      getWidth() - PANEL_MARGIN,

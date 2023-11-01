@@ -19,6 +19,7 @@ FileFilterPanel::FileFilterPanel(SampleLibrary& inSampleLibrary)
 
 FileFilterPanel::~FileFilterPanel()
 {
+    // Remove listeners for all rule views
     for (BlomeFileFilterRuleViewBase* ruleView : mFilterRuleViews)
     {
         if (BlomeFileFilterRuleViewTitle* ruleViewTitle = dynamic_cast<BlomeFileFilterRuleViewTitle*>(ruleView))
@@ -43,7 +44,7 @@ void FileFilterPanel::paint(Graphics &g)
                getWidth() - PANEL_MARGIN / 2.0,
                FILTER_RULE_HEIGHT + 9);
     
-    
+    // Draw hint message if rules are empty
     if (libraryFileFilter.getFilterRules().isEmpty())
     {
         g.setColour(COLOUR_ACCENT_LIGHT);
@@ -54,6 +55,7 @@ void FileFilterPanel::paint(Graphics &g)
                          2);
     }
     
+    // Draw rule views
     int combinedFilterRuleViewHeight = 0;
     
     for (BlomeFileFilterRuleViewBase* newRuleView : mFilterRuleViews)
@@ -78,22 +80,24 @@ void FileFilterPanel::generateRuleView(SampleFileFilterRuleBase *rule)
             newRuleView = mFilterRuleViews
                 .add(std::make_unique<BlomeFileFilterRuleViewLength>(*dynamic_cast<SampleFileFilterRuleLength*>(rule),
                                                                      linkedLibrary));
-            dynamic_cast<BlomeFileFilterRuleViewLength*>(newRuleView)->addDeleteButtonListener(this);
             break;
         }
         case 1:
             newRuleView = mFilterRuleViews
                 .add(std::make_unique<BlomeFileFilterRuleViewTitle>(*dynamic_cast<SampleFileFilterRuleTitle*>(rule),
                                                                     linkedLibrary));
-            dynamic_cast<BlomeFileFilterRuleViewTitle*>(newRuleView)->addDeleteButtonListener(this);
             break;
         default:
+            jassertfalse;
             break;
     }
+    
+    newRuleView->addDeleteButtonListener(this);
 }
 
 void FileFilterPanel::addFilterRuleView()
 {
+    // Only add rule if type is selected, add maximum of 12 rules (reason: glitch in filter panel if more)
     if (mNewRuleTypeChooser->getSelectedItemIndex() == -1 || libraryFileFilter.getFilterRules().size() >= 12)
     {
         return;
@@ -110,6 +114,9 @@ void FileFilterPanel::addFilterRuleView()
             break;
         case 1:
             newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleLength("Length"));
+            break;
+        default:
+            jassertfalse;
             break;
     }
     
@@ -129,7 +136,7 @@ void FileFilterPanel::removeFilterRule(SampleFileFilterRuleBase const & inFilter
 
 void FileFilterPanel::setPanelComponents()
 {
-    // New rule type combo box
+    // Add rule type combo box
     mNewRuleTypeChooser = std::make_unique<ComboBox>("NewRuleTypeChooser");
     mNewRuleTypeChooser->setBounds(PANEL_MARGIN / 2.0,
                                    PANEL_MARGIN / 2.0,
@@ -140,7 +147,7 @@ void FileFilterPanel::setPanelComponents()
     mNewRuleTypeChooser->setTextWhenNothingSelected("Choose new rule type");
     addAndMakeVisible(*mNewRuleTypeChooser);
     
-    // New filter rule button
+    // Add button for adding filter rules
     mAddFilterRuleButton = std::make_unique<TextButton>("Add filter");
     mAddFilterRuleButton->setBounds(COMBO_BOX_WIDTH_MEDIUM + PANEL_MARGIN * 0.75,
                                     PANEL_MARGIN / 2.0,
@@ -158,7 +165,6 @@ void FileFilterPanel::setPanelComponents()
     for (SampleFileFilterRuleBase* rule : libraryFileFilter.getFilterRules())
     {
         generateRuleView(rule);
-        
         combinedFilterRuleViewHeight += FILTER_RULE_HEIGHT;
     }
     
@@ -169,6 +175,7 @@ void FileFilterPanel::setPanelComponents()
 
 void FileFilterPanel::buttonClicked(Button* button)
 {
+    // Delete rule and its view if its delete button was clicked
     if (BlomeFileFilterRuleViewTitle* ruleView = dynamic_cast<BlomeFileFilterRuleViewTitle*>(button->getParentComponent()))
     {
         ruleView->removeDeleteButtonListener(this);

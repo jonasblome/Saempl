@@ -12,7 +12,7 @@
 
 #include "PanelBase.h"
 #include "SampleItemPanel.h"
-#include "BlomeTableView.h"
+#include "BlomeTableViewNavigation.h"
 
 class SampleTablePanel
 :   public PanelBase
@@ -33,7 +33,7 @@ private:
     // Fields
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
-    std::unique_ptr<BlomeTableView> mSampleTable;
+    std::unique_ptr<BlomeTableViewNavigation> mSampleTable;
     
     // Methods
     

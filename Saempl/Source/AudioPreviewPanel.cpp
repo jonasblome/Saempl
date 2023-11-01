@@ -60,6 +60,7 @@ void AudioPreviewPanel::paint(Graphics& g)
     }
     else
     {
+        // Draw hint to drag in audio file
         g.setFont(FONT_SMALL_BOLD);
         g.drawFittedText("No audio file selected",
                          getLocalBounds().removeFromRight(getWidth() - PANEL_MARGIN).removeFromTop(SAMPLE_PREVIEW_TITLE_HEIGHT),
@@ -109,6 +110,7 @@ URL AudioPreviewPanel::getLastDroppedFile() const noexcept
 
 void AudioPreviewPanel::setZoomFactor(double amount)
 {
+    // Set preview and scrollbar zoom
     if (mAudioPreview.getTotalLength() > 0)
     {
         auto newScale = jmax(0.001, mAudioPreview.getTotalLength() * (1.0 - jlimit(0.0, 0.99, amount)));
@@ -120,6 +122,7 @@ void AudioPreviewPanel::setZoomFactor(double amount)
 
 void AudioPreviewPanel::setRange(Range<double> newRange)
 {
+    // Set range for audio preview and scrollbar
     visibleRange = newRange;
     mAudioPreviewScrollbar->setCurrentRange(visibleRange);
     updateCursorPosition();
@@ -154,6 +157,7 @@ bool AudioPreviewPanel::isInterestedInDragSource(SourceDetails const & dragSourc
 
 void AudioPreviewPanel::itemDropped(SourceDetails const & dragSourceDetails)
 {
+    // Set resource fom sample item drag source
     if (dragSourceDetails.description == "SampleItemFile")
     {
         Component* dragSourceComponent = dragSourceDetails.sourceComponent.get();
@@ -204,7 +208,7 @@ void AudioPreviewPanel::mouseWheelMove(MouseEvent const &, MouseWheelDetails con
 
         if (wheel.deltaY != 0.0f)
         {
-            mZoomSlider->setValue(mZoomSlider->getValue() - wheel.deltaY);
+            mZoomSlider->setValue(mZoomSlider->getValue() - wheel.deltaY * 0.1);
         }
 
         repaint();
@@ -244,6 +248,7 @@ void AudioPreviewPanel::scrollBarMoved(ScrollBar* scrollbar, double newRangeStar
 
 void AudioPreviewPanel::timerCallback()
 {
+    // Update cursor position or audio preview range
     if (canMoveTransport())
     {
         updateCursorPosition();
@@ -257,7 +262,6 @@ void AudioPreviewPanel::timerCallback()
 void AudioPreviewPanel::updateCursorPosition()
 {
     mAudioPositionMarker.setVisible(sampleEditor.isPlaying() || isMouseButtonDown());
-
     mAudioPositionMarker.setRectangle(Rectangle<float>(timeToX(sampleEditor.getCurrentReadheadPosition())
                                                        - 0.75f,
                                                        SAMPLE_PREVIEW_TITLE_HEIGHT
@@ -280,6 +284,7 @@ void AudioPreviewPanel::showAudioResource()
  */
 void AudioPreviewPanel::showAudioResource(URL inResource)
 {
+    // Load resource into preview and player
     lastFileDropped = inResource;
     
     if (loadURLIntoTransport(inResource))

@@ -39,7 +39,7 @@ void SamplePalettePanel::paint(Graphics& g)
                            CORNER_SIZE_MEDIUM);
     g.setFont(FONT_MEDIUM_SMALL_BOLD);
     g.setColour(COLOUR_ACCENT_LIGHT);
-    g.drawFittedText("Sample Palette",
+    g.drawFittedText("Favorites",
                      PANEL_MARGIN / 2.0,
                      PANEL_MARGIN / 2.0,
                      getWidth() - PANEL_MARGIN,
@@ -53,7 +53,7 @@ void SamplePalettePanel::paint(Graphics& g)
 void SamplePalettePanel::setPanelComponents()
 {
     // Set sample table component
-    mSampleTable = std::make_unique<BlomeTableView>(sampleLibrary, linkedSampleItemPanel, PALETTE_SAMPLES);
+    mSampleTable = std::make_unique<BlomeTableViewPalette>(sampleLibrary, linkedSampleItemPanel);
     mSampleTable->setBounds(PANEL_MARGIN / 2.0,
                             PANEL_TITLE_HEIGHT,
                             getWidth() - PANEL_MARGIN,

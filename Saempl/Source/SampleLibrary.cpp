@@ -19,8 +19,8 @@ SampleLibrary::SampleLibrary(TimeSliceThread& inThread)
     mSampleLibraryManager = std::make_unique<SampleLibraryManager>();
     
     // Set file filter
-    mLibraryFilter = std::make_unique<SampleFileFilter>("AudioFormatsFilter", mFilteredSampleItems);
-    mDirectoryContent = std::make_unique<DirectoryContentsList>(&*mLibraryFilter, inThread);
+    mFileFilter = std::make_unique<SampleFileFilter>("AudioFormatsFilter", mFilteredSampleItems);
+    mDirectoryContent = std::make_unique<DirectoryContentsList>(&*mFileFilter, inThread);
     
     // Set directory
     mDirectoryContent->addChangeListener(this);
@@ -80,8 +80,10 @@ void SampleLibrary::addToSampleItems(File const & inFile)
 
 void SampleLibrary::addToPalette(File const & inFile)
 {
+    addToSampleItems(inFile);
     SampleItem* itemToAdd = getSampleItemWithFileName(inFile.getFileName());
     
+    // Check if item is already in palette
     if (!mPaletteSampleItems.contains(itemToAdd))
     {
         mPaletteSampleItems.add(itemToAdd);
@@ -93,7 +95,7 @@ void SampleLibrary::removeSampleItem(String const & inFilePath, bool deletePerma
     // Delete sample item
     SampleItem* itemToDelete = getSampleItemWithFileName(File(inFilePath).getFileName());
     mAllSampleItems.removeObject(itemToDelete);
-    removeSampleItemFromPalette(*itemToDelete);
+    removeFromPalette(*itemToDelete);
     
     // Delete audio file
     File fileToDelete = File(inFilePath);
@@ -104,7 +106,7 @@ void SampleLibrary::removeSampleItem(String const & inFilePath, bool deletePerma
     }
 }
 
-void SampleLibrary::removeSampleItemFromPalette(SampleItem& inSampleItem)
+void SampleLibrary::removeFromPalette(SampleItem& inSampleItem)
 {
     mPaletteSampleItems.removeObject(&inSampleItem, false);
 }
@@ -116,11 +118,12 @@ DirectoryContentsList& SampleLibrary::getDirectoryList()
 
 SampleFileFilter& SampleLibrary::getFileFilter()
 {
-    return *mLibraryFilter;
+    return *mFileFilter;
 }
 
 void SampleLibrary::changeListenerCallback(ChangeBroadcaster* inSource)
 {
+    // Set new directory if directory changes
     if (inSource == mDirectoryContent.get())
     {
         mDirectoryPathToAddFilesTo = mDirectoryContent->getDirectory().getFullPathName();
@@ -132,7 +135,8 @@ void SampleLibrary::changeListenerCallback(ChangeBroadcaster* inSource)
  */
 void SampleLibrary::refresh()
 {
-    // Go through all current sample items, check if corresponding audio file still exists and if not, delete sample item
+    // Go through all current sample items, check if corresponding audio file still exists
+    // and if not, delete sample item from all items and palette collection
     for (SampleItem* sampleItem : mAllSampleItems)
     {
         if (!File(sampleItem->getFilePath()).exists())
@@ -164,7 +168,7 @@ SampleItem* SampleLibrary::getSampleItemWithFileName(String const & inFileName)
 {
     for (SampleItem* sampleItem : mAllSampleItems)
     {
-        if (File(sampleItem->getFilePath()).getFileName() == inFileName)
+        if (File(sampleItem->getFilePath()).getFileName().compare(inFileName) == 0)
         {
             return sampleItem;
         }
@@ -210,6 +214,7 @@ OwnedArray<SampleItem>& SampleLibrary::getSampleItems(SampleItemCollectionType i
             return mPaletteSampleItems;
             break;
         default:
+            jassertfalse;
             break;
     }
 }
@@ -220,8 +225,8 @@ OwnedArray<SampleItem>& SampleLibrary::getSampleItems(SampleItemCollectionType i
  */
 void SampleLibrary::createSampleItem(File inFile)
 {
+    // Check if item already exists
     bool linkedSampleItemExists = getSampleItemWithFileName(inFile.getFileName()) != nullptr;
-    
     if (!linkedSampleItemExists)
     {
         SampleItem* newItem = mAllSampleItems.add(new SampleItem());
@@ -237,13 +242,13 @@ void SampleLibrary::applyFilter()
     
     for (SampleItem* sampleItem : mAllSampleItems)
     {
-        if (mLibraryFilter->matchesRules(*sampleItem))
+        if (mFileFilter->matchesRules(*sampleItem))
         {
             mFilteredSampleItems.add(sampleItem);
         }
     }
     
-    mLibraryFilter->setFilteredSampleItems(mFilteredSampleItems);
+    mFileFilter->setFilteredSampleItems(mFilteredSampleItems);
 }
 
 String SampleLibrary::getCurrentLibraryPath()

@@ -22,8 +22,8 @@ public:
     
     // Methods
     bool matches(SampleItem const & inSampleItem) override;
-    double getCompareValue();
-    void setCompareValue(double const & inCompareValue);
+    int getCompareValue();
+    void setCompareValue(int const & inCompareValue);
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleFileFilterRuleLength)

@@ -44,7 +44,7 @@ bool SampleFileFilterRuleTitle::matches(SampleItem const & inSampleItem)
         }
         case CONTAINS:
         {
-            return propertyValue.toLowerCase().contains(mCompareValue.toLowerCase());
+            return propertyValue.containsIgnoreCase(mCompareValue);
         }
         default:
             jassertfalse;

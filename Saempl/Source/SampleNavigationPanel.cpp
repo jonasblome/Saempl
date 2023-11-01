@@ -58,18 +58,26 @@ void SampleNavigationPanel::resizePanelComponents()
     }
 }
 
-void SampleNavigationPanel::showNavigationPanel(int inNavigationType)
+void SampleNavigationPanel::showNavigationPanel(NavigationPanelType inPanelType)
 {
-    if (inNavigationType == 0)
+    switch(inPanelType)
     {
-        mSampleTablePanel->setVisible(false);
-        mSampleLibraryPanel->setVisible(true);
-        mSampleLibraryPanel->repaint();
-    }
-    else if (inNavigationType == 1)
-    {
-        mSampleTablePanel->setVisible(true);
-        mSampleLibraryPanel->setVisible(false);
-        mSampleTablePanel->repaint();
+        case PANELS_LIBRARY_PANEL:
+        {
+            mSampleTablePanel->setVisible(false);
+            mSampleLibraryPanel->setVisible(true);
+            mSampleLibraryPanel->repaint();
+            break;
+        }
+        case PANELS_TABLE_PANEL:
+        {
+            mSampleTablePanel->setVisible(true);
+            mSampleLibraryPanel->setVisible(false);
+            mSampleTablePanel->repaint();
+            break;
+        }
+        default:
+            jassertfalse;
+            break;
     }
 }

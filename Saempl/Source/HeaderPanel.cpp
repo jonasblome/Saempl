@@ -162,6 +162,7 @@ void HeaderPanel::showLibraryChooser()
         {
             URL result = chooser.getURLResult();
             String name = result.isLocalFile() ? result.getLocalFile().getFullPathName() : result.toString(true);
+            
             if (name != "") {
                 currentProcessor.getSampleLibrary().setDirectory(name);
                 

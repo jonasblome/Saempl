@@ -30,7 +30,7 @@ public:
     void addToSampleItems(File const & inFile);
     void addToPalette(File const & inFile);
     void removeSampleItem(String const & inFilePath, bool deletePermanently);
-    void removeSampleItemFromPalette(SampleItem& inSampleItem);
+    void removeFromPalette(SampleItem& inSampleItem);
     DirectoryContentsList& getDirectoryList();
     SampleFileFilter& getFileFilter();
     void changeListenerCallback(ChangeBroadcaster* inSource) override;
@@ -45,7 +45,7 @@ private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibrary)
     
     // Fields
-    std::unique_ptr<SampleFileFilter> mLibraryFilter;
+    std::unique_ptr<SampleFileFilter> mFileFilter;
     String mCurrentLibraryPath;
     std::unique_ptr<DirectoryContentsList> mDirectoryContent;
     OwnedArray<SampleItem> mAllSampleItems;

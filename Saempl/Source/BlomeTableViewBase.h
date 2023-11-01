@@ -16,17 +16,16 @@
 #include "SampleItem.h"
 #include "SampleItemPanel.h"
 
-class BlomeTableView
+class BlomeTableViewBase
 :   public TableListBoxModel,
     public TableListBox,
     public FileDragAndDropTarget
 {
 public:
     // Constructors
-    BlomeTableView(SampleLibrary& inSampleLibrary,
-                   SampleItemPanel& inSampleItemPanel,
-                   SampleItemCollectionType inSampleItemCollectionType);
-    ~BlomeTableView();
+    BlomeTableViewBase(SampleLibrary& inSampleLibrary,
+                   SampleItemPanel& inSampleItemPanel);
+    ~BlomeTableViewBase();
     
     // Methods
     int getNumRows() override;
@@ -41,20 +40,16 @@ public:
                    int width,
                    int height,
                    bool rowIsSelected) override;
-    String getCellText(SampleItem* inSampleItem, int columnId);
-    void sortOrderChanged(int newSortColumnId, bool isForwards) override;
+    String getCellText(SampleItem* inSampleItem, String columnName);
     int getColumnAutoSizeWidth(int columnId) override;
-    void cellClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent) override;
     void cellDoubleClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent) override;
     void mouseDrag(MouseEvent const & e) override;
-    void filesDropped(StringArray const & files, int x, int y) override;
     bool isInterestedInFileDrag(StringArray const & files) override;
-    void deleteFile(bool deletePermanently);
-    void removeSampleItemFromPalette();
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeTableView)
+    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeTableViewBase)
     
+protected:
     // Fields
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;

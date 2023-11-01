@@ -35,7 +35,7 @@ enum CompareOperators
     LESS_THAN,
     EQUAL_TO,
     GREATER_THAN,
-    CONTAINS,
+    CONTAINS
 };
 
 // Navigation panel names

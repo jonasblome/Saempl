@@ -27,7 +27,7 @@ public:
     void paint(Graphics& g) override;
     void setPanelComponents() override;
     void resizePanelComponents() override;
-    void showNavigationPanel(int inNavigationType);
+    void showNavigationPanel(NavigationPanelType inPanelType);
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleNavigationPanel)

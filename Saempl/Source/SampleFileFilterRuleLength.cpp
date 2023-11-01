@@ -24,7 +24,7 @@ SampleFileFilterRuleLength::~SampleFileFilterRuleLength()
 
 bool SampleFileFilterRuleLength::matches(SampleItem const & inSampleItem)
 {
-    double propertyValue = inSampleItem.getLength();
+    int propertyValue = inSampleItem.getLength();
     
     switch (mCompareOperator) {
         case LESS_THAN:
@@ -42,18 +42,23 @@ bool SampleFileFilterRuleLength::matches(SampleItem const & inSampleItem)
             return propertyValue > mCompareValue;
             break;
         }
+        case CONTAINS:
+        {
+            return false;
+            break;
+        }
         default:
             jassertfalse;
             return false;
     };
 }
 
-double SampleFileFilterRuleLength::getCompareValue()
+int SampleFileFilterRuleLength::getCompareValue()
 {
     return mCompareValue;
 }
 
-void SampleFileFilterRuleLength::setCompareValue(double const & inCompareValue)
+void SampleFileFilterRuleLength::setCompareValue(int const & inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

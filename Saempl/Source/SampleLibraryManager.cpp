@@ -88,8 +88,10 @@ void SampleLibraryManager::loadSampleLibraryFile(String& inLibraryPath, OwnedArr
     File libraryDirectory = File(inLibraryPath);
     File libraryFile = File(getLibraryFilesDirectoryPath() + DIRECTORY_SEPARATOR + libraryDirectory.getFileNameWithoutExtension() + SAMPLE_LIBRARY_FILE_EXTENSION);
     
+    // Check if sample library file (.bslf) exists
     if (libraryFile.exists())
     {
+        // Get data from library file
         MemoryBlock libraryFileData;
         libraryFile.loadFileAsData(libraryFileData);
         XmlElement sampleLibraryXml = *AudioPluginInstance::getXmlFromBinary(libraryFileData.getData(), (int) libraryFileData.getSize());
@@ -100,21 +102,26 @@ void SampleLibraryManager::loadSampleLibraryFile(String& inLibraryPath, OwnedArr
         {
             XmlElement* sampleItemsXml = libraryXmlPointer->getChildByName("SampleItems");
             
+            // Go over all sample items
             for (XmlElement* sampleItemXml : sampleItemsXml->getChildIterator())
             {
+                // Create new sample item
                 SampleItem* sampleItem = new SampleItem();
                 String filePath = sampleItemXml->getStringAttribute("FilePath");
                 sampleItem->setFilePath(filePath);
                 XmlElement* samplePropertiesXml = sampleItemXml->getChildByName("SampleProperties");
                 
+                // Add title property to item
                 XmlElement* samplePropertyXml = samplePropertiesXml->getChildByName("Title");
                 String title = samplePropertyXml->getStringAttribute("PropertyValue");
                 sampleItem->setTitle(title);
                 
+                // Add length property to item
                 samplePropertyXml = samplePropertiesXml->getChildByName("Length");
                 double length = samplePropertyXml->getDoubleAttribute("PropertyValue");
                 sampleItem->setLength(length);
                 
+                // Add sample item to library collection
                 inSampleItems.add(sampleItem);
             }
         }

@@ -47,6 +47,7 @@ bool SampleFileFilter::matchesRules(SampleItem& inSampleItem)
         return true;
     }
     
+    // Check if all active rules apply
     for (SampleFileFilterRuleBase* rule : mFilterRules)
     {
         if (rule->getIsActive() && !rule->matches(inSampleItem))

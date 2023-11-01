@@ -28,10 +28,18 @@
             file="Source/BlomeFileTreeView.cpp"/>
       <FILE id="eHx4JX" name="BlomeFileTreeView.h" compile="0" resource="0"
             file="Source/BlomeFileTreeView.h"/>
-      <FILE id="dENz96" name="BlomeTableView.cpp" compile="1" resource="0"
-            file="Source/BlomeTableView.cpp"/>
-      <FILE id="Vf7dQl" name="BlomeTableView.h" compile="0" resource="0"
-            file="Source/BlomeTableView.h"/>
+      <FILE id="dENz96" name="BlomeTableViewBase.cpp" compile="1" resource="0"
+            file="Source/BlomeTableViewBase.cpp"/>
+      <FILE id="Vf7dQl" name="BlomeTableViewBase.h" compile="0" resource="0"
+            file="Source/BlomeTableViewBase.h"/>
+      <FILE id="Go188N" name="BlomeTableViewNavigation.cpp" compile="1" resource="0"
+            file="Source/BlomeTableViewNavigation.cpp"/>
+      <FILE id="eRtVX0" name="BlomeTableViewNavigation.h" compile="0" resource="0"
+            file="Source/BlomeTableViewNavigation.h"/>
+      <FILE id="ki9O3Y" name="BlomeTableViewPalette.cpp" compile="1" resource="0"
+            file="Source/BlomeTableViewPalette.cpp"/>
+      <FILE id="MuMIeK" name="BlomeTableViewPalette.h" compile="0" resource="0"
+            file="Source/BlomeTableViewPalette.h"/>
     </GROUP>
     <GROUP id="{6D66FD26-8F3F-0894-5730-966778E462FE}" name="BlomePanels">
       <FILE id="lThgmA" name="PanelBase.cpp" compile="1" resource="0" file="Source/PanelBase.cpp"/>
@@ -83,8 +91,6 @@
             file="Source/BlomeStyleDefinitions.h"/>
     </GROUP>
     <GROUP id="{24E53329-C4AB-C36D-5F45-A76DFCFCE6A5}" name="BlomeDSP">
-      <FILE id="njsawu" name="AudioPlayer.cpp" compile="1" resource="0" file="Source/AudioPlayer.cpp"/>
-      <FILE id="NcbmLC" name="AudioPlayer.h" compile="0" resource="0" file="Source/AudioPlayer.h"/>
       <FILE id="UpyEC4" name="SampleAnalyser.cpp" compile="1" resource="0"
             file="Source/SampleAnalyser.cpp"/>
       <FILE id="Vj1R2H" name="SampleAnalyser.h" compile="0" resource="0"
@@ -92,6 +98,8 @@
       <FILE id="xJkutK" name="SampleEditor.cpp" compile="1" resource="0"
             file="Source/SampleEditor.cpp"/>
       <FILE id="eGotgT" name="SampleEditor.h" compile="0" resource="0" file="Source/SampleEditor.h"/>
+      <FILE id="njsawu" name="AudioPlayer.cpp" compile="1" resource="0" file="Source/AudioPlayer.cpp"/>
+      <FILE id="NcbmLC" name="AudioPlayer.h" compile="0" resource="0" file="Source/AudioPlayer.h"/>
     </GROUP>
     <GROUP id="{E9B1E780-95F6-8A24-1076-4F173F69A7D1}" name="BlomeSampleManagement">
       <FILE id="UMdojm" name="SampleLibrary.cpp" compile="1" resource="0"
