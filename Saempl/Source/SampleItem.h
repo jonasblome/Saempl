@@ -12,29 +12,49 @@
 
 #include "JuceHeader.h"
 
+/**
+ The class for storing meta information about a sample/audio file.
+ 
+ Holds information on the file path, the title, length and more in the future.
+ */
 class SampleItem
 {
 public:
-    // Constructors
     SampleItem();
     ~SampleItem();
-    
-    // Methods
+    /**
+     Sets the file path of the corresponding audio file.
+     */
     void setFilePath(String const & inFilePath);
+    /**
+     @returns the file path.
+     */
     String getFilePath() const;
+    /**
+     @returns the sample's title.
+     */
     String getTitle() const;
+    /**
+     Sets the sample items title.
+     
+     @param inTitle the title to set.
+     */
     void setTitle(String inTitle);
+    /**
+     @returns the samples length in seconds.
+     */
     double getLength() const;
+    /**
+     Sets the length of the sample item in seconds.
+     
+     @param inLength the length to set.
+     */
     void setLength(double inLength);
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleItem)
     
-    // Fields
     String mFilePath;
     String mTitle;
     double mLength;
-    
-    // Methods
-    
 };

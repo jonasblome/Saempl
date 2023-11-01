@@ -13,24 +13,26 @@
 #include "JuceHeader.h"
 #include "BlomeStyleDefinitions.h"
 
+/**
+ Draws a layer of transparent grainy noise over the plugin editor window.
+ 
+ Implements:
+ \ref juce::Component
+ */
 class NoiseOverlayPanel
 :   public Component
 {
 public:
-    // Constructors
     NoiseOverlayPanel();
     ~NoiseOverlayPanel();
-    
-    // Methods
     void paint(Graphics& g) override;
+    /**
+     Sets the grain Image component of the overlay panel.
+     */
     void setPanelComponents();
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(NoiseOverlayPanel)
     
-    // Fields
     Image mNoiseOverlay;
-    
-    // Methods
-    
 };

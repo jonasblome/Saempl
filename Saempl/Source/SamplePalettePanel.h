@@ -13,26 +13,31 @@
 #include "PanelBase.h"
 #include "BlomeTableViewPalette.h"
 
+/**
+ Holds the table for displaying the \ref SampleLibrary::mPaletteSampleItems
+ 
+ Implements:
+ \ref PanelBase
+ */
 class SamplePalettePanel
 :   public PanelBase
 {
 public:
-    // Constructors
+    /**
+     The constructor for the sample palette panel.
+     
+     @param inSampleLibrary the library object of the current plugin instance.
+     @param inSampleItemPanel the panel for previewing \ref SampleItem objects.
+     */
     SamplePalettePanel(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
     ~SamplePalettePanel();
-    
-    // Methods
     void paint(Graphics& g) override;
     void setPanelComponents() override;
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SamplePalettePanel)
     
-    // Fields
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<BlomeTableViewPalette> mSampleTable;
-    
-    // Methods
-    
 };

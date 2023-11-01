@@ -10,8 +10,8 @@
 
 #include "SampleFileFilterRuleTitle.h"
 
-SampleFileFilterRuleTitle::SampleFileFilterRuleTitle(String inRuleType)
-:   SampleFileFilterRuleBase(inRuleType)
+SampleFileFilterRuleTitle::SampleFileFilterRuleTitle(String inRulePropertyName)
+:   SampleFileFilterRuleBase(inRulePropertyName)
 {
     mCompareValue = "";
     mCompareOperator = CONTAINS;

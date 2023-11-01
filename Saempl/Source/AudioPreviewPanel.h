@@ -14,6 +14,18 @@
 #include "BlomeHelpers.h"
 #include "SampleEditor.h"
 
+/**
+ Holds the \ref AudioThumbnail and displays the audio's waveform.
+ 
+ Implements:
+ \ref PanelBase
+ \ref juce::FileDragAndDropTarget
+ \ref juce::DragAndDropTarget
+ \ref juce::ChangeBroadcaster
+ \ref juce::ScrollBar::Listener
+ \ref juce::Timer
+ Handles drag and drop of audio files, playback of the audio and zooming into the waveform.
+ */
 class AudioPreviewPanel
 :   public PanelBase,
     public FileDragAndDropTarget,
@@ -23,11 +35,15 @@ class AudioPreviewPanel
     private Timer
 {
 public:
-    // Constructors
+    /**
+     The constructor for the audio preview panel.
+     
+     @param inProcessor the audio processor of the current plugin instance.
+     @param inSlider the zoom slider for the \ref AudioThumbnail.
+     @param inSampleEditor the sample editor with the audio player.
+     */
     AudioPreviewPanel(SaemplAudioProcessor& inProcessor, Slider& inSlider, SampleEditor& inSampleEditor);
     ~AudioPreviewPanel();
-    
-    // Methods
     void paint(Graphics& g) override;
     void setPanelComponents() override;
     bool isInterestedInFileDrag(StringArray const & files) override;
@@ -38,21 +54,60 @@ public:
     void mouseDrag(MouseEvent const & e) override;
     void mouseUp(MouseEvent const &) override;
     void mouseWheelMove(MouseEvent const &, MouseWheelDetails const & wheel) override;
+    /**
+     Sets the URL of the audio source.
+     
+     @param url the URL of the file.
+     */
     void setURL(URL const & url);
+    /**
+     @returns the URL of the last file that was dropped onto the preview panel.
+     */
     URL getLastDroppedFile() const noexcept;
+    /**
+     Sets the zoom factor of the \ref AudioThumbnail content.
+     
+     @param amount the zoom amount.
+     */
     void setZoomFactor(double amount);
+    /**
+     Sets the visible range of the \ref AudioThumbnail preview.
+     
+     @param newRange the range to set the preview to.
+     */
     void setRange(Range<double> newRange);
+    /**
+     Sets if the preview should center the playhead and follow the playback.
+     
+     @param shouldFollow true if it should follow, false if it should stay static.
+     */
     void setFollowsTransport(bool shouldFollow);
+    /**
+     Shows the set audio resource in the preview.
+     */
     void showAudioResource();
+    /**
+     Shows the given audio resource in the preview.
+     
+     @param inResource the URL to preview.
+     */
     void showAudioResource(URL inResource);
+    /**
+     Start or stop the audio playback.
+     */
     void startOrStop();
+    /**
+     Loads the given URL into the audio transport source.
+     
+     @param audioURL the URL to load into the source.
+     
+     @returns if the loading was successful.
+     */
     bool loadURLIntoTransport(URL const & audioURL);
-    void updateFollowTransportState();
 
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(AudioPreviewPanel)
     
-    // Fields
     SaemplAudioProcessor& currentProcessor;
     SampleEditor& sampleEditor;
     Slider* mZoomSlider;
@@ -65,7 +120,6 @@ private:
     DrawableRectangle mAudioPositionMarker;
     URL mCurrentAudioFile;
     
-    // Methods
     float timeToX(double const time) const;
     double xToTime(float const x) const;
     bool canMoveTransport() const noexcept;

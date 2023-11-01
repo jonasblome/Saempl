@@ -200,9 +200,9 @@ void SampleLibrary::setDirectory(String inDirectoryPath)
     refresh();
 }
 
-OwnedArray<SampleItem>& SampleLibrary::getSampleItems(SampleItemCollectionType inCollectionType)
+OwnedArray<SampleItem>& SampleLibrary::getSampleItems(SampleItemCollectionScope inCollectionScope)
 {
-    switch (inCollectionType)
+    switch (inCollectionScope)
     {
         case ALL_SAMPLES:
             return mAllSampleItems;
@@ -247,8 +247,6 @@ void SampleLibrary::applyFilter()
             mFilteredSampleItems.add(sampleItem);
         }
     }
-    
-    mFileFilter->setFilteredSampleItems(mFilteredSampleItems);
 }
 
 String SampleLibrary::getCurrentLibraryPath()

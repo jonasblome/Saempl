@@ -14,22 +14,32 @@
 #include "CenterPanel.h"
 #include "FileFilterPanel.h"
 
+/**
+ Holds the logo, and components for global functionality.
+ 
+ Implements:
+ \ref PanelBase
+ Encompasses the refresh button, the file chooser button,
+ the navigation panel toggles and the filter settings.
+ */
 class HeaderPanel
 :   public PanelBase
 {
 public:
-    // Constructors
+    /**
+     The constructor the plugins header panel.
+     
+     @param inProcessor the audio processor of the current plugin instance.
+     @param inCenterPanel the panel for the central plugin UI content.
+     */
     HeaderPanel(SaemplAudioProcessor& inProcessor, CenterPanel& inCenterPanel);
     ~HeaderPanel();
-    
-    // Methods
     void paint(Graphics& g) override;
     void setPanelComponents() override;
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(HeaderPanel)
     
-    // Fields
     SaemplAudioProcessor& currentProcessor;
     CenterPanel& linkedCenterPanel;
     std::unique_ptr<TextButton> mRefreshLibraryButton;
@@ -40,7 +50,6 @@ private:
     std::unique_ptr<TextButton> mChangeFilterButton;
     std::unique_ptr<ToggleButton> mActivateFilterButton;
     
-    // Methods
     void showLibraryChooser();
     
 };

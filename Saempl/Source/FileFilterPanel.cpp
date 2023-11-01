@@ -73,7 +73,7 @@ void FileFilterPanel::generateRuleView(SampleFileFilterRuleBase *rule)
 {
     BlomeFileFilterRuleViewBase* newRuleView = nullptr;
     
-    switch (PROPERTY_NAMES.indexOf(rule->getRuleType()))
+    switch (PROPERTY_NAMES.indexOf(rule->getRulePropertyName()))
     {
         case 0:
         {

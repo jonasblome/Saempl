@@ -64,11 +64,6 @@ SampleFileFilterRuleBase* SampleFileFilter::addFilterRule(SampleFileFilterRuleBa
     return mFilterRules.add(inFilterRule);
 }
 
-void SampleFileFilter::setFilteredSampleItems(OwnedArray<SampleItem>& inFilteredSampleItems)
-{
-    filteredSampleItems.swapWith(inFilteredSampleItems);
-}
-
 OwnedArray<SampleFileFilterRuleBase>& SampleFileFilter::getFilterRules()
 {
     return mFilterRules;

@@ -14,15 +14,24 @@
 #include "SampleItemPanel.h"
 #include "BlomeTableViewNavigation.h"
 
+/**
+ Holds the table for displaying all \ref SampleLibrary::mAllSampleItems
+ 
+ Implements:
+ \ref PanelBase
+ */
 class SampleTablePanel
 :   public PanelBase
 {
 public:
-    // Constructors
+    /**
+     The constructor for the sample table panel.
+     
+     @param inSampleLibrary the library object of the current plugin instance.
+     @param inSampleItemPanel the panel for previewing \ref SampleItem objects.
+     */
     SampleTablePanel(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
     ~SampleTablePanel();
-    
-    // Methods
     void paint(Graphics& g) override;
     void setPanelComponents() override;
     void resizePanelComponents() override;
@@ -30,11 +39,7 @@ public:
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleTablePanel)
     
-    // Fields
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<BlomeTableViewNavigation> mSampleTable;
-    
-    // Methods
-    
 };

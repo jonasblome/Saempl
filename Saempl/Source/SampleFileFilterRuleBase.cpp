@@ -10,8 +10,8 @@
 
 #include "SampleFileFilterRuleBase.h"
 
-SampleFileFilterRuleBase::SampleFileFilterRuleBase(String inRuleType)
-:   mRuleType(inRuleType)
+SampleFileFilterRuleBase::SampleFileFilterRuleBase(String inRulePropertyName)
+:   mRulePropertyName(inRulePropertyName)
 {
     isActive = true;
 }
@@ -31,9 +31,9 @@ void SampleFileFilterRuleBase::setCompareOperator(CompareOperators inCompareOper
     mCompareOperator = inCompareOperator;
 }
 
-String SampleFileFilterRuleBase::getRuleType()
+String SampleFileFilterRuleBase::getRulePropertyName()
 {
-    return mRuleType;
+    return mRulePropertyName;
 }
 
 bool SampleFileFilterRuleBase::getIsActive()

@@ -14,7 +14,7 @@ BlomeFileFilterRuleViewBase::BlomeFileFilterRuleViewBase(SampleFileFilterRuleBas
 :   linkedSampleLibrary(inSampleLibrary),
     linkedFilterRule(inFilterRule)
 {
-    setPanelComponents();
+    setComponents();
 }
 
 BlomeFileFilterRuleViewBase::~BlomeFileFilterRuleViewBase()
@@ -31,13 +31,13 @@ void BlomeFileFilterRuleViewBase::paint(Graphics &g)
     area.reduce(PANEL_MARGIN / 2.0, 0);
     g.setFont(FONT_SMALL_BOLD);
     g.setColour(COLOUR_ACCENT_LIGHT);
-    g.drawFittedText(getLinkedFilterRule().getRuleType(),
+    g.drawFittedText(getLinkedFilterRule().getRulePropertyName(),
                      area,
                      Justification::right,
                      1);
 }
 
-void BlomeFileFilterRuleViewBase::setPanelComponents()
+void BlomeFileFilterRuleViewBase::setComponents()
 {
     // Add button to activate filter rule
     mActivateRuleButton = std::make_unique<ToggleButton>("ActivateRuleButton");

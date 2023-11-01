@@ -10,8 +10,8 @@
 
 #include "SampleFileFilterRuleLength.h"
 
-SampleFileFilterRuleLength::SampleFileFilterRuleLength(String inRuleType)
-:   SampleFileFilterRuleBase(inRuleType)
+SampleFileFilterRuleLength::SampleFileFilterRuleLength(String inRulePropertyName)
+:   SampleFileFilterRuleBase(inRulePropertyName)
 {
     mCompareValue = 0.0;
     mCompareOperator = GREATER_THAN;

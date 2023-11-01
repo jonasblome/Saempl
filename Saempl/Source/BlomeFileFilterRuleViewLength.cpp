@@ -13,7 +13,7 @@
 BlomeFileFilterRuleViewLength::BlomeFileFilterRuleViewLength(SampleFileFilterRuleLength& inFilterRule, SampleLibrary& inSampleLibrary)
 :   BlomeFileFilterRuleViewBase(inFilterRule, inSampleLibrary)
 {
-    setPanelComponents();
+    setComponents();
 }
 
 BlomeFileFilterRuleViewLength::~BlomeFileFilterRuleViewLength()
@@ -27,7 +27,7 @@ void BlomeFileFilterRuleViewLength::paint(Graphics &g)
     BlomeFileFilterRuleViewBase::paint(g);
 }
 
-void BlomeFileFilterRuleViewLength::setPanelComponents()
+void BlomeFileFilterRuleViewLength::setComponents()
 {
     // Add text editor for compare value
     mCompareValueEditor = std::make_unique<TextEditor>("CompareValueEditor");

@@ -13,29 +13,56 @@
 #include "JuceHeader.h"
 #include "AudioPlayer.h"
 
+/**
+ Handles audio playback of the \ref AudioPlayer and later audio editing like time stretching and pitch shifting.
+ */
 class SampleEditor
 {
 public:
-    // Constructors
     SampleEditor();
     ~SampleEditor();
-    
-    // Methods
+    /**
+     @returns the player's audio format manager.
+     */
     AudioFormatManager& getAudioFormatManager();
+    /**
+     Starts or stops the audio playback.
+     */
     void startOrStopAudio();
+    /**
+     Sets the readhead position of the audio player.
+     
+     @param position the position in seconds.
+     */
     void setAudioReadheadPosition(double position);
+    /**
+     Starts audio playback.
+     */
     void startAudio();
+    /**
+     @returns if the player currently plays back audio.
+     */
     bool isPlaying();
+    /**
+     @returns the current readhead position of the audio player.
+     */
     double getCurrentReadheadPosition();
+    /**
+     Stops the audio playback.
+     */
     void stopAudio();
+    /**
+     Loads the given URL into the audio transport source.
+     
+     @param audioURL the URL to load into the transport source.
+     @param inThread the thread to use for reading ahead in the audio file.
+     
+     @returns if the loading was successful.
+     */
     bool loadURLIntoTransport(URL const & audioURL, TimeSliceThread& inThread);
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleEditor)
     
-    // Fields
     std::unique_ptr<AudioPlayer> mAudioPlayer;
-    
-    // Methods
-    
 };

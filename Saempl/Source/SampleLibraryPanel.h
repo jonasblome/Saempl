@@ -14,17 +14,27 @@
 #include "BlomeFileTreeView.h"
 #include "SampleItemPanel.h"
 
+/**
+ Holds the \ref BlomeFileTreeView and controls the \ref SampleLibrary.
+ 
+ Implements:
+ \ref PanelBase
+ Handles previewing and deleting of sample files.
+ */
 class SampleLibraryPanel
 :   public PanelBase,
     private FileBrowserListener,
     private ChangeListener
 {
 public:
-    // Constructors
+    /**
+     The constructor for the sample library panel.
+     
+     @param inSampleLibrary the library object of the current plugin instance.
+     @param inSampleItemPanel the panel for previewing \ref SampleItem objects.
+     */
     SampleLibraryPanel(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
     ~SampleLibraryPanel();
-    
-    // Methods
     void paint(Graphics& g) override;
     void setPanelComponents() override;
     void resizePanelComponents() override;
@@ -33,12 +43,10 @@ public:
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibraryPanel)
     
-    // Fields
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<BlomeFileTreeView> mFileTree;
     
-    // Methods
     void selectionChanged() override;
     void fileClicked (File const & file, MouseEvent const & mouseEvent) override;
     void fileDoubleClicked (File const &) override;

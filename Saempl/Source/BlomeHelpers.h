@@ -47,7 +47,7 @@ enum NavigationPanelType
 };
 
 // Sample library collection types
-enum SampleItemCollectionType
+enum SampleItemCollectionScope
 {
     ALL_SAMPLES,
     FILTERED_SAMPLES,

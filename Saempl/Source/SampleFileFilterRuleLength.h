@@ -12,25 +12,33 @@
 
 #include "SampleFileFilterRuleBase.h"
 
+/**
+ \ref SampleFileFilterRuleBase implementation for the length property of \ref SampleItem.
+ */
 class SampleFileFilterRuleLength
 :   public SampleFileFilterRuleBase
 {
 public:
-    // Constructors
-    SampleFileFilterRuleLength(String inRuleType);
-    ~SampleFileFilterRuleLength();
-    
-    // Methods
-    bool matches(SampleItem const & inSampleItem) override;
+    /**
+     The constructor of the length rule.
+     
+     @param inRulePropertyName the rule's property name.
+     */
+    SampleFileFilterRuleLength(String inRulePropertyName);
+    ~SampleFileFilterRuleLength();bool matches(SampleItem const & inSampleItem) override;
+    /**
+     @returns the compare value of the rule.
+     */
     int getCompareValue();
+    /**
+     Sets the compare value of the rule.
+     
+     @param inCompareValue the value to set.
+     */
     void setCompareValue(int const & inCompareValue);
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleFileFilterRuleLength)
     
-    // Fields
     double mCompareValue;
-    
-    // Methods
-    
 };

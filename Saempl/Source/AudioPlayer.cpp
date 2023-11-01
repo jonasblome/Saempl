@@ -75,14 +75,6 @@ void AudioPlayer::stop()
     mTransportSource.stop();
 }
 
-void AudioPlayer::setSource(PositionableAudioSource* const newSource,
-                            int readAheadSize,
-                            TimeSliceThread* readAheadThread,
-                            double sourceSampleRateToCorrectFor)
-{
-    mTransportSource.setSource(newSource, readAheadSize, readAheadThread, sourceSampleRateToCorrectFor);
-}
-
 bool AudioPlayer::loadURLIntoTransport(URL const & inURL, TimeSliceThread& inThread)
 {
     // Unload the previous file source and delete it

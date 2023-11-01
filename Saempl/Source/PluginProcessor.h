@@ -57,7 +57,14 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
+    //==============================================================================
+    /**
+     @returns the thread for the current plugin instance.
+     */
     TimeSliceThread& getThread();
+    /**
+     @returns the sample library of the current plugin instance.
+     */
     SampleLibrary& getSampleLibrary();
 
 private:

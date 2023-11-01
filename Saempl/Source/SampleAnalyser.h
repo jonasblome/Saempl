@@ -12,24 +12,32 @@
 
 #include "JuceHeader.h"
 
+/**
+ Analyses sample files for given categories.
+ */
 class SampleAnalyser
 {
 public:
-    // Constructors
     SampleAnalyser();
     ~SampleAnalyser();
-    
-    // Methods
+    /**
+     Analyses the length of the given file in seconds.
+     
+     @param inFile the file to analyse.
+     
+     @returns the length of the audio file in seconds.
+     */
     double analyseSampleLength(File inFile);
+    /**
+     Loads the given file into a audio source.
+     
+     @param inFile the file to load into the audio file source.
+     */
     void loadAudioFileSource(File inFile);
     
 private:
     JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleAnalyser)
     
-    // Fields
     std::unique_ptr<AudioFormatReaderSource> mCurrentAudioFileSource;
     AudioFormatManager mFormatManager;
-    
-    // Methods
-    
 };

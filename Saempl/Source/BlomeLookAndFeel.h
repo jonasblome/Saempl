@@ -12,6 +12,9 @@
 
 #include "JuceHeader.h"
 
+/**
+ Custom look and feel class for the Saempl audio plugin.
+ */
 class BlomeLookAndFeel
 :   public LookAndFeel_V4
 {
@@ -41,7 +44,6 @@ public:
         
     }
     
-    /** Buttons */
     Font getTextButtonFont (TextButton&, int buttonHeight) override
     {
         return FONT_SMALL_BOLD;
@@ -108,7 +110,6 @@ public:
          }
      }
     
-    /** ComboBoxes */
     Font getLabelFont(Label& label) override
     {
         return FONT_SMALL_BOLD;
@@ -208,7 +209,6 @@ public:
                          label.getMinimumHorizontalScale());
     }
     
-    /** Sliders **/
     void drawRotarySlider (Graphics& g, int x, int y, int width, int height,
                            float sliderPosProportional, float rotaryStartAngle,
                            float rotaryEndAngle, Slider& slider) override
@@ -323,11 +323,10 @@ public:
     
     int getSliderThumbRadius(Slider& slider) override
     {
-        return jmin(14, slider.isHorizontal() ? static_cast<int> ((float)slider.getHeight() * 0.5f)
-                                               : static_cast<int> ((float)slider.getWidth() * 0.5f));
+        return jmin(14, slider.isHorizontal() ? static_cast<int>((float) slider.getHeight() * 0.5f)
+                                               : static_cast<int>((float) slider.getWidth() * 0.5f));
     }
     
-    /** Scroll Bars **/
     void drawScrollbar(Graphics& g,
                        ScrollBar& scrollbar,
                        int x,
@@ -351,7 +350,6 @@ public:
         g.fillRoundedRectangle (thumbBounds.reduced(1).toFloat(), 4.0f);
     }
     
-    /** Tree Views **/
     void drawTreeviewPlusMinusBox(Graphics& g,
                                   Rectangle<float> const & area,
                                   Colour backgroundColour,
