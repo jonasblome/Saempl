@@ -64,7 +64,7 @@ public:
     void setIsActive(bool inIsActive);
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleFileFilterRuleBase)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleFileFilterRuleBase)
     
 protected:
     CompareOperators mCompareOperator;

@@ -13,97 +13,113 @@
 AudioPlayer::AudioPlayer()
 {
     // Audio setup
+    mFormatManager = std::make_unique<AudioFormatManager>();
+    mTransportSource = std::make_unique<AudioTransportSource>();
     mAudioDeviceManager = std::make_unique<AudioDeviceManager>();
-    mFormatManager.registerBasicFormats();
+    mAudioSourcePlayer = std::make_unique<AudioSourcePlayer>();
+    mFormatManager->registerBasicFormats();
     RuntimePermissions::request(RuntimePermissions::recordAudio,
                                 [this] (bool granted)
                                 {
                                     int numInputChannels = granted ? 2 : 0;
                                     mAudioDeviceManager->initialise(numInputChannels, 2, nullptr, true, {}, nullptr);
                                 });
-    mAudioDeviceManager->addAudioCallback(&mAudioSourcePlayer);
-    mAudioSourcePlayer.setSource(&mTransportSource);
+    mAudioDeviceManager->addAudioCallback(&*mAudioSourcePlayer);
+    mAudioSourcePlayer->setSource(&*mTransportSource);
 }
 
 AudioPlayer::~AudioPlayer()
 {
-    mTransportSource.setSource(nullptr);
-    mAudioSourcePlayer.setSource(nullptr);
-    mAudioDeviceManager->removeAudioCallback(&mAudioSourcePlayer);
+    mTransportSource->setSource(nullptr);
+    mAudioSourcePlayer->setSource(nullptr);
+    mAudioDeviceManager->removeAudioCallback(&*mAudioSourcePlayer);
 }
 
 AudioFormatManager& AudioPlayer::getFormatManager()
 {
-    return mFormatManager;
+    return *mFormatManager;
 }
 
 void AudioPlayer::startOrStop()
 {
-    if(mTransportSource.isPlaying())
+    if(mTransportSource->isPlaying())
     {
-        mTransportSource.stop();
+        mTransportSource->stop();
     }
     else
     {
-        mTransportSource.setPosition(0);
-        mTransportSource.start();
+        mTransportSource->setPosition(0);
+        mTransportSource->start();
     }
 }
 
 void AudioPlayer::setTransportSourcePosition(double inPosition)
 {
-    mTransportSource.setPosition(inPosition);
+    mTransportSource->setPosition(inPosition);
 }
 
 void AudioPlayer::start()
 {
-    mTransportSource.start();
+    mTransportSource->start();
 }
 
 bool AudioPlayer::isPlaying()
 {
-    return mTransportSource.isPlaying();
+    return mTransportSource->isPlaying();
 }
 
 double AudioPlayer::getCurrentPosition()
 {
-    return mTransportSource.getCurrentPosition();
+    return mTransportSource->getCurrentPosition();
 }
 
 void AudioPlayer::stop()
 {
-    mTransportSource.stop();
+    mTransportSource->stop();
 }
 
 bool AudioPlayer::loadURLIntoTransport(URL const & inURL, TimeSliceThread& inThread)
 {
     // Unload the previous file source and delete it
-    mTransportSource.stop();
-    mTransportSource.setSource(nullptr);
+    mTransportSource->stop();
+    mTransportSource->setSource(nullptr);
     mCurrentAudioFileSource.reset();
 
     auto const source = std::make_unique<URLInputSource>(inURL);
 
     if (source == nullptr)
+    {
         return false;
+    }
 
     auto stream = rawToUniquePtr(source->createInputStream());
 
     if (stream == nullptr)
+    {
         return false;
+    }
 
-    auto reader = rawToUniquePtr(mFormatManager.createReaderFor(std::move(stream)));
+    auto reader = rawToUniquePtr(mFormatManager->createReaderFor(std::move(stream)));
 
     if (reader == nullptr)
+    {
         return false;
+    }
 
     mCurrentAudioFileSource = std::make_unique<AudioFormatReaderSource>(reader.release(), true);
 
     // Plug new audio source into our transport source
-    mTransportSource.setSource(mCurrentAudioFileSource.get(),
+    mTransportSource->setSource(mCurrentAudioFileSource.get(),
                                32768,                   // Tells it to buffer this many samples ahead
                                &inThread,                 // This is the background thread to use for reading-ahead
                                mCurrentAudioFileSource->getAudioFormatReader()->sampleRate);     // Allows for sample rate correction
 
     return true;
+}
+
+void AudioPlayer::emptyTransport()
+{
+    mTransportSource->stop();
+    mTransportSource->setSource(nullptr);
+    mCurrentAudioFileSource.reset();
 }

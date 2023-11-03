@@ -174,6 +174,8 @@ void HeaderPanel::showLibraryChooser()
                                        .withButton("OK"),
                                        nullptr);
             }
+            
+            mFileChooser.reset();
         }
     );
 }

@@ -60,3 +60,8 @@ bool SampleEditor::loadURLIntoTransport(URL const & audioURL, TimeSliceThread& i
 {
     return mAudioPlayer->loadURLIntoTransport(audioURL, inThread);
 }
+
+void SampleEditor::emptyTransport()
+{
+    mAudioPlayer->emptyTransport();
+}

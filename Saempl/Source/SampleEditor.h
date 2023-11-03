@@ -60,9 +60,13 @@ public:
      @returns if the loading was successful.
      */
     bool loadURLIntoTransport(URL const & audioURL, TimeSliceThread& inThread);
+    /**
+     Empties and resets the audio player's audio sources.
+     */
+    void emptyTransport();
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleEditor)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleEditor)
     
     std::unique_ptr<AudioPlayer> mAudioPlayer;
 };

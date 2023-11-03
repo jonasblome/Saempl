@@ -54,7 +54,7 @@ public:
     void buttonClicked(Button* button) override;
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(FileFilterPanel)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(FileFilterPanel)
     
     SampleFileFilter& libraryFileFilter;
     SampleLibrary& linkedLibrary;

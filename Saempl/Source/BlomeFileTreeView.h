@@ -39,7 +39,7 @@ public:
     void mouseDrag(MouseEvent const & e) override;
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeFileTreeView)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeFileTreeView)
     
     SampleLibrary& sampleLibrary;
 };

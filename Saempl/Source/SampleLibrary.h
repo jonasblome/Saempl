@@ -102,9 +102,13 @@ public:
      @returns the path of the current library directory.
      */
     String getCurrentLibraryPath();
+    /**
+     Deletes \ref SampleItem objects in all collections (all, filtered, palette).
+     */
+    void clearSampleItemCollections();
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibrary)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibrary)
     
     std::unique_ptr<SampleFileFilter> mFileFilter;
     String mCurrentLibraryPath;

@@ -25,12 +25,13 @@ NoiseOverlayPanel::~NoiseOverlayPanel()
 
 void NoiseOverlayPanel::paint(Graphics &g)
 {
-    g.drawImage(mNoiseOverlay, getLocalBounds().toFloat());
+    g.drawImage(*mNoiseOverlay, getLocalBounds().toFloat());
 }
 
 void NoiseOverlayPanel::setPanelComponents()
 {
     // Draw grain overlay
-    mNoiseOverlay = ImageCache::getFromMemory(BinaryData::noisetexture1050x800_png, BinaryData::noisetexture1050x800_pngSize);
-    mNoiseOverlay.multiplyAllAlphas(0.055);
+    mNoiseOverlay = std::make_unique<Image>(ImageCache::getFromMemory(BinaryData::noisetexture1050x800_png,
+                                                                      BinaryData::noisetexture1050x800_pngSize));
+    mNoiseOverlay->multiplyAllAlphas(0.055);
 }

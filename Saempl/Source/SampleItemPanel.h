@@ -38,18 +38,17 @@ public:
     void paint(Graphics& g) override;
     void setPanelComponents() override;
     /**
-     Shows the audio resource of the given file in the preview panel.
+     Tries to show the audio resource of the given file in the preview panel.
+     If this fails the library gets refreshed.
      
      @param inFile the file to show in the preview.
+     
+     @returns whether the loading of the source was successful or not.
      */
-    void tryShowAudioResource(File inFile);
-    /**
-     @see tryShowAudioResource(File inFile);
-     */
-    void showAudioResource(URL inResource);
+    bool tryShowAudioResource(File inFile);
 
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleItemPanel)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleItemPanel)
     
     SaemplAudioProcessor& currentProcessor;
     std::unique_ptr<SampleEditor> mSampleEditor;

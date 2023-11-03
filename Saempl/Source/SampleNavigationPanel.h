@@ -47,7 +47,7 @@ public:
     void showNavigationPanel(NavigationPanelType inPanelType);
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleNavigationPanel)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleNavigationPanel)
     
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<SampleLibraryPanel> mSampleLibraryPanel;

@@ -130,7 +130,11 @@ void BlomeTableViewBase::cellDoubleClicked(int rowNumber, int columnId, MouseEve
 {
     // Load linked sample item into audio resource
     File inFile = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(rowNumber)->getFilePath();
-    linkedSampleItemPanel.tryShowAudioResource(inFile);
+    
+    if (!linkedSampleItemPanel.tryShowAudioResource(inFile))
+    {
+        showFileDeletedWarning();
+    }
 }
 
 /**

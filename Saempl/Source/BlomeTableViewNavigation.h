@@ -42,5 +42,5 @@ public:
     void sortOrderChanged(int newSortColumnId, bool isForwards) override;
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeTableViewNavigation)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeTableViewNavigation)
 };

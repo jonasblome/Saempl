@@ -98,12 +98,15 @@ void SampleLibraryPanel::fileClicked(File const & file, MouseEvent const & mouse
 
 void SampleLibraryPanel::fileDoubleClicked(File const & inFile)
 {
-    linkedSampleItemPanel.tryShowAudioResource(inFile);
+    if (!linkedSampleItemPanel.tryShowAudioResource(inFile))
+    {
+        showFileDeletedWarning();
+    }
 }
 
 void SampleLibraryPanel::browserRootChanged(File const&)
 {
-    
+    // Not used...
 }
 
 void SampleLibraryPanel::changeListenerCallback(ChangeBroadcaster* source)

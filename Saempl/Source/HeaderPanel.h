@@ -38,7 +38,7 @@ public:
     void setPanelComponents() override;
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(HeaderPanel)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(HeaderPanel)
     
     SaemplAudioProcessor& currentProcessor;
     CenterPanel& linkedCenterPanel;
@@ -50,6 +50,9 @@ private:
     std::unique_ptr<TextButton> mChangeFilterButton;
     std::unique_ptr<ToggleButton> mActivateFilterButton;
     
+    /**
+     Shows the dialogue for choosing the sample library directory.
+     */
     void showLibraryChooser();
     
 };

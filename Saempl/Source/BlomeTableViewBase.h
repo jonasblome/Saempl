@@ -67,7 +67,7 @@ public:
     bool isInterestedInFileDrag(StringArray const & files) override;
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeTableViewBase)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeTableViewBase)
     
 protected:
     SampleLibrary& sampleLibrary;

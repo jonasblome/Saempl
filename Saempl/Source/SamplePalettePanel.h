@@ -35,7 +35,7 @@ public:
     void setPanelComponents() override;
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SamplePalettePanel)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SamplePalettePanel)
     
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;

@@ -86,20 +86,20 @@ void SampleItemPanel::changeListenerCallback(ChangeBroadcaster* source)
     }
 }
 
-void SampleItemPanel::tryShowAudioResource(File inFile)
+bool SampleItemPanel::tryShowAudioResource(File inFile)
 {
     // Load file into source
     if (inFile.exists() && !inFile.isDirectory() && isSupportedAudioFileFormat(inFile.getFileExtension()))
     {
-        showAudioResource(URL(inFile));
+        mAudioPreviewPanel->showAudioResource(URL(inFile));
+        return true;
     }
-    else if (!inFile.exists())
+    
+    if (!inFile.exists())
     {
-        showAudioResource(URL());
+        mAudioPreviewPanel->emptyAudioResource();
+        currentProcessor.getSampleLibrary().refresh();
     }
-}
-
-void SampleItemPanel::showAudioResource(URL inResource)
-{
-    mAudioPreviewPanel->showAudioResource(inResource);
+    
+    return false;
 }

@@ -20,6 +20,7 @@
 
 // Custom file extensions
 String const SAMPLE_LIBRARY_FILE_EXTENSION = ".bslf";
+String const SAEMPL_DATA_FILE_EXTENSION = ".saempl";
 
 // Audio formats
 StringArray const SUPPORTED_AUDIO_FORMATS = StringArray({ ".mp3", ".wav", ".aiff", ".m4a" });
@@ -70,4 +71,15 @@ inline bool isSupportedAudioFileFormat(String inExtension)
 inline String restoreSpacesFromURLString(String urlString)
 {
     return urlString.replace("%20", " ");
+}
+
+inline void showFileDeletedWarning()
+{
+    // Show warning popup message
+    AlertWindow::showAsync(MessageBoxOptions()
+                           .withIconType(MessageBoxIconType::NoIcon)
+                           .withTitle("File not available!")
+                           .withMessage("This file has probably been externally deleted and was removed from the list of available samples.")
+                           .withButton("OK"),
+                           nullptr);
 }

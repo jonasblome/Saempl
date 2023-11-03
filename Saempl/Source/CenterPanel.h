@@ -43,7 +43,7 @@ public:
     void showNavigationPanel(NavigationPanelType inPanelType);
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(CenterPanel)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(CenterPanel)
     
     SaemplAudioProcessor& currentProcessor;
     std::unique_ptr<SampleNavigationPanel> mSampleNavigationPanel;
@@ -51,6 +51,9 @@ private:
     std::unique_ptr<SampleItemPanel> mSampleItemPanel;
     std::unique_ptr<ToggleButton> mToggleSampleItemPanelButton;
     
+    /**
+     Toggles the sample item's visibility on/off and rescales the navigation panels.
+     */
     void toggleSampleItemPanel();
     
 };

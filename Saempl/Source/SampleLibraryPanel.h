@@ -41,7 +41,7 @@ public:
 
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibraryPanel)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibraryPanel)
     
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;

@@ -44,9 +44,9 @@ public:
         
     }
     
-    Font getTextButtonFont (TextButton&, int buttonHeight) override
+    Font getTextButtonFont(TextButton&, int buttonHeight) override
     {
-        return FONT_SMALL_BOLD;
+        return *std::make_unique<Font>(FONT_SMALL_BOLD);
     }
     
     void drawButtonBackground(Graphics& g,
@@ -548,7 +548,7 @@ public:
     }
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeLookAndFeel)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeLookAndFeel)
     
     // Fields
     SampleLibrary& sampleLibrary;

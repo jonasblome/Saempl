@@ -305,3 +305,14 @@ bool AudioPreviewPanel::loadURLIntoTransport(URL const & audioURL)
 {
     return sampleEditor.loadURLIntoTransport(audioURL, currentProcessor.getThread());
 }
+
+void AudioPreviewPanel::emptyAudioResource()
+{
+    sampleEditor.emptyTransport();
+    lastFileDropped = URL();
+    mZoomSlider->setValue(0, dontSendNotification);
+    mAudioPreview.clear();
+    Range<double> newRange;
+    setRange(newRange);
+    mAudioPreviewScrollbar->setRangeLimits(newRange);
+}

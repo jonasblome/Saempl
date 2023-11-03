@@ -12,7 +12,8 @@
 
 SampleAnalyser::SampleAnalyser()
 {
-    mFormatManager.registerBasicFormats();
+    mFormatManager = std::make_unique<AudioFormatManager>();
+    mFormatManager->registerBasicFormats();
 }
 
 SampleAnalyser::~SampleAnalyser()
@@ -31,6 +32,6 @@ double SampleAnalyser::analyseSampleLength(File inFile)
 void SampleAnalyser::loadAudioFileSource(File inFile)
 {
     mCurrentAudioFileSource.reset();
-    AudioFormatReader* reader = mFormatManager.createReaderFor(inFile);
+    AudioFormatReader* reader = mFormatManager->createReaderFor(inFile);
     mCurrentAudioFileSource = std::make_unique<AudioFormatReaderSource>(reader, true);
 }

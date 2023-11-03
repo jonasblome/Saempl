@@ -52,7 +52,7 @@ public:
     void setSortingDirection(bool isForwards);
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleItemComparator)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleItemComparator)
     
     String mComparePropertyName;
     bool mIsForwards;

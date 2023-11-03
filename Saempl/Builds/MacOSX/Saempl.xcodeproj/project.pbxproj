@@ -218,6 +218,7 @@
 		DAE00B42967EB21EC7C89B97 /* SampleLibraryManager.cpp */ /* SampleLibraryManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SampleLibraryManager.cpp; path = ../../Source/SampleLibraryManager.cpp; sourceTree = SOURCE_ROOT; };
 		DBC776B26EDC7C18C562ABF3 /* SampleEditor.h */ /* SampleEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleEditor.h; path = ../../Source/SampleEditor.h; sourceTree = SOURCE_ROOT; };
 		DCCB57A863FCC14B1ACFC146 /* SampleTablePanel.h */ /* SampleTablePanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleTablePanel.h; path = ../../Source/SampleTablePanel.h; sourceTree = SOURCE_ROOT; };
+		DDDD4D399E94929445812D50 /* jcf_advanced_leak_detector.h */ /* jcf_advanced_leak_detector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = jcf_advanced_leak_detector.h; path = ../../Source/jcf_advanced_leak_detector.h; sourceTree = SOURCE_ROOT; };
 		E0E183B328A506494413A2D4 /* MainPanel.h */ /* MainPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MainPanel.h; path = ../../Source/MainPanel.h; sourceTree = SOURCE_ROOT; };
 		E33DB0D0FEF465899095F161 /* Accelerate.framework */ /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		E3CA6609EAD8D1C1C097D518 /* include_juce_gui_extra.mm */ /* include_juce_gui_extra.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_extra.mm; path = ../../JuceLibraryCode/include_juce_gui_extra.mm; sourceTree = SOURCE_ROOT; };
@@ -461,6 +462,7 @@
 				2801727C82C3CA0F1E54ED3B,
 				99CE2E8870DC9014E59B6657,
 				30145BA43035B782B51F3D35,
+				DDDD4D399E94929445812D50,
 			);
 			name = BlomeHelpers;
 			sourceTree = "<group>";

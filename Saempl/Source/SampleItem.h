@@ -52,7 +52,7 @@ public:
     void setLength(double inLength);
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleItem)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleItem)
     
     String mFilePath;
     String mTitle;

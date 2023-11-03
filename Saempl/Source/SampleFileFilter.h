@@ -66,7 +66,7 @@ public:
     void setIsActive(bool inIsActive);
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleFileFilter)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleFileFilter)
     
     OwnedArray<SampleFileFilterRuleBase> mFilterRules;
     OwnedArray<SampleItem>& filteredSampleItems;

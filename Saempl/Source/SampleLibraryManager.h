@@ -30,22 +30,65 @@ public:
     /**
      Adds meta-information of all sample items to an analysis file and updates their information if needed.
      
-     @param inFilePath the path to the library directory.
+     @param inLibraryDirectory the library directory file.
      @param inSampleItems the collection of sample items from the library.
      */
-    void updateSampleLibraryFile(String& inFilePath, OwnedArray<SampleItem>& inSampleItems);
+    void updateSampleLibraryFile(File& inLibraryDirectory, OwnedArray<SampleItem>& inSampleItems);
     /**
      Loads meta-information of analysis file as sample items collection.
      
-     @param the path to the library analysis file.
-     @param the collection of sample items from the library.
+     @param inLibraryDirectory the library directory file.
+     @param inSampleItems the collection of sample items from the library.
      */
-    void loadSampleLibraryFile(String& inFilePath, OwnedArray<SampleItem>& inSampleItems);
+    void loadSampleLibraryFile(File& inLibraryDirectory, OwnedArray<SampleItem>& inSampleItems);
+/**
+     @returns the path of the last opened sample library directory or the default library directory.
+     */
+    String getLastOpenedDirectory();
+    /**
+     Writes the given path into the plugin data directory as the last used library directory path.
+     
+     @param inDirectoryPath the directory to set as last used.
+     */
+    void storeLastOpenedDirectory(String& inDirectoryPath);
+    /**
+     Loads the given file as an \ref XmlElement and returns a pointer to it.
+     */
+    XmlElement loadFileAsXml(File& inFile);
+    /**
+     Writes the contents of the given xml into the given file as binary data.
+     
+     @param inXml the \ref XmlElement to store in the file.
+     @param inFile the file to store the \ref XmlElement in.
+     */
+    void writeXmlToFile(XmlElement& inXml, File& inFile);
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibraryManager)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibraryManager)
     
-    String mLibraryFilesDirectoryPath;
-    
-    String getLibraryFilesDirectoryPath();
+    String mDefaultLibraryDirectoryPath =
+    (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
+    + DIRECTORY_SEPARATOR
+    + "Plugins"
+    + DIRECTORY_SEPARATOR
+    + "Saempl"
+    + DIRECTORY_SEPARATOR
+    + "DefaultSampleLibrary";
+    String mLibraryFilesDirectoryPath =
+    (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
+    + DIRECTORY_SEPARATOR
+    + "Plugins"
+    + DIRECTORY_SEPARATOR
+    + "Saempl"
+    + DIRECTORY_SEPARATOR
+    + "SampleLibraryFiles";
+    String mSaemplDataFilePath =
+    (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
+    + DIRECTORY_SEPARATOR
+    + "Plugins"
+    + DIRECTORY_SEPARATOR
+    + "Saempl"
+    + DIRECTORY_SEPARATOR
+    + "SaemplPluginData"
+    + SAEMPL_DATA_FILE_EXTENSION;
 };

@@ -89,6 +89,8 @@
             file="Source/BlomeLookAndFeel.h"/>
       <FILE id="bDidRl" name="BlomeStyleDefinitions.h" compile="0" resource="0"
             file="Source/BlomeStyleDefinitions.h"/>
+      <FILE id="oF7XJT" name="jcf_advanced_leak_detector.h" compile="0" resource="0"
+            file="Source/jcf_advanced_leak_detector.h"/>
     </GROUP>
     <GROUP id="{24E53329-C4AB-C36D-5F45-A76DFCFCE6A5}" name="BlomeDSP">
       <FILE id="UpyEC4" name="SampleAnalyser.cpp" compile="1" resource="0"

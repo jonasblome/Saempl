@@ -60,7 +60,7 @@ public:
     void removeDeleteButtonListener(Button::Listener* inListener);
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeFileFilterRuleViewBase)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeFileFilterRuleViewBase)
     
 protected:
     SampleLibrary& linkedSampleLibrary;

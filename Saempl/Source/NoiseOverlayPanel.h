@@ -32,7 +32,7 @@ public:
     void setPanelComponents();
     
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(NoiseOverlayPanel)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(NoiseOverlayPanel)
     
-    Image mNoiseOverlay;
+    std::unique_ptr<Image> mNoiseOverlay;
 };

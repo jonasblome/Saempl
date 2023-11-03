@@ -13,7 +13,7 @@
 
 SampleLibraryManager::SampleLibraryManager()
 {
-    mLibraryFilesDirectoryPath = "";
+    
 }
 
 SampleLibraryManager::~SampleLibraryManager()
@@ -21,20 +21,11 @@ SampleLibraryManager::~SampleLibraryManager()
     
 }
 
-void SampleLibraryManager::updateSampleLibraryFile(String& inLibraryPath, OwnedArray<SampleItem>& inSampleItems)
+void SampleLibraryManager::updateSampleLibraryFile(File& inLibraryDirectory, OwnedArray<SampleItem>& inSampleItems)
 {
-    // Set library file directory path
-    mLibraryFilesDirectoryPath = getLibraryFilesDirectoryPath();
-    File librayDirectory = File(inLibraryPath);
-    
-    if(!librayDirectory.exists())
-    {
-        librayDirectory.createDirectory();
-    }
-    
     // Create sample library file as xml and store path to library
     XmlElement sampleLibraryXml("SampleLibrary");
-    sampleLibraryXml.setAttribute("LibraryPath", inLibraryPath);
+    sampleLibraryXml.setAttribute("LibraryPath", inLibraryDirectory.getFullPathName());
     
     // Adding sample items xml to sample library xml
     XmlElement* sampleItemsXml = new XmlElement("SampleItems");
@@ -49,54 +40,51 @@ void SampleLibraryManager::updateSampleLibraryFile(String& inLibraryPath, OwnedA
         // Adding sample properties xml to sample item xml
         XmlElement* samplePropertiesXml = new XmlElement("SampleProperties");
         
-        // Adding title property
-        XmlElement* samplePropertyXml = new XmlElement(PROPERTY_NAMES[1]);
-        samplePropertyXml->setAttribute("PropertyValue", sampleItem->getTitle());
-        samplePropertiesXml->prependChildElement(samplePropertyXml);
-        
         // Adding length property
-        samplePropertyXml = new XmlElement(PROPERTY_NAMES[0]);
+        XmlElement* samplePropertyXml = new XmlElement(PROPERTY_NAMES[0]);
         samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLength());
         samplePropertiesXml->prependChildElement(samplePropertyXml);
         
-        sampleItemXml->addChildElement(samplePropertiesXml);
+        // Adding title property
+        samplePropertyXml = new XmlElement(PROPERTY_NAMES[1]);
+        samplePropertyXml->setAttribute("PropertyValue", sampleItem->getTitle());
+        samplePropertiesXml->prependChildElement(samplePropertyXml);
+        
+        sampleItemXml->prependChildElement(samplePropertiesXml);
         
         sampleItemsXml->prependChildElement(sampleItemXml);
     }
     
-    sampleLibraryXml.addChildElement(sampleItemsXml);
+    sampleLibraryXml.prependChildElement(sampleItemsXml);
     
     // Write sample library xml to external file
-    File sampleLibraryFile = File(mLibraryFilesDirectoryPath + DIRECTORY_SEPARATOR + librayDirectory.getFileNameWithoutExtension() + SAMPLE_LIBRARY_FILE_EXTENSION);
+    File sampleLibraryFile = File(mLibraryFilesDirectoryPath
+                                  + DIRECTORY_SEPARATOR
+                                  + inLibraryDirectory.getFileNameWithoutExtension()
+                                  + SAMPLE_LIBRARY_FILE_EXTENSION);
     
-    if(!sampleLibraryFile.exists()) {
+    if (!sampleLibraryFile.exists())
+    {
         sampleLibraryFile.create();
     }
-    else {
+    else
+    {
         sampleLibraryFile.deleteFile();
     }
     
-    MemoryBlock destinationData;
-    AudioPluginInstance::copyXmlToBinary(sampleLibraryXml, destinationData);
-    sampleLibraryFile.appendData(destinationData.getData(),
-                          destinationData.getSize());
-    destinationData.reset();
+    writeXmlToFile(sampleLibraryXml, sampleLibraryFile);
 }
 
-void SampleLibraryManager::loadSampleLibraryFile(String& inLibraryPath, OwnedArray<SampleItem>& inSampleItems)
+void SampleLibraryManager::loadSampleLibraryFile(File& inLibraryDirectory, OwnedArray<SampleItem>& inSampleItems)
 {
-    File libraryDirectory = File(inLibraryPath);
-    File libraryFile = File(getLibraryFilesDirectoryPath() + DIRECTORY_SEPARATOR + libraryDirectory.getFileNameWithoutExtension() + SAMPLE_LIBRARY_FILE_EXTENSION);
+    File libraryFile = File(mLibraryFilesDirectoryPath + DIRECTORY_SEPARATOR + inLibraryDirectory.getFileNameWithoutExtension() + SAMPLE_LIBRARY_FILE_EXTENSION);
     
     // Check if sample library file (.bslf) exists
     if (libraryFile.exists())
     {
         // Get data from library file
-        MemoryBlock libraryFileData;
-        libraryFile.loadFileAsData(libraryFileData);
-        XmlElement sampleLibraryXml = *AudioPluginInstance::getXmlFromBinary(libraryFileData.getData(), (int) libraryFileData.getSize());
-        libraryFileData.reset();
-        XmlElement* libraryXmlPointer = &sampleLibraryXml;
+        XmlElement libraryXml = loadFileAsXml(libraryFile);
+        XmlElement* libraryXmlPointer = &libraryXml;
         
         if(libraryXmlPointer)
         {
@@ -106,7 +94,7 @@ void SampleLibraryManager::loadSampleLibraryFile(String& inLibraryPath, OwnedArr
             for (XmlElement* sampleItemXml : sampleItemsXml->getChildIterator())
             {
                 // Create new sample item
-                SampleItem* sampleItem = new SampleItem();
+                SampleItem* sampleItem = inSampleItems.add(new SampleItem());
                 String filePath = sampleItemXml->getStringAttribute("FilePath");
                 sampleItem->setFilePath(filePath);
                 XmlElement* samplePropertiesXml = sampleItemXml->getChildByName("SampleProperties");
@@ -120,9 +108,6 @@ void SampleLibraryManager::loadSampleLibraryFile(String& inLibraryPath, OwnedArr
                 samplePropertyXml = samplePropertiesXml->getChildByName("Length");
                 double length = samplePropertyXml->getDoubleAttribute("PropertyValue");
                 sampleItem->setLength(length);
-                
-                // Add sample item to library collection
-                inSampleItems.add(sampleItem);
             }
         }
         else
@@ -136,14 +121,64 @@ void SampleLibraryManager::loadSampleLibraryFile(String& inLibraryPath, OwnedArr
     }
 }
 
-String SampleLibraryManager::getLibraryFilesDirectoryPath()
+String SampleLibraryManager::getLastOpenedDirectory()
 {
-    return
-        (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
-        + DIRECTORY_SEPARATOR
-        + "Plugins"
-        + DIRECTORY_SEPARATOR
-        + "Saempl"
-        + DIRECTORY_SEPARATOR
-        + "SampleLibraryFiles";
+    File saemplDataFile = File(mSaemplDataFilePath);
+    
+    if (!saemplDataFile.exists())
+    {
+        return mDefaultLibraryDirectoryPath;
+    }
+    
+    // Get data from library file
+    XmlElement saemplDataXml = loadFileAsXml(saemplDataFile);
+    XmlElement* saemplDataXmlPointer = &saemplDataXml;
+    
+    String lastOpenedDirectoryPath = "";
+    
+    if (saemplDataXmlPointer)
+    {
+        lastOpenedDirectoryPath = saemplDataXml.getStringAttribute("LastOpenedDirectory");
+    }
+    
+    return lastOpenedDirectoryPath;
+}
+
+void SampleLibraryManager::storeLastOpenedDirectory(String& inDirectoryPath)
+{
+    File saemplDataFile = File(mSaemplDataFilePath);
+    XmlElement saemplDataXml = XmlElement("SaemplData");
+    
+    if (!saemplDataFile.exists())
+    {
+        saemplDataFile.create();
+    }
+    else
+    {
+        saemplDataXml = loadFileAsXml(saemplDataFile);
+        saemplDataFile.deleteFile();
+    }
+    
+    // Get data from plugin data file
+    saemplDataXml.setAttribute("LastOpenedDirectory", inDirectoryPath);
+    writeXmlToFile(saemplDataXml, saemplDataFile);
+}
+
+XmlElement SampleLibraryManager::loadFileAsXml(File& inFile)
+{
+    MemoryBlock fileData;
+    inFile.loadFileAsData(fileData);
+    XmlElement fileXml = *AudioPluginInstance::getXmlFromBinary(fileData.getData(),
+                                                                      (int) fileData.getSize());
+    fileData.reset();
+    
+    return fileXml;
+}
+
+void SampleLibraryManager::writeXmlToFile(XmlElement& inXml, File& inFile)
+{
+    MemoryBlock destinationData;
+    AudioPluginInstance::copyXmlToBinary(inXml, destinationData);
+    inFile.appendData(destinationData.getData(), destinationData.getSize());
+    destinationData.reset();
 }

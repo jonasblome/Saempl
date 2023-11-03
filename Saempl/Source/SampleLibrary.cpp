@@ -24,19 +24,17 @@ SampleLibrary::SampleLibrary(TimeSliceThread& inThread)
     
     // Set directory
     mDirectoryContent->addChangeListener(this);
-    setDirectory((File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
-                 + DIRECTORY_SEPARATOR
-                 + "Plugins"
-                 + DIRECTORY_SEPARATOR
-                 + "Saempl"
-                 + DIRECTORY_SEPARATOR
-                 + "DefaultSampleLibrary");
+    String lastOpenedDirectory = mSampleLibraryManager->getLastOpenedDirectory();
+    setDirectory(lastOpenedDirectory);
 }
 
 SampleLibrary::~SampleLibrary()
 {
+    mSampleLibraryManager->storeLastOpenedDirectory(mCurrentLibraryPath);
     mDirectoryContent->removeChangeListener(this);
-    mSampleLibraryManager->updateSampleLibraryFile(mCurrentLibraryPath, mAllSampleItems);
+    File currentLibrary(mCurrentLibraryPath);
+    mSampleLibraryManager->updateSampleLibraryFile(currentLibrary, mAllSampleItems);
+    clearSampleItemCollections();
 }
 
 void SampleLibrary::addToSampleItems(File const & inFile)
@@ -45,7 +43,7 @@ void SampleLibrary::addToSampleItems(File const & inFile)
     File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
     
     // Don't add files if they already exist in the current library
-    if (!mDirectoryContent->getDirectory().findChildFiles(File::findFiles, true, newFile.getFileName()).isEmpty())
+    if (getSampleItemWithFileName(newFile.getFileName()) != nullptr)
     {
         return;
     }
@@ -146,7 +144,8 @@ void SampleLibrary::refresh()
         }
     }
     
-    // Go through all files in directory, check if a corresponding sample item already exists in the sample item list, if not add it
+    // Go through all files in directory, check if a corresponding sample item
+    // already exists in the sample item list, if not add it
     for (DirectoryEntry entry : RangedDirectoryIterator(mDirectoryContent->getDirectory(),
                                                         true,
                                                         SUPPORTED_AUDIO_FORMATS_WILDCARD,
@@ -154,7 +153,7 @@ void SampleLibrary::refresh()
     {
         bool linkedSampleItemExists = getSampleItemWithFileName(entry.getFile().getFileName()) != nullptr;
         
-        if (!linkedSampleItemExists)
+        if (not linkedSampleItemExists)
         {
             createSampleItem(entry.getFile());
         }
@@ -179,23 +178,25 @@ SampleItem* SampleLibrary::getSampleItemWithFileName(String const & inFileName)
 
 void SampleLibrary::setDirectory(String inDirectoryPath)
 {
-    if (inDirectoryPath != "")
+    File currentLibraryDirectory(mCurrentLibraryPath);
+    
+    // If a library is currently loaded, store it
+    if (mCurrentLibraryPath != "")
     {
-        // Store current library
-        mSampleLibraryManager->updateSampleLibraryFile(mCurrentLibraryPath, mAllSampleItems);
+        mSampleLibraryManager->updateSampleLibraryFile(currentLibraryDirectory, mAllSampleItems);
     }
     
     mCurrentLibraryPath = inDirectoryPath;
+    currentLibraryDirectory = File(mCurrentLibraryPath);
     
-    if (!File(mCurrentLibraryPath).exists())
+    if (!currentLibraryDirectory.exists())
     {
-        File(mCurrentLibraryPath).createDirectory();
+        currentLibraryDirectory.createDirectory();
     }
     
     // Load new library
-    mFilteredSampleItems.clear(false);
-    mAllSampleItems.clear();
-    mSampleLibraryManager->loadSampleLibraryFile(mCurrentLibraryPath, mAllSampleItems);
+    clearSampleItemCollections();
+    mSampleLibraryManager->loadSampleLibraryFile(currentLibraryDirectory, mAllSampleItems);
     mDirectoryContent->setDirectory(File(mCurrentLibraryPath), true, true);
     refresh();
 }
@@ -252,4 +253,11 @@ void SampleLibrary::applyFilter()
 String SampleLibrary::getCurrentLibraryPath()
 {
     return mCurrentLibraryPath;
+}
+
+void SampleLibrary::clearSampleItemCollections()
+{
+    mPaletteSampleItems.clear(false);
+    mFilteredSampleItems.clear(false);
+    mAllSampleItems.clear();
 }

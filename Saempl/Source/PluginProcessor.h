@@ -69,8 +69,7 @@ public:
 
 private:
     //==============================================================================
-    // JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SaemplAudioProcessor)
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR (SaemplAudioProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SaemplAudioProcessor)
     
     std::unique_ptr<TimeSliceThread> mThread;
     std::unique_ptr<SampleLibrary> mSampleLibrary;

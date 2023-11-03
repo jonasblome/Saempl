@@ -104,9 +104,13 @@ public:
      @returns if the loading was successful.
      */
     bool loadURLIntoTransport(URL const & audioURL);
+    /**
+     Empties the audio resource and resets it.
+     */
+    void emptyAudioResource();
 
 private:
-    JUCE_HEAVYWEIGHT_LEAK_DETECTOR(AudioPreviewPanel)
+    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(AudioPreviewPanel)
     
     SaemplAudioProcessor& currentProcessor;
     SampleEditor& sampleEditor;
