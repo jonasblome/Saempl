@@ -28,7 +28,7 @@ int SampleItemComparator::compareElements(SampleItem* first, SampleItem* second)
     }
     else if (mComparePropertyName == "Length")
     {
-        return compareElements<int>(first->getLength(), second->getLength());
+        return compareElements<double>(first->getLength(), second->getLength());
     }
     
     return 0;

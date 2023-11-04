@@ -8,8 +8,28 @@
               pluginCode="Smpl" version="0.1" companyWebsite="https://github.com/jonasblome">
   <MAINGROUP id="Ryuu1q" name="Saempl">
     <GROUP id="{F65A6678-A68F-58F1-A4D6-F2BF2D42BA2E}" name="Assets">
+      <FILE id="STqKCu" name="trending_flat_FILL0_wght400_GRAD0_opsz24.png"
+            compile="0" resource="1" file="Assets/trending_flat_FILL0_wght400_GRAD0_opsz24.png"/>
+      <FILE id="SQi3a7" name="play_pause_FILL0_wght400_GRAD0_opsz24.png"
+            compile="0" resource="1" file="Assets/play_pause_FILL0_wght400_GRAD0_opsz24.png"/>
+      <FILE id="fBO2zf" name="add_FILL0_wght400_GRAD0_opsz24.png" compile="0"
+            resource="1" file="Assets/add_FILL0_wght400_GRAD0_opsz24.png"/>
+      <FILE id="enEvFV" name="delete_FILL0_wght400_GRAD0_opsz24.png" compile="0"
+            resource="1" file="Assets/delete_FILL0_wght400_GRAD0_opsz24.png"/>
+      <FILE id="YMDB6m" name="filter_alt_FILL0_wght400_GRAD0_opsz24.png"
+            compile="0" resource="1" file="Assets/filter_alt_FILL0_wght400_GRAD0_opsz24.png"/>
+      <FILE id="OJNPSd" name="filter_alt_off_FILL0_wght400_GRAD0_opsz24.png"
+            compile="0" resource="1" file="Assets/filter_alt_off_FILL0_wght400_GRAD0_opsz24.png"/>
+      <FILE id="RxQwLv" name="folder_open_FILL0_wght400_GRAD0_opsz24.png"
+            compile="0" resource="1" file="Assets/folder_open_FILL0_wght400_GRAD0_opsz24.png"/>
       <FILE id="nQsbro" name="noise-texture-1050x800.png" compile="0" resource="1"
             file="Assets/noise-texture-1050x800.png"/>
+      <FILE id="mOqtdY" name="segment_FILL0_wght400_GRAD0_opsz24.png" compile="0"
+            resource="1" file="Assets/segment_FILL0_wght400_GRAD0_opsz24.png"/>
+      <FILE id="viO1Il" name="sync_FILL0_wght400_GRAD0_opsz24.png" compile="0"
+            resource="1" file="Assets/sync_FILL0_wght400_GRAD0_opsz24.png"/>
+      <FILE id="DtxDmB" name="table_rows_FILL0_wght400_GRAD0_opsz24.png"
+            compile="0" resource="1" file="Assets/table_rows_FILL0_wght400_GRAD0_opsz24.png"/>
     </GROUP>
     <GROUP id="{42BE264F-73CB-1788-4B66-AF9042EF1615}" name="BlomeComponents">
       <FILE id="qeGOnn" name="BlomeFileFilterRuleViewBase.cpp" compile="1"

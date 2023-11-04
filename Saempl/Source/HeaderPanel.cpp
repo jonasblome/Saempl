@@ -1,19 +1,19 @@
 /*
-  ==============================================================================
-
-    HeaderPanel.cpp
-    Created: 27 May 2023 11:12:36am
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ HeaderPanel.cpp
+ Created: 27 May 2023 11:12:36am
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #include "HeaderPanel.h"
 
 HeaderPanel::HeaderPanel(SaemplAudioProcessor& inProcessor, CenterPanel& inCenterPanel)
 :   PanelBase(),
-    currentProcessor(inProcessor),
-    linkedCenterPanel(inCenterPanel)
+currentProcessor(inProcessor),
+linkedCenterPanel(inCenterPanel)
 {
     setSize(HEADER_PANEL_WIDTH - PANEL_MARGIN, HEADER_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
     setPanelComponents();
@@ -30,6 +30,29 @@ void HeaderPanel::paint(Graphics& g)
     g.setColour(COLOUR_ACCENT_LIGHT);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);
     
+    // Draw library control button area background
+    g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
+    int backgroundWidth = (getHeight() - PANEL_MARGIN * 2.0) * 2.0 + PANEL_MARGIN * 1.5;
+    g.fillRoundedRectangle(PANEL_MARGIN / 2.0,
+                           PANEL_MARGIN / 2.0,
+                           backgroundWidth,
+                           getHeight() - PANEL_MARGIN ,
+                           CORNER_SIZE_MEDIUM);
+    
+    // Draw navigation panel button area background
+    g.fillRoundedRectangle(backgroundWidth + PANEL_MARGIN,
+                           PANEL_MARGIN / 2.0,
+                           backgroundWidth,
+                           getHeight() - PANEL_MARGIN ,
+                           CORNER_SIZE_MEDIUM);
+    
+    // Draw filter button area background
+    g.fillRoundedRectangle(backgroundWidth * 2.0 + PANEL_MARGIN * 1.5,
+                           PANEL_MARGIN / 2.0,
+                           backgroundWidth,
+                           getHeight() - PANEL_MARGIN ,
+                           CORNER_SIZE_MEDIUM);
+    
     // Draw logo text
     int const logoWidth = 220;
     g.setColour(COLOUR_ACCENT_DARK);
@@ -45,80 +68,184 @@ void HeaderPanel::paint(Graphics& g)
 
 void HeaderPanel::setPanelComponents()
 {
-    int x = 0;
+    int x = PANEL_MARGIN;
+    int buttonWidth = getHeight() - PANEL_MARGIN * 2.0;
     
     // Add refresh sample library button
-    int textButtonWidth = 75;
-    mRefreshLibraryButton = std::make_unique<TextButton>("Refresh");
-    mRefreshLibraryButton->setBounds(x + PANEL_MARGIN / 2.0,
-                                     PANEL_MARGIN / 2.0,
-                                     textButtonWidth - PANEL_MARGIN / 2.0,
-                                     getHeight() - PANEL_MARGIN);
+    mRefreshLibraryButton = std::make_unique<ImageButton>("Refresh");
+    mRefreshLibraryButton->setImages(false,
+                                     true,
+                                     true,
+                                     ImageCache::getFromMemory(BinaryData::sync_FILL0_wght400_GRAD0_opsz24_png,
+                                                               BinaryData::sync_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                     1.0,
+                                     COLOUR_ACCENT_LIGHT,
+                                     Image(),
+                                     0.35,
+                                     Colour(),
+                                     Image(),
+                                     0.5,
+                                     Colour());
+    mRefreshLibraryButton->setBounds(x,
+                                     PANEL_MARGIN,
+                                     buttonWidth,
+                                     buttonWidth);
     mRefreshLibraryButton->onClick = [this] { currentProcessor.getSampleLibrary().refresh(); };
     addAndMakeVisible(*mRefreshLibraryButton);
-    x += textButtonWidth;
+    x += buttonWidth + PANEL_MARGIN / 2.0;
     
     // Add choose library directory button
-    mChooseLibraryFolderButton = std::make_unique<TextButton>("Choose Dir.");
-    mChooseLibraryFolderButton->setBounds(x + PANEL_MARGIN / 2.0,
-                                          PANEL_MARGIN / 2.0,
-                                          textButtonWidth - PANEL_MARGIN / 2.0,
-                                          getHeight() - PANEL_MARGIN);
+    mChooseLibraryFolderButton = std::make_unique<ImageButton>("Choose Dir.");
+    mChooseLibraryFolderButton->setImages(false,
+                                          true,
+                                          true,
+                                          ImageCache::getFromMemory(BinaryData::folder_open_FILL0_wght400_GRAD0_opsz24_png,
+                                                                    BinaryData::folder_open_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                          1.0,
+                                          COLOUR_ACCENT_LIGHT,
+                                          Image(),
+                                          0.35,
+                                          Colour(),
+                                          Image(),
+                                          0.5,
+                                          Colour());
+    mChooseLibraryFolderButton->setBounds(x,
+                                          PANEL_MARGIN,
+                                          buttonWidth,
+                                          buttonWidth);
     mChooseLibraryFolderButton->onClick = [this] { showLibraryChooser(); };
     addAndMakeVisible(*mChooseLibraryFolderButton);
-    x += textButtonWidth;
+    x += buttonWidth + PANEL_MARGIN * 1.5;
     
     // Add toggle for library panel
-    int toggleButtonWidth = getHeight();
-    mToggleLibraryPanelButton = std::make_unique<ToggleButton>("Toggle SampleLibraryPanel");
-    mToggleLibraryPanelButton->setToggleState(true, NotificationType::dontSendNotification);
-    mToggleLibraryPanelButton->setBounds(x + PANEL_MARGIN / 2.0,
-                                         PANEL_MARGIN / 2.0,
-                                         toggleButtonWidth - PANEL_MARGIN / 2.0,
-                                         getHeight() - PANEL_MARGIN);
+    mToggleLibraryPanelButton = std::make_unique<ImageButton>("Toggle SampleLibraryPanel");
+    mToggleLibraryPanelButton->setImages(false,
+                                         true,
+                                         true,
+                                         ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
+                                                                   BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                         1.0,
+                                         COLOUR_ACCENT_LIGHT,
+                                         Image(),
+                                         0.35,
+                                         Colour(),
+                                         Image(),
+                                         0.5,
+                                         Colour());
+    mToggleLibraryPanelButton->setBounds(x,
+                                         PANEL_MARGIN,
+                                         buttonWidth,
+                                         buttonWidth);
     mToggleLibraryPanelButton->onClick = [this]
     {
-        if (!mToggleLibraryPanelButton->getToggleState())
-        {
-            mToggleLibraryPanelButton->setToggleState(true, NotificationType::dontSendNotification);
-        }
-        else
+        if (linkedCenterPanel.getActiveNavigationPanelType() == PANELS_TABLE_PANEL)
         {
             linkedCenterPanel.showNavigationPanel(PANELS_LIBRARY_PANEL);
-            mToggleSampleTablePanelButton->setToggleState(false, NotificationType::dontSendNotification);
+            mToggleLibraryPanelButton->setImages(false,
+                                                 true,
+                                                 true,
+                                                 ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
+                                                                           BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                                 1.0,
+                                                 COLOUR_ACCENT_LIGHT,
+                                                 Image(),
+                                                 0.35,
+                                                 Colour(),
+                                                 Image(),
+                                                 0.5,
+                                                 Colour());
+            mToggleSampleTablePanelButton->setImages(false,
+                                                     true,
+                                                     true,
+                                                     ImageCache::getFromMemory(BinaryData::table_rows_FILL0_wght400_GRAD0_opsz24_png,
+                                                                               BinaryData::table_rows_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                                     0.35,
+                                                     COLOUR_BLACK,
+                                                     Image(),
+                                                     0.25,
+                                                     Colour(),
+                                                     Image(),
+                                                     0.35,
+                                                     Colour());
         }
     };
     addAndMakeVisible(*mToggleLibraryPanelButton);
-    x += toggleButtonWidth;
+    x += buttonWidth + PANEL_MARGIN / 2.0;
     
     // Add toggle for sample table panel
-    mToggleSampleTablePanelButton = std::make_unique<ToggleButton>("Toggle SampleTablePanel");
-    mToggleSampleTablePanelButton->setToggleState(false, NotificationType::dontSendNotification);
-    mToggleSampleTablePanelButton->setBounds(x + PANEL_MARGIN / 2.0,
-                                             PANEL_MARGIN / 2.0,
-                                             toggleButtonWidth - PANEL_MARGIN / 2.0,
-                                             getHeight() - PANEL_MARGIN);
+    mToggleSampleTablePanelButton = std::make_unique<ImageButton>("Toggle SampleTablePanel");
+    mToggleSampleTablePanelButton->setImages(false,
+                                             true,
+                                             true,
+                                             ImageCache::getFromMemory(BinaryData::table_rows_FILL0_wght400_GRAD0_opsz24_png,
+                                                                       BinaryData::table_rows_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                             0.35,
+                                             COLOUR_BLACK,
+                                             Image(),
+                                             0.25,
+                                             Colour(),
+                                             Image(),
+                                             0.35,
+                                             Colour());
+    mToggleSampleTablePanelButton->setBounds(x,
+                                             PANEL_MARGIN,
+                                             buttonWidth,
+                                             buttonWidth);
     mToggleSampleTablePanelButton->onClick = [this]
     {
-        if (!mToggleSampleTablePanelButton->getToggleState())
-        {
-            mToggleSampleTablePanelButton->setToggleState(true, NotificationType::dontSendNotification);
-        }
-        else
+        if (linkedCenterPanel.getActiveNavigationPanelType() == PANELS_LIBRARY_PANEL)
         {
             linkedCenterPanel.showNavigationPanel(PANELS_TABLE_PANEL);
-            mToggleLibraryPanelButton->setToggleState(false, NotificationType::dontSendNotification);
+            mToggleLibraryPanelButton->setImages(false,
+                                                 true,
+                                                 true,
+                                                 ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
+                                                                           BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                                 0.35,
+                                                 COLOUR_BLACK,
+                                                 Image(),
+                                                 0.25,
+                                                 Colour(),
+                                                 Image(),
+                                                 0.35,
+                                                 Colour());
+            mToggleSampleTablePanelButton->setImages(false,
+                                                     true,
+                                                     true,
+                                                     ImageCache::getFromMemory(BinaryData::table_rows_FILL0_wght400_GRAD0_opsz24_png,
+                                                                               BinaryData::table_rows_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                                     1.0,
+                                                     COLOUR_ACCENT_LIGHT,
+                                                     Image(),
+                                                     0.35,
+                                                     Colour(),
+                                                     Image(),
+                                                     0.5,
+                                                     Colour());
         }
     };
     addAndMakeVisible(*mToggleSampleTablePanelButton);
-    x += toggleButtonWidth;
+    x += buttonWidth + PANEL_MARGIN * 1.5;
     
     // Add button for editing the file filter rules
-    mChangeFilterButton = std::make_unique<TextButton>("Filter");
-    mChangeFilterButton->setBounds(x + PANEL_MARGIN / 2.0,
-                                   PANEL_MARGIN / 2.0,
-                                   textButtonWidth - PANEL_MARGIN / 2.0,
-                                   getHeight() - PANEL_MARGIN);
+    mChangeFilterButton = std::make_unique<ImageButton>("Filter");
+    mChangeFilterButton->setImages(false,
+                                   true,
+                                   false,
+                                   ImageCache::getFromMemory(BinaryData::filter_alt_FILL0_wght400_GRAD0_opsz24_png,
+                                                             BinaryData::filter_alt_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                   1.0,
+                                   COLOUR_ACCENT_LIGHT,
+                                   Image(),
+                                   0.35,
+                                   Colour(),
+                                   Image(),
+                                   0.5,
+                                   Colour());
+    mChangeFilterButton->setBounds(x,
+                                   PANEL_MARGIN,
+                                   buttonWidth,
+                                   buttonWidth);
     mChangeFilterButton->onClick = [this]
     {
         std::unique_ptr<FileFilterPanel> fileFilterPanel = std::make_unique<FileFilterPanel>(currentProcessor
@@ -126,14 +253,14 @@ void HeaderPanel::setPanelComponents()
         CallOutBox::launchAsynchronously(std::move(fileFilterPanel), mChangeFilterButton->getScreenBounds(), nullptr);
     };
     addAndMakeVisible(*mChangeFilterButton);
-    x += textButtonWidth;
+    x += buttonWidth + PANEL_MARGIN / 2.0;
     
     // Add button for toggling filter on and off
     mActivateFilterButton = std::make_unique<ToggleButton>("ToggleFilterButton");
-    mActivateFilterButton->setBounds(x + PANEL_MARGIN / 2.0,
-                                     PANEL_MARGIN / 2.0,
-                                     getHeight() - PANEL_MARGIN,
-                                     getHeight() - PANEL_MARGIN);
+    mActivateFilterButton->setBounds(x,
+                                     PANEL_MARGIN,
+                                     buttonWidth,
+                                     buttonWidth);
     mActivateFilterButton->setToggleState(currentProcessor
                                           .getSampleLibrary()
                                           .getFileFilter()
@@ -143,9 +270,24 @@ void HeaderPanel::setPanelComponents()
     {
         currentProcessor.getSampleLibrary().getFileFilter().setIsActive(mActivateFilterButton->getToggleState());
         currentProcessor.getSampleLibrary().refresh();
+        mChangeFilterButton->setImages(false,
+                                       true,
+                                       true,
+                                       mActivateFilterButton->getToggleState() ?
+                                       ImageCache::getFromMemory(BinaryData::filter_alt_FILL0_wght400_GRAD0_opsz24_png,
+                                                                 BinaryData::filter_alt_FILL0_wght400_GRAD0_opsz24_pngSize) :
+                                       ImageCache::getFromMemory(BinaryData::filter_alt_off_FILL0_wght400_GRAD0_opsz24_png,
+                                                                 BinaryData::filter_alt_off_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                       1.0,
+                                       COLOUR_ACCENT_LIGHT,
+                                       Image(),
+                                       0.35,
+                                       Colour(),
+                                       Image(),
+                                       0.5,
+                                       Colour());
     };
     addAndMakeVisible(*mActivateFilterButton);
-    x += getHeight();
 }
 
 void HeaderPanel::showLibraryChooser()
@@ -154,28 +296,29 @@ void HeaderPanel::showLibraryChooser()
                                        File::getCurrentWorkingDirectory(),
                                        "*",
                                        true));
-
+    
     mFileChooser->launchAsync
     (
-        FileBrowserComponent::openMode | FileBrowserComponent::canSelectDirectories,
-        [&] (FileChooser const & chooser)
-        {
-            URL result = chooser.getURLResult();
-            String name = result.isLocalFile() ? result.getLocalFile().getFullPathName() : result.toString(true);
-            
-            if (name != "") {
-                currentProcessor.getSampleLibrary().setDirectory(name);
-                
-                // Show success popup message
-                AlertWindow::showAsync(MessageBoxOptions()
-                                       .withIconType(MessageBoxIconType::NoIcon)
-                                       .withTitle("Sample Library Chooser")
-                                       .withMessage("You picked: " + name)
-                                       .withButton("OK"),
-                                       nullptr);
-            }
-            
-            mFileChooser.reset();
-        }
-    );
+     FileBrowserComponent::openMode | FileBrowserComponent::canSelectDirectories,
+     [&] (FileChooser const & chooser)
+     {
+         URL result = chooser.getURLResult();
+         String name = result.isLocalFile() ? result.getLocalFile().getFullPathName() : result.toString(true);
+         
+         if (name != "")
+         {
+             currentProcessor.getSampleLibrary().setDirectory(name);
+             
+             // Show success popup message
+             AlertWindow::showAsync(MessageBoxOptions()
+                                    .withIconType(MessageBoxIconType::NoIcon)
+                                    .withTitle("Sample Library Chooser")
+                                    .withMessage("You picked: " + name)
+                                    .withButton("OK"),
+                                    nullptr);
+         }
+         
+         mFileChooser.reset();
+     }
+     );
 }

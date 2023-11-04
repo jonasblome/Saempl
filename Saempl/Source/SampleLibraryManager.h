@@ -13,6 +13,7 @@
 #include "JuceHeader.h"
 #include "SampleItem.h"
 #include "BlomeHelpers.h"
+#include "SampleAnalyser.h"
 
 /**
  Handles updating and creating of directory meta-analysis files.
@@ -40,7 +41,7 @@ public:
      @param inLibraryDirectory the library directory file.
      @param inSampleItems the collection of sample items from the library.
      */
-    void loadSampleLibraryFile(File& inLibraryDirectory, OwnedArray<SampleItem>& inSampleItems);
+    void loadSampleLibrary(File& inLibraryDirectory, OwnedArray<SampleItem>& inSampleItems);
 /**
      @returns the path of the last opened sample library directory or the default library directory.
      */
@@ -62,10 +63,20 @@ public:
      @param inFile the file to store the \ref XmlElement in.
      */
     void writeXmlToFile(XmlElement& inXml, File& inFile);
+    /**
+     Creates a sample item for the given file and sets its properties.
+     
+     @param inFile the file for which to create the sample item.
+     */
+    void createSampleItem(File inFile, OwnedArray<SampleItem>& inSampleItems);
+    /**
+     @param inFilePath the file path for which to get the corresponding sample item.
+     @returns the sample item with that file path.
+     */
+    SampleItem* getSampleItemWithFileName(String const & inFilePath, OwnedArray<SampleItem>& inSampleItems);
     
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibraryManager)
-    
+    std::unique_ptr<SampleAnalyser> mSampleAnalyser;
     String mDefaultLibraryDirectoryPath =
     (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
     + DIRECTORY_SEPARATOR

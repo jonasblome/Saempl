@@ -12,9 +12,6 @@
 
 SampleLibrary::SampleLibrary(TimeSliceThread& inThread)
 {
-    // Initialize sample analyser
-    mSampleAnalyser = std::make_unique<SampleAnalyser>();
-    
     // Initialize library manager
     mSampleLibraryManager = std::make_unique<SampleLibraryManager>();
     
@@ -43,14 +40,14 @@ void SampleLibrary::addToSampleItems(File const & inFile)
     File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
     
     // Don't add files if they already exist in the current library
-    if (getSampleItemWithFileName(newFile.getFileName()) != nullptr)
+    if (mSampleLibraryManager->getSampleItemWithFileName(newFile.getFileName(), mAllSampleItems) != nullptr)
     {
         return;
     }
     
+    // Check directory recursively for audio files and subdirectories
     if (inFile.isDirectory())
     {
-        // Check directory recursively for audio files and subdirectoryies
         mDirectoryPathToAddFilesTo = newFile.getFullPathName();
         bool newDirectoryWasCreated = newFile.createDirectory();
         
@@ -68,18 +65,14 @@ void SampleLibrary::addToSampleItems(File const & inFile)
     {
         // Add file to current directory and create SampleItem
         inFile.copyFileTo(newFile);
-        createSampleItem(newFile);
-    }
-    else
-    {
-        return;
+        mSampleLibraryManager->createSampleItem(newFile, mAllSampleItems);
     }
 }
 
 void SampleLibrary::addToPalette(File const & inFile)
 {
     addToSampleItems(inFile);
-    SampleItem* itemToAdd = getSampleItemWithFileName(inFile.getFileName());
+    SampleItem* itemToAdd = mSampleLibraryManager->getSampleItemWithFileName(inFile.getFileName(), mAllSampleItems);
     
     // Check if item is already in palette
     if (!mPaletteSampleItems.contains(itemToAdd))
@@ -91,7 +84,8 @@ void SampleLibrary::addToPalette(File const & inFile)
 void SampleLibrary::removeSampleItem(String const & inFilePath, bool deletePermanently = false)
 {
     // Delete sample item
-    SampleItem* itemToDelete = getSampleItemWithFileName(File(inFilePath).getFileName());
+    SampleItem* itemToDelete = mSampleLibraryManager->getSampleItemWithFileName(File(inFilePath).getFileName(),
+                                                                                mAllSampleItems);
     mAllSampleItems.removeObject(itemToDelete);
     removeFromPalette(*itemToDelete);
     
@@ -144,36 +138,9 @@ void SampleLibrary::refresh()
         }
     }
     
-    // Go through all files in directory, check if a corresponding sample item
-    // already exists in the sample item list, if not add it
-    for (DirectoryEntry entry : RangedDirectoryIterator(mDirectoryContent->getDirectory(),
-                                                        true,
-                                                        SUPPORTED_AUDIO_FORMATS_WILDCARD,
-                                                        File::findFiles))
-    {
-        bool linkedSampleItemExists = getSampleItemWithFileName(entry.getFile().getFileName()) != nullptr;
-        
-        if (not linkedSampleItemExists)
-        {
-            createSampleItem(entry.getFile());
-        }
-    }
-    
     applyFilter();
     mDirectoryContent->refresh();
-}
-
-SampleItem* SampleLibrary::getSampleItemWithFileName(String const & inFileName)
-{
-    for (SampleItem* sampleItem : mAllSampleItems)
-    {
-        if (File(sampleItem->getFilePath()).getFileName().compare(inFileName) == 0)
-        {
-            return sampleItem;
-        }
-    }
-    
-    return nullptr;
+    sendChangeMessage();
 }
 
 void SampleLibrary::setDirectory(String inDirectoryPath)
@@ -196,7 +163,7 @@ void SampleLibrary::setDirectory(String inDirectoryPath)
     
     // Load new library
     clearSampleItemCollections();
-    mSampleLibraryManager->loadSampleLibraryFile(currentLibraryDirectory, mAllSampleItems);
+    mSampleLibraryManager->loadSampleLibrary(currentLibraryDirectory, mAllSampleItems);
     mDirectoryContent->setDirectory(File(mCurrentLibraryPath), true, true);
     refresh();
 }
@@ -217,23 +184,6 @@ OwnedArray<SampleItem>& SampleLibrary::getSampleItems(SampleItemCollectionScope 
         default:
             jassertfalse;
             break;
-    }
-}
-
-/**
- Creates a SampleItem for a file and adds it to the collection.
- If the corresponding SampleItem already exists, nothing happens.
- */
-void SampleLibrary::createSampleItem(File inFile)
-{
-    // Check if item already exists
-    bool linkedSampleItemExists = getSampleItemWithFileName(inFile.getFileName()) != nullptr;
-    if (!linkedSampleItemExists)
-    {
-        SampleItem* newItem = mAllSampleItems.add(new SampleItem());
-        newItem->setFilePath(inFile.getFullPathName());
-        newItem->setTitle(inFile.getFileNameWithoutExtension());
-        newItem->setLength(mSampleAnalyser->analyseSampleLength(inFile));
     }
 }
 
@@ -260,4 +210,9 @@ void SampleLibrary::clearSampleItemCollections()
     mPaletteSampleItems.clear(false);
     mFilteredSampleItems.clear(false);
     mAllSampleItems.clear();
+}
+
+double& SampleLibrary::getLoadingProgress()
+{
+    return loadingProgress;
 }

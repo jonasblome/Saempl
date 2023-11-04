@@ -90,8 +90,8 @@ void SampleLibraryPanel::fileClicked(File const & file, MouseEvent const & mouse
     if (mouseEvent.mods.isRightButtonDown())
     {
         PopupMenu popupMenu;
-        popupMenu.addItem("Move File(s) to Trash", [this] { deleteFile(false); });
-        popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFile(true); });
+        popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
+        popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
     }
 }
@@ -115,7 +115,7 @@ void SampleLibraryPanel::changeListenerCallback(ChangeBroadcaster* source)
     repaint();
 }
 
-void SampleLibraryPanel::deleteFile(bool deletePermanently = false)
+void SampleLibraryPanel::deleteFiles(bool deletePermanently = false)
 {
     // Delete all selected files
     for (int f = mFileTree->getNumSelectedItems() - 1; f >= 0 ; f--)

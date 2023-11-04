@@ -36,8 +36,6 @@ public:
     void loadAudioFileSource(File inFile);
     
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleAnalyser)
-    
     std::unique_ptr<AudioFormatReaderSource> mCurrentAudioFileSource;
     std::unique_ptr<AudioFormatManager> mFormatManager;
 };

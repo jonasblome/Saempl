@@ -35,8 +35,6 @@ public:
     void setPanelComponents() override;
     
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SamplePalettePanel)
-    
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<BlomeTableViewPalette> mSampleTable;

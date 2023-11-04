@@ -52,7 +52,7 @@ void BlomeFileFilterRuleViewLength::resized()
                                    - FILTER_RULE_TITLE_WIDTH
                                    - COMBO_BOX_WIDTH_MEDIUM
                                    - PANEL_MARGIN * 0.75
-                                   - deleteButtonWidth,
+                                   - getHeight(),
                                    getHeight());
 }
 

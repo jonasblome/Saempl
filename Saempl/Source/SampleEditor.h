@@ -66,7 +66,5 @@ public:
     void emptyTransport();
     
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleEditor)
-    
     std::unique_ptr<AudioPlayer> mAudioPlayer;
 };

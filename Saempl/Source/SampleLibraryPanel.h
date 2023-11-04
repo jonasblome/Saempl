@@ -41,8 +41,6 @@ public:
 
     
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibraryPanel)
-    
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<BlomeFileTreeView> mFileTree;
@@ -52,5 +50,10 @@ private:
     void fileDoubleClicked (File const &) override;
     void browserRootChanged (File const &) override;
     void changeListenerCallback (ChangeBroadcaster* source) override;
-    void deleteFile(bool deletePermanently);
+    /**
+     Deletes the files selected in the file tree view.
+     
+     @param deletePermanently whether the file gets deleted permanently or move to the trash.
+     */
+    void deleteFiles(bool deletePermanently);
 };

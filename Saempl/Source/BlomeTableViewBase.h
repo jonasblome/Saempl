@@ -66,9 +66,6 @@ public:
     void mouseDrag(MouseEvent const & e) override;
     bool isInterestedInFileDrag(StringArray const & files) override;
     
-private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeTableViewBase)
-    
 protected:
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;

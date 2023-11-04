@@ -37,8 +37,6 @@ public:
     void setPanelComponents() override;
     
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(MainPanel)
-    
     SaemplAudioProcessor& currentProcessor;
     std::unique_ptr<HeaderPanel> mHeaderPanel;
     std::unique_ptr<CenterPanel> mCenterPanel;

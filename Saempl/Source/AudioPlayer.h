@@ -64,8 +64,6 @@ public:
     void emptyTransport();
     
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(AudioPlayer)
-    
     std::unique_ptr<AudioDeviceManager> mAudioDeviceManager;
     std::unique_ptr<AudioFormatManager> mFormatManager;
     std::unique_ptr<AudioSourcePlayer> mAudioSourcePlayer;

@@ -12,7 +12,6 @@
 
 #include "SampleItem.h"
 #include "BlomeHelpers.h"
-#include "SampleAnalyser.h"
 #include "SampleLibraryManager.h"
 #include "SampleFileFilter.h"
 #include "SampleFileFilterRuleTitle.h"
@@ -28,7 +27,8 @@
  Can filter through stored \ref SampleItem objects and files from the file system.
  */
 class SampleLibrary
-:   ChangeListener
+:   ChangeListener,
+    public ChangeBroadcaster
 {
 public:
     /**
@@ -76,11 +76,6 @@ public:
      */
     void refresh();
     /**
-     @param inFilePath the file path for which to get the corresponding sample item.
-     @returns the sample item with that file path.
-     */
-    SampleItem* getSampleItemWithFileName(String const & inFilePath);
-    /**
      Sets the library directory to the given path.
      
      @param inDirectoryPath the path of the directory to set.
@@ -106,10 +101,12 @@ public:
      Deletes \ref SampleItem objects in all collections (all, filtered, palette).
      */
     void clearSampleItemCollections();
+    /**
+     @returns the progress of loading a new sample library in percentage.
+     */
+    double& getLoadingProgress();
     
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleLibrary)
-    
     std::unique_ptr<SampleFileFilter> mFileFilter;
     String mCurrentLibraryPath;
     std::unique_ptr<DirectoryContentsList> mDirectoryContent;
@@ -117,8 +114,6 @@ private:
     OwnedArray<SampleItem> mFilteredSampleItems;
     OwnedArray<SampleItem> mPaletteSampleItems;
     String mDirectoryPathToAddFilesTo;
-    std::unique_ptr<SampleAnalyser> mSampleAnalyser;
     std::unique_ptr<SampleLibraryManager> mSampleLibraryManager;
-    
-    void createSampleItem(File inFile);
+    double loadingProgress;
 };

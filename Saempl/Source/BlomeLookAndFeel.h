@@ -547,10 +547,38 @@ public:
         g.fillRoundedRectangle(0, 0, width, height, CORNER_SIZE_MEDIUM);
     }
     
+    void drawImageButton(Graphics& g,
+                         Image* image,
+                         int imageX,
+                         int imageY,
+                         int imageW,
+                         int imageH,
+                         const Colour& overlayColour,
+                         float imageOpacity,
+                         ImageButton& button) override
+    {
+        if (!button.isEnabled())
+        {
+            imageOpacity *= 0.3f;
+        }
+        
+        // Draw button background
+        g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
+        g.fillRoundedRectangle(button.getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);
+        
+        AffineTransform transfromImageToButtonBounds =
+        RectanglePlacement(RectanglePlacement::stretchToFit)
+            .getTransformToFit(image->getBounds().toFloat(),
+                               Rectangle<float>(std::nearbyint(jmin(image->getWidth(),
+                                                                    button.getWidth() - PANEL_MARGIN) * 0.5f) * 2.0f - 1,
+                                                std::nearbyint(jmin(image->getHeight(),
+                                                                    button.getHeight() - PANEL_MARGIN) * 0.5f) * 2.0f - 1)
+                               .withCentre(button.getLocalBounds().getCentre().toFloat()).toFloat());
+        
+        g.setColour(overlayColour.withAlpha(imageOpacity));
+        g.drawImageTransformed(*image, transfromImageToButtonBounds, true);
+    }
+    
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeLookAndFeel)
-    
-    // Fields
     SampleLibrary& sampleLibrary;
-    
 };

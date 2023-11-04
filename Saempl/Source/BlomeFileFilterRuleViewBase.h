@@ -59,14 +59,10 @@ public:
      */
     void removeDeleteButtonListener(Button::Listener* inListener);
     
-private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeFileFilterRuleViewBase)
-    
 protected:
     SampleLibrary& linkedSampleLibrary;
     SampleFileFilterRuleBase& linkedFilterRule;
     std::unique_ptr<ComboBox> mCompareOperatorChooser;
     std::unique_ptr<ToggleButton> mActivateRuleButton;
-    std::unique_ptr<TextButton> mDeleteRuleButton;
-    int deleteButtonWidth = 50;
+    std::unique_ptr<ImageButton> mDeleteRuleButton;
 };

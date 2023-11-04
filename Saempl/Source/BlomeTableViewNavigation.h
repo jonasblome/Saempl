@@ -20,7 +20,8 @@
  Handles sorting and deleting of each row's \ref SampleItem.
  */
 class BlomeTableViewNavigation
-:   public BlomeTableViewBase
+:   public BlomeTableViewBase,
+    public ChangeListener
 {
 public:
     /**
@@ -40,7 +41,6 @@ public:
      */
     void deleteFile(bool deletePermanently);
     void sortOrderChanged(int newSortColumnId, bool isForwards) override;
-    
+    void changeListenerCallback(ChangeBroadcaster* source) override;
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeTableViewNavigation)
 };

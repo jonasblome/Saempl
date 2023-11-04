@@ -24,6 +24,7 @@ BlomeTableViewPalette::BlomeTableViewPalette(SampleLibrary& inSampleLibrary, Sam
                           0);
     
     getHeader().setSortColumnId(1, true);
+    getHeader().reSortTable();
 }
 
 BlomeTableViewPalette::~BlomeTableViewPalette()

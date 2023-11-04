@@ -39,7 +39,5 @@ public:
     void setCompareValue(String const & inCompareValue);
     
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleFileFilterRuleTitle)
-    
     String mCompareValue;
 };

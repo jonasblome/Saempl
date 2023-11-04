@@ -84,3 +84,8 @@ void CenterPanel::showNavigationPanel(NavigationPanelType inPanelType)
 {
     mSampleNavigationPanel->showNavigationPanel(inPanelType);
 }
+
+NavigationPanelType CenterPanel::getActiveNavigationPanelType()
+{
+    return mSampleNavigationPanel->getActiveNavigationPanelType();
+}

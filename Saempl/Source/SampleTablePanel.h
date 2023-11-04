@@ -37,8 +37,6 @@ public:
     void resizePanelComponents() override;
     
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleTablePanel)
-    
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<BlomeTableViewNavigation> mSampleTable;

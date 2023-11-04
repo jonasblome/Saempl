@@ -60,7 +60,9 @@ void SampleNavigationPanel::resizePanelComponents()
 
 void SampleNavigationPanel::showNavigationPanel(NavigationPanelType inPanelType)
 {
-    switch(inPanelType)
+    mActiveNavigationPanelType = inPanelType;
+    
+    switch(mActiveNavigationPanelType)
     {
         case PANELS_LIBRARY_PANEL:
         {
@@ -80,4 +82,9 @@ void SampleNavigationPanel::showNavigationPanel(NavigationPanelType inPanelType)
             jassertfalse;
             break;
     }
+}
+
+NavigationPanelType SampleNavigationPanel::getActiveNavigationPanelType()
+{
+    return mActiveNavigationPanelType;
 }

@@ -13,6 +13,8 @@
 BlomeTableViewNavigation::BlomeTableViewNavigation(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel)
 :   BlomeTableViewBase(inSampleLibrary, inSampleItemPanel)
 {
+    sampleLibrary.addChangeListener(this);
+    
     mSampleItemCollectionType = FILTERED_SAMPLES;
     
     // Add all sample item properties as table columns
@@ -28,11 +30,12 @@ BlomeTableViewNavigation::BlomeTableViewNavigation(SampleLibrary& inSampleLibrar
     }
     
     getHeader().setSortColumnId(PROPERTY_NAMES.size(), true);
+    getHeader().reSortTable();
 }
 
 BlomeTableViewNavigation::~BlomeTableViewNavigation()
 {
-    
+    sampleLibrary.removeChangeListener(this);
 }
 
 void BlomeTableViewNavigation::cellClicked(int rowNumber, int columnId, MouseEvent const &mouseEvent)
@@ -88,4 +91,9 @@ void BlomeTableViewNavigation::sortOrderChanged(int newSortColumnId, bool isForw
         sampleLibrary.getSampleItems(mSampleItemCollectionType).sort(mComparator);
         updateContent();
     }
+}
+
+void BlomeTableViewNavigation::changeListenerCallback(ChangeBroadcaster *source)
+{
+    getHeader().reSortTable();
 }

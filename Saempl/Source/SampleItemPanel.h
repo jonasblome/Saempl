@@ -48,14 +48,12 @@ public:
     bool tryShowAudioResource(File inFile);
 
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleItemPanel)
-    
     SaemplAudioProcessor& currentProcessor;
     std::unique_ptr<SampleEditor> mSampleEditor;
     std::unique_ptr<AudioPreviewPanel> mAudioPreviewPanel;
     std::unique_ptr<Slider> mZoomSlider;
-    std::unique_ptr<ToggleButton> mFollowTransportButton;
-    std::unique_ptr<TextButton> mStartStopButton;
+    std::unique_ptr<ImageButton> mFollowTransportButton;
+    std::unique_ptr<ImageButton> mStartStopButton;
     
     void changeListenerCallback (ChangeBroadcaster* source) override;
 };

@@ -46,7 +46,5 @@ public:
     SampleFileFilterRuleLength& getLinkedFilterRule();
     
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(BlomeFileFilterRuleViewLength)
-    
     std::unique_ptr<TextEditor> mCompareValueEditor;
 };

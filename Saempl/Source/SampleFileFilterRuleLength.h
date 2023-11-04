@@ -38,7 +38,5 @@ public:
     void setCompareValue(int const & inCompareValue);
     
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleFileFilterRuleLength)
-    
     double mCompareValue;
 };

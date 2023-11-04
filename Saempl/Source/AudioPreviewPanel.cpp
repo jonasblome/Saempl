@@ -129,6 +129,11 @@ void AudioPreviewPanel::setRange(Range<double> newRange)
     repaint();
 }
 
+bool AudioPreviewPanel::getFollowsTransport()
+{
+    return isFollowingTransport;
+}
+
 void AudioPreviewPanel::setFollowsTransport(bool shouldFollow)
 {
     isFollowingTransport = shouldFollow;
@@ -208,7 +213,7 @@ void AudioPreviewPanel::mouseWheelMove(MouseEvent const &, MouseWheelDetails con
 
         if (wheel.deltaY != 0.0f)
         {
-            mZoomSlider->setValue(mZoomSlider->getValue() - wheel.deltaY * 0.1);
+            mZoomSlider->setValue(mZoomSlider->getValue() - wheel.deltaY * 0.04);
         }
 
         repaint();

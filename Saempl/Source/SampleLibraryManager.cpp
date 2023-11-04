@@ -13,7 +13,8 @@
 
 SampleLibraryManager::SampleLibraryManager()
 {
-    
+    // Initialize sample analyser
+    mSampleAnalyser = std::make_unique<SampleAnalyser>();
 }
 
 SampleLibraryManager::~SampleLibraryManager()
@@ -75,7 +76,7 @@ void SampleLibraryManager::updateSampleLibraryFile(File& inLibraryDirectory, Own
     writeXmlToFile(sampleLibraryXml, sampleLibraryFile);
 }
 
-void SampleLibraryManager::loadSampleLibraryFile(File& inLibraryDirectory, OwnedArray<SampleItem>& inSampleItems)
+void SampleLibraryManager::loadSampleLibrary(File& inLibraryDirectory, OwnedArray<SampleItem>& inSampleItems)
 {
     File libraryFile = File(mLibraryFilesDirectoryPath + DIRECTORY_SEPARATOR + inLibraryDirectory.getFileNameWithoutExtension() + SAMPLE_LIBRARY_FILE_EXTENSION);
     
@@ -117,7 +118,15 @@ void SampleLibraryManager::loadSampleLibraryFile(File& inLibraryDirectory, Owned
     }
     else
     {
-        return;
+        // Go through all files in directory, check if a corresponding sample item
+        // already exists in the sample item list, if not add it
+        for (DirectoryEntry entry : RangedDirectoryIterator(inLibraryDirectory,
+                                                            true,
+                                                            SUPPORTED_AUDIO_FORMATS_WILDCARD,
+                                                            File::findFiles))
+        {
+            createSampleItem(entry.getFile(), inSampleItems);
+        }
     }
 }
 
@@ -181,4 +190,30 @@ void SampleLibraryManager::writeXmlToFile(XmlElement& inXml, File& inFile)
     AudioPluginInstance::copyXmlToBinary(inXml, destinationData);
     inFile.appendData(destinationData.getData(), destinationData.getSize());
     destinationData.reset();
+}
+
+/**
+ Creates a SampleItem for a file and adds it to the collection.
+ If the corresponding SampleItem already exists, nothing happens.
+ */
+void SampleLibraryManager::createSampleItem(File inFile, OwnedArray<SampleItem>& inSampleItems)
+{
+    SampleItem* newItem = inSampleItems.add(new SampleItem());
+    newItem->setFilePath(inFile.getFullPathName());
+    newItem->setTitle(inFile.getFileNameWithoutExtension());
+    newItem->setLength(mSampleAnalyser->analyseSampleLength(inFile));
+}
+
+SampleItem* SampleLibraryManager::getSampleItemWithFileName(String const & inFileName,
+                                                            OwnedArray<SampleItem>& inSampleItems)
+{
+    for (SampleItem* sampleItem : inSampleItems)
+    {
+        if (File(sampleItem->getFilePath()).getFileName().compare(inFileName) == 0)
+        {
+            return sampleItem;
+        }
+    }
+    
+    return nullptr;
 }

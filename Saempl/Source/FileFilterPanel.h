@@ -54,11 +54,9 @@ public:
     void buttonClicked(Button* button) override;
     
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(FileFilterPanel)
-    
     SampleFileFilter& libraryFileFilter;
     SampleLibrary& linkedLibrary;
     std::unique_ptr<ComboBox> mNewRuleTypeChooser;
-    std::unique_ptr<TextButton> mAddFilterRuleButton;
+    std::unique_ptr<ImageButton> mAddFilterRuleButton;
     OwnedArray<BlomeFileFilterRuleViewBase> mFilterRuleViews;
 };

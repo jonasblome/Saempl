@@ -77,6 +77,10 @@ public:
      */
     void setRange(Range<double> newRange);
     /**
+     @returns whether the preview follows the playhead cursor.
+     */
+    bool getFollowsTransport();
+    /**
      Sets if the preview should center the playhead and follow the playback.
      
      @param shouldFollow true if it should follow, false if it should stay static.
@@ -110,8 +114,6 @@ public:
     void emptyAudioResource();
 
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(AudioPreviewPanel)
-    
     SaemplAudioProcessor& currentProcessor;
     SampleEditor& sampleEditor;
     Slider* mZoomSlider;
@@ -124,10 +126,30 @@ private:
     DrawableRectangle mAudioPositionMarker;
     URL mCurrentAudioFile;
     
+    /**
+     Converts the the playback time to the x value of the cursor.
+     
+     @param time the playback time in seconds
+     
+     @returns the x value of the cursor.
+     */
     float timeToX(double const time) const;
+    /**
+     Converts the x value of the cursor to the playback time.
+     
+     @param x the x value
+     
+     @returns the time in seconds.
+     */
     double xToTime(float const x) const;
+    /**
+     @returns whether the preview can be moved or if it's set to follow the playback.
+     */
     bool canMoveTransport() const noexcept;
     void scrollBarMoved(ScrollBar* scrollBarThatHasMoved, double newRangeStart) override;
     void timerCallback() override;
+    /**
+     Updates the x position of the playback cursor.
+     */
     void updateCursorPosition();
 };

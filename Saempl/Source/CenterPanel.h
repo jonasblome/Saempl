@@ -41,10 +41,12 @@ public:
      @param inPanelType the type of the navigation panel (library, table or map).
      */
     void showNavigationPanel(NavigationPanelType inPanelType);
+    /**
+     @returns the type of the currently shown navigation panel.
+     */
+    NavigationPanelType getActiveNavigationPanelType();
     
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(CenterPanel)
-    
     SaemplAudioProcessor& currentProcessor;
     std::unique_ptr<SampleNavigationPanel> mSampleNavigationPanel;
     std::unique_ptr<SamplePalettePanel> mSamplePalettePanel;
@@ -55,5 +57,4 @@ private:
      Toggles the sample item's visibility on/off and rescales the navigation panels.
      */
     void toggleSampleItemPanel();
-    
 };

@@ -45,12 +45,15 @@ public:
      @param inPanelType the type of the navigation panel (library, table or map).
      */
     void showNavigationPanel(NavigationPanelType inPanelType);
+    /**
+     @returns the type of the currently shown navigation panel.
+     */
+    NavigationPanelType getActiveNavigationPanelType();
     
 private:
-    // JUCE_HEAVYWEIGHT_LEAK_DETECTOR(SampleNavigationPanel)
-    
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<SampleLibraryPanel> mSampleLibraryPanel;
     std::unique_ptr<SampleTablePanel> mSampleTablePanel;
     SampleLibrary& sampleLibrary;
+    NavigationPanelType mActiveNavigationPanelType;
 };

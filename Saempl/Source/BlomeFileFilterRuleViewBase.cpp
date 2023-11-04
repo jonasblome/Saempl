@@ -1,18 +1,19 @@
 /*
-  ==============================================================================
-
-    BlomeFileFilterRuleViewBase.cpp
-    Created: 29 Oct 2023 12:14:30pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeFileFilterRuleViewBase.cpp
+ Created: 29 Oct 2023 12:14:30pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #include "BlomeFileFilterRuleViewBase.h"
 
-BlomeFileFilterRuleViewBase::BlomeFileFilterRuleViewBase(SampleFileFilterRuleBase& inFilterRule, SampleLibrary& inSampleLibrary)
+BlomeFileFilterRuleViewBase::BlomeFileFilterRuleViewBase(SampleFileFilterRuleBase& inFilterRule,
+                                                         SampleLibrary& inSampleLibrary)
 :   linkedSampleLibrary(inSampleLibrary),
-    linkedFilterRule(inFilterRule)
+linkedFilterRule(inFilterRule)
 {
     setComponents();
 }
@@ -45,6 +46,7 @@ void BlomeFileFilterRuleViewBase::setComponents()
     mActivateRuleButton->onClick = [this]
     {
         linkedFilterRule.setIsActive(mActivateRuleButton->getToggleState());
+        linkedSampleLibrary.refresh();
     };
     addAndMakeVisible(*mActivateRuleButton);
     
@@ -59,7 +61,20 @@ void BlomeFileFilterRuleViewBase::setComponents()
     addAndMakeVisible(*mCompareOperatorChooser);
     
     // Add button for deleting filter rule
-    mDeleteRuleButton = std::make_unique<TextButton>("Delete");
+    mDeleteRuleButton = std::make_unique<ImageButton>("Delete");
+    mDeleteRuleButton->setImages(false,
+                                 true,
+                                 true,
+                                 ImageCache::getFromMemory(BinaryData::delete_FILL0_wght400_GRAD0_opsz24_png,
+                                                           BinaryData::delete_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                 1.0,
+                                 COLOUR_ACCENT_LIGHT,
+                                 Image(),
+                                 0.35,
+                                 Colour(),
+                                 Image(),
+                                 0.5,
+                                 Colour());
     mDeleteRuleButton->onClick = [this]
     {
         
@@ -85,9 +100,9 @@ void BlomeFileFilterRuleViewBase::resized()
                                        - PANEL_MARGIN / 4.0,
                                        getHeight());
     
-    mDeleteRuleButton->setBounds(getWidth() - deleteButtonWidth,
+    mDeleteRuleButton->setBounds(getWidth() - getHeight(),
                                  0,
-                                 deleteButtonWidth,
+                                 getHeight(),
                                  getHeight());
 }
 

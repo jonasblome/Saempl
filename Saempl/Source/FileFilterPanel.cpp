@@ -1,18 +1,18 @@
 /*
-  ==============================================================================
-
-    FileFilterPanel.cpp
-    Created: 29 Oct 2023 12:14:04pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ FileFilterPanel.cpp
+ Created: 29 Oct 2023 12:14:04pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #include "FileFilterPanel.h"
 
 FileFilterPanel::FileFilterPanel(SampleLibrary& inSampleLibrary)
 :   libraryFileFilter(inSampleLibrary.getFileFilter()),
-    linkedLibrary(inSampleLibrary)
+linkedLibrary(inSampleLibrary)
 {
     setPanelComponents();
 }
@@ -142,16 +142,29 @@ void FileFilterPanel::setPanelComponents()
                                    PANEL_MARGIN / 2.0,
                                    COMBO_BOX_WIDTH_MEDIUM - PANEL_MARGIN / 4.0,
                                    FILTER_RULE_HEIGHT - PANEL_MARGIN / 2.0);
-    mNewRuleTypeChooser->addItem("Title", 1);
-    mNewRuleTypeChooser->addItem("Length", 2);
+    mNewRuleTypeChooser->addItem("New title rule:", 1);
+    mNewRuleTypeChooser->addItem("New length rule:", 2);
     mNewRuleTypeChooser->setTextWhenNothingSelected("Choose new rule type");
     addAndMakeVisible(*mNewRuleTypeChooser);
     
     // Add button for adding filter rules
-    mAddFilterRuleButton = std::make_unique<TextButton>("Add filter");
+    mAddFilterRuleButton = std::make_unique<ImageButton>("Add filter");
+    mAddFilterRuleButton->setImages(false,
+                                    true,
+                                    true,
+                                    ImageCache::getFromMemory(BinaryData::add_FILL0_wght400_GRAD0_opsz24_png,
+                                                              BinaryData::add_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                    1.0,
+                                    COLOUR_ACCENT_LIGHT,
+                                    Image(),
+                                    0.35,
+                                    COLOUR_ACCENT_LIGHT,
+                                    Image(),
+                                    0.5,
+                                    COLOUR_ACCENT_LIGHT);
     mAddFilterRuleButton->setBounds(COMBO_BOX_WIDTH_MEDIUM + PANEL_MARGIN * 0.75,
                                     PANEL_MARGIN / 2.0,
-                                    80 - PANEL_MARGIN / 4.0,
+                                    FILTER_RULE_HEIGHT - PANEL_MARGIN / 2.0,
                                     FILTER_RULE_HEIGHT - PANEL_MARGIN / 2.0);
     mAddFilterRuleButton->onClick = [this]
     {
@@ -176,17 +189,12 @@ void FileFilterPanel::setPanelComponents()
 void FileFilterPanel::buttonClicked(Button* button)
 {
     // Delete rule and its view if its delete button was clicked
-    if (BlomeFileFilterRuleViewTitle* ruleView = dynamic_cast<BlomeFileFilterRuleViewTitle*>(button->getParentComponent()))
+    if (BlomeFileFilterRuleViewBase* ruleView = dynamic_cast<BlomeFileFilterRuleViewBase*>(button->getParentComponent()))
     {
         ruleView->removeDeleteButtonListener(this);
         removeFilterRule(ruleView->getLinkedFilterRule());
         mFilterRuleViews.removeObject(ruleView);
-    }
-    else if (BlomeFileFilterRuleViewLength* ruleView = dynamic_cast<BlomeFileFilterRuleViewLength*>(button->getParentComponent()))
-    {
-        ruleView->removeDeleteButtonListener(this);
-        removeFilterRule(ruleView->getLinkedFilterRule());
-        mFilterRuleViews.removeObject(ruleView);
+        linkedLibrary.refresh();
     }
     
     // Remove leftover space
