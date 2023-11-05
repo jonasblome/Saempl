@@ -14,8 +14,9 @@ NoiseOverlayPanel::NoiseOverlayPanel()
 {
     
     setInterceptsMouseClicks(false, true);
-    setSize(MAIN_PANEL_WIDTH, MAIN_PANEL_HEIGHT);
+    setSize(getParentWidth(), getParentHeight());
     setPanelComponents();
+    setAlwaysOnTop(true);
 }
 
 NoiseOverlayPanel::~NoiseOverlayPanel()

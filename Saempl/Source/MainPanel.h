@@ -33,11 +33,12 @@ public:
      */
     MainPanel(SaemplAudioProcessor& inProcessor);
     ~MainPanel();
-    void paint(Graphics& g) override;
-    void setPanelComponents() override;
     
 private:
     SaemplAudioProcessor& currentProcessor;
     std::unique_ptr<HeaderPanel> mHeaderPanel;
     std::unique_ptr<CenterPanel> mCenterPanel;
+    
+    void paint(Graphics& g) override;
+    void setPanelComponents() override;
 };

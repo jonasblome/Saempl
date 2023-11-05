@@ -31,6 +31,8 @@ public:
      */
     BlomeTableViewPalette(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
     ~BlomeTableViewPalette();
+    
+private:
     void cellClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent) override;
     void filesDropped(StringArray const & files, int x, int y) override;
     /**
@@ -38,6 +40,4 @@ public:
      */
     void removeSampleItemFromPalette();
     void sortOrderChanged(int newSortColumnId, bool isForwards) override;
-    
-private:
 };

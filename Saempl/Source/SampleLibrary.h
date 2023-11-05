@@ -22,6 +22,7 @@
  
  Implements:
  \ref juce::ChangeListener
+ \ref ChangeBroadcaster
  Stores \ref SampleItem objects in collections, adds or removes them, filters them.
  Can scan the file system for  files and add them to the library.
  Can filter through stored \ref SampleItem objects and files from the file system.
@@ -69,7 +70,6 @@ public:
      @returns the file filter object.
      */
     SampleFileFilter& getFileFilter();
-    void changeListenerCallback(ChangeBroadcaster* inSource) override;
     /**
      Deletes all sample items with missing files. Adds sample items for each new file.
      Applies filter and refreshes directory list.
@@ -90,17 +90,9 @@ public:
      */
     OwnedArray<SampleItem>& getSampleItems(SampleItemCollectionScope inCollectionScope);
     /**
-     Applies the filter to all sample items and adds filtered items to \ref mFilteredSampleItems collection.
-     */
-    void applyFilter();
-    /**
      @returns the path of the current library directory.
      */
     String getCurrentLibraryPath();
-    /**
-     Deletes \ref SampleItem objects in all collections (all, filtered, palette).
-     */
-    void clearSampleItemCollections();
     /**
      @returns the progress of loading a new sample library in percentage.
      */
@@ -116,4 +108,14 @@ private:
     String mDirectoryPathToAddFilesTo;
     std::unique_ptr<SampleLibraryManager> mSampleLibraryManager;
     double loadingProgress;
+    
+    void changeListenerCallback(ChangeBroadcaster* inSource) override;
+    /**
+     Deletes \ref SampleItem objects in all collections (all, filtered, palette).
+     */
+    void clearSampleItemCollections();
+    /**
+     Applies the filter to all sample items and adds filtered items to \ref mFilteredSampleItems collection.
+     */
+    void applyFilter();
 };

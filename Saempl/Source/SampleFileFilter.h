@@ -34,8 +34,6 @@ public:
      */
     SampleFileFilter(String const & inDescription, OwnedArray<SampleItem>& inFilteredSampleItems);
     ~SampleFileFilter();
-    bool isFileSuitable (const File& file) const override;
-    bool isDirectorySuitable (const File& file) const override;
     /**
      Checks if all filter rules apply to the sample item.
      
@@ -69,4 +67,7 @@ private:
     OwnedArray<SampleFileFilterRuleBase> mFilterRules;
     OwnedArray<SampleItem>& filteredSampleItems;
     bool isActive;
+    
+    bool isFileSuitable (const File& file) const override;
+    bool isDirectorySuitable (const File& file) const override;
 };

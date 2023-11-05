@@ -32,12 +32,13 @@ public:
      */
     SampleTablePanel(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
     ~SampleTablePanel();
-    void paint(Graphics& g) override;
-    void setPanelComponents() override;
-    void resizePanelComponents() override;
     
 private:
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<BlomeTableViewNavigation> mSampleTable;
+    
+    void paint(Graphics& g) override;
+    void setPanelComponents() override;
+    void resizePanelComponents() override;
 };

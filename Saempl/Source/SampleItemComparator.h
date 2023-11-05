@@ -35,10 +35,6 @@ public:
      */
     int compareElements (SampleItem* first, SampleItem* second);
     /**
-     @see compareElements()
-     */
-    template <typename T> int compareElements(T first, T second);
-    /**
      Sets the name of the property over which to compare the two sample items.
      
      @param inPropertyName the name of the property to compare the sample items over.
@@ -54,4 +50,9 @@ public:
 private:
     String mComparePropertyName;
     bool mIsForwards;
+    
+    /**
+     @see compareElements()
+     */
+    template <typename T> int compareElements(T first, T second);
 };

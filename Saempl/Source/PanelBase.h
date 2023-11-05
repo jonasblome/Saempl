@@ -27,6 +27,8 @@ class PanelBase
 public:
     PanelBase();
     ~PanelBase();
+    
+protected:
     void mouseEnter(MouseEvent const & event) override;
     void mouseExit(MouseEvent const & event) override;
     void paint(Graphics& g) override;
@@ -39,6 +41,4 @@ public:
      Defines how the panel's components are resized when the panel is resized.
      */
     virtual void resizePanelComponents() {};
-    
-protected:
 };

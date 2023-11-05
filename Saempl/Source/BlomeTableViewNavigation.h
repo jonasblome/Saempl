@@ -32,6 +32,8 @@ public:
      */
     BlomeTableViewNavigation(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
     ~BlomeTableViewNavigation();
+    
+private:
     void cellClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent) override;
     void filesDropped(StringArray const & files, int x, int y) override;
     /**
@@ -39,8 +41,11 @@ public:
      
      @param deletePermanently deletes files permanently if true, move them to the trash if false.
      */
-    void deleteFile(bool deletePermanently);
+    void deleteFiles(bool deletePermanently);
+    /**
+     Adds all selected files to the palette sample items collection.
+     */
+    void addToPalette();
     void sortOrderChanged(int newSortColumnId, bool isForwards) override;
     void changeListenerCallback(ChangeBroadcaster* source) override;
-private:
 };

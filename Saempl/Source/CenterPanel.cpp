@@ -52,6 +52,7 @@ void CenterPanel::setPanelComponents()
                                             SAMPLE_NAVIGATION_PANEL_HEIGHT + SAMPLE_ITEM_PANEL_HEIGHT,
                                             BUTTON_SIZE_SMALL - PANEL_MARGIN,
                                             BUTTON_SIZE_SMALL - PANEL_MARGIN);
+    mToggleSampleItemPanelButton->setTooltip("Toggle visibility of audio preview");
     mToggleSampleItemPanelButton->onClick = [this] { toggleSampleItemPanel(); };
     addAndMakeVisible(*mToggleSampleItemPanelButton);
     

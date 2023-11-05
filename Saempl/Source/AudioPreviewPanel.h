@@ -44,16 +44,6 @@ public:
      */
     AudioPreviewPanel(SaemplAudioProcessor& inProcessor, Slider& inSlider, SampleEditor& inSampleEditor);
     ~AudioPreviewPanel();
-    void paint(Graphics& g) override;
-    void setPanelComponents() override;
-    bool isInterestedInFileDrag(StringArray const & files) override;
-    void filesDropped(StringArray const & files, int x, int y) override;
-    bool isInterestedInDragSource(SourceDetails const& dragSourceDetails) override;
-    void itemDropped(SourceDetails const & dragSourceDetails) override;
-    void mouseDown(MouseEvent const & e) override;
-    void mouseDrag(MouseEvent const & e) override;
-    void mouseUp(MouseEvent const &) override;
-    void mouseWheelMove(MouseEvent const &, MouseWheelDetails const & wheel) override;
     /**
      Sets the URL of the audio source.
      
@@ -116,16 +106,26 @@ public:
 private:
     SaemplAudioProcessor& currentProcessor;
     SampleEditor& sampleEditor;
-    Slider* mZoomSlider;
+    Slider& mZoomSlider;
     std::unique_ptr<ScrollBar> mAudioPreviewScrollbar;
-    AudioThumbnailCache mThumbnailCache;
-    AudioThumbnail mAudioPreview;
+    std::unique_ptr<AudioThumbnailCache> mThumbnailCache;
+    std::unique_ptr<AudioThumbnail> mAudioPreview;
     Range<double> visibleRange;
     bool isFollowingTransport;
     URL lastFileDropped;
-    DrawableRectangle mAudioPositionMarker;
+    std::unique_ptr<DrawableRectangle> mAudioPositionMarker;
     URL mCurrentAudioFile;
     
+    void paint(Graphics& g) override;
+    void setPanelComponents() override;
+    bool isInterestedInFileDrag(StringArray const & files) override;
+    void filesDropped(StringArray const & files, int x, int y) override;
+    bool isInterestedInDragSource(SourceDetails const& dragSourceDetails) override;
+    void itemDropped(SourceDetails const & dragSourceDetails) override;
+    void mouseDown(MouseEvent const & e) override;
+    void mouseDrag(MouseEvent const & e) override;
+    void mouseUp(MouseEvent const &) override;
+    void mouseWheelMove(MouseEvent const &, MouseWheelDetails const & wheel) override;
     /**
      Converts the the playback time to the x value of the cursor.
      

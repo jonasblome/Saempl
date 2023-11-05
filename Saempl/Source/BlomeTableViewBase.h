@@ -40,6 +40,14 @@ public:
      */
     BlomeTableViewBase(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
     ~BlomeTableViewBase();
+    
+protected:
+    SampleLibrary& sampleLibrary;
+    SampleItemPanel& linkedSampleItemPanel;
+    int numRows;
+    std::unique_ptr<SampleItemComparator> mComparator;
+    SampleItemCollectionScope mSampleItemCollectionType;
+    
     int getNumRows() override;
     void paintRowBackground(Graphics& g,
                             int rowNumber,
@@ -65,11 +73,4 @@ public:
     void cellDoubleClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent) override;
     void mouseDrag(MouseEvent const & e) override;
     bool isInterestedInFileDrag(StringArray const & files) override;
-    
-protected:
-    SampleLibrary& sampleLibrary;
-    SampleItemPanel& linkedSampleItemPanel;
-    int numRows;
-    SampleItemComparator mComparator;
-    SampleItemCollectionScope mSampleItemCollectionType;
 };

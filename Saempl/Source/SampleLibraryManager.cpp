@@ -177,9 +177,7 @@ XmlElement SampleLibraryManager::loadFileAsXml(File& inFile)
 {
     MemoryBlock fileData;
     inFile.loadFileAsData(fileData);
-    XmlElement fileXml = *AudioPluginInstance::getXmlFromBinary(fileData.getData(),
-                                                                      (int) fileData.getSize());
-    fileData.reset();
+    XmlElement fileXml = *AudioPluginInstance::getXmlFromBinary(fileData.getData(), (int) fileData.getSize());
     
     return fileXml;
 }
@@ -189,7 +187,6 @@ void SampleLibraryManager::writeXmlToFile(XmlElement& inXml, File& inFile)
     MemoryBlock destinationData;
     AudioPluginInstance::copyXmlToBinary(inXml, destinationData);
     inFile.appendData(destinationData.getData(), destinationData.getSize());
-    destinationData.reset();
 }
 
 /**

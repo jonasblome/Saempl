@@ -68,11 +68,6 @@ inline bool isSupportedAudioFileFormat(String inExtension)
     return false;
 }
 
-inline String restoreSpacesFromURLString(String urlString)
-{
-    return urlString.replace("%20", " ");
-}
-
 inline void showFileDeletedWarning()
 {
     // Show warning popup message

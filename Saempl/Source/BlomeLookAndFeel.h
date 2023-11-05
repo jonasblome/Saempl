@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    BlomeLookAndFeel.h
-    Created: 22 May 2023 6:53:58am
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeLookAndFeel.h
+ Created: 22 May 2023 6:53:58am
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -46,7 +46,7 @@ public:
     
     Font getTextButtonFont(TextButton&, int buttonHeight) override
     {
-        return *std::make_unique<Font>(FONT_SMALL_BOLD);
+        return FONT_SMALL_BOLD;
     }
     
     void drawButtonBackground(Graphics& g,
@@ -80,35 +80,35 @@ public:
                            ToggleButton& button,
                            bool shouldDrawButtonAsHighlighted,
                            bool shouldDrawButtonAsDown) override
-     {
-         Colour fillColour;
-         float cornerSize = 6.0f;
-         Rectangle<float> const bounds = button.getLocalBounds().toFloat();
-         
-         if(shouldDrawButtonAsHighlighted)
-         {
-             fillColour = COLOUR_BLACK_MEDIUM_TRANSPARENT;
-         }
-         else
-         {
-             fillColour = COLOUR_BLACK_LIGHT_TRANSPARENT;
-         }
-
-         if (!button.isEnabled())
-         {
-             g.setOpacity (0.5f);
-         }
-         
-         g.setColour(fillColour);
-         g.fillRoundedRectangle(bounds, cornerSize);
-         
-         if(button.getToggleState())
-         {
-             cornerSize = 4.0f;
-             g.setColour(COLOUR_ACCENT_LIGHT);
-             g.fillRoundedRectangle(bounds.reduced(3), cornerSize);
-         }
-     }
+    {
+        Colour fillColour;
+        float cornerSize = 6.0f;
+        Rectangle<float> const bounds = button.getLocalBounds().toFloat();
+        
+        if(shouldDrawButtonAsHighlighted)
+        {
+            fillColour = COLOUR_BLACK_MEDIUM_TRANSPARENT;
+        }
+        else
+        {
+            fillColour = COLOUR_BLACK_LIGHT_TRANSPARENT;
+        }
+        
+        if (!button.isEnabled())
+        {
+            g.setOpacity (0.5f);
+        }
+        
+        g.setColour(fillColour);
+        g.fillRoundedRectangle(bounds, cornerSize);
+        
+        if(button.getToggleState())
+        {
+            cornerSize = 4.0f;
+            g.setColour(COLOUR_ACCENT_LIGHT);
+            g.fillRoundedRectangle(bounds.reduced(3), cornerSize);
+        }
+    }
     
     Font getLabelFont(Label& label) override
     {
@@ -199,9 +199,9 @@ public:
     {
         g.setColour(COLOUR_ACCENT_LIGHT.withAlpha(0.5f));
         g.setFont(FONT_SMALL_BOLD);
-
+        
         auto textArea = getLabelBorderSize(label).subtractedFrom(label.getLocalBounds()).removeFromRight(label.getWidth() - 15);
-
+        
         g.drawFittedText(box.getTextWhenNothingSelected(),
                          textArea,
                          label.getJustificationType(),
@@ -242,13 +242,13 @@ public:
             auto isTwoVal   = (style == Slider::SliderStyle::TwoValueVertical   || style == Slider::SliderStyle::TwoValueHorizontal);
             auto isThreeVal = (style == Slider::SliderStyle::ThreeValueVertical || style == Slider::SliderStyle::ThreeValueHorizontal);
             
-            auto trackWidth = jmin (9.0f, slider.isHorizontal() ? (float) height * 0.25f : (float) width * 0.25f);
+            auto trackWidth = jmin(6.0f, slider.isHorizontal() ? (float) height * 0.25f : (float) width * 0.25f);
             
-            Point<float> startPoint (slider.isHorizontal() ? (float)x : (float)x + (float)width * 0.5f,
-                                     slider.isHorizontal() ? (float)y + (float)height * 0.5f : (float)(height + y));
+            Point<float> startPoint (slider.isHorizontal() ? (float) x : (float) x + (float) width * 0.5f,
+                                     slider.isHorizontal() ? (float) y + (float) height * 0.5f : (float) (height + y));
             
-            Point<float> endPoint (slider.isHorizontal() ? (float)width + x : startPoint.x,
-                                   slider.isHorizontal() ? startPoint.y : (float)y);
+            Point<float> endPoint (slider.isHorizontal() ? (float) width + x : startPoint.x,
+                                   slider.isHorizontal() ? startPoint.y : (float) y);
             
             Path backgroundTrack;
             backgroundTrack.startNewSubPath(startPoint);
@@ -323,8 +323,8 @@ public:
     
     int getSliderThumbRadius(Slider& slider) override
     {
-        return jmin(14, slider.isHorizontal() ? static_cast<int>((float) slider.getHeight() * 0.5f)
-                                               : static_cast<int>((float) slider.getWidth() * 0.5f));
+        return jmin(10, slider.isHorizontal() ? static_cast<int>((float) slider.getHeight() * 0.5f)
+                    : static_cast<int>((float) slider.getWidth() * 0.5f));
     }
     
     void drawScrollbar(Graphics& g,
@@ -340,12 +340,12 @@ public:
                        [[maybe_unused]] bool isMouseDown) override
     {
         Rectangle<int> thumbBounds;
-
+        
         if (isScrollbarVertical)
             thumbBounds = { x, thumbStartPosition, width, thumbSize };
         else
             thumbBounds = { thumbStartPosition, y, thumbSize, height };
-
+        
         g.setColour (isMouseOver ? COLOUR_BLACK_LIGHT_TRANSPARENT : COLOUR_ACCENT_LIGHT);
         g.fillRoundedRectangle (thumbBounds.reduced(1).toFloat(), 4.0f);
     }
@@ -358,7 +358,7 @@ public:
     {
         Path p;
         p.addTriangle(0.0f, 0.0f, 1.0f, isOpen ? 0.0f : 0.5f, isOpen ? 0.5f : 0.0f, 1.0f);
-
+        
         g.setColour(isMouseOver ? COLOUR_BLACK_LIGHT_TRANSPARENT : COLOUR_ACCENT_LIGHT);
         g.fillPath(p, p.getTransformToScaleToFit(area.reduced(2, area.getHeight() / 3), true));
     }
@@ -384,12 +384,12 @@ public:
             g.setColour(fileListComponent != nullptr ? COLOUR_BLACK_LIGHT_TRANSPARENT : COLOUR_BLACK_MEDIUM_TRANSPARENT);
             g.fillRoundedRectangle(0, 0, width - 5, height, 3.0);
         }
-
+        
         int const x = 5;
         
         g.setColour(COLOUR_ACCENT_LIGHT);
         g.setFont(FONT_SMALL_BOLD);
-
+        
         
         g.drawFittedText(filename,
                          x,
@@ -406,7 +406,7 @@ public:
         g.setColour(COLOUR_ACCENT_LIGHT);
         g.fillRoundedRectangle(r.toFloat(), CORNER_SIZE_MEDIUM);
         g.setColour(COLOUR_ACCENT_DARK);
-
+        
         for (int i = header.getNumColumns(true); --i >= 0;)
         {
             g.fillRect(header.getColumnPosition(i).removeFromRight(1));
@@ -414,25 +414,25 @@ public:
     }
     
     void drawTableHeaderColumn(Graphics& g,
-                                TableHeaderComponent& header,
-                                String const & columnName,
-                                int columnId,
-                                int width,
-                                int height,
-                                bool isMouseOver,
-                                bool isMouseDown,
-                                int columnFlags) override
+                               TableHeaderComponent& header,
+                               String const & columnName,
+                               int columnId,
+                               int width,
+                               int height,
+                               bool isMouseOver,
+                               bool isMouseDown,
+                               int columnFlags) override
     {
         auto highlightColour = COLOUR_LIGHT_GRAY_LIGHT_TRANSPARENT;
-
+        
         if (isMouseDown)
             g.fillAll (highlightColour);
         else if (isMouseOver)
             g.fillAll (highlightColour.withMultipliedAlpha (0.625f));
-
+        
         Rectangle<int> area (width, height);
         area.reduce (4, 0);
-
+        
         if ((columnFlags & (TableHeaderComponent::sortedForwards | TableHeaderComponent::sortedBackwards)) != 0)
         {
             Path sortArrow;
@@ -458,13 +458,13 @@ public:
         {
             cachedImage = { Image::ARGB, box.getWidth(), box.getHeight(), true };
             Graphics g2(cachedImage);
-
+            
             DropShadow(COLOUR_BLACK_MEDIUM_TRANSPARENT, 8, { 2, 2 }).drawForPath(g2, path);
         }
         
         g.setColour(COLOUR_BLACK);
         g.drawImageAt(cachedImage, 0, 0);
-
+        
         g.setColour(COLOUR_ACCENT_DARK.withAlpha(0.8f));
         g.fillPath(path);
         
@@ -476,7 +476,7 @@ public:
     {
         return 20;
     }
-
+    
     float getCallOutBoxCornerSize(CallOutBox const &) override
     {
         return CORNER_SIZE_MEDIUM;
@@ -491,7 +491,7 @@ public:
         auto cornerSize = CORNER_SIZE_MEDIUM;
         g.setColour(COLOUR_ACCENT_LIGHT_STRONG_TRANSPARENT);
         g.fillRoundedRectangle(alert.getLocalBounds().toFloat(), cornerSize);
-
+        
         // Draw alert text
         Rectangle<int> alertBounds(alert.getLocalBounds().getX(),
                                    30,
@@ -539,9 +539,9 @@ public:
     }
     
     void fillTextEditorBackground(Graphics& g,
-                                   int width,
-                                   int height,
-                                   TextEditor& textEditor) override
+                                  int width,
+                                  int height,
+                                  TextEditor& textEditor) override
     {
         g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
         g.fillRoundedRectangle(0, 0, width, height, CORNER_SIZE_MEDIUM);
@@ -562,10 +562,6 @@ public:
             imageOpacity *= 0.3f;
         }
         
-        // Draw button background
-        g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
-        g.fillRoundedRectangle(button.getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);
-        
         AffineTransform transfromImageToButtonBounds =
         RectanglePlacement(RectanglePlacement::stretchToFit)
             .getTransformToFit(image->getBounds().toFloat(),
@@ -577,6 +573,34 @@ public:
         
         g.setColour(overlayColour.withAlpha(imageOpacity));
         g.drawImageTransformed(*image, transfromImageToButtonBounds, true);
+    }
+    
+    void drawTooltip(Graphics& g,
+                     String const & text,
+                     int width,
+                     int height) override
+    {
+        Rectangle<int> bounds (width, height);
+        auto cornerSize = 5.0f;
+        
+        // Draw border
+        g.setColour(COLOUR_ACCENT_MEDIUM);
+        g.fillRoundedRectangle(bounds.toFloat(), cornerSize);
+        
+        // Draw background
+        g.setColour(COLOUR_ACCENT_DARK);
+        g.drawRoundedRectangle(bounds.toFloat().reduced(0.5f, 0.5f), cornerSize, 1.0f);
+        
+        // Draw text
+        const int maxToolTipWidth = 400;
+        
+        AttributedString tooltipText;
+        tooltipText.setJustification(Justification::centred);
+        tooltipText.append(text, FONT_SMALL_BOLD, COLOUR_ACCENT_LIGHT);
+        
+        TextLayout layout;
+        layout.createLayoutWithBalancedLineLengths(tooltipText, (float) maxToolTipWidth);
+        layout.draw(g, { static_cast<float>(width), static_cast<float>(height) });
     }
     
 private:

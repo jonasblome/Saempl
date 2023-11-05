@@ -29,7 +29,6 @@ public:
      */
     SampleFileFilterRuleBase(String inRulePropertyName);
     virtual ~SampleFileFilterRuleBase();
-    
     /**
      Determines whether the given sample item matches the rule.
      

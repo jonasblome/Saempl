@@ -88,7 +88,7 @@ Colour const COLOUR_ACCENT_DARK_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_DARK).
 
 
 // Fonts
-Font const FONT_SMALL_BOLD("Helvetica Neue", 12.00f, Font::bold);
+Font const FONT_SMALL_BOLD ("Helvetica Neue", 12.00f, Font::bold);
 Font const FONT_SMALL_BOLD_ACCENTUATED("Helvetica Neue", 12.70f, Font::bold);
 Font const FONT_MEDIUM_SMALL_BOLD("Helvetica Neue", 16.00f, Font::bold);
 Font const FONT_MEDIUM("Helvetica Neue", 22.00f, Font::bold);

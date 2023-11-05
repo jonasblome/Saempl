@@ -25,12 +25,13 @@ class NoiseOverlayPanel
 public:
     NoiseOverlayPanel();
     ~NoiseOverlayPanel();
+    
+private:
+    std::unique_ptr<Image> mNoiseOverlay;
+    
     void paint(Graphics& g) override;
     /**
      Sets the grain Image component of the overlay panel.
      */
     void setPanelComponents();
-    
-private:
-    std::unique_ptr<Image> mNoiseOverlay;
 };

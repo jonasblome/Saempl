@@ -12,6 +12,7 @@
 
 #include "PanelBase.h"
 #include "AudioPreviewPanel.h"
+#include "BlomeImageButton.h"
 
 /**
  Holds the audio file preview panel and the \ref SampleEditor
@@ -33,10 +34,6 @@ public:
      */
     SampleItemPanel(SaemplAudioProcessor& inProcessor);
     ~SampleItemPanel();
-    
-    // Methods
-    void paint(Graphics& g) override;
-    void setPanelComponents() override;
     /**
      Tries to show the audio resource of the given file in the preview panel.
      If this fails the library gets refreshed.
@@ -52,8 +49,10 @@ private:
     std::unique_ptr<SampleEditor> mSampleEditor;
     std::unique_ptr<AudioPreviewPanel> mAudioPreviewPanel;
     std::unique_ptr<Slider> mZoomSlider;
-    std::unique_ptr<ImageButton> mFollowTransportButton;
-    std::unique_ptr<ImageButton> mStartStopButton;
+    std::unique_ptr<BlomeImageButton> mFollowTransportButton;
+    std::unique_ptr<BlomeImageButton> mStartStopButton;
     
+    void paint(Graphics& g) override;
+    void setPanelComponents() override;
     void changeListenerCallback (ChangeBroadcaster* source) override;
 };

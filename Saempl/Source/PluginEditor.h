@@ -28,7 +28,7 @@ public:
     void resized() override;
 
 private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SaemplAudioProcessorEditor)
+    // JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SaemplAudioProcessorEditor)
     
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
@@ -36,4 +36,5 @@ private:
     std::unique_ptr<MainPanel> mMainPanel;
     std::unique_ptr<NoiseOverlayPanel> mNoiseOverlayPanel;
     std::unique_ptr<BlomeLookAndFeel> mLookAndFeel;
+    SharedResourcePointer<TooltipWindow> tooltipWindow;
 };

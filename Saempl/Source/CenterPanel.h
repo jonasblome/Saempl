@@ -33,8 +33,6 @@ public:
      */
     CenterPanel(SaemplAudioProcessor& inProcessor);
     ~CenterPanel();
-    void paint(Graphics& g) override;
-    void setPanelComponents() override;
     /**
      Toggles between showing the library panel, the table panel and the map panel.
      
@@ -53,6 +51,8 @@ private:
     std::unique_ptr<SampleItemPanel> mSampleItemPanel;
     std::unique_ptr<ToggleButton> mToggleSampleItemPanelButton;
     
+    void paint(Graphics& g) override;
+    void setPanelComponents() override;
     /**
      Toggles the sample item's visibility on/off and rescales the navigation panels.
      */

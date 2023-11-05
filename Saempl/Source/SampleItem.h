@@ -23,13 +23,13 @@ public:
     SampleItem();
     ~SampleItem();
     /**
-     Sets the file path of the corresponding audio file.
-     */
-    void setFilePath(String const & inFilePath);
-    /**
      @returns the file path.
      */
     String getFilePath() const;
+    /**
+     Sets the file path of the corresponding audio file.
+     */
+    void setFilePath(String const & inFilePath);
     /**
      @returns the sample's title.
      */

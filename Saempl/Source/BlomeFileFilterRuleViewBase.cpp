@@ -43,6 +43,7 @@ void BlomeFileFilterRuleViewBase::setComponents()
     // Add button to activate filter rule
     mActivateRuleButton = std::make_unique<ToggleButton>("ActivateRuleButton");
     mActivateRuleButton->setToggleState(linkedFilterRule.getIsActive(), NotificationType::dontSendNotification);
+    mActivateRuleButton->setTooltip("Activate/deactivate this filter rule");
     mActivateRuleButton->onClick = [this]
     {
         linkedFilterRule.setIsActive(mActivateRuleButton->getToggleState());
@@ -61,7 +62,7 @@ void BlomeFileFilterRuleViewBase::setComponents()
     addAndMakeVisible(*mCompareOperatorChooser);
     
     // Add button for deleting filter rule
-    mDeleteRuleButton = std::make_unique<ImageButton>("Delete");
+    mDeleteRuleButton = std::make_unique<BlomeImageButton>("Delete", true);
     mDeleteRuleButton->setImages(false,
                                  true,
                                  true,
@@ -75,6 +76,7 @@ void BlomeFileFilterRuleViewBase::setComponents()
                                  Image(),
                                  0.5,
                                  Colour());
+    mDeleteRuleButton->setTooltip("Delete this filter rule");
     mDeleteRuleButton->onClick = [this]
     {
         

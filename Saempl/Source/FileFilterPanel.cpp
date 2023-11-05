@@ -142,13 +142,13 @@ void FileFilterPanel::setPanelComponents()
                                    PANEL_MARGIN / 2.0,
                                    COMBO_BOX_WIDTH_MEDIUM - PANEL_MARGIN / 4.0,
                                    FILTER_RULE_HEIGHT - PANEL_MARGIN / 2.0);
-    mNewRuleTypeChooser->addItem("New title rule:", 1);
-    mNewRuleTypeChooser->addItem("New length rule:", 2);
+    mNewRuleTypeChooser->addItem("New title rule", 1);
+    mNewRuleTypeChooser->addItem("New length rule", 2);
     mNewRuleTypeChooser->setTextWhenNothingSelected("Choose new rule type");
     addAndMakeVisible(*mNewRuleTypeChooser);
     
     // Add button for adding filter rules
-    mAddFilterRuleButton = std::make_unique<ImageButton>("Add filter");
+    mAddFilterRuleButton = std::make_unique<BlomeImageButton>("Add filter", true);
     mAddFilterRuleButton->setImages(false,
                                     true,
                                     true,
@@ -166,6 +166,7 @@ void FileFilterPanel::setPanelComponents()
                                     PANEL_MARGIN / 2.0,
                                     FILTER_RULE_HEIGHT - PANEL_MARGIN / 2.0,
                                     FILTER_RULE_HEIGHT - PANEL_MARGIN / 2.0);
+    mAddFilterRuleButton->setTooltip("Add a new rule of the chosen type to the filter");
     mAddFilterRuleButton->onClick = [this]
     {
         addFilterRuleView();

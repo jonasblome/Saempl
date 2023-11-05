@@ -13,6 +13,7 @@
 #include "PanelBase.h"
 #include "CenterPanel.h"
 #include "FileFilterPanel.h"
+#include "BlomeImageButton.h"
 
 /**
  Holds the logo, and components for global functionality.
@@ -34,20 +35,20 @@ public:
      */
     HeaderPanel(SaemplAudioProcessor& inProcessor, CenterPanel& inCenterPanel);
     ~HeaderPanel();
-    void paint(Graphics& g) override;
-    void setPanelComponents() override;
     
 private:
     SaemplAudioProcessor& currentProcessor;
     CenterPanel& linkedCenterPanel;
-    std::unique_ptr<ImageButton> mRefreshLibraryButton;
-    std::unique_ptr<ImageButton> mChooseLibraryFolderButton;
+    std::unique_ptr<BlomeImageButton> mRefreshLibraryButton;
+    std::unique_ptr<BlomeImageButton> mChooseLibraryFolderButton;
     std::unique_ptr<FileChooser> mFileChooser;
-    std::unique_ptr<ImageButton> mToggleLibraryPanelButton;
-    std::unique_ptr<ImageButton> mToggleSampleTablePanelButton;
-    std::unique_ptr<ImageButton> mChangeFilterButton;
-    std::unique_ptr<ToggleButton> mActivateFilterButton;
+    std::unique_ptr<BlomeImageButton> mToggleLibraryPanelButton;
+    std::unique_ptr<BlomeImageButton> mToggleSampleTablePanelButton;
+    std::unique_ptr<BlomeImageButton> mChangeFilterButton;
+    std::unique_ptr<BlomeImageButton> mToggleFilterButton;
     
+    void paint(Graphics& g) override;
+    void setPanelComponents() override;
     /**
      Shows the dialogue for choosing the sample library directory.
      */

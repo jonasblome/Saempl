@@ -31,11 +31,12 @@ public:
      */
     SamplePalettePanel(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
     ~SamplePalettePanel();
-    void paint(Graphics& g) override;
-    void setPanelComponents() override;
     
 private:
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<BlomeTableViewPalette> mSampleTable;
+    
+    void paint(Graphics& g) override;
+    void setPanelComponents() override;
 };

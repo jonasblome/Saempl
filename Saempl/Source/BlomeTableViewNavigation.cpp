@@ -14,7 +14,6 @@ BlomeTableViewNavigation::BlomeTableViewNavigation(SampleLibrary& inSampleLibrar
 :   BlomeTableViewBase(inSampleLibrary, inSampleItemPanel)
 {
     sampleLibrary.addChangeListener(this);
-    
     mSampleItemCollectionType = FILTERED_SAMPLES;
     
     // Add all sample item properties as table columns
@@ -44,8 +43,9 @@ void BlomeTableViewNavigation::cellClicked(int rowNumber, int columnId, MouseEve
     if (mouseEvent.mods.isRightButtonDown())
     {
         PopupMenu popupMenu;
-        popupMenu.addItem("Move File(s) to Trash", [this] { deleteFile(false); });
-        popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFile(true); });
+        popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
+        popupMenu.addItem("Add Sample(s) to Favorites", [this] { addToPalette(); });
+        popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
     }
 }
@@ -64,7 +64,7 @@ void BlomeTableViewNavigation::filesDropped(StringArray const & files, int x, in
     sampleLibrary.refresh();
 }
 
-void BlomeTableViewNavigation::deleteFile(bool deletePermanently = false)
+void BlomeTableViewNavigation::deleteFiles(bool deletePermanently = false)
 {
     // Delete all selected files
     for (int r = getNumSelectedRows() - 1; r >= 0; r--)
@@ -78,6 +78,18 @@ void BlomeTableViewNavigation::deleteFile(bool deletePermanently = false)
     sampleLibrary.refresh();
 }
 
+void BlomeTableViewNavigation::addToPalette()
+{
+    for (int r = getNumSelectedRows() - 1; r >= 0; r--)
+    {
+        sampleLibrary.addToPalette(sampleLibrary
+                                   .getSampleItems(mSampleItemCollectionType)
+                                   .getUnchecked(getSelectedRow(r))->getFilePath());
+    }
+    
+    sampleLibrary.refresh();
+}
+
 // This is overloaded from TableListBoxModel, and tells us that the user has clicked a table header
 // to change the sort order.
 void BlomeTableViewNavigation::sortOrderChanged(int newSortColumnId, bool isForwards)
@@ -86,9 +98,9 @@ void BlomeTableViewNavigation::sortOrderChanged(int newSortColumnId, bool isForw
     if (newSortColumnId != 0)
     {
         String propertyName = newSortColumnId <= PROPERTY_NAMES.size() ? PROPERTY_NAMES[newSortColumnId - 1] : "Title";
-        mComparator.setCompareProperty(propertyName);
-        mComparator.setSortingDirection(isForwards);
-        sampleLibrary.getSampleItems(mSampleItemCollectionType).sort(mComparator);
+        mComparator->setCompareProperty(propertyName);
+        mComparator->setSortingDirection(isForwards);
+        sampleLibrary.getSampleItems(mSampleItemCollectionType).sort(*mComparator);
         updateContent();
     }
 }

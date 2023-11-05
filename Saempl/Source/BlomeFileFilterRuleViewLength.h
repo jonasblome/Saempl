@@ -34,12 +34,6 @@ public:
      */
     BlomeFileFilterRuleViewLength(SampleFileFilterRuleLength& inFilterRule, SampleLibrary& inSampleLibrary);
     ~BlomeFileFilterRuleViewLength();
-    void paint(Graphics& g) override;
-    void setComponents() override;
-    void resized() override;
-    void textEditorReturnKeyPressed(TextEditor&) override;
-    void textEditorEscapeKeyPressed(TextEditor&) override;
-    void textEditorFocusLost(TextEditor&) override;
     /**
      @returns the \ref SampleFileFilterRuleBase linked to the view.
      */
@@ -47,4 +41,11 @@ public:
     
 private:
     std::unique_ptr<TextEditor> mCompareValueEditor;
+    
+    void paint(Graphics& g) override;
+    void setComponents() override;
+    void resized() override;
+    void textEditorReturnKeyPressed(TextEditor&) override;
+    void textEditorEscapeKeyPressed(TextEditor&) override;
+    void textEditorFocusLost(TextEditor&) override;
 };

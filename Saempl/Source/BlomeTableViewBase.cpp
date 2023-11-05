@@ -15,6 +15,8 @@ BlomeTableViewBase::BlomeTableViewBase(SampleLibrary& inSampleLibrary,
 :   sampleLibrary(inSampleLibrary),
     linkedSampleItemPanel(inSampleItemPanel)
 {
+    mComparator = std::make_unique<SampleItemComparator>();
+    
     setModel(this);
     setColour(ListBox::outlineColourId, COLOUR_ACCENT_LIGHT);
     setOutlineThickness(0);
@@ -45,12 +47,8 @@ void BlomeTableViewBase::paintRowBackground(Graphics& g,
                                          int height,
                                          bool rowIsSelected)
 {
-    g.fillAll(COLOUR_ACCENT_MEDIUM);
-    
-    if (rowIsSelected)
-    {
-        g.fillAll(COLOUR_ACCENT_DARK);
-    }
+    rowIsSelected ? g.setColour(COLOUR_ACCENT_DARK) : g.setColour(COLOUR_ACCENT_MEDIUM);
+    g.fillRoundedRectangle(Rectangle<float>(width, height), CORNER_SIZE_MEDIUM);
 }
 
 // This is overloaded from TableListBoxModel, and must paint any cells that aren't using custom

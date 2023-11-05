@@ -14,6 +14,7 @@
 #include "BlomeFileFilterRuleViewBase.h"
 #include "BlomeFileFilterRuleViewTitle.h"
 #include "BlomeFileFilterRuleViewLength.h"
+#include "NoiseOverlayPanel.h"
 
 /**
  Holds the \ref BlomeFileFilterRuleViewBase components.
@@ -35,6 +36,14 @@ public:
      */
     FileFilterPanel(SampleLibrary& inSampleLibrary);
     ~FileFilterPanel();
+    
+private:
+    SampleFileFilter& libraryFileFilter;
+    SampleLibrary& linkedLibrary;
+    std::unique_ptr<ComboBox> mNewRuleTypeChooser;
+    std::unique_ptr<BlomeImageButton> mAddFilterRuleButton;
+    OwnedArray<BlomeFileFilterRuleViewBase> mFilterRuleViews;
+    
     void paint(Graphics& g) override;
     /**
      Generates a \ref BlomeFileFilterRuleViewBase for the given rule and adds it to the \ref FileFilterPanel::mFilterRuleViews collection.
@@ -52,11 +61,4 @@ public:
     void removeFilterRule(SampleFileFilterRuleBase const & inFilterRule);
     void setPanelComponents() override;
     void buttonClicked(Button* button) override;
-    
-private:
-    SampleFileFilter& libraryFileFilter;
-    SampleLibrary& linkedLibrary;
-    std::unique_ptr<ComboBox> mNewRuleTypeChooser;
-    std::unique_ptr<ImageButton> mAddFilterRuleButton;
-    OwnedArray<BlomeFileFilterRuleViewBase> mFilterRuleViews;
 };

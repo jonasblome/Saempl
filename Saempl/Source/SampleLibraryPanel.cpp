@@ -91,6 +91,7 @@ void SampleLibraryPanel::fileClicked(File const & file, MouseEvent const & mouse
     {
         PopupMenu popupMenu;
         popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
+        popupMenu.addItem("Add Sample(s) to Favorites", [this] { addToPalette(); });
         popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
     }
@@ -124,6 +125,16 @@ void SampleLibraryPanel::deleteFiles(bool deletePermanently = false)
     }
     
     sampleLibrary.refresh();
-};
+}
+
+void SampleLibraryPanel::addToPalette()
+{
+    for (int f = mFileTree->getNumSelectedItems() - 1; f >= 0 ; f--)
+    {
+        sampleLibrary.addToPalette(mFileTree->getSelectedFile(f).getFullPathName());
+    }
+    
+    sampleLibrary.refresh();
+}
 
 

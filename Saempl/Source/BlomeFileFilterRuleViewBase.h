@@ -13,6 +13,7 @@
 #include "JuceHeader.h"
 #include "BlomeStyleDefinitions.h"
 #include "SampleLibrary.h"
+#include "BlomeImageButton.h"
 
 /**
  The base class for views to the \ref SampleFileFilterRuleBase classes.
@@ -37,13 +38,6 @@ public:
      */
     BlomeFileFilterRuleViewBase(SampleFileFilterRuleBase& inFilterRule, SampleLibrary& inSampleLibrary);
     virtual ~BlomeFileFilterRuleViewBase();
-    void paint(Graphics& g) override;
-    /**
-     Initializes the panel's components and adds them to the parent component.
-     */
-    virtual void setComponents();
-    void resized() override;
-    void comboBoxChanged(ComboBox* comboBoxThatHasChanged) override;
     /**
      @returns the \ref SampleFileFilterRuleBase linked to the view.
      */
@@ -64,5 +58,13 @@ protected:
     SampleFileFilterRuleBase& linkedFilterRule;
     std::unique_ptr<ComboBox> mCompareOperatorChooser;
     std::unique_ptr<ToggleButton> mActivateRuleButton;
-    std::unique_ptr<ImageButton> mDeleteRuleButton;
+    std::unique_ptr<BlomeImageButton> mDeleteRuleButton;
+    
+    /**
+     Initializes the panel's components and adds them to the parent component.
+     */
+    virtual void setComponents();
+    void paint(Graphics& g) override;
+    void resized() override;
+    void comboBoxChanged(ComboBox* comboBoxThatHasChanged) override;
 };

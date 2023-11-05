@@ -53,17 +53,6 @@ public:
      */
     void storeLastOpenedDirectory(String& inDirectoryPath);
     /**
-     Loads the given file as an \ref XmlElement and returns a pointer to it.
-     */
-    XmlElement loadFileAsXml(File& inFile);
-    /**
-     Writes the contents of the given xml into the given file as binary data.
-     
-     @param inXml the \ref XmlElement to store in the file.
-     @param inFile the file to store the \ref XmlElement in.
-     */
-    void writeXmlToFile(XmlElement& inXml, File& inFile);
-    /**
      Creates a sample item for the given file and sets its properties.
      
      @param inFile the file for which to create the sample item.
@@ -102,4 +91,16 @@ private:
     + DIRECTORY_SEPARATOR
     + "SaemplPluginData"
     + SAEMPL_DATA_FILE_EXTENSION;
+    
+    /**
+     Loads the given file as an \ref XmlElement and returns a pointer to it.
+     */
+    XmlElement loadFileAsXml(File& inFile);
+    /**
+     Writes the contents of the given xml into the given file as binary data.
+     
+     @param inXml the \ref XmlElement to store in the file.
+     @param inFile the file to store the \ref XmlElement in.
+     */
+    void writeXmlToFile(XmlElement& inXml, File& inFile);
 };

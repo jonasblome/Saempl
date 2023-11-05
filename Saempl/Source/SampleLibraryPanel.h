@@ -56,4 +56,8 @@ private:
      @param deletePermanently whether the file gets deleted permanently or move to the trash.
      */
     void deleteFiles(bool deletePermanently);
+    /**
+     Add all selected files to the sample item palette collection.
+     */
+    void addToPalette();
 };

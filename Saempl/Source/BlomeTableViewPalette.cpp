@@ -77,9 +77,9 @@ void BlomeTableViewPalette::sortOrderChanged(int newSortColumnId, bool isForward
     // Sort items by title and chosen direction
     if (newSortColumnId != 0)
     {
-        mComparator.setCompareProperty("Title");
-        mComparator.setSortingDirection(isForwards);
-        sampleLibrary.getSampleItems(mSampleItemCollectionType).sort(mComparator);
+        mComparator->setCompareProperty("Title");
+        mComparator->setSortingDirection(isForwards);
+        sampleLibrary.getSampleItems(mSampleItemCollectionType).sort(*mComparator);
         updateContent();
     }
 }

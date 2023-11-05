@@ -1,17 +1,17 @@
 /*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ This file contains the basic framework code for a JUCE plugin editor.
+ 
+ ==============================================================================
+ */
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
 //==============================================================================
 SaemplAudioProcessorEditor::SaemplAudioProcessorEditor (SaemplAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+: AudioProcessorEditor (&p), audioProcessor (p)
 {
     // Set styling of plugin UI
     mLookAndFeel = std::make_unique<BlomeLookAndFeel>(p.getSampleLibrary());
@@ -22,11 +22,11 @@ SaemplAudioProcessorEditor::SaemplAudioProcessorEditor (SaemplAudioProcessor& p)
     
     // Set main panel into plugin window
     mMainPanel = std::make_unique<MainPanel>(p);
-    addAndMakeVisible(mMainPanel.get());
+    addAndMakeVisible(*mMainPanel);
     
     // Add noise overlay
-     mNoiseOverlayPanel = std::make_unique<NoiseOverlayPanel>();
-     addAndMakeVisible(mNoiseOverlayPanel.get());
+    // mNoiseOverlayPanel = std::make_unique<NoiseOverlayPanel>();
+    // addAndMakeVisible(*mNoiseOverlayPanel);
 }
 
 SaemplAudioProcessorEditor::~SaemplAudioProcessorEditor()

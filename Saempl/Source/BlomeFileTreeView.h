@@ -33,11 +33,12 @@ public:
      */
     BlomeFileTreeView(SampleLibrary& inSampleLibrary);
     ~BlomeFileTreeView();
+    
+private:
+    SampleLibrary& sampleLibrary;
+    
     void filesDropped(StringArray const & files, int x, int y) override;
     bool isInterestedInFileDrag(StringArray const & files) override;
     void changeListenerCallback(ChangeBroadcaster* source) override;
     void mouseDrag(MouseEvent const & e) override;
-    
-private:
-    SampleLibrary& sampleLibrary;
 };

@@ -34,11 +34,6 @@ public:
      */
     SampleNavigationPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~SampleNavigationPanel();
-    
-    // Methods
-    void paint(Graphics& g) override;
-    void setPanelComponents() override;
-    void resizePanelComponents() override;
     /**
      Toggles between showing the library panel, the table panel and the map panel.
      
@@ -56,4 +51,8 @@ private:
     std::unique_ptr<SampleTablePanel> mSampleTablePanel;
     SampleLibrary& sampleLibrary;
     NavigationPanelType mActiveNavigationPanelType;
+    
+    void paint(Graphics& g) override;
+    void setPanelComponents() override;
+    void resizePanelComponents() override;
 };

@@ -38,7 +38,7 @@ void SampleItemPanel::setPanelComponents()
     int followTransportButtonHeight = 34;
     
     // Add play button component
-    mStartStopButton = std::make_unique<ImageButton>("Play/Stop");
+    mStartStopButton = std::make_unique<BlomeImageButton>("Play/Stop", true);
     mStartStopButton->setImages(false,
                                 true,
                                 true,
@@ -48,19 +48,20 @@ void SampleItemPanel::setPanelComponents()
                                 COLOUR_ACCENT_LIGHT,
                                 Image(),
                                 0.35,
-                                Colour(),
+                                COLOUR_ACCENT_LIGHT,
                                 Image(),
                                 0.5,
-                                Colour());
+                                COLOUR_ACCENT_LIGHT);
     mStartStopButton->setBounds(PANEL_MARGIN / 2.0,
                                 PANEL_MARGIN / 2.0,
                                 SAMPLE_CONTROL_WIDTH - PANEL_MARGIN / 2.0,
                                 SAMPLE_CONTROL_WIDTH - PANEL_MARGIN / 2.0);
+    mStartStopButton->setTooltip("Start/stop playback");
     mStartStopButton->onClick = [this] { mAudioPreviewPanel->startOrStop(); };
     addAndMakeVisible(*mStartStopButton);
     
     // Add follow transport button
-    mFollowTransportButton = std::make_unique<ImageButton>("Follow Transport");
+    mFollowTransportButton = std::make_unique<BlomeImageButton>("Follow Transport", true);
     mFollowTransportButton->setImages(false,
                                       true,
                                       true,
@@ -78,6 +79,7 @@ void SampleItemPanel::setPanelComponents()
                                       SAMPLE_CONTROL_WIDTH + PANEL_MARGIN / 2.0,
                                       SAMPLE_CONTROL_WIDTH - PANEL_MARGIN / 2.0,
                                       followTransportButtonHeight - PANEL_MARGIN / 2.0);
+    mFollowTransportButton->setTooltip("Follow playback cursor");
     mFollowTransportButton->onClick = [this]
     {
         bool follows = !mAudioPreviewPanel->getFollowsTransport();
@@ -91,10 +93,10 @@ void SampleItemPanel::setPanelComponents()
                                           follows ? COLOUR_ACCENT_LIGHT : COLOUR_BLACK,
                                           Image(),
                                           follows ? 0.35 : 0.25,
-                                          Colour(),
+                                          follows ? COLOUR_ACCENT_LIGHT : COLOUR_BLACK,
                                           Image(),
                                           follows ? 0.5 : 0.35,
-                                          Colour());
+                                          follows ? COLOUR_ACCENT_LIGHT : COLOUR_BLACK);
     };
     addAndMakeVisible(*mFollowTransportButton);
     

@@ -20,14 +20,14 @@ SampleItem::~SampleItem()
     
 }
 
-void SampleItem::setFilePath(String const & inFilePath)
-{
-    mFilePath = inFilePath;
-}
-
 String SampleItem::getFilePath() const
 {
     return mFilePath;
+}
+
+void SampleItem::setFilePath(String const & inFilePath)
+{
+    mFilePath = inFilePath;
 }
 
 String SampleItem::getTitle() const
