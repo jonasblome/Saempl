@@ -31,7 +31,7 @@ void SamplePalettePanel::paint(Graphics& g)
     g.fillRoundedRectangle(getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);
     
     // Draw Title
-    g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
+    g.setColour(COLOUR_ACCENT_DARK);
     g.fillRoundedRectangle(getLocalBounds().
                            removeFromTop(PANEL_TITLE_HEIGHT).
                            reduced(PANEL_MARGIN / 2.0).

@@ -27,7 +27,7 @@ void BlomeImageButton::paintButton(Graphics& g, bool isOver, bool isDown)
     if (hasBackground)
     {
         // Draw button background
-        g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
+        g.setColour(COLOUR_ACCENT_DARK);
         g.fillRoundedRectangle(getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);
     }
     

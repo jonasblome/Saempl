@@ -23,12 +23,12 @@ public:
     :   sampleLibrary(inSampleDatabase)
     {
         // ComboBox colours
-        setColour(ComboBox::backgroundColourId, COLOUR_BLACK_LIGHT_TRANSPARENT);
+        setColour(ComboBox::backgroundColourId, COLOUR_ACCENT_DARK);
         setColour(ComboBox::outlineColourId, COLOUR_BLACK);
         setColour(ComboBox::arrowColourId, COLOUR_LIGHT_GRAY);
         setColour(ComboBox::textColourId, COLOUR_LIGHT_GRAY);
         setColour(PopupMenu::backgroundColourId, COLOUR_ACCENT_LIGHT_STRONG_TRANSPARENT);
-        setColour(AlertWindow::textColourId, COLOUR_BLACK_MEDIUM_TRANSPARENT);
+        setColour(AlertWindow::textColourId, COLOUR_ACCENT_DARK);
         
         // Button text colours
         setColour(TextButton::buttonColourId, COLOUR_ACCENT_LIGHT);
@@ -59,15 +59,15 @@ public:
         
         if(shouldDrawButtonAsDown)
         {
-            fillColour = COLOUR_BLACK_STRONG_TRANSPARENT;
+            fillColour = COLOUR_ACCENT_DARK.withAlpha(0.9f);
         }
         else if(shouldDrawButtonAsHighlighted)
         {
-            fillColour = COLOUR_BLACK_MEDIUM_TRANSPARENT;
+            fillColour = COLOUR_ACCENT_DARK.withAlpha(0.7f);
         }
         else
         {
-            fillColour = COLOUR_BLACK_LIGHT_TRANSPARENT;
+            fillColour = COLOUR_ACCENT_DARK;
         }
         
         float const cornerSize = 6.0f;
@@ -87,16 +87,16 @@ public:
         
         if(shouldDrawButtonAsHighlighted)
         {
-            fillColour = COLOUR_BLACK_MEDIUM_TRANSPARENT;
+            fillColour = COLOUR_ACCENT_DARK.withAlpha(0.7f);
         }
         else
         {
-            fillColour = COLOUR_BLACK_LIGHT_TRANSPARENT;
+            fillColour = COLOUR_ACCENT_DARK;
         }
         
         if (!button.isEnabled())
         {
-            g.setOpacity (0.5f);
+            g.setOpacity(0.5f);
         }
         
         g.setColour(fillColour);
@@ -142,15 +142,15 @@ public:
     {
         Rectangle<int> r(area);
         
-        if(isHighlighted)
+        if (isHighlighted || isTicked)
         {
-            g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
+            g.setColour(isHighlighted ? COLOUR_BLACK_LIGHT_TRANSPARENT : COLOUR_ACCENT_DARK);
             g.fillRoundedRectangle(r.reduced(1).toFloat(), CORNER_SIZE_MEDIUM);
         }
         
-        Colour fontColour = isTicked ? COLOUR_BLACK_STRONG_TRANSPARENT : COLOUR_BLACK_MEDIUM_TRANSPARENT;
+        Colour fontColour = isTicked ? COLOUR_ACCENT_LIGHT : COLOUR_ACCENT_DARK;
         g.setColour(fontColour);
-        g.setFont(isTicked ? FONT_SMALL_BOLD_ACCENTUATED : FONT_SMALL_BOLD);
+        g.setFont(FONT_SMALL_BOLD);
         
         r.setLeft(10);
         r.setY(1);
@@ -169,7 +169,7 @@ public:
     {
         Rectangle<int> const boxBounds (0, 0, width, height);
         
-        g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
+        g.setColour(COLOUR_ACCENT_DARK);
         g.fillRoundedRectangle(boxBounds.toFloat(), CORNER_SIZE_MEDIUM);
         
         Rectangle<int> arrow (width - 30, 0, 20, height);
@@ -213,9 +213,9 @@ public:
                            float sliderPosProportional, float rotaryStartAngle,
                            float rotaryEndAngle, Slider& slider) override
     {
-        g.setColour(COLOUR_BLACK_MEDIUM_TRANSPARENT);
+        g.setColour(COLOUR_ACCENT_DARK);
         g.fillEllipse(x + 6, y + 6, width - 14, height - 14);
-        g.setColour(COLOUR_LIGHT_GRAY);
+        g.setColour(COLOUR_ACCENT_LIGHT);
         Line<float> sliderTick = Line<float>::fromStartAndAngle(Point<float>(width * 0.5 - 1, height * 0.5 - 1), (width - 19) * 0.5, sliderPosProportional * M_PI * 1.5 - (M_PI * 0.75));
         g.drawLine(sliderTick, 2.0);
     }
@@ -233,7 +233,7 @@ public:
     {
         if (slider.isBar())
         {
-            g.setColour(COLOUR_BLACK_MEDIUM_TRANSPARENT);
+            g.setColour(COLOUR_ACCENT_DARK);
             g.fillRect(slider.isHorizontal() ? Rectangle<float>(static_cast<float> (x), (float)y + 0.5f, sliderPos - (float) x, (float) height - 1.0f)
                        : Rectangle<float>((float)x + 0.5f, sliderPos, (float)width - 1.0f, (float)y + ((float)height - sliderPos)));
         }
@@ -253,7 +253,7 @@ public:
             Path backgroundTrack;
             backgroundTrack.startNewSubPath(startPoint);
             backgroundTrack.lineTo(endPoint);
-            g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
+            g.setColour(COLOUR_ACCENT_DARK);
             g.strokePath(backgroundTrack, { trackWidth, PathStrokeType::curved, PathStrokeType::rounded });
             
             Path valueTrack;
@@ -346,7 +346,7 @@ public:
         else
             thumbBounds = { thumbStartPosition, y, thumbSize, height };
         
-        g.setColour (isMouseOver ? COLOUR_BLACK_LIGHT_TRANSPARENT : COLOUR_ACCENT_LIGHT);
+        g.setColour (isMouseOver ? COLOUR_ACCENT_LIGHT.withAlpha(0.7f) : COLOUR_ACCENT_LIGHT);
         g.fillRoundedRectangle (thumbBounds.reduced(1).toFloat(), 4.0f);
     }
     
@@ -359,7 +359,7 @@ public:
         Path p;
         p.addTriangle(0.0f, 0.0f, 1.0f, isOpen ? 0.0f : 0.5f, isOpen ? 0.5f : 0.0f, 1.0f);
         
-        g.setColour(isMouseOver ? COLOUR_BLACK_LIGHT_TRANSPARENT : COLOUR_ACCENT_LIGHT);
+        g.setColour(isMouseOver ? COLOUR_ACCENT_LIGHT.withAlpha(0.7f) : COLOUR_ACCENT_LIGHT);
         g.fillPath(p, p.getTransformToScaleToFit(area.reduced(2, area.getHeight() / 3), true));
     }
     
@@ -379,9 +379,9 @@ public:
         auto fileListComponent = dynamic_cast<Component*>(&directoryDisplayer);
         
         // Markup if the row is selected
-        if(isItemSelected)
+        if (isItemSelected)
         {
-            g.setColour(fileListComponent != nullptr ? COLOUR_BLACK_LIGHT_TRANSPARENT : COLOUR_BLACK_MEDIUM_TRANSPARENT);
+            g.setColour(fileListComponent != nullptr ? COLOUR_ACCENT_DARK : COLOUR_ACCENT_DARK);
             g.fillRoundedRectangle(0, 0, width - 5, height, 3.0);
         }
         
@@ -423,12 +423,16 @@ public:
                                bool isMouseDown,
                                int columnFlags) override
     {
-        auto highlightColour = COLOUR_LIGHT_GRAY_LIGHT_TRANSPARENT;
+        auto highlightColour = COLOUR_ACCENT_MEDIUM.withAlpha(0.7f);
         
         if (isMouseDown)
-            g.fillAll (highlightColour);
+        {
+            g.fillAll(highlightColour);
+        }
         else if (isMouseOver)
-            g.fillAll (highlightColour.withMultipliedAlpha (0.625f));
+        {
+            g.fillAll(highlightColour.withMultipliedAlpha (0.625f));
+        }
         
         Rectangle<int> area (width, height);
         area.reduce (4, 0);
@@ -526,7 +530,7 @@ public:
             {
                 if (textEditor.hasKeyboardFocus(true) && !textEditor.isReadOnly())
                 {
-                    g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
+                    g.setColour(COLOUR_ACCENT_DARK);
                     g.drawRoundedRectangle(1,
                                            1,
                                            width - 2,
@@ -543,7 +547,7 @@ public:
                                   int height,
                                   TextEditor& textEditor) override
     {
-        g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
+        g.setColour(COLOUR_ACCENT_DARK);
         g.fillRoundedRectangle(0, 0, width, height, CORNER_SIZE_MEDIUM);
     }
     
@@ -601,6 +605,68 @@ public:
         TextLayout layout;
         layout.createLayoutWithBalancedLineLengths(tooltipText, (float) maxToolTipWidth);
         layout.draw(g, { static_cast<float>(width), static_cast<float>(height) });
+    }
+    
+    void drawProgressBar(Graphics& g,
+                         ProgressBar& progressBar,
+                         int width,
+                         int height,
+                         double progress,
+                         String const & textToShow) override
+    {
+        Colour background = COLOUR_ACCENT_DARK;
+        Colour foreground = COLOUR_ACCENT_MEDIUM;
+        
+        Rectangle<float> barBounds = progressBar.getLocalBounds().toFloat();
+        
+        g.setColour(background);
+        g.fillRoundedRectangle(barBounds, (float) progressBar.getHeight() * 0.5f);
+        
+        if (progress >= 0.0f && progress <= 1.0f)
+        {
+            Path p;
+            p.addRoundedRectangle(barBounds, (float) progressBar.getHeight() * 0.5f);
+            g.reduceClipRegion(p);
+            
+            barBounds.setWidth(barBounds.getWidth() * (float) progress);
+            g.setColour(foreground);
+            g.fillRoundedRectangle(barBounds, (float) progressBar.getHeight() * 0.5f);
+        }
+        else
+        {
+            // Spinning bar..
+            g.setColour(background);
+            
+            auto stripeWidth = height * 2;
+            auto position = static_cast<int> (Time::getMillisecondCounter() / 15) % stripeWidth;
+            
+            Path p;
+            
+            for (auto x = static_cast<float> (-position); x < (float) (width + stripeWidth); x += (float) stripeWidth)
+                p.addQuadrilateral(x, 0.0f,
+                                   x + (float) stripeWidth * 0.5f, 0.0f,
+                                   x, static_cast<float> (height),
+                                   x - (float) stripeWidth * 0.5f, static_cast<float> (height));
+            
+            Image im(Image::ARGB, width, height, true);
+            
+            {
+                Graphics g2(im);
+                g2.setColour(foreground);
+                g2.fillRoundedRectangle(barBounds, (float) progressBar.getHeight() * 0.5f);
+            }
+            
+            g.setTiledImageFill(im, 0, 0, 0.85f);
+            g.fillPath(p);
+        }
+        
+        if (textToShow.isNotEmpty())
+        {
+            g.setColour(COLOUR_ACCENT_LIGHT);
+            g.setFont(FONT_SMALL_BOLD);
+            
+            g.drawText(textToShow, 0, 0, width, height, Justification::centred, false);
+        }
     }
     
 private:

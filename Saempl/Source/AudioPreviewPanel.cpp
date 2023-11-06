@@ -34,7 +34,7 @@ void AudioPreviewPanel::paint(Graphics& g)
     auto previewArea = getLocalBounds().removeFromBottom(getHeight() - SAMPLE_PREVIEW_TITLE_HEIGHT);
     
     // Draw background
-    g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
+    g.setColour(COLOUR_ACCENT_DARK);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);
     
     // Draw audio preview
@@ -66,7 +66,7 @@ void AudioPreviewPanel::paint(Graphics& g)
                          getLocalBounds().removeFromRight(getWidth() - PANEL_MARGIN).removeFromTop(SAMPLE_PREVIEW_TITLE_HEIGHT),
                          Justification::centredLeft,
                          1);
-        g.setFont(FONT_MEDIUM);
+        g.setFont(FONT_MEDIUM_BOLD);
         g.drawFittedText("No audio file selected", getLocalBounds(), Justification::centred, 2);
     }
 }

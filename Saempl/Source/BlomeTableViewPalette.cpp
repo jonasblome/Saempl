@@ -38,7 +38,7 @@ void BlomeTableViewPalette::cellClicked(int rowNumber, int columnId, MouseEvent 
     if (mouseEvent.mods.isRightButtonDown())
     {
         PopupMenu popupMenu;
-        popupMenu.addItem("Remove Sample from Palette", [this] { removeSampleItemFromPalette(); } );
+        popupMenu.addItem("Remove Sample(s) from Palette", [this] { removeSampleItemFromPalette(); } );
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
     }
 }
@@ -51,7 +51,7 @@ void BlomeTableViewPalette::filesDropped(StringArray const & files, int x, int y
     // Adding all the dropped files to the library and palette
     for (int f = 0; f < files.size(); f++)
     {
-        sampleLibrary.addToPalette(files[f]);
+        sampleLibrary.addAllToPalette(files[f]);
     }
     
     sampleLibrary.refresh();

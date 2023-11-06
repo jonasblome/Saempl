@@ -21,8 +21,8 @@ int const COMBO_BOX_WIDTH_MEDIUM = 180;
 
 
 // Panel dimensions
-int const MAIN_PANEL_WIDTH = 1050;
-int const MAIN_PANEL_HEIGHT = 700;
+int const MAIN_PANEL_WIDTH = 900;
+int const MAIN_PANEL_HEIGHT = 600;
 
 int const HEADER_PANEL_WIDTH = MAIN_PANEL_WIDTH;
 int const HEADER_PANEL_HEIGHT = 50;
@@ -38,14 +38,14 @@ int const FILTER_RULE_TITLE_WIDTH = 80;
 int const CENTER_PANEL_WIDTH = MAIN_PANEL_WIDTH;
 int const CENTER_PANEL_HEIGHT = MAIN_PANEL_HEIGHT - HEADER_PANEL_HEIGHT;
 
-int const SAMPLE_PALETTE_PANEL_WIDTH = 250;
+int const SAMPLE_PALETTE_PANEL_WIDTH = 200;
 int const SAMPLE_PALETTE_PANEL_HEIGHT = CENTER_PANEL_HEIGHT;
 
 int const SAMPLE_NAVIGATION_PANEL_WIDTH = CENTER_PANEL_WIDTH - SAMPLE_PALETTE_PANEL_WIDTH;
-int const SAMPLE_NAVIGATION_PANEL_HEIGHT = 450;
+int const SAMPLE_NAVIGATION_PANEL_HEIGHT = 350;
 
 int const SAMPLE_ITEM_PANEL_WIDTH = SAMPLE_NAVIGATION_PANEL_WIDTH;
-int const SAMPLE_ITEM_PANEL_HEIGHT = CENTER_PANEL_HEIGHT - SAMPLE_NAVIGATION_PANEL_HEIGHT - BUTTON_SIZE_SMALL;
+int const SAMPLE_ITEM_PANEL_HEIGHT = CENTER_PANEL_HEIGHT - SAMPLE_NAVIGATION_PANEL_HEIGHT - BUTTON_SIZE_SMALL - PANEL_MARGIN;
 
 int const SAMPLE_CONTROL_WIDTH = 45;
 int const SAMPLE_CONTROL_HEIGHT = SAMPLE_ITEM_PANEL_HEIGHT;
@@ -77,19 +77,26 @@ Colour const COLOUR_TRANSPARENT = Colour(0, 0, 0).withAlpha(0.0f);
 
 Colour const COLOUR_GREENISH_BLACK = Colour(0, 25, 0);
 
-Colour const COLOUR_ACCENT_LIGHT = Colour(216, 219, 167);
+Colour const COLOUR_ACCENT_LIGHT = Colour(207, 191, 163);
 Colour const COLOUR_ACCENT_LIGHT_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_LIGHT).withAlpha(0.99f);
 
-Colour const COLOUR_ACCENT_MEDIUM = Colour(19, 69, 43);
+Colour const COLOUR_ACCENT_MEDIUM = Colour(71, 24, 19);
 Colour const COLOUR_ACCENT_MEDIUM_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_MEDIUM).withAlpha(0.99f);
 
-Colour const COLOUR_ACCENT_DARK = Colour(11, 41, 25);
+Colour const COLOUR_ACCENT_DARK = Colour(33, 16, 15);
 Colour const COLOUR_ACCENT_DARK_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_DARK).withAlpha(0.99f);
 
 
 // Fonts
-Font const FONT_SMALL_BOLD ("Helvetica Neue", 12.00f, Font::bold);
-Font const FONT_SMALL_BOLD_ACCENTUATED("Helvetica Neue", 12.70f, Font::bold);
+Font const FONT_SMALL("Helvetica Neue", 12.00f, Font::plain);
+Font const FONT_SMALL_BOLD("Helvetica Neue", 12.00f, Font::bold);
+Font const FONT_SMALL_BOLD_ACCENTUATED("Helvetica Neue", 13.00f, Font::bold);
+
+Font const FONT_MEDIUM_SMALL("Helvetica Neue", 16.00f, Font::plain);
 Font const FONT_MEDIUM_SMALL_BOLD("Helvetica Neue", 16.00f, Font::bold);
-Font const FONT_MEDIUM("Helvetica Neue", 22.00f, Font::bold);
-Font const FONT_LARGE("Helvetica Neue", 48.00f, Font::bold);
+
+Font const FONT_MEDIUM("Helvetica Neue", 22.00f, Font::plain);
+Font const FONT_MEDIUM_BOLD("Helvetica Neue", 22.00f, Font::bold);
+
+Font const FONT_LARGE("Helvetica Neue", 48.00f, Font::plain);
+Font const FONT_LARGE_BOLD("Helvetica Neue", 48.00f, Font::bold);

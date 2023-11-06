@@ -32,7 +32,7 @@ void SampleLibraryPanel::paint(Graphics& g)
     g.fillRoundedRectangle(getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);
     
     // Draw Title
-    g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
+    g.setColour(COLOUR_ACCENT_DARK);
     g.fillRoundedRectangle(getLocalBounds().
                            removeFromTop(PANEL_TITLE_HEIGHT).
                            reduced(PANEL_MARGIN / 2.0).
@@ -99,7 +99,7 @@ void SampleLibraryPanel::fileClicked(File const & file, MouseEvent const & mouse
 
 void SampleLibraryPanel::fileDoubleClicked(File const & inFile)
 {
-    if (!linkedSampleItemPanel.tryShowAudioResource(inFile))
+    if (!inFile.isDirectory() && !linkedSampleItemPanel.tryShowAudioResource(inFile))
     {
         showFileDeletedWarning();
     }
@@ -131,7 +131,7 @@ void SampleLibraryPanel::addToPalette()
 {
     for (int f = mFileTree->getNumSelectedItems() - 1; f >= 0 ; f--)
     {
-        sampleLibrary.addToPalette(mFileTree->getSelectedFile(f).getFullPathName());
+        sampleLibrary.addAllToPalette(mFileTree->getSelectedFile(f).getFullPathName());
     }
     
     sampleLibrary.refresh();

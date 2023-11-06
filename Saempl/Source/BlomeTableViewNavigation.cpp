@@ -58,7 +58,7 @@ void BlomeTableViewNavigation::filesDropped(StringArray const & files, int x, in
     // Adding all the dropped files to the database
     for (int f = 0; f < files.size(); f++)
     {
-        sampleLibrary.addToSampleItems(files[f]);
+        sampleLibrary.addAllToSampleItems(files[f]);
     }
     
     sampleLibrary.refresh();
@@ -82,7 +82,7 @@ void BlomeTableViewNavigation::addToPalette()
 {
     for (int r = getNumSelectedRows() - 1; r >= 0; r--)
     {
-        sampleLibrary.addToPalette(sampleLibrary
+        sampleLibrary.addAllToPalette(sampleLibrary
                                    .getSampleItems(mSampleItemCollectionType)
                                    .getUnchecked(getSelectedRow(r))->getFilePath());
     }

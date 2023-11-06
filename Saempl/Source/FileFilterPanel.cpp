@@ -48,7 +48,7 @@ void FileFilterPanel::paint(Graphics &g)
     if (libraryFileFilter.getFilterRules().isEmpty())
     {
         g.setColour(COLOUR_ACCENT_LIGHT);
-        g.setFont(FONT_SMALL_BOLD_ACCENTUATED);
+        g.setFont(FONT_SMALL_BOLD);
         g.drawFittedText("Add filter rules to see them here",
                          getLocalBounds().removeFromBottom(FILTER_RULE_HEIGHT),
                          Justification::centred,

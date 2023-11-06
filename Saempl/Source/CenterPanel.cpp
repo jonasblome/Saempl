@@ -25,7 +25,14 @@ CenterPanel::~CenterPanel()
 
 void CenterPanel::paint(Graphics& g)
 {
-    
+    g.setColour(COLOUR_ACCENT_MEDIUM);
+    g.fillRoundedRectangle(getLocalBounds()
+                           .removeFromBottom(BUTTON_SIZE_SMALL + PANEL_MARGIN)
+                           .removeFromLeft(SAMPLE_NAVIGATION_PANEL_WIDTH)
+                           .reduced(0, PANEL_MARGIN / 2.0)
+                           .removeFromLeft(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN / 2.0)
+                           .toFloat(),
+                           CORNER_SIZE_MEDIUM);
 }
 
 void CenterPanel::setPanelComponents()
@@ -48,8 +55,8 @@ void CenterPanel::setPanelComponents()
     // Add toggle panel button
     mToggleSampleItemPanelButton = std::make_unique<ToggleButton>("Toggle SampleItemPanel");
     mToggleSampleItemPanelButton->setToggleState(true, NotificationType::dontSendNotification);
-    mToggleSampleItemPanelButton->setBounds(0,
-                                            SAMPLE_NAVIGATION_PANEL_HEIGHT + SAMPLE_ITEM_PANEL_HEIGHT,
+    mToggleSampleItemPanelButton->setBounds(PANEL_MARGIN / 2.0,
+                                            SAMPLE_NAVIGATION_PANEL_HEIGHT + SAMPLE_ITEM_PANEL_HEIGHT + PANEL_MARGIN / 2.0,
                                             BUTTON_SIZE_SMALL - PANEL_MARGIN,
                                             BUTTON_SIZE_SMALL - PANEL_MARGIN);
     mToggleSampleItemPanelButton->setTooltip("Toggle visibility of audio preview");
@@ -75,7 +82,7 @@ void CenterPanel::toggleSampleItemPanel()
     else
     {
         mSampleNavigationPanel->setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN / 2.0,
-                                        CENTER_PANEL_HEIGHT - BUTTON_SIZE_SMALL - PANEL_MARGIN / 2.0);
+                                        CENTER_PANEL_HEIGHT - BUTTON_SIZE_SMALL - PANEL_MARGIN * 1.5);
     }
     
     mSampleNavigationPanel->repaint();

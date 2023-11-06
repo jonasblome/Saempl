@@ -1,17 +1,19 @@
 /*
-  ==============================================================================
-
-    SampleLibraryManager.cpp
-    Created: 10 Jun 2023 6:16:05pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ SampleLibraryManager.cpp
+ Created: 10 Jun 2023 6:16:05pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #include "SampleLibraryManager.h"
 
-
-SampleLibraryManager::SampleLibraryManager()
+SampleLibraryManager::SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems, OwnedArray<SampleItem>& inPaletteSampleItems)
+:   ThreadWithProgressWindow("Synching sample library", true, false),
+allSampleItems(inAllSampleItems),
+paletteSampleItems(inPaletteSampleItems)
 {
     // Initialize sample analyser
     mSampleAnalyser = std::make_unique<SampleAnalyser>();
@@ -22,7 +24,7 @@ SampleLibraryManager::~SampleLibraryManager()
     
 }
 
-void SampleLibraryManager::updateSampleLibraryFile(File& inLibraryDirectory, OwnedArray<SampleItem>& inSampleItems)
+void SampleLibraryManager::updateSampleLibraryFile(File& inLibraryDirectory)
 {
     // Create sample library file as xml and store path to library
     XmlElement sampleLibraryXml("SampleLibrary");
@@ -31,7 +33,7 @@ void SampleLibraryManager::updateSampleLibraryFile(File& inLibraryDirectory, Own
     // Adding sample items xml to sample library xml
     XmlElement* sampleItemsXml = new XmlElement("SampleItems");
     
-    for (SampleItem* sampleItem : inSampleItems)
+    for (SampleItem* sampleItem : allSampleItems)
     {
         XmlElement* sampleItemXml = new XmlElement("SampleItem");
         
@@ -76,9 +78,59 @@ void SampleLibraryManager::updateSampleLibraryFile(File& inLibraryDirectory, Own
     writeXmlToFile(sampleLibraryXml, sampleLibraryFile);
 }
 
-void SampleLibraryManager::loadSampleLibrary(File& inLibraryDirectory, OwnedArray<SampleItem>& inSampleItems)
+void SampleLibraryManager::synchWithLibraryDirectory()
 {
-    File libraryFile = File(mLibraryFilesDirectoryPath + DIRECTORY_SEPARATOR + inLibraryDirectory.getFileNameWithoutExtension() + SAMPLE_LIBRARY_FILE_EXTENSION);
+    launchThread();
+}
+
+void SampleLibraryManager::run()
+{
+    setProgress(0.0);
+    
+    // Go through all current sample items, check if corresponding audio file still exists
+    // and if not, delete sample item from all items and palette collection
+    for (SampleItem* sampleItem : allSampleItems)
+    {
+        if (!File(sampleItem->getFilePath()).exists())
+        {
+            paletteSampleItems.removeObject(sampleItem, false);
+            allSampleItems.removeObject(sampleItem);
+            addedFilePaths.removeString(sampleItem->getFilePath());
+        }
+    }
+    
+    // Go through all files in directory, check if a corresponding sample item
+    // already exists in the sample item list, if not add it
+    Array<File> allSampleFiles = libraryDirectory.findChildFiles(File::findFiles,
+                                                                 true,
+                                                                 SUPPORTED_AUDIO_FORMATS_WILDCARD);
+    int loadedFiles = 0;
+    
+    for (File sampleFile : allSampleFiles)
+    {
+        loadedFiles++;
+        setProgress(loadedFiles / (double) allSampleFiles.size());
+        
+        if (!addedFilePaths.contains(sampleFile.getFullPathName()))
+        {
+            createSampleItem(sampleFile);
+        }
+    }
+}
+
+void SampleLibraryManager::threadComplete(bool userPressedCancel)
+{
+    sendChangeMessage();
+}
+
+void SampleLibraryManager::loadSampleLibrary(File& inLibraryDirectory)
+{
+    libraryDirectory = inLibraryDirectory;
+    addedFilePaths.clear();
+    File libraryFile = File(mLibraryFilesDirectoryPath
+                            + DIRECTORY_SEPARATOR
+                            + libraryDirectory.getFileNameWithoutExtension()
+                            + SAMPLE_LIBRARY_FILE_EXTENSION);
     
     // Check if sample library file (.bslf) exists
     if (libraryFile.exists())
@@ -95,8 +147,9 @@ void SampleLibraryManager::loadSampleLibrary(File& inLibraryDirectory, OwnedArra
             for (XmlElement* sampleItemXml : sampleItemsXml->getChildIterator())
             {
                 // Create new sample item
-                SampleItem* sampleItem = inSampleItems.add(new SampleItem());
+                SampleItem* sampleItem = allSampleItems.add(new SampleItem());
                 String filePath = sampleItemXml->getStringAttribute("FilePath");
+                addedFilePaths.add(filePath);
                 sampleItem->setFilePath(filePath);
                 XmlElement* samplePropertiesXml = sampleItemXml->getChildByName("SampleProperties");
                 
@@ -111,23 +164,9 @@ void SampleLibraryManager::loadSampleLibrary(File& inLibraryDirectory, OwnedArra
                 sampleItem->setLength(length);
             }
         }
-        else
-        {
-            return;
-        }
     }
-    else
-    {
-        // Go through all files in directory, check if a corresponding sample item
-        // already exists in the sample item list, if not add it
-        for (DirectoryEntry entry : RangedDirectoryIterator(inLibraryDirectory,
-                                                            true,
-                                                            SUPPORTED_AUDIO_FORMATS_WILDCARD,
-                                                            File::findFiles))
-        {
-            createSampleItem(entry.getFile(), inSampleItems);
-        }
-    }
+    
+    synchWithLibraryDirectory();
 }
 
 String SampleLibraryManager::getLastOpenedDirectory()
@@ -189,22 +228,20 @@ void SampleLibraryManager::writeXmlToFile(XmlElement& inXml, File& inFile)
     inFile.appendData(destinationData.getData(), destinationData.getSize());
 }
 
-/**
- Creates a SampleItem for a file and adds it to the collection.
- If the corresponding SampleItem already exists, nothing happens.
- */
-void SampleLibraryManager::createSampleItem(File inFile, OwnedArray<SampleItem>& inSampleItems)
+SampleItem* SampleLibraryManager::createSampleItem(File inFile)
 {
-    SampleItem* newItem = inSampleItems.add(new SampleItem());
+    SampleItem* newItem = allSampleItems.add(new SampleItem());
     newItem->setFilePath(inFile.getFullPathName());
     newItem->setTitle(inFile.getFileNameWithoutExtension());
     newItem->setLength(mSampleAnalyser->analyseSampleLength(inFile));
+    addedFilePaths.add(newItem->getFilePath());
+    
+    return newItem;
 }
 
-SampleItem* SampleLibraryManager::getSampleItemWithFileName(String const & inFileName,
-                                                            OwnedArray<SampleItem>& inSampleItems)
+SampleItem* SampleLibraryManager::getSampleItemWithFileName(String const & inFileName)
 {
-    for (SampleItem* sampleItem : inSampleItems)
+    for (SampleItem* sampleItem : allSampleItems)
     {
         if (File(sampleItem->getFilePath()).getFileName().compare(inFileName) == 0)
         {

@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    SampleLibrary.h
-    Created: 21 May 2023 2:45:47pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ SampleLibrary.h
+ Created: 21 May 2023 2:45:47pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -28,8 +28,8 @@
  Can filter through stored \ref SampleItem objects and files from the file system.
  */
 class SampleLibrary
-:   ChangeListener,
-    public ChangeBroadcaster
+:   public ChangeListener,
+public ChangeBroadcaster
 {
 public:
     /**
@@ -40,17 +40,31 @@ public:
     SampleLibrary(TimeSliceThread& inThread);
     ~SampleLibrary();
     /**
-     Creates sample item for given file and add it to the collection.
+     Creates sample item for given file and adds it to the collection.
      
      @param inFile the file to add as a sample item.
+     
+     @returns the newly added sample item.
      */
-    void addToSampleItems(File const & inFile);
+    SampleItem* addToSampleItems(File const & newFile);
+    /**
+     Adds the file and all its children to the sample item collection.
+     
+     @param inFile the file to add to the collection.
+     */
+    void addAllToSampleItems(File const & inFile);
     /**
      Adds the file as a sample item and appends it to the palette collection.
      
      @param inFile the file to add to the palette.
      */
-    void addToPalette(File const & inFile);
+    void addToPalette(const File &inFile);
+    /**
+     Adds the file and all its children to the palette collection.
+     
+     @param inFile the file/directory to add to the palette.
+     */
+    void addAllToPalette(File const & inFile);
     /**
      Removes the sample item from all collections and deletes it.
      
@@ -71,7 +85,6 @@ public:
      */
     SampleFileFilter& getFileFilter();
     /**
-     Deletes all sample items with missing files. Adds sample items for each new file.
      Applies filter and refreshes directory list.
      */
     void refresh();
@@ -93,10 +106,12 @@ public:
      @returns the path of the current library directory.
      */
     String getCurrentLibraryPath();
+    void changeListenerCallback(ChangeBroadcaster* inSource) override;
     /**
-     @returns the progress of loading a new sample library in percentage.
+     Deletes all sample items where the files have been externally deleted
+     and adds sample items for each new detected file.
      */
-    double& getLoadingProgress();
+    void synchWithLibraryDirectory();
     
 private:
     std::unique_ptr<SampleFileFilter> mFileFilter;
@@ -107,9 +122,7 @@ private:
     OwnedArray<SampleItem> mPaletteSampleItems;
     String mDirectoryPathToAddFilesTo;
     std::unique_ptr<SampleLibraryManager> mSampleLibraryManager;
-    double loadingProgress;
     
-    void changeListenerCallback(ChangeBroadcaster* inSource) override;
     /**
      Deletes \ref SampleItem objects in all collections (all, filtered, palette).
      */

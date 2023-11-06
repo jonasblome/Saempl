@@ -31,13 +31,12 @@ void HeaderPanel::paint(Graphics& g)
     g.fillRoundedRectangle(getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);
     
     g.setColour(COLOUR_ACCENT_DARK);
-    // g.drawLine(235, getHeight() / 2.0, 245, getHeight() / 2.0, 2.0);
-    g.fillRoundedRectangle(235, getHeight() / 2.0 - 1, 10, 2, 1.0);
+    g.fillRoundedRectangle(205, getHeight() / 2.0 - 1, 10, 2, 1.0);
     
     // Draw logo text
     int const logoWidth = 220;
     g.setColour(COLOUR_ACCENT_DARK);
-    g.setFont(FONT_MEDIUM);
+    g.setFont(FONT_MEDIUM_BOLD);
     g.drawFittedText("Blome Audio",
                      HEADER_PANEL_WIDTH - logoWidth - 20 - PANEL_MARGIN,
                      PANEL_MARGIN / 2.0,
@@ -51,6 +50,7 @@ void HeaderPanel::setPanelComponents()
 {
     int x = PANEL_MARGIN;
     int buttonWidth = getHeight() - PANEL_MARGIN * 2.0;
+    int groupDistance = 10;
     
     // Add refresh sample library button
     mRefreshLibraryButton = std::make_unique<BlomeImageButton>("Refresh", false);
@@ -72,7 +72,7 @@ void HeaderPanel::setPanelComponents()
                                      buttonWidth,
                                      buttonWidth);
     mRefreshLibraryButton->setTooltip("Scans for new files and removes externally deleted files");
-    mRefreshLibraryButton->onClick = [this] { currentProcessor.getSampleLibrary().refresh(); };
+    mRefreshLibraryButton->onClick = [this] { currentProcessor.getSampleLibrary().synchWithLibraryDirectory(); };
     addAndMakeVisible(*mRefreshLibraryButton);
     x += buttonWidth + PANEL_MARGIN / 2.0;
     
@@ -98,7 +98,7 @@ void HeaderPanel::setPanelComponents()
     mChooseLibraryFolderButton->setTooltip("Choose a new directory as your current sample library");
     mChooseLibraryFolderButton->onClick = [this] { showLibraryChooser(); };
     addAndMakeVisible(*mChooseLibraryFolderButton);
-    x += buttonWidth + PANEL_MARGIN * 1.5 + 25;
+    x += buttonWidth + PANEL_MARGIN * 1.5 + groupDistance;
     
     // Add toggle for library panel
     mToggleLibraryPanelButton = std::make_unique<BlomeImageButton>("Toggle SampleLibraryPanel", false);
@@ -119,7 +119,7 @@ void HeaderPanel::setPanelComponents()
                                          PANEL_MARGIN,
                                          buttonWidth,
                                          buttonWidth);
-    mToggleLibraryPanelButton->setTooltip("Show the file tree view of your library directory");
+    mToggleLibraryPanelButton->setTooltip("Show the folder structure of your library directory");
     mToggleLibraryPanelButton->onClick = [this]
     {
         if (linkedCenterPanel.getActiveNavigationPanelType() == PANELS_TABLE_PANEL)
@@ -210,7 +210,7 @@ void HeaderPanel::setPanelComponents()
         }
     };
     addAndMakeVisible(*mToggleSampleTablePanelButton);
-    x += buttonWidth + PANEL_MARGIN * 1.5 + 25;
+    x += buttonWidth + PANEL_MARGIN * 1.5 + groupDistance;
     
     // Add button for editing the file filter rules
     mChangeFilterButton = std::make_unique<BlomeImageButton>("Filter", false);
@@ -312,28 +312,25 @@ void HeaderPanel::showLibraryChooser()
                                        "*",
                                        true));
     
-    mFileChooser->launchAsync
-    (
-     FileBrowserComponent::openMode | FileBrowserComponent::canSelectDirectories,
-     [&] (FileChooser const & chooser)
-     {
-         URL result = chooser.getURLResult();
-         String name = result.isLocalFile() ? result.getLocalFile().getFullPathName() : result.toString(true);
-         
-         if (name != "")
-         {
-             currentProcessor.getSampleLibrary().setDirectory(name);
-             
-             // Show success popup message
-             AlertWindow::showAsync(MessageBoxOptions()
-                                    .withIconType(MessageBoxIconType::NoIcon)
-                                    .withTitle("Sample Library Chooser")
-                                    .withMessage("You picked: " + name)
-                                    .withButton("OK"),
-                                    nullptr);
-         }
-         
-         mFileChooser.reset();
-     }
-     );
+    mFileChooser->launchAsync(FileBrowserComponent::openMode | FileBrowserComponent::canSelectDirectories,
+                              [&] (FileChooser const & chooser)
+                              {
+        URL result = chooser.getURLResult();
+        String name = result.isLocalFile() ? result.getLocalFile().getFullPathName() : result.toString(true);
+        
+        if (name != "")
+        {
+            currentProcessor.getSampleLibrary().setDirectory(name);
+            
+            // Show success popup message
+            AlertWindow::showAsync(MessageBoxOptions()
+                                   .withIconType(MessageBoxIconType::NoIcon)
+                                   .withTitle("Sample Library Chooser")
+                                   .withMessage("You picked: " + name)
+                                   .withButton("OK"),
+                                   nullptr);
+        }
+        
+        mFileChooser.reset();
+    });
 }

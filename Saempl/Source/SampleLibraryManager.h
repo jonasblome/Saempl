@@ -21,28 +21,38 @@
  Writes information on all files in a sample library directory to analysis files and reads them.
  */
 class SampleLibraryManager
+:   public ThreadWithProgressWindow,
+    public ChangeBroadcaster
 {
 public:
-    // Constructors
-    SampleLibraryManager();
+    SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems, OwnedArray<SampleItem>& inPaletteSampleItems);
     ~SampleLibraryManager();
-    
-    // Methods
     /**
      Adds meta-information of all sample items to an analysis file and updates their information if needed.
      
      @param inLibraryDirectory the library directory file.
      @param inSampleItems the collection of sample items from the library.
      */
-    void updateSampleLibraryFile(File& inLibraryDirectory, OwnedArray<SampleItem>& inSampleItems);
+    void updateSampleLibraryFile(File& inLibraryDirectory);
+    void extracted();
+    /**
+     Deletes all sample items where the files have been externally deleted
+     and adds sample items for each new detected file.
+     */
+    void synchWithLibraryDirectory();
+    /**
+     Runs the loading of a library while setting the progress for the progress bar.
+     */
+    void run() override;
+    void threadComplete(bool userPressedCancel) override;
     /**
      Loads meta-information of analysis file as sample items collection.
      
      @param inLibraryDirectory the library directory file.
      @param inSampleItems the collection of sample items from the library.
      */
-    void loadSampleLibrary(File& inLibraryDirectory, OwnedArray<SampleItem>& inSampleItems);
-/**
+    void loadSampleLibrary(File& inLibraryDirectory);
+    /**
      @returns the path of the last opened sample library directory or the default library directory.
      */
     String getLastOpenedDirectory();
@@ -56,16 +66,23 @@ public:
      Creates a sample item for the given file and sets its properties.
      
      @param inFile the file for which to create the sample item.
+     
+     @returns the newly created sample item.
      */
-    void createSampleItem(File inFile, OwnedArray<SampleItem>& inSampleItems);
+    SampleItem* createSampleItem(File inFile);
     /**
      @param inFilePath the file path for which to get the corresponding sample item.
+     
      @returns the sample item with that file path.
      */
-    SampleItem* getSampleItemWithFileName(String const & inFilePath, OwnedArray<SampleItem>& inSampleItems);
+    SampleItem* getSampleItemWithFileName(String const & inFilePath);
     
 private:
+    File libraryDirectory;
+    OwnedArray<SampleItem>& allSampleItems;
+    OwnedArray<SampleItem>& paletteSampleItems;
     std::unique_ptr<SampleAnalyser> mSampleAnalyser;
+    StringArray addedFilePaths;
     String mDefaultLibraryDirectoryPath =
     (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
     + DIRECTORY_SEPARATOR
