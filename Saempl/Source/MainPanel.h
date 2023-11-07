@@ -35,10 +35,10 @@ public:
     ~MainPanel();
     
 private:
-    SaemplAudioProcessor& currentProcessor;
     std::unique_ptr<HeaderPanel> mHeaderPanel;
     std::unique_ptr<CenterPanel> mCenterPanel;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;
+    bool keyPressed(KeyPress const & key) override;
 };

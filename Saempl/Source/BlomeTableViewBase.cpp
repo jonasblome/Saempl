@@ -10,10 +10,11 @@
 
 #include "BlomeTableViewBase.h"
 
-BlomeTableViewBase::BlomeTableViewBase(SampleLibrary& inSampleLibrary,
-                                       SampleItemPanel& inSampleItemPanel)
-:   sampleLibrary(inSampleLibrary),
-    linkedSampleItemPanel(inSampleItemPanel)
+BlomeTableViewBase::BlomeTableViewBase(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
+:
+currentProcessor(inProcessor),
+sampleLibrary(currentProcessor.getSampleLibrary()),
+linkedSampleItemPanel(inSampleItemPanel)
 {
     mComparator = std::make_unique<SampleItemComparator>();
     
@@ -124,15 +125,19 @@ int BlomeTableViewBase::getColumnAutoSizeWidth(int columnId)
     return widest + 8;
 }
 
-void BlomeTableViewBase::cellDoubleClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent)
-{
-    // Load linked sample item into audio resource
+void BlomeTableViewBase::loadSelectedRowIntoAudioPlayer(int rowNumber) {
     File inFile = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(rowNumber)->getFilePath();
     
     if (!linkedSampleItemPanel.tryShowAudioResource(inFile))
     {
         showFileDeletedWarning();
     }
+}
+
+void BlomeTableViewBase::cellDoubleClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent)
+{
+    // Load linked sample item into audio resource
+    loadSelectedRowIntoAudioPlayer(rowNumber);
 }
 
 /**
@@ -174,4 +179,28 @@ void BlomeTableViewBase::mouseDrag(MouseEvent const & e)
 bool BlomeTableViewBase::isInterestedInFileDrag(StringArray const & files)
 {
     return true;
+}
+
+void BlomeTableViewBase::returnKeyPressed(int lastRowSelected)
+{
+    loadSelectedRowIntoAudioPlayer(lastRowSelected);
+}
+
+// This is overloaded from TableListBoxModel, and tells us that the user has clicked a table header
+// to change the sort order.
+void BlomeTableViewBase::sortOrderChanged(int newSortColumnId, bool isForwards)
+{
+    currentProcessor.setSortingDirection(isForwards);
+    
+    // Sort items according to direction and property name
+    if (newSortColumnId != 0)
+    {
+        String columnName = getHeader().getColumnName(newSortColumnId);
+        currentProcessor.setSortingColumnTitle(columnName);
+        String propertyName = newSortColumnId <= PROPERTY_NAMES.size() ? columnName : "Title";
+        mComparator->setCompareProperty(propertyName);
+        mComparator->setSortingDirection(isForwards);
+        sampleLibrary.getSampleItems(mSampleItemCollectionType).sort(*mComparator);
+        updateContent();
+    }
 }

@@ -38,14 +38,17 @@ public:
      
      @param inPanelType the type of the navigation panel (library, table or map).
      */
-    void showNavigationPanel(NavigationPanelType inPanelType);
+    void setActiveNavigationPanel(NavigationPanelType inPanelType);
     /**
-     @returns the type of the currently shown navigation panel.
+     Selects a random sample in the table view.
      */
-    NavigationPanelType getActiveNavigationPanelType();
+    void selectRandomSample();
+    /**
+     Starts the playback of the currently loaded audio resource.
+     */
+    void playCurrentAudio();
     
 private:
-    SaemplAudioProcessor& currentProcessor;
     std::unique_ptr<SampleNavigationPanel> mSampleNavigationPanel;
     std::unique_ptr<SamplePalettePanel> mSamplePalettePanel;
     std::unique_ptr<SampleItemPanel> mSampleItemPanel;

@@ -39,18 +39,20 @@ public:
      
      @param inPanelType the type of the navigation panel (library, table or map).
      */
-    void showNavigationPanel(NavigationPanelType inPanelType);
+    void setActiveNavigationPanel(NavigationPanelType inPanelType);
     /**
      @returns the type of the currently shown navigation panel.
      */
-    NavigationPanelType getActiveNavigationPanelType();
+    NavigationPanelType getActiveNavigationPanel();
+    /**
+     Selects a random sample in the table view.
+     */
+    void selectRandomSample();
     
 private:
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<SampleLibraryPanel> mSampleLibraryPanel;
     std::unique_ptr<SampleTablePanel> mSampleTablePanel;
-    SampleLibrary& sampleLibrary;
-    NavigationPanelType mActiveNavigationPanelType;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;

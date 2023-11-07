@@ -215,6 +215,7 @@
 		B1F878D540A2FFAC3B4344D3 /* AudioPreviewPanel.cpp */ /* AudioPreviewPanel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AudioPreviewPanel.cpp; path = ../../Source/AudioPreviewPanel.cpp; sourceTree = SOURCE_ROOT; };
 		B21FAC3945AF17AAF2588319 /* JuceHeader.h */ /* JuceHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JuceHeader.h; path = ../../JuceLibraryCode/JuceHeader.h; sourceTree = SOURCE_ROOT; };
 		B2985452BD3DDDD7E40F113A /* SampleFileFilterRuleBase.h */ /* SampleFileFilterRuleBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleFileFilterRuleBase.h; path = ../../Source/SampleFileFilterRuleBase.h; sourceTree = SOURCE_ROOT; };
+		B8F1B0E19D59A8BF6A684CB2 /* ifl_FILL0_wght400_GRAD0_opsz24.png */ /* ifl_FILL0_wght400_GRAD0_opsz24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ifl_FILL0_wght400_GRAD0_opsz24.png; path = ../../Assets/ifl_FILL0_wght400_GRAD0_opsz24.png; sourceTree = SOURCE_ROOT; };
 		BB1E978058C5187E51C55D15 /* SampleAnalyser.h */ /* SampleAnalyser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleAnalyser.h; path = ../../Source/SampleAnalyser.h; sourceTree = SOURCE_ROOT; };
 		BD6248455858FB7CA1E040AA /* filter_alt_FILL0_wght400_GRAD0_opsz24.png */ /* filter_alt_FILL0_wght400_GRAD0_opsz24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = filter_alt_FILL0_wght400_GRAD0_opsz24.png; path = ../../Assets/filter_alt_FILL0_wght400_GRAD0_opsz24.png; sourceTree = SOURCE_ROOT; };
 		BDA37AFF98E7374B7FFA194F /* juce_audio_plugin_client */ /* juce_audio_plugin_client */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_plugin_client; path = /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client; sourceTree = "<absolute>"; };
@@ -405,6 +406,7 @@
 		96A081FB09EE7786533C2C0E /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				B8F1B0E19D59A8BF6A684CB2,
 				07A8D97314AD29A544952BC8,
 				7206EC450F6C61191BBCB249,
 				3B7C13BFC4744347D520E689,

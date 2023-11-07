@@ -30,8 +30,12 @@ public:
      @param inSampleLibrary the library object of the current plugin instance.
      @param inSampleItemPanel the panel for previewing \ref SampleItem objects.
      */
-    SampleTablePanel(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
+    SampleTablePanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~SampleTablePanel();
+    /**
+     Selects a random sample in the table view.
+     */
+    void selectRandomSample();
     
 private:
     SampleLibrary& sampleLibrary;

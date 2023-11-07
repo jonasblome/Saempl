@@ -11,8 +11,7 @@
 #include "CenterPanel.h"
 
 CenterPanel::CenterPanel(SaemplAudioProcessor& inProcessor)
-:   PanelBase(),
-    currentProcessor(inProcessor)
+:   PanelBase(inProcessor)
 {
     setSize(CENTER_PANEL_WIDTH - PANEL_MARGIN / 2.0, CENTER_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
     setPanelComponents();
@@ -48,7 +47,7 @@ void CenterPanel::setPanelComponents()
     addAndMakeVisible(*mSampleNavigationPanel);
     
     // Add panel for sample palette view
-    mSamplePalettePanel = std::make_unique<SamplePalettePanel>(currentProcessor.getSampleLibrary(), *mSampleItemPanel);
+    mSamplePalettePanel = std::make_unique<SamplePalettePanel>(currentProcessor, *mSampleItemPanel);
     mSamplePalettePanel->setTopLeftPosition(SAMPLE_NAVIGATION_PANEL_WIDTH, 0);
     addAndMakeVisible(*mSamplePalettePanel);
     
@@ -88,12 +87,17 @@ void CenterPanel::toggleSampleItemPanel()
     mSampleNavigationPanel->repaint();
 }
 
-void CenterPanel::showNavigationPanel(NavigationPanelType inPanelType)
+void CenterPanel::setActiveNavigationPanel(NavigationPanelType inPanelType)
 {
-    mSampleNavigationPanel->showNavigationPanel(inPanelType);
+    mSampleNavigationPanel->setActiveNavigationPanel(inPanelType);
 }
 
-NavigationPanelType CenterPanel::getActiveNavigationPanelType()
+void CenterPanel::selectRandomSample()
 {
-    return mSampleNavigationPanel->getActiveNavigationPanelType();
+    mSampleNavigationPanel->selectRandomSample();
+}
+
+void CenterPanel::playCurrentAudio()
+{
+    mSampleItemPanel->startOrStopPlayback();
 }

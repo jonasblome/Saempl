@@ -10,9 +10,9 @@
 
 #include "SampleLibraryPanel.h"
 
-SampleLibraryPanel::SampleLibraryPanel(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel)
-:   PanelBase(),
-    sampleLibrary(inSampleLibrary),
+SampleLibraryPanel::SampleLibraryPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
+:   PanelBase(inProcessor),
+    sampleLibrary(currentProcessor.getSampleLibrary()),
     linkedSampleItemPanel(inSampleItemPanel)
 {
     setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN / 2.0, SAMPLE_NAVIGATION_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
@@ -21,6 +21,8 @@ SampleLibraryPanel::SampleLibraryPanel(SampleLibrary& inSampleLibrary, SampleIte
 
 SampleLibraryPanel::~SampleLibraryPanel()
 {
+    std::unique_ptr<XmlElement> treeOpennessState = mFileTree->getOpennessState(true);
+    treeOpennessState->setTagName("TreeOpennessState");
     mFileTree->removeListener(this);
     sampleLibrary.getDirectoryList().removeChangeListener(&*mFileTree);
 }
@@ -137,4 +139,13 @@ void SampleLibraryPanel::addToPalette()
     sampleLibrary.refresh();
 }
 
+bool SampleLibraryPanel::keyPressed(const KeyPress& key)
+{
+    if (key.getKeyCode() == KeyPress::returnKey)
+    {
+        fileDoubleClicked(mFileTree->getSelectedFile(0));
+        return true;
+    }
 
+    return false;
+}

@@ -29,7 +29,7 @@ public:
      @param inSampleLibrary the sample library of the current plugin instance.
      @param inSampleItemPanel the panel for previewing \ref SampleItem objects.
      */
-    BlomeTableViewPalette(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
+    BlomeTableViewPalette(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~BlomeTableViewPalette();
     
 private:
@@ -39,5 +39,4 @@ private:
      Removes the \ref SampleItem object of the selected rows from the \ref SampleLibrary::mPaletteSampleItems collection.
      */
     void removeSampleItemFromPalette();
-    void sortOrderChanged(int newSortColumnId, bool isForwards) override;
 };

@@ -19,16 +19,16 @@
 #endif
 
 // Custom file extensions
-String const SAMPLE_LIBRARY_FILE_EXTENSION = ".bslf";
-String const SAEMPL_DATA_FILE_EXTENSION = ".saempl";
+static String const SAMPLE_LIBRARY_FILE_EXTENSION = ".bslf";
+static String const SAEMPL_DATA_FILE_EXTENSION = ".saempl";
 
 // Audio formats
-StringArray const SUPPORTED_AUDIO_FORMATS = StringArray({ ".mp3", ".wav", ".aiff", ".m4a" });
-String const SUPPORTED_AUDIO_FORMATS_WILDCARD = "*.wav;*.mp3;*.aiff;*.m4a";
-String const SUPPORTED_AUDIO_FORMATS_EXTENSIONS = ".wav;.mp3;.aiff;.m4a";
+static StringArray const SUPPORTED_AUDIO_FORMATS = StringArray({ ".mp3", ".wav", ".aiff", ".m4a" });
+static String const SUPPORTED_AUDIO_FORMATS_WILDCARD = "*.wav;*.mp3;*.aiff;*.m4a";
+static String const SUPPORTED_AUDIO_FORMATS_EXTENSIONS = ".wav;.mp3;.aiff;.m4a";
 
 // Property names
-StringArray const PROPERTY_NAMES = StringArray({ "Length", "Title" });
+static StringArray const PROPERTY_NAMES = StringArray({ "Length", "Title" });
 
 // Filter rule compare operators
 enum CompareOperators

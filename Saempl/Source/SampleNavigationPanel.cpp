@@ -11,9 +11,9 @@
 #include "SampleNavigationPanel.h"
 
 SampleNavigationPanel::SampleNavigationPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
-:   PanelBase(),
-    linkedSampleItemPanel(inSampleItemPanel),
-    sampleLibrary(inProcessor.getSampleLibrary())
+:
+PanelBase(inProcessor),
+linkedSampleItemPanel(inSampleItemPanel)
 {
     setSize(SAMPLE_NAVIGATION_PANEL_WIDTH, SAMPLE_NAVIGATION_PANEL_HEIGHT);
     setPanelComponents();
@@ -32,14 +32,17 @@ void SampleNavigationPanel::paint(Graphics& g)
 void SampleNavigationPanel::setPanelComponents()
 {
     // Add library panel
-    mSampleLibraryPanel = std::make_unique<SampleLibraryPanel>(sampleLibrary, linkedSampleItemPanel);
+    mSampleLibraryPanel = std::make_unique<SampleLibraryPanel>(currentProcessor, linkedSampleItemPanel);
     mSampleLibraryPanel->setTopLeftPosition(0, 0);
-    addAndMakeVisible(*mSampleLibraryPanel);
+    addChildComponent(*mSampleLibraryPanel);
     
     // Add sample table panel
-    mSampleTablePanel = std::make_unique<SampleTablePanel>(sampleLibrary, linkedSampleItemPanel);
+    mSampleTablePanel = std::make_unique<SampleTablePanel>(currentProcessor, linkedSampleItemPanel);
     mSampleTablePanel->setTopLeftPosition(0, 0);
     addChildComponent(*mSampleTablePanel);
+    
+    // Set active panel
+    setActiveNavigationPanel(currentProcessor.getActiveNavigationPanel());
     
     // Repaint panel
     repaint();
@@ -58,11 +61,11 @@ void SampleNavigationPanel::resizePanelComponents()
     }
 }
 
-void SampleNavigationPanel::showNavigationPanel(NavigationPanelType inPanelType)
+void SampleNavigationPanel::setActiveNavigationPanel(NavigationPanelType inPanelType)
 {
-    mActiveNavigationPanelType = inPanelType;
+    currentProcessor.setActiveNavigationPanel(inPanelType);
     
-    switch(mActiveNavigationPanelType)
+    switch(currentProcessor.getActiveNavigationPanel())
     {
         case PANELS_LIBRARY_PANEL:
         {
@@ -84,7 +87,7 @@ void SampleNavigationPanel::showNavigationPanel(NavigationPanelType inPanelType)
     }
 }
 
-NavigationPanelType SampleNavigationPanel::getActiveNavigationPanelType()
+void SampleNavigationPanel::selectRandomSample()
 {
-    return mActiveNavigationPanelType;
+    mSampleTablePanel->selectRandomSample();
 }

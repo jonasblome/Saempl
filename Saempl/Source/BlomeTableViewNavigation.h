@@ -30,7 +30,7 @@ public:
      @param inSampleLibrary the sample library of the current plugin instance.
      @param inSampleItemPanel the panel for previewing \ref SampleItem objects.
      */
-    BlomeTableViewNavigation(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
+    BlomeTableViewNavigation(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~BlomeTableViewNavigation();
     
 private:
@@ -46,6 +46,5 @@ private:
      Adds all selected files to the palette sample items collection.
      */
     void addToPalette();
-    void sortOrderChanged(int newSortColumnId, bool isForwards) override;
     void changeListenerCallback(ChangeBroadcaster* source) override;
 };

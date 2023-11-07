@@ -33,12 +33,11 @@ public:
      @param inSampleLibrary the library object of the current plugin instance.
      @param inSampleItemPanel the panel for previewing \ref SampleItem objects.
      */
-    SampleLibraryPanel(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
+    SampleLibraryPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~SampleLibraryPanel();
     void paint(Graphics& g) override;
     void setPanelComponents() override;
     void resizePanelComponents() override;
-
     
 private:
     SampleLibrary& sampleLibrary;
@@ -46,10 +45,11 @@ private:
     std::unique_ptr<BlomeFileTreeView> mFileTree;
     
     void selectionChanged() override;
-    void fileClicked (File const & file, MouseEvent const & mouseEvent) override;
-    void fileDoubleClicked (File const &) override;
-    void browserRootChanged (File const &) override;
-    void changeListenerCallback (ChangeBroadcaster* source) override;
+    void fileClicked(File const & file, MouseEvent const & mouseEvent) override;
+    void fileDoubleClicked(File const &) override;
+    void browserRootChanged(File const &) override;
+    void changeListenerCallback(ChangeBroadcaster* source) override;
+    bool keyPressed(const KeyPress& key) override;
     /**
      Deletes the files selected in the file tree view.
      

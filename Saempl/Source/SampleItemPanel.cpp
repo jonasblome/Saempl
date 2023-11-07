@@ -11,8 +11,9 @@
 #include "SampleItemPanel.h"
 
 SampleItemPanel::SampleItemPanel(SaemplAudioProcessor& inProcessor)
-:   PanelBase(),
-currentProcessor(inProcessor)
+:
+PanelBase(inProcessor),
+sampleLibrary(currentProcessor.getSampleLibrary())
 {
     setSize(SAMPLE_ITEM_PANEL_WIDTH - PANEL_MARGIN / 2.0, SAMPLE_ITEM_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
     setPanelComponents();
@@ -142,8 +143,13 @@ bool SampleItemPanel::tryShowAudioResource(File inFile)
     if (!inFile.exists())
     {
         mAudioPreviewPanel->emptyAudioResource();
-        currentProcessor.getSampleLibrary().refresh();
+        sampleLibrary.refresh();
     }
     
     return false;
+}
+
+void SampleItemPanel::startOrStopPlayback()
+{
+    mAudioPreviewPanel->startOrStop();
 }

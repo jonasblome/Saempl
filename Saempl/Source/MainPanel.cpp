@@ -11,8 +11,8 @@
 #include "MainPanel.h"
 
 MainPanel::MainPanel(SaemplAudioProcessor& inProcessor)
-:   PanelBase(),
-    currentProcessor(inProcessor)
+:
+PanelBase(inProcessor)
 {
     // Set panel size
     setSize(MAIN_PANEL_WIDTH, MAIN_PANEL_HEIGHT);
@@ -43,4 +43,18 @@ void MainPanel::setPanelComponents()
     
     // Repaint panel
     repaint();
+}
+
+bool MainPanel::keyPressed(const KeyPress &key)
+{
+    if (key.isKeyCode(KeyPress::spaceKey))
+    {
+        mCenterPanel->playCurrentAudio();
+    }
+    else
+    {
+        return false;
+    }
+    
+    return true;
 }

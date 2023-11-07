@@ -10,8 +10,8 @@
 
 #include "BlomeTableViewPalette.h"
 
-BlomeTableViewPalette::BlomeTableViewPalette(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel)
-:   BlomeTableViewBase(inSampleLibrary, inSampleItemPanel)
+BlomeTableViewPalette::BlomeTableViewPalette(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
+:   BlomeTableViewBase(inProcessor, inSampleItemPanel)
 {
     mSampleItemCollectionType = PALETTE_SAMPLES;
     
@@ -68,18 +68,4 @@ void BlomeTableViewPalette::removeSampleItemFromPalette()
     }
     
     sampleLibrary.refresh();
-}
-
-// This is overloaded from TableListBoxModel, and tells us that the user has clicked a table header
-// to change the sort order.
-void BlomeTableViewPalette::sortOrderChanged(int newSortColumnId, bool isForwards)
-{
-    // Sort items by title and chosen direction
-    if (newSortColumnId != 0)
-    {
-        mComparator->setCompareProperty("Title");
-        mComparator->setSortingDirection(isForwards);
-        sampleLibrary.getSampleItems(mSampleItemCollectionType).sort(*mComparator);
-        updateContent();
-    }
 }

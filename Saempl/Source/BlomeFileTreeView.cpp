@@ -65,7 +65,7 @@ void BlomeFileTreeView::mouseDrag(MouseEvent const & e)
         
         // Check if any of the selected items was dragged
         for (int i = 0; i < getNumSelectedItems(); i++) {
-            Rectangle<int> itemBounds = getSelectedItem(i)->getItemPosition(false);
+            Rectangle<int> itemBounds = getSelectedItem(i)->getItemPosition(true);
             
             if (itemBounds.contains(mousePosition))
             {

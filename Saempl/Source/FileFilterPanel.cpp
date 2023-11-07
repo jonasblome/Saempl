@@ -10,9 +10,11 @@
 
 #include "FileFilterPanel.h"
 
-FileFilterPanel::FileFilterPanel(SampleLibrary& inSampleLibrary)
-:   libraryFileFilter(inSampleLibrary.getFileFilter()),
-linkedLibrary(inSampleLibrary)
+FileFilterPanel::FileFilterPanel(SaemplAudioProcessor& inProcessor)
+:
+PanelBase(inProcessor),
+sampleLibrary(currentProcessor.getSampleLibrary()),
+libraryFileFilter(sampleLibrary.getFileFilter())
 {
     setPanelComponents();
 }
@@ -79,13 +81,13 @@ void FileFilterPanel::generateRuleView(SampleFileFilterRuleBase *rule)
         {
             newRuleView = mFilterRuleViews
                 .add(std::make_unique<BlomeFileFilterRuleViewLength>(*dynamic_cast<SampleFileFilterRuleLength*>(rule),
-                                                                     linkedLibrary));
+                                                                     sampleLibrary));
             break;
         }
         case 1:
             newRuleView = mFilterRuleViews
                 .add(std::make_unique<BlomeFileFilterRuleViewTitle>(*dynamic_cast<SampleFileFilterRuleTitle*>(rule),
-                                                                    linkedLibrary));
+                                                                    sampleLibrary));
             break;
         default:
             jassertfalse;
@@ -126,7 +128,7 @@ void FileFilterPanel::addFilterRuleView()
             + combinedFilterRuleViewHeight + FILTER_RULE_HEIGHT
             + PANEL_MARGIN / 2.0);
     repaint();
-    linkedLibrary.refresh();
+    sampleLibrary.refresh();
 }
 
 void FileFilterPanel::removeFilterRule(SampleFileFilterRuleBase const & inFilterRule)
@@ -195,7 +197,7 @@ void FileFilterPanel::buttonClicked(Button* button)
         ruleView->removeDeleteButtonListener(this);
         removeFilterRule(ruleView->getLinkedFilterRule());
         mFilterRuleViews.removeObject(ruleView);
-        linkedLibrary.refresh();
+        sampleLibrary.refresh();
     }
     
     // Remove leftover space

@@ -43,9 +43,13 @@ public:
      @returns whether the loading of the source was successful or not.
      */
     bool tryShowAudioResource(File inFile);
+    /**
+     Starts or stops the playback of the audio preview panel.
+     */
+    void startOrStopPlayback();
 
 private:
-    SaemplAudioProcessor& currentProcessor;
+    SampleLibrary& sampleLibrary;
     std::unique_ptr<SampleEditor> mSampleEditor;
     std::unique_ptr<AudioPreviewPanel> mAudioPreviewPanel;
     std::unique_ptr<Slider> mZoomSlider;

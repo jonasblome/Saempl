@@ -10,10 +10,11 @@
 
 #include "SamplePalettePanel.h"
 
-SamplePalettePanel::SamplePalettePanel(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel)
-:   PanelBase(),
-    sampleLibrary(inSampleLibrary),
-    linkedSampleItemPanel(inSampleItemPanel)
+SamplePalettePanel::SamplePalettePanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
+:
+PanelBase(inProcessor),
+sampleLibrary(currentProcessor.getSampleLibrary()),
+linkedSampleItemPanel(inSampleItemPanel)
 {
     setSize(SAMPLE_PALETTE_PANEL_WIDTH - PANEL_MARGIN, SAMPLE_PALETTE_PANEL_HEIGHT - PANEL_MARGIN);
     setPanelComponents();
@@ -53,7 +54,7 @@ void SamplePalettePanel::paint(Graphics& g)
 void SamplePalettePanel::setPanelComponents()
 {
     // Set sample table component
-    mSampleTable = std::make_unique<BlomeTableViewPalette>(sampleLibrary, linkedSampleItemPanel);
+    mSampleTable = std::make_unique<BlomeTableViewPalette>(currentProcessor, linkedSampleItemPanel);
     mSampleTable->setBounds(PANEL_MARGIN / 2.0,
                             PANEL_TITLE_HEIGHT,
                             getWidth() - PANEL_MARGIN,

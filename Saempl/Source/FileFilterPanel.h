@@ -34,12 +34,12 @@ public:
      
      @param inSampleLibrary the library object of the current plugin instance.
      */
-    FileFilterPanel(SampleLibrary& inSampleLibrary);
+    FileFilterPanel(SaemplAudioProcessor& inProcessor);
     ~FileFilterPanel();
     
 private:
+    SampleLibrary& sampleLibrary;
     SampleFileFilter& libraryFileFilter;
-    SampleLibrary& linkedLibrary;
     std::unique_ptr<ComboBox> mNewRuleTypeChooser;
     std::unique_ptr<BlomeImageButton> mAddFilterRuleButton;
     OwnedArray<BlomeFileFilterRuleViewBase> mFilterRuleViews;

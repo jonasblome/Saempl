@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    BlomeTableView.h
-    Created: 26 Jun 2023 12:54:09am
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeTableView.h
+ Created: 26 Jun 2023 12:54:09am
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -27,9 +27,10 @@
  Retrieves its cell text information from \ref SampleItem properties.
  */
 class BlomeTableViewBase
-:   public TableListBoxModel,
-    public TableListBox,
-    public FileDragAndDropTarget
+:
+public TableListBoxModel,
+public TableListBox,
+public FileDragAndDropTarget
 {
 public:
     /**
@@ -38,17 +39,18 @@ public:
      @param inSampleLibrary the sample library of the current plugin instance.
      @param inSampleItemPanel the panel for previewing \ref SampleItem objects.
      */
-    BlomeTableViewBase(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
+    BlomeTableViewBase(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~BlomeTableViewBase();
+    int getNumRows() override;
     
 protected:
+    SaemplAudioProcessor& currentProcessor;
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
     int numRows;
     std::unique_ptr<SampleItemComparator> mComparator;
     SampleItemCollectionScope mSampleItemCollectionType;
     
-    int getNumRows() override;
     void paintRowBackground(Graphics& g,
                             int rowNumber,
                             int width,
@@ -70,7 +72,13 @@ protected:
      */
     String getCellText(SampleItem* inSampleItem, String columnName);
     int getColumnAutoSizeWidth(int columnId) override;
+    /**
+     Loads the file of the selected row into the audio player.
+     */
+    void loadSelectedRowIntoAudioPlayer(int rowNumber);
     void cellDoubleClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent) override;
     void mouseDrag(MouseEvent const & e) override;
     bool isInterestedInFileDrag(StringArray const & files) override;
+    void returnKeyPressed (int lastRowSelected) override;
+    void sortOrderChanged(int newSortColumnId, bool isForwards) override;
 };

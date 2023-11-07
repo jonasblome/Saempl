@@ -25,10 +25,12 @@ class PanelBase
 :   public Component
 {
 public:
-    PanelBase();
+    PanelBase(SaemplAudioProcessor& inProcessor);
     ~PanelBase();
     
 protected:
+    SaemplAudioProcessor& currentProcessor;
+    
     void mouseEnter(MouseEvent const & event) override;
     void mouseExit(MouseEvent const & event) override;
     void paint(Graphics& g) override;

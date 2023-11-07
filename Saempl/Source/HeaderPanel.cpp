@@ -11,8 +11,9 @@
 #include "HeaderPanel.h"
 
 HeaderPanel::HeaderPanel(SaemplAudioProcessor& inProcessor, CenterPanel& inCenterPanel)
-:   PanelBase(),
-currentProcessor(inProcessor),
+:
+PanelBase(inProcessor),
+sampleLibrary(currentProcessor.getSampleLibrary()),
 linkedCenterPanel(inCenterPanel)
 {
     setSize(HEADER_PANEL_WIDTH - PANEL_MARGIN, HEADER_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
@@ -72,7 +73,7 @@ void HeaderPanel::setPanelComponents()
                                      buttonWidth,
                                      buttonWidth);
     mRefreshLibraryButton->setTooltip("Scans for new files and removes externally deleted files");
-    mRefreshLibraryButton->onClick = [this] { currentProcessor.getSampleLibrary().synchWithLibraryDirectory(); };
+    mRefreshLibraryButton->onClick = [this] { sampleLibrary.synchWithLibraryDirectory(); };
     addAndMakeVisible(*mRefreshLibraryButton);
     x += buttonWidth + PANEL_MARGIN / 2.0;
     
@@ -107,13 +108,13 @@ void HeaderPanel::setPanelComponents()
                                          true,
                                          ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
                                                                    BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                         1.0,
+                                         currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL ? 1.0 : 0.35,
                                          COLOUR_ACCENT_DARK,
                                          Image(),
-                                         0.35,
+                                         currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL ? 0.35 : 0.25,
                                          COLOUR_ACCENT_DARK,
                                          Image(),
-                                         0.5,
+                                         currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL ? 0.5 : 0.35,
                                          COLOUR_ACCENT_DARK);
     mToggleLibraryPanelButton->setBounds(x,
                                          PANEL_MARGIN,
@@ -122,9 +123,9 @@ void HeaderPanel::setPanelComponents()
     mToggleLibraryPanelButton->setTooltip("Show the folder structure of your library directory");
     mToggleLibraryPanelButton->onClick = [this]
     {
-        if (linkedCenterPanel.getActiveNavigationPanelType() == PANELS_TABLE_PANEL)
+        if (currentProcessor.getActiveNavigationPanel() == PANELS_TABLE_PANEL)
         {
-            linkedCenterPanel.showNavigationPanel(PANELS_LIBRARY_PANEL);
+            linkedCenterPanel.setActiveNavigationPanel(PANELS_LIBRARY_PANEL);
             mToggleLibraryPanelButton->setImages(false,
                                                  true,
                                                  true,
@@ -163,13 +164,13 @@ void HeaderPanel::setPanelComponents()
                                              true,
                                              ImageCache::getFromMemory(BinaryData::table_rows_FILL0_wght400_GRAD0_opsz24_png,
                                                                        BinaryData::table_rows_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                             0.35,
+                                             currentProcessor.getActiveNavigationPanel() == PANELS_TABLE_PANEL ? 1.0 : 0.35,
                                              COLOUR_BLACK,
                                              Image(),
-                                             0.15,
+                                             currentProcessor.getActiveNavigationPanel() == PANELS_TABLE_PANEL ? 0.35 : 0.15,
                                              COLOUR_BLACK,
                                              Image(),
-                                             0.35,
+                                             currentProcessor.getActiveNavigationPanel() == PANELS_TABLE_PANEL ? 0.5 : 0.35,
                                              COLOUR_BLACK);
     mToggleSampleTablePanelButton->setBounds(x,
                                              PANEL_MARGIN,
@@ -178,9 +179,9 @@ void HeaderPanel::setPanelComponents()
     mToggleSampleTablePanelButton->setTooltip("Show table with all samples in your library");
     mToggleSampleTablePanelButton->onClick = [this]
     {
-        if (linkedCenterPanel.getActiveNavigationPanelType() == PANELS_LIBRARY_PANEL)
+        if (currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL)
         {
-            linkedCenterPanel.showNavigationPanel(PANELS_TABLE_PANEL);
+            linkedCenterPanel.setActiveNavigationPanel(PANELS_TABLE_PANEL);
             mToggleLibraryPanelButton->setImages(false,
                                                  true,
                                                  true,
@@ -234,8 +235,7 @@ void HeaderPanel::setPanelComponents()
     mChangeFilterButton->setTooltip("Change filter settings and add filter rules");
     mChangeFilterButton->onClick = [this]
     {
-        std::unique_ptr<FileFilterPanel> fileFilterPanel = std::make_unique<FileFilterPanel>(currentProcessor
-                                                                                             .getSampleLibrary());
+        std::unique_ptr<FileFilterPanel> fileFilterPanel = std::make_unique<FileFilterPanel>(currentProcessor);
         CallOutBox::launchAsynchronously(std::move(fileFilterPanel), mChangeFilterButton->getScreenBounds(), nullptr);
     };
     addAndMakeVisible(*mChangeFilterButton);
@@ -263,9 +263,9 @@ void HeaderPanel::setPanelComponents()
     mToggleFilterButton->setTooltip("Activate/deactivate filter");
     mToggleFilterButton->onClick = [this]
     {
-        bool filterIsActive = !currentProcessor.getSampleLibrary().getFileFilter().getIsActive();
-        currentProcessor.getSampleLibrary().getFileFilter().setIsActive(filterIsActive);
-        currentProcessor.getSampleLibrary().refresh();
+        bool filterIsActive = !sampleLibrary.getFileFilter().getIsActive();
+        sampleLibrary.getFileFilter().setIsActive(filterIsActive);
+        sampleLibrary.refresh();
         mChangeFilterButton->setImages(false,
                                        true,
                                        true,
@@ -303,6 +303,33 @@ void HeaderPanel::setPanelComponents()
                                        : COLOUR_BLACK);
     };
     addAndMakeVisible(*mToggleFilterButton);
+    x += buttonWidth + PANEL_MARGIN * 1.5 + groupDistance;
+    
+    mRandomSampleButton = std::make_unique<BlomeImageButton>("RandomSampleButton", false);
+    mRandomSampleButton->setImages(false,
+                                   true,
+                                   true,
+                                   ImageCache::getFromMemory(BinaryData::ifl_FILL0_wght400_GRAD0_opsz24_png,
+                                                             BinaryData::ifl_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                   1.0,
+                                   COLOUR_ACCENT_DARK,
+                                   Image(),
+                                   0.35,
+                                   COLOUR_ACCENT_DARK,
+                                   Image(),
+                                   0.5,
+                                   COLOUR_ACCENT_DARK);
+    mRandomSampleButton->setBounds(x,
+                                   PANEL_MARGIN,
+                                   buttonWidth,
+                                   buttonWidth);
+    mRandomSampleButton->setTooltip("Opens the table view and selects a random sample");
+    mRandomSampleButton->onClick = [this]
+    {
+        mToggleSampleTablePanelButton->triggerClick();
+        linkedCenterPanel.selectRandomSample();
+    };
+    addAndMakeVisible(*mRandomSampleButton);
 }
 
 void HeaderPanel::showLibraryChooser()
@@ -320,7 +347,7 @@ void HeaderPanel::showLibraryChooser()
         
         if (name != "")
         {
-            currentProcessor.getSampleLibrary().setDirectory(name);
+            sampleLibrary.setDirectory(name);
             
             // Show success popup message
             AlertWindow::showAsync(MessageBoxOptions()

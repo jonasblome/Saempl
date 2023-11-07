@@ -10,18 +10,18 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-SaemplAudioProcessorEditor::SaemplAudioProcessorEditor (SaemplAudioProcessor& p)
-: AudioProcessorEditor (&p), audioProcessor (p)
+SaemplAudioProcessorEditor::SaemplAudioProcessorEditor (SaemplAudioProcessor& inProcessor)
+: AudioProcessorEditor(&inProcessor), audioProcessor(inProcessor)
 {
     // Set styling of plugin UI
-    mLookAndFeel = std::make_unique<BlomeLookAndFeel>(p.getSampleLibrary());
+    mLookAndFeel = std::make_unique<BlomeLookAndFeel>(inProcessor.getSampleLibrary());
     LookAndFeel::setDefaultLookAndFeel(&*mLookAndFeel);
     
     // Set plugin window size
     setSize(MAIN_PANEL_WIDTH, MAIN_PANEL_HEIGHT);
     
     // Set main panel into plugin window
-    mMainPanel = std::make_unique<MainPanel>(p);
+    mMainPanel = std::make_unique<MainPanel>(inProcessor);
     addAndMakeVisible(*mMainPanel);
     
     // Add noise overlay

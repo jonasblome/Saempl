@@ -12,8 +12,8 @@
 #include "BlomeFileTreeView.h"
 
 AudioPreviewPanel::AudioPreviewPanel(SaemplAudioProcessor& inProcessor, Slider& inSlider, SampleEditor& inSampleEditor)
-:   PanelBase(),
-currentProcessor(inProcessor),
+:
+PanelBase(inProcessor),
 sampleEditor(inSampleEditor),
 mZoomSlider(inSlider),
 mThumbnailCache(std::make_unique<AudioThumbnailCache>(5)),

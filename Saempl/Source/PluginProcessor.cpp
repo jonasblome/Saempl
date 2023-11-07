@@ -23,9 +23,12 @@ SaemplAudioProcessor::SaemplAudioProcessor()
 #endif
 {
     // Create thread for current plugin instance
-    mThread = std::make_unique<TimeSliceThread>("audioFilePreview");
+    mThread = std::make_unique<TimeSliceThread>("MainThread");
     mThread->startThread(Thread::Priority::normal);
     mSampleLibrary = std::make_unique<SampleLibrary>(*mThread);
+    mActiveNavigationPanelType = PANELS_LIBRARY_PANEL;
+    mSortingColumnTitle = "Title";
+    mSortingDirection = true;
 }
 
 SaemplAudioProcessor::~SaemplAudioProcessor()
@@ -147,7 +150,9 @@ void SaemplAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce:
     // when they first compile a plugin, but obviously you don't need to keep
     // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+    {
         buffer.clear (i, 0, buffer.getNumSamples());
+    }
 
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
@@ -179,12 +184,72 @@ void SaemplAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+    XmlElement stateInfo("Blome_StateInfo");
+    XmlElement* stateInfoBody = new XmlElement("Blome_StateInfoBody");
+    
+    // Store navigation panel state
+    String activeNavigationPanel = "";
+    
+    switch (mActiveNavigationPanelType)
+    {
+        case PANELS_LIBRARY_PANEL:
+            activeNavigationPanel = "PANELS_LIBRARY_PANEL";
+            break;
+        case PANELS_TABLE_PANEL:
+            activeNavigationPanel = "PANELS_TABLE_PANEL";
+            break;
+        case PANELS_MAP_PANEL:
+            activeNavigationPanel = "PANELS_MAP_PANEL";
+            break;
+        default:
+            break;
+    }
+    
+    stateInfoBody->setAttribute("ActiveNavigationPanel", activeNavigationPanel);
+    
+    // Store sorting column title state
+    stateInfoBody->setAttribute("SortingColumnTitle", mSortingColumnTitle);
+    
+    // Store sorting direction state
+    stateInfoBody->setAttribute("SortingDirection", mSortingDirection);
+    
+    stateInfo.addChildElement(stateInfoBody);
+    copyXmlToBinary(stateInfo, destData);
 }
 
 void SaemplAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+    juce::XmlElement xmlState = *getXmlFromBinary(data, sizeInBytes);
+    juce::XmlElement* xmlStatePtr = &xmlState;
+    
+    if(xmlStatePtr)
+    {
+        for (auto* child: xmlStatePtr->getChildIterator())
+        {
+            String const activeNavigationPanel = child->getStringAttribute("ActiveNavigationPanel");
+            if (activeNavigationPanel == "PANELS_LIBRARY_PANEL")
+            {
+                mActiveNavigationPanelType = PANELS_LIBRARY_PANEL;
+            }
+            else if (activeNavigationPanel == "PANELS_TABLE_PANEL")
+            {
+                mActiveNavigationPanelType = PANELS_TABLE_PANEL;
+            }
+            else if (activeNavigationPanel == "PANELS_MAP_PANEL")
+            {
+                mActiveNavigationPanelType = PANELS_MAP_PANEL;
+            }
+            
+            mSortingColumnTitle = child->getStringAttribute("SortingColumnTitle");
+            mSortingDirection = child->getBoolAttribute("SortingDirection");
+        }
+    }
+    else
+    {
+        jassertfalse;
+    }
 }
 
 //==============================================================================
@@ -203,4 +268,34 @@ TimeSliceThread& SaemplAudioProcessor::getThread()
 SampleLibrary& SaemplAudioProcessor::getSampleLibrary()
 {
     return *mSampleLibrary;
+}
+
+NavigationPanelType SaemplAudioProcessor::getActiveNavigationPanel()
+{
+    return mActiveNavigationPanelType;
+}
+
+void SaemplAudioProcessor::setActiveNavigationPanel(NavigationPanelType inPanelType)
+{
+    mActiveNavigationPanelType = inPanelType;
+}
+
+String SaemplAudioProcessor::getSortingColumnTitle()
+{
+    return mSortingColumnTitle;
+}
+
+void SaemplAudioProcessor::setSortingColumnTitle(String inColumnTitle)
+{
+    mSortingColumnTitle = inColumnTitle;
+}
+
+bool SaemplAudioProcessor::getSortingDirection()
+{
+    return mSortingDirection;
+}
+
+void SaemplAudioProcessor::setSortingDirection(bool inDirection)
+{
+    mSortingDirection = inDirection;
 }

@@ -37,7 +37,7 @@ public:
     ~HeaderPanel();
     
 private:
-    SaemplAudioProcessor& currentProcessor;
+    SampleLibrary& sampleLibrary;
     CenterPanel& linkedCenterPanel;
     std::unique_ptr<BlomeImageButton> mRefreshLibraryButton;
     std::unique_ptr<BlomeImageButton> mChooseLibraryFolderButton;
@@ -46,6 +46,7 @@ private:
     std::unique_ptr<BlomeImageButton> mToggleSampleTablePanelButton;
     std::unique_ptr<BlomeImageButton> mChangeFilterButton;
     std::unique_ptr<BlomeImageButton> mToggleFilterButton;
+    std::unique_ptr<BlomeImageButton> mRandomSampleButton;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;

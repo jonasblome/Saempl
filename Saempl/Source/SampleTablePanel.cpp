@@ -10,9 +10,9 @@
 
 #include "SampleTablePanel.h"
 
-SampleTablePanel::SampleTablePanel(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel)
-:   PanelBase(),
-    sampleLibrary(inSampleLibrary),
+SampleTablePanel::SampleTablePanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
+:   PanelBase(inProcessor),
+    sampleLibrary(currentProcessor.getSampleLibrary()),
     linkedSampleItemPanel(inSampleItemPanel)
 {
     setSize(SAMPLE_NAVIGATION_PANEL_WIDTH - PANEL_MARGIN / 2.0, SAMPLE_NAVIGATION_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
@@ -53,7 +53,7 @@ void SampleTablePanel::paint(Graphics& g)
 void SampleTablePanel::setPanelComponents()
 {
     // Set sample table component
-    mSampleTable = std::make_unique<BlomeTableViewNavigation>(sampleLibrary, linkedSampleItemPanel);
+    mSampleTable = std::make_unique<BlomeTableViewNavigation>(currentProcessor, linkedSampleItemPanel);
     mSampleTable->setBounds(PANEL_MARGIN / 2.0,
                             PANEL_TITLE_HEIGHT,
                             getWidth() - PANEL_MARGIN,
@@ -70,4 +70,11 @@ void SampleTablePanel::resizePanelComponents()
                                 getWidth() - PANEL_MARGIN,
                                 getHeight() - PANEL_TITLE_HEIGHT - PANEL_MARGIN / 2.0);
     }
+}
+
+void SampleTablePanel::selectRandomSample()
+{
+    int numSamples = mSampleTable->getNumRows();
+    int randomSampleIndex = Random::getSystemRandom().nextInt(numSamples);
+    mSampleTable->selectRow(randomSampleIndex);
 }

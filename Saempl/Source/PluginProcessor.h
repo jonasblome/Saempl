@@ -66,11 +66,40 @@ public:
      @returns the sample library of the current plugin instance.
      */
     SampleLibrary& getSampleLibrary();
+    /**
+     @returns the type of the currently shown navigation panel.
+     */
+    NavigationPanelType getActiveNavigationPanel();
+    /**
+     Toggles between showing the library panel, the table panel and the map panel.
+     
+     @param inPanelType the type of the navigation panel (library, table or map).
+     */
+    void setActiveNavigationPanel(NavigationPanelType inPanelType);
+    /**
+     @returns the title of the current sorting column of the sample item table.
+     */
+    String getSortingColumnTitle();
+    /**
+     Sets the title of the current sorting column of the sample item table.
+     */
+    void setSortingColumnTitle(String inColumnTitle);
+    /**
+     @returns the current sorting direction of the sample item table.
+     */
+    bool getSortingDirection();
+    /**
+     Sets the current sorting direction of the sample item table.
+     */
+    void setSortingDirection(bool inDirection);
 
 private:
     //==============================================================================
-    // JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SaemplAudioProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SaemplAudioProcessor)
     
     std::unique_ptr<TimeSliceThread> mThread;
     std::unique_ptr<SampleLibrary> mSampleLibrary;
+    NavigationPanelType mActiveNavigationPanelType;
+    String mSortingColumnTitle;
+    bool mSortingDirection;
 };

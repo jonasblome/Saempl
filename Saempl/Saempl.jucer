@@ -8,6 +8,8 @@
               pluginCode="Smpl" version="0.1" companyWebsite="https://github.com/jonasblome">
   <MAINGROUP id="Ryuu1q" name="Saempl">
     <GROUP id="{F65A6678-A68F-58F1-A4D6-F2BF2D42BA2E}" name="Assets">
+      <FILE id="MfdNxs" name="ifl_FILL0_wght400_GRAD0_opsz24.png" compile="0"
+            resource="1" file="Assets/ifl_FILL0_wght400_GRAD0_opsz24.png"/>
       <FILE id="ljBuyf" name="power_settings_new_FILL0_wght400_GRAD0_opsz24.png"
             compile="0" resource="1" file="Assets/power_settings_new_FILL0_wght400_GRAD0_opsz24.png"/>
       <FILE id="STqKCu" name="trending_flat_FILL0_wght400_GRAD0_opsz24.png"

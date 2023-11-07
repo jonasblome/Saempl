@@ -12,6 +12,7 @@
 
 #include "PanelBase.h"
 #include "BlomeHelpers.h"
+#include "BlomeLookAndFeel.h"
 #include "SampleEditor.h"
 
 /**
@@ -104,7 +105,6 @@ public:
     void emptyAudioResource();
 
 private:
-    SaemplAudioProcessor& currentProcessor;
     SampleEditor& sampleEditor;
     Slider& mZoomSlider;
     std::unique_ptr<ScrollBar> mAudioPreviewScrollbar;
