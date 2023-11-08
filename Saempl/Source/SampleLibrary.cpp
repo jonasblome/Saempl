@@ -10,15 +10,19 @@
 
 #include "SampleLibrary.h"
 
-SampleLibrary::SampleLibrary(TimeSliceThread& inThread)
+SampleLibrary::SampleLibrary()
 {
+    // Create thread for scanning the sample library directory
+    mThread = std::make_unique<TimeSliceThread>("DirectoryReaderThread");
+    mThread->startThread(Thread::Priority::normal);
+    
     // Initialize library manager
     mSampleLibraryManager = std::make_unique<SampleLibraryManager>(mAllSampleItems, mPaletteSampleItems);
     mSampleLibraryManager->addChangeListener(this);
     
     // Set file filter
     mFileFilter = std::make_unique<SampleFileFilter>("AudioFormatsFilter", mFilteredSampleItems);
-    mDirectoryContent = std::make_unique<DirectoryContentsList>(&*mFileFilter, inThread);
+    mDirectoryContent = std::make_unique<DirectoryContentsList>(&*mFileFilter, *mThread);
     
     // Set directory
     mDirectoryContent->addChangeListener(this);
@@ -34,6 +38,7 @@ SampleLibrary::~SampleLibrary()
     File currentLibrary(mCurrentLibraryPath);
     mSampleLibraryManager->updateSampleLibraryFile(currentLibrary);
     clearSampleItemCollections();
+    mThread->stopThread(10);
 }
 
 SampleItem* SampleLibrary::addToSampleItems(File const & newFile)

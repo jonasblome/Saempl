@@ -14,6 +14,12 @@
 
 // Other
 static float const CORNER_SIZE_MEDIUM = 6.0;
+static float const BUTTON_IS_DEFAULT_ALPHA = 1.0;
+static float const BUTTON_IS_OVER_ALPHA = 0.7;
+static float const BUTTON_IS_DOWN_ALPHA = 0.9;
+static float const BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA = 0.3;
+static float const BUTTON_IS_OVER_DEACTIVATED_ALPHA = 0.1;
+static float const BUTTON_IS_DOWN_DEACTIVATED_ALPHA = 0.2;
 static int const PANEL_MARGIN = 8;
 static int const BUTTON_SIZE_MEDIUM = 25;
 static int const BUTTON_SIZE_SMALL = 20;

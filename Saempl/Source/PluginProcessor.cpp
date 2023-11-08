@@ -22,10 +22,7 @@ SaemplAudioProcessor::SaemplAudioProcessor()
                        )
 #endif
 {
-    // Create thread for current plugin instance
-    mThread = std::make_unique<TimeSliceThread>("MainThread");
-    mThread->startThread(Thread::Priority::normal);
-    mSampleLibrary = std::make_unique<SampleLibrary>(*mThread);
+    mSampleLibrary = std::make_unique<SampleLibrary>();
     mActiveNavigationPanelType = PANELS_LIBRARY_PANEL;
     mSortingColumnTitle = "Title";
     mSortingDirection = true;
@@ -33,7 +30,7 @@ SaemplAudioProcessor::SaemplAudioProcessor()
 
 SaemplAudioProcessor::~SaemplAudioProcessor()
 {
-    mThread->stopThread(10);
+    
 }
 
 //==============================================================================
@@ -257,11 +254,6 @@ void SaemplAudioProcessor::setStateInformation (const void* data, int sizeInByte
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new SaemplAudioProcessor();
-}
-
-TimeSliceThread& SaemplAudioProcessor::getThread()
-{
-    return *mThread;
 }
 
 

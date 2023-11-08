@@ -65,16 +65,6 @@ void SampleLibraryManager::updateSampleLibraryFile(File& inLibraryDirectory)
                                   + DIRECTORY_SEPARATOR
                                   + inLibraryDirectory.getFileNameWithoutExtension()
                                   + SAMPLE_LIBRARY_FILE_EXTENSION);
-    
-    if (!sampleLibraryFile.exists())
-    {
-        sampleLibraryFile.create();
-    }
-    else
-    {
-        sampleLibraryFile.deleteFile();
-    }
-    
     writeXmlToFile(sampleLibraryXml, sampleLibraryFile);
 }
 
@@ -85,6 +75,14 @@ void SampleLibraryManager::synchWithLibraryDirectory()
 
 void SampleLibraryManager::run()
 {
+    
+    // Go through all files in directory, check if a corresponding sample item
+    // already exists in the sample item list, if not add it
+    Array<File> allSampleFiles = libraryDirectory.findChildFiles(File::findFiles,
+                                                                 true,
+                                                                 SUPPORTED_AUDIO_FORMATS_WILDCARD);
+    int itemsToProcess = allSampleFiles.size() + allSampleItems.size();
+    int processedItems = 0;
     setProgress(0.0);
     
     // Go through all current sample items, check if corresponding audio file still exists
@@ -97,24 +95,27 @@ void SampleLibraryManager::run()
             allSampleItems.removeObject(sampleItem);
             addedFilePaths.removeString(sampleItem->getFilePath());
         }
+        
+        processedItems++;
+        setProgress(processedItems / (double) itemsToProcess);
     }
     
-    // Go through all files in directory, check if a corresponding sample item
-    // already exists in the sample item list, if not add it
-    Array<File> allSampleFiles = libraryDirectory.findChildFiles(File::findFiles,
-                                                                 true,
-                                                                 SUPPORTED_AUDIO_FORMATS_WILDCARD);
-    int loadedFiles = 0;
+    // All files have already been loaded
+    if (addedFilePaths.size() == allSampleFiles.size())
+    {
+        setProgress(1.0);
+        return;
+    }
     
     for (File sampleFile : allSampleFiles)
     {
-        loadedFiles++;
-        setProgress(loadedFiles / (double) allSampleFiles.size());
-        
         if (!addedFilePaths.contains(sampleFile.getFullPathName()))
         {
             createSampleItem(sampleFile);
         }
+        
+        processedItems++;
+        setProgress(processedItems / (double) itemsToProcess);
     }
 }
 
@@ -196,24 +197,14 @@ void SampleLibraryManager::storeLastOpenedDirectory(String& inDirectoryPath)
 {
     File saemplDataFile = File(mSaemplDataFilePath);
     XmlElement saemplDataXml = XmlElement("SaemplData");
-    
-    if (!saemplDataFile.exists())
-    {
-        saemplDataFile.create();
-    }
-    else
-    {
-        saemplDataXml = loadFileAsXml(saemplDataFile);
-        saemplDataFile.deleteFile();
-    }
-    
-    // Get data from plugin data file
     saemplDataXml.setAttribute("LastOpenedDirectory", inDirectoryPath);
     writeXmlToFile(saemplDataXml, saemplDataFile);
 }
 
 XmlElement SampleLibraryManager::loadFileAsXml(File& inFile)
 {
+    const InterProcessLock::ScopedLockType scopedLock(fileLock);
+    
     MemoryBlock fileData;
     inFile.loadFileAsData(fileData);
     XmlElement fileXml = *AudioPluginInstance::getXmlFromBinary(fileData.getData(), (int) fileData.getSize());
@@ -223,9 +214,11 @@ XmlElement SampleLibraryManager::loadFileAsXml(File& inFile)
 
 void SampleLibraryManager::writeXmlToFile(XmlElement& inXml, File& inFile)
 {
+    const InterProcessLock::ScopedLockType scopedLock(fileLock);
+    
     MemoryBlock destinationData;
     AudioPluginInstance::copyXmlToBinary(inXml, destinationData);
-    inFile.appendData(destinationData.getData(), destinationData.getSize());
+    inFile.replaceWithData(destinationData.getData(), destinationData.getSize());
 }
 
 SampleItem* SampleLibraryManager::createSampleItem(File inFile)

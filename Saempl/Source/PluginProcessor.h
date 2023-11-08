@@ -59,10 +59,6 @@ public:
     
     //==============================================================================
     /**
-     @returns the thread for the current plugin instance.
-     */
-    TimeSliceThread& getThread();
-    /**
      @returns the sample library of the current plugin instance.
      */
     SampleLibrary& getSampleLibrary();
@@ -97,7 +93,6 @@ private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SaemplAudioProcessor)
     
-    std::unique_ptr<TimeSliceThread> mThread;
     std::unique_ptr<SampleLibrary> mSampleLibrary;
     NavigationPanelType mActiveNavigationPanelType;
     String mSortingColumnTitle;

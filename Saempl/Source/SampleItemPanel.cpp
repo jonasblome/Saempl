@@ -45,13 +45,13 @@ void SampleItemPanel::setPanelComponents()
                                 true,
                                 ImageCache::getFromMemory(BinaryData::play_pause_FILL0_wght400_GRAD0_opsz24_png,
                                                           BinaryData::play_pause_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                1.0,
+                                BUTTON_IS_DEFAULT_ALPHA,
                                 COLOUR_ACCENT_LIGHT,
                                 Image(),
-                                0.35,
+                                BUTTON_IS_OVER_ALPHA,
                                 COLOUR_ACCENT_LIGHT,
                                 Image(),
-                                0.5,
+                                BUTTON_IS_DOWN_ALPHA,
                                 COLOUR_ACCENT_LIGHT);
     mStartStopButton->setBounds(PANEL_MARGIN / 2.0,
                                 PANEL_MARGIN / 2.0,
@@ -68,14 +68,14 @@ void SampleItemPanel::setPanelComponents()
                                       true,
                                       ImageCache::getFromMemory(BinaryData::trending_flat_FILL0_wght400_GRAD0_opsz24_png,
                                                                 BinaryData::trending_flat_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                      0.35,
-                                      COLOUR_BLACK,
+                                      BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                      COLOUR_ACCENT_LIGHT,
                                       Image(),
-                                      0.25,
-                                      Colour(),
+                                      BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                      COLOUR_ACCENT_LIGHT,
                                       Image(),
-                                      0.35,
-                                      Colour());
+                                      BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                      COLOUR_ACCENT_LIGHT);
     mFollowTransportButton->setBounds(PANEL_MARGIN / 2.0,
                                       SAMPLE_CONTROL_WIDTH + PANEL_MARGIN / 2.0,
                                       SAMPLE_CONTROL_WIDTH - PANEL_MARGIN / 2.0,
@@ -90,14 +90,14 @@ void SampleItemPanel::setPanelComponents()
                                           true,
                                           ImageCache::getFromMemory(BinaryData::trending_flat_FILL0_wght400_GRAD0_opsz24_png,
                                                                     BinaryData::trending_flat_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                          follows ? 1.0 : 0.35,
-                                          follows ? COLOUR_ACCENT_LIGHT : COLOUR_BLACK,
+                                          follows ? BUTTON_IS_DEFAULT_ALPHA : BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                          COLOUR_ACCENT_LIGHT,
                                           Image(),
-                                          follows ? 0.35 : 0.25,
-                                          follows ? COLOUR_ACCENT_LIGHT : COLOUR_BLACK,
+                                          follows ? BUTTON_IS_OVER_ALPHA : BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                          COLOUR_ACCENT_LIGHT,
                                           Image(),
-                                          follows ? 0.5 : 0.35,
-                                          follows ? COLOUR_ACCENT_LIGHT : COLOUR_BLACK);
+                                          follows ? BUTTON_IS_DOWN_ALPHA : BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                          COLOUR_ACCENT_LIGHT);
     };
     addAndMakeVisible(*mFollowTransportButton);
     

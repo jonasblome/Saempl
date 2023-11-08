@@ -60,13 +60,13 @@ void HeaderPanel::setPanelComponents()
                                      true,
                                      ImageCache::getFromMemory(BinaryData::sync_FILL0_wght400_GRAD0_opsz24_png,
                                                                BinaryData::sync_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                     1.0,
+                                     BUTTON_IS_DEFAULT_ALPHA,
                                      COLOUR_ACCENT_DARK,
                                      Image(),
-                                     0.35,
+                                     BUTTON_IS_OVER_ALPHA,
                                      COLOUR_ACCENT_DARK,
                                      Image(),
-                                     0.5,
+                                     BUTTON_IS_DOWN_ALPHA,
                                      COLOUR_ACCENT_DARK);
     mRefreshLibraryButton->setBounds(x,
                                      PANEL_MARGIN,
@@ -84,13 +84,13 @@ void HeaderPanel::setPanelComponents()
                                           true,
                                           ImageCache::getFromMemory(BinaryData::folder_open_FILL0_wght400_GRAD0_opsz24_png,
                                                                     BinaryData::folder_open_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                          1.0,
+                                          BUTTON_IS_DEFAULT_ALPHA,
                                           COLOUR_ACCENT_DARK,
                                           Image(),
-                                          0.35,
+                                          BUTTON_IS_OVER_ALPHA,
                                           COLOUR_ACCENT_DARK,
                                           Image(),
-                                          0.5,
+                                          BUTTON_IS_DOWN_ALPHA,
                                           COLOUR_ACCENT_DARK);
     mChooseLibraryFolderButton->setBounds(x,
                                           PANEL_MARGIN,
@@ -108,13 +108,19 @@ void HeaderPanel::setPanelComponents()
                                          true,
                                          ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
                                                                    BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                         currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL ? 1.0 : 0.35,
+                                         currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL
+                                         ? BUTTON_IS_DEFAULT_ALPHA
+                                         : BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
                                          COLOUR_ACCENT_DARK,
                                          Image(),
-                                         currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL ? 0.35 : 0.25,
+                                         currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL
+                                         ? BUTTON_IS_OVER_ALPHA
+                                         : BUTTON_IS_OVER_DEACTIVATED_ALPHA,
                                          COLOUR_ACCENT_DARK,
                                          Image(),
-                                         currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL ? 0.5 : 0.35,
+                                         currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL
+                                         ? BUTTON_IS_DOWN_ALPHA
+                                         : BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
                                          COLOUR_ACCENT_DARK);
     mToggleLibraryPanelButton->setBounds(x,
                                          PANEL_MARGIN,
@@ -131,27 +137,27 @@ void HeaderPanel::setPanelComponents()
                                                  true,
                                                  ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
                                                                            BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                                 1.0,
+                                                 BUTTON_IS_DEFAULT_ALPHA,
                                                  COLOUR_ACCENT_DARK,
                                                  Image(),
-                                                 0.35,
+                                                 BUTTON_IS_OVER_ALPHA,
                                                  COLOUR_ACCENT_DARK,
                                                  Image(),
-                                                 0.5,
+                                                 BUTTON_IS_DOWN_ALPHA,
                                                  COLOUR_ACCENT_DARK);
             mToggleSampleTablePanelButton->setImages(false,
                                                      true,
                                                      true,
                                                      ImageCache::getFromMemory(BinaryData::table_rows_FILL0_wght400_GRAD0_opsz24_png,
                                                                                BinaryData::table_rows_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                                     0.35,
-                                                     COLOUR_BLACK,
+                                                     BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                                     COLOUR_ACCENT_DARK,
                                                      Image(),
-                                                     0.15,
-                                                     COLOUR_BLACK,
+                                                     BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                                     COLOUR_ACCENT_DARK,
                                                      Image(),
-                                                     0.35,
-                                                     COLOUR_BLACK);
+                                                     BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                                     COLOUR_ACCENT_DARK);
         }
     };
     addAndMakeVisible(*mToggleLibraryPanelButton);
@@ -164,14 +170,20 @@ void HeaderPanel::setPanelComponents()
                                              true,
                                              ImageCache::getFromMemory(BinaryData::table_rows_FILL0_wght400_GRAD0_opsz24_png,
                                                                        BinaryData::table_rows_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                             currentProcessor.getActiveNavigationPanel() == PANELS_TABLE_PANEL ? 1.0 : 0.35,
-                                             COLOUR_BLACK,
+                                             currentProcessor.getActiveNavigationPanel() == PANELS_TABLE_PANEL
+                                             ? BUTTON_IS_DEFAULT_ALPHA
+                                             : BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                             COLOUR_ACCENT_DARK,
                                              Image(),
-                                             currentProcessor.getActiveNavigationPanel() == PANELS_TABLE_PANEL ? 0.35 : 0.15,
-                                             COLOUR_BLACK,
+                                             currentProcessor.getActiveNavigationPanel() == PANELS_TABLE_PANEL
+                                             ? BUTTON_IS_OVER_ALPHA
+                                             : BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                             COLOUR_ACCENT_DARK,
                                              Image(),
-                                             currentProcessor.getActiveNavigationPanel() == PANELS_TABLE_PANEL ? 0.5 : 0.35,
-                                             COLOUR_BLACK);
+                                             currentProcessor.getActiveNavigationPanel() == PANELS_TABLE_PANEL
+                                             ? BUTTON_IS_DOWN_ALPHA
+                                             : BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                             COLOUR_ACCENT_DARK);
     mToggleSampleTablePanelButton->setBounds(x,
                                              PANEL_MARGIN,
                                              buttonWidth,
@@ -187,26 +199,26 @@ void HeaderPanel::setPanelComponents()
                                                  true,
                                                  ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
                                                                            BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                                 0.35,
-                                                 COLOUR_BLACK,
+                                                 BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                                 COLOUR_ACCENT_DARK,
                                                  Image(),
-                                                 0.15,
-                                                 COLOUR_BLACK,
+                                                 BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                                 COLOUR_ACCENT_DARK,
                                                  Image(),
-                                                 0.35,
-                                                 COLOUR_BLACK);
+                                                 BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                                 COLOUR_ACCENT_DARK);
             mToggleSampleTablePanelButton->setImages(false,
                                                      true,
                                                      true,
                                                      ImageCache::getFromMemory(BinaryData::table_rows_FILL0_wght400_GRAD0_opsz24_png,
                                                                                BinaryData::table_rows_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                                     1.0,
+                                                     BUTTON_IS_DEFAULT_ALPHA,
                                                      COLOUR_ACCENT_DARK,
                                                      Image(),
-                                                     0.35,
+                                                     BUTTON_IS_OVER_ALPHA,
                                                      COLOUR_ACCENT_DARK,
                                                      Image(),
-                                                     0.5,
+                                                     BUTTON_IS_DOWN_ALPHA,
                                                      COLOUR_ACCENT_DARK);
         }
     };
@@ -220,13 +232,13 @@ void HeaderPanel::setPanelComponents()
                                    false,
                                    ImageCache::getFromMemory(BinaryData::filter_alt_FILL0_wght400_GRAD0_opsz24_png,
                                                              BinaryData::filter_alt_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                   1.0,
+                                   BUTTON_IS_DEFAULT_ALPHA,
                                    COLOUR_ACCENT_DARK,
                                    Image(),
-                                   0.35,
+                                   BUTTON_IS_OVER_ALPHA,
                                    COLOUR_ACCENT_DARK,
                                    Image(),
-                                   0.5,
+                                   BUTTON_IS_DOWN_ALPHA,
                                    COLOUR_ACCENT_DARK);
     mChangeFilterButton->setBounds(x,
                                    PANEL_MARGIN,
@@ -248,13 +260,13 @@ void HeaderPanel::setPanelComponents()
                                    true,
                                    ImageCache::getFromMemory(BinaryData::power_settings_new_FILL0_wght400_GRAD0_opsz24_png,
                                                              BinaryData::power_settings_new_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                   1.0,
+                                   BUTTON_IS_DEFAULT_ALPHA,
                                    COLOUR_ACCENT_DARK,
                                    Image(),
-                                   0.35,
+                                   BUTTON_IS_OVER_ALPHA,
                                    COLOUR_ACCENT_DARK,
                                    Image(),
-                                   0.5,
+                                   BUTTON_IS_DOWN_ALPHA,
                                    COLOUR_ACCENT_DARK);
     mToggleFilterButton->setBounds(x,
                                    PANEL_MARGIN,
@@ -274,33 +286,27 @@ void HeaderPanel::setPanelComponents()
                                                                  BinaryData::filter_alt_FILL0_wght400_GRAD0_opsz24_pngSize) :
                                        ImageCache::getFromMemory(BinaryData::filter_alt_off_FILL0_wght400_GRAD0_opsz24_png,
                                                                  BinaryData::filter_alt_off_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                       1.0,
+                                       BUTTON_IS_DEFAULT_ALPHA,
                                        COLOUR_ACCENT_DARK,
                                        Image(),
-                                       0.35,
+                                       BUTTON_IS_OVER_ALPHA,
                                        COLOUR_ACCENT_DARK,
                                        Image(),
-                                       0.5,
+                                       BUTTON_IS_DOWN_ALPHA,
                                        COLOUR_ACCENT_DARK);
         mToggleFilterButton->setImages(false,
                                        true,
                                        true,
                                        ImageCache::getFromMemory(BinaryData::power_settings_new_FILL0_wght400_GRAD0_opsz24_png,
                                                                  BinaryData::power_settings_new_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                       filterIsActive ? 1.0 : 0.35,
-                                       filterIsActive
-                                       ? COLOUR_ACCENT_DARK
-                                       : COLOUR_BLACK,
+                                       filterIsActive ? BUTTON_IS_DEFAULT_ALPHA : BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                       COLOUR_ACCENT_DARK,
                                        Image(),
-                                       filterIsActive ? 0.35 : 0.15,
-                                       filterIsActive
-                                       ? COLOUR_ACCENT_DARK
-                                       : COLOUR_BLACK,
+                                       filterIsActive ? BUTTON_IS_OVER_ALPHA : BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                       COLOUR_ACCENT_DARK,
                                        Image(),
-                                       filterIsActive ? 0.5 : 0.35,
-                                       filterIsActive
-                                       ? COLOUR_ACCENT_DARK
-                                       : COLOUR_BLACK);
+                                       filterIsActive ? BUTTON_IS_DOWN_ALPHA : BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                       COLOUR_ACCENT_DARK);
     };
     addAndMakeVisible(*mToggleFilterButton);
     x += buttonWidth + PANEL_MARGIN * 1.5 + groupDistance;
@@ -311,13 +317,13 @@ void HeaderPanel::setPanelComponents()
                                    true,
                                    ImageCache::getFromMemory(BinaryData::ifl_FILL0_wght400_GRAD0_opsz24_png,
                                                              BinaryData::ifl_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                   1.0,
+                                   BUTTON_IS_DEFAULT_ALPHA,
                                    COLOUR_ACCENT_DARK,
                                    Image(),
-                                   0.35,
+                                   BUTTON_IS_OVER_ALPHA,
                                    COLOUR_ACCENT_DARK,
                                    Image(),
-                                   0.5,
+                                   BUTTON_IS_DOWN_ALPHA,
                                    COLOUR_ACCENT_DARK);
     mRandomSampleButton->setBounds(x,
                                    PANEL_MARGIN,

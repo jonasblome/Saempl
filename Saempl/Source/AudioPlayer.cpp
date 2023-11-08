@@ -12,6 +12,10 @@
 
 AudioPlayer::AudioPlayer()
 {
+    // Create thread for the audio player
+    mThread = std::make_unique<TimeSliceThread>("AudioPlayerThread");
+    mThread->startThread(Thread::Priority::normal);
+    
     // Audio setup
     mFormatManager = std::make_unique<AudioFormatManager>();
     mTransportSource = std::make_unique<AudioTransportSource>();
@@ -33,6 +37,7 @@ AudioPlayer::~AudioPlayer()
     mTransportSource->setSource(nullptr);
     mAudioSourcePlayer->setSource(nullptr);
     mAudioDeviceManager->removeAudioCallback(&*mAudioSourcePlayer);
+    mThread->stopThread(10);
 }
 
 AudioFormatManager& AudioPlayer::getFormatManager()
@@ -78,7 +83,7 @@ void AudioPlayer::stop()
     mTransportSource->stop();
 }
 
-bool AudioPlayer::loadURLIntoTransport(URL const & inURL, TimeSliceThread& inThread)
+bool AudioPlayer::loadURLIntoTransport(URL const & inURL)
 {
     // Unload the previous file source and delete it
     mTransportSource->stop();
@@ -111,7 +116,7 @@ bool AudioPlayer::loadURLIntoTransport(URL const & inURL, TimeSliceThread& inThr
     // Plug new audio source into our transport source
     mTransportSource->setSource(mCurrentAudioFileSource.get(),
                                32768,                   // Tells it to buffer this many samples ahead
-                               &inThread,                 // This is the background thread to use for reading-ahead
+                               &*mThread,                 // This is the background thread to use for reading-ahead
                                mCurrentAudioFileSource->getAudioFormatReader()->sampleRate);     // Allows for sample rate correction
 
     return true;

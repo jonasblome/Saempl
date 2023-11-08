@@ -68,13 +68,13 @@ void BlomeFileFilterRuleViewBase::setComponents()
                                  true,
                                  ImageCache::getFromMemory(BinaryData::delete_FILL0_wght400_GRAD0_opsz24_png,
                                                            BinaryData::delete_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                 1.0,
+                                 BUTTON_IS_DEFAULT_ALPHA,
                                  COLOUR_ACCENT_LIGHT,
                                  Image(),
-                                 0.35,
+                                 BUTTON_IS_OVER_ALPHA,
                                  Colour(),
                                  Image(),
-                                 0.5,
+                                 BUTTON_IS_DOWN_ALPHA,
                                  Colour());
     mDeleteRuleButton->setTooltip("Delete this filter rule");
     mDeleteRuleButton->onClick = [this]

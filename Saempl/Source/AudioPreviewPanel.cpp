@@ -309,7 +309,7 @@ void AudioPreviewPanel::startOrStop()
 
 bool AudioPreviewPanel::loadURLIntoTransport(URL const & audioURL)
 {
-    return sampleEditor.loadURLIntoTransport(audioURL, currentProcessor.getThread());
+    return sampleEditor.loadURLIntoTransport(audioURL);
 }
 
 void AudioPreviewPanel::emptyAudioResource()

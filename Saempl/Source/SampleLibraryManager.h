@@ -83,6 +83,7 @@ private:
     OwnedArray<SampleItem>& paletteSampleItems;
     std::unique_ptr<SampleAnalyser> mSampleAnalyser;
     StringArray addedFilePaths;
+    InterProcessLock fileLock{"fileLock"};
     String mDefaultLibraryDirectoryPath =
     (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
     + DIRECTORY_SEPARATOR

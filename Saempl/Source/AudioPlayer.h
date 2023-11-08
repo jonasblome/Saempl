@@ -53,17 +53,17 @@ public:
      Loads the given URL into the audio transport source.
      
      @param audioURL the URL to load into the transport source.
-     @param inThread the thread to use for reading ahead in the audio file.
      
      @returns if the loading was successful.
      */
-    bool loadURLIntoTransport(URL const & inURL, TimeSliceThread& inThread);
+    bool loadURLIntoTransport(URL const & inURL);
     /**
      Empties and resets the audio sources.
      */
     void emptyTransport();
     
 private:
+    std::unique_ptr<TimeSliceThread> mThread;
     std::unique_ptr<AudioDeviceManager> mAudioDeviceManager;
     std::unique_ptr<AudioFormatManager> mFormatManager;
     std::unique_ptr<AudioSourcePlayer> mAudioSourcePlayer;

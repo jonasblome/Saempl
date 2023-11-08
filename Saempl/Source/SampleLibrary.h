@@ -34,10 +34,8 @@ public ChangeBroadcaster
 public:
     /**
      The constructor of the sample library.
-     
-     @param inThread the thread for scanning through the file system.
      */
-    SampleLibrary(TimeSliceThread& inThread);
+    SampleLibrary();
     ~SampleLibrary();
     /**
      Creates sample item for given file and adds it to the collection.
@@ -114,6 +112,7 @@ public:
     void synchWithLibraryDirectory();
     
 private:
+    std::unique_ptr<TimeSliceThread> mThread;
     std::unique_ptr<SampleFileFilter> mFileFilter;
     String mCurrentLibraryPath;
     std::unique_ptr<DirectoryContentsList> mDirectoryContent;

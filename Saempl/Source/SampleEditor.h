@@ -55,11 +55,10 @@ public:
      Loads the given URL into the audio transport source.
      
      @param audioURL the URL to load into the transport source.
-     @param inThread the thread to use for reading ahead in the audio file.
      
      @returns if the loading was successful.
      */
-    bool loadURLIntoTransport(URL const & audioURL, TimeSliceThread& inThread);
+    bool loadURLIntoTransport(URL const & audioURL);
     /**
      Empties and resets the audio player's audio sources.
      */
