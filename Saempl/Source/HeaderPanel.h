@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    HeaderPanel.h
-    Created: 27 May 2023 11:12:36am
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ HeaderPanel.h
+ Created: 27 May 2023 11:12:36am
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -24,7 +24,8 @@
  the navigation panel toggles and the filter settings.
  */
 class HeaderPanel
-:   public PanelBase
+:
+public PanelBase
 {
 public:
     /**
@@ -47,6 +48,7 @@ private:
     std::unique_ptr<BlomeImageButton> mChangeFilterButton;
     std::unique_ptr<BlomeImageButton> mToggleFilterButton;
     std::unique_ptr<BlomeImageButton> mRandomSampleButton;
+    BlomeStyling::Ptr style;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;

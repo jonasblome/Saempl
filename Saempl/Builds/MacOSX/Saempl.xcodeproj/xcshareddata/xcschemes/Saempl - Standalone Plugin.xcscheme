@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DD1D6B2DC451B786A2C4923C"
-               BuildableName = "Auto_Sample.app"
+               BuildableName = "Saempl.app"
                BlueprintName = "Saempl - Standalone Plugin"
                ReferencedContainer = "container:Saempl.xcodeproj">
             </BuildableReference>
@@ -44,7 +44,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DD1D6B2DC451B786A2C4923C"
-            BuildableName = "Auto_Sample.app"
+            BuildableName = "Saempl.app"
             BlueprintName = "Saempl - Standalone Plugin"
             ReferencedContainer = "container:Saempl.xcodeproj">
          </BuildableReference>
@@ -61,7 +61,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DD1D6B2DC451B786A2C4923C"
-            BuildableName = "Auto_Sample.app"
+            BuildableName = "Saempl.app"
             BlueprintName = "Saempl - Standalone Plugin"
             ReferencedContainer = "container:Saempl.xcodeproj">
          </BuildableReference>

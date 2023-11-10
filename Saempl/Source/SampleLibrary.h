@@ -28,7 +28,8 @@
  Can filter through stored \ref SampleItem objects and files from the file system.
  */
 class SampleLibrary
-:   public ChangeListener,
+:
+public ChangeListener,
 public ChangeBroadcaster
 {
 public:

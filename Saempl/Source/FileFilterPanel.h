@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    FileFilterPanel.h
-    Created: 29 Oct 2023 12:14:04pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ FileFilterPanel.h
+ Created: 29 Oct 2023 12:14:04pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -25,8 +25,9 @@
  Has dropdown and button to add new filter rules of different types.
  */
 class FileFilterPanel
-:   public PanelBase,
-    public TextButton::Listener
+:
+public PanelBase,
+public TextButton::Listener
 {
 public:
     /**
@@ -43,6 +44,7 @@ private:
     std::unique_ptr<ComboBox> mNewRuleTypeChooser;
     std::unique_ptr<BlomeImageButton> mAddFilterRuleButton;
     OwnedArray<BlomeFileFilterRuleViewBase> mFilterRuleViews;
+    BlomeStyling::Ptr style;
     
     void paint(Graphics& g) override;
     /**

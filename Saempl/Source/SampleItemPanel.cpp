@@ -15,7 +15,7 @@ SampleItemPanel::SampleItemPanel(SaemplAudioProcessor& inProcessor)
 PanelBase(inProcessor),
 sampleLibrary(currentProcessor.getSampleLibrary())
 {
-    setSize(SAMPLE_ITEM_PANEL_WIDTH - PANEL_MARGIN / 2.0, SAMPLE_ITEM_PANEL_HEIGHT - PANEL_MARGIN / 2.0);
+    setSize(style->SAMPLE_ITEM_PANEL_WIDTH - style->PANEL_MARGIN / 2.0, style->SAMPLE_ITEM_PANEL_HEIGHT - style->PANEL_MARGIN / 2.0);
     setPanelComponents();
 }
 
@@ -27,8 +27,8 @@ SampleItemPanel::~SampleItemPanel()
 void SampleItemPanel::paint(Graphics& g)
 {
     // Draw background
-    g.setColour(COLOUR_ACCENT_MEDIUM);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);
+    g.setColour(style->COLOUR_ACCENT_MEDIUM);
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), style->CORNER_SIZE_MEDIUM);
 }
 
 void SampleItemPanel::setPanelComponents()
@@ -45,18 +45,18 @@ void SampleItemPanel::setPanelComponents()
                                 true,
                                 ImageCache::getFromMemory(BinaryData::play_pause_FILL0_wght400_GRAD0_opsz24_png,
                                                           BinaryData::play_pause_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                BUTTON_IS_DEFAULT_ALPHA,
-                                COLOUR_ACCENT_LIGHT,
+                                style->BUTTON_IS_DEFAULT_ALPHA,
+                                style->COLOUR_ACCENT_LIGHT,
                                 Image(),
-                                BUTTON_IS_OVER_ALPHA,
-                                COLOUR_ACCENT_LIGHT,
+                                style->BUTTON_IS_OVER_ALPHA,
+                                style->COLOUR_ACCENT_LIGHT,
                                 Image(),
-                                BUTTON_IS_DOWN_ALPHA,
-                                COLOUR_ACCENT_LIGHT);
-    mStartStopButton->setBounds(PANEL_MARGIN / 2.0,
-                                PANEL_MARGIN / 2.0,
-                                SAMPLE_CONTROL_WIDTH - PANEL_MARGIN / 2.0,
-                                SAMPLE_CONTROL_WIDTH - PANEL_MARGIN / 2.0);
+                                style->BUTTON_IS_DOWN_ALPHA,
+                                style->COLOUR_ACCENT_LIGHT);
+    mStartStopButton->setBounds(style->PANEL_MARGIN / 2.0,
+                                style->PANEL_MARGIN / 2.0,
+                                style->SAMPLE_CONTROL_WIDTH - style->PANEL_MARGIN / 2.0,
+                                style->SAMPLE_CONTROL_WIDTH - style->PANEL_MARGIN / 2.0);
     mStartStopButton->setTooltip("Start/stop playback");
     mStartStopButton->onClick = [this] { mAudioPreviewPanel->startOrStop(); };
     addAndMakeVisible(*mStartStopButton);
@@ -68,18 +68,18 @@ void SampleItemPanel::setPanelComponents()
                                       true,
                                       ImageCache::getFromMemory(BinaryData::trending_flat_FILL0_wght400_GRAD0_opsz24_png,
                                                                 BinaryData::trending_flat_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                      BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
-                                      COLOUR_ACCENT_LIGHT,
+                                      style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                      style->COLOUR_ACCENT_LIGHT,
                                       Image(),
-                                      BUTTON_IS_OVER_DEACTIVATED_ALPHA,
-                                      COLOUR_ACCENT_LIGHT,
+                                      style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                      style->COLOUR_ACCENT_LIGHT,
                                       Image(),
-                                      BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
-                                      COLOUR_ACCENT_LIGHT);
-    mFollowTransportButton->setBounds(PANEL_MARGIN / 2.0,
-                                      SAMPLE_CONTROL_WIDTH + PANEL_MARGIN / 2.0,
-                                      SAMPLE_CONTROL_WIDTH - PANEL_MARGIN / 2.0,
-                                      followTransportButtonHeight - PANEL_MARGIN / 2.0);
+                                      style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                      style->COLOUR_ACCENT_LIGHT);
+    mFollowTransportButton->setBounds(style->PANEL_MARGIN / 2.0,
+                                      style->SAMPLE_CONTROL_WIDTH + style->PANEL_MARGIN / 2.0,
+                                      style->SAMPLE_CONTROL_WIDTH - style->PANEL_MARGIN / 2.0,
+                                      followTransportButtonHeight - style->PANEL_MARGIN / 2.0);
     mFollowTransportButton->setTooltip("Follow playback cursor");
     mFollowTransportButton->onClick = [this]
     {
@@ -90,23 +90,29 @@ void SampleItemPanel::setPanelComponents()
                                           true,
                                           ImageCache::getFromMemory(BinaryData::trending_flat_FILL0_wght400_GRAD0_opsz24_png,
                                                                     BinaryData::trending_flat_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                          follows ? BUTTON_IS_DEFAULT_ALPHA : BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
-                                          COLOUR_ACCENT_LIGHT,
+                                          follows 
+                                          ? style->BUTTON_IS_DEFAULT_ALPHA
+                                          : style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                          style->COLOUR_ACCENT_LIGHT,
                                           Image(),
-                                          follows ? BUTTON_IS_OVER_ALPHA : BUTTON_IS_OVER_DEACTIVATED_ALPHA,
-                                          COLOUR_ACCENT_LIGHT,
+                                          follows ?
+                                          style->BUTTON_IS_OVER_ALPHA
+                                          : style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                          style->COLOUR_ACCENT_LIGHT,
                                           Image(),
-                                          follows ? BUTTON_IS_DOWN_ALPHA : BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
-                                          COLOUR_ACCENT_LIGHT);
+                                          follows ?
+                                          style->BUTTON_IS_DOWN_ALPHA
+                                          : style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                          style->COLOUR_ACCENT_LIGHT);
     };
     addAndMakeVisible(*mFollowTransportButton);
     
     // Add zoom slider
     mZoomSlider = std::make_unique<Slider>(Slider::LinearVertical, Slider::NoTextBox);
     mZoomSlider->setBounds(2,
-                           SAMPLE_CONTROL_WIDTH + followTransportButtonHeight,
-                           SAMPLE_CONTROL_WIDTH,
-                           SAMPLE_CONTROL_HEIGHT - SAMPLE_CONTROL_WIDTH - followTransportButtonHeight);
+                           style->SAMPLE_CONTROL_WIDTH + followTransportButtonHeight,
+                           style->SAMPLE_CONTROL_WIDTH,
+                           style->SAMPLE_CONTROL_HEIGHT - style->SAMPLE_CONTROL_WIDTH - followTransportButtonHeight);
     mZoomSlider->setRange(0, 1, 0);
     mZoomSlider->onValueChange = [this] { mAudioPreviewPanel->setZoomFactor(mZoomSlider->getValue()); };
     mZoomSlider->setSkewFactor(2);
@@ -114,7 +120,7 @@ void SampleItemPanel::setPanelComponents()
     
     // Add audio thumbnail component
     mAudioPreviewPanel = std::make_unique<AudioPreviewPanel>(currentProcessor, *mZoomSlider, *mSampleEditor);
-    mAudioPreviewPanel->setTopLeftPosition(PANEL_MARGIN / 2.0 + SAMPLE_CONTROL_WIDTH, PANEL_MARGIN / 2.0);
+    mAudioPreviewPanel->setTopLeftPosition(style->PANEL_MARGIN / 2.0 + style->SAMPLE_CONTROL_WIDTH, style->PANEL_MARGIN / 2.0);
     addAndMakeVisible(mAudioPreviewPanel.get());
     mAudioPreviewPanel->addChangeListener(this);
     

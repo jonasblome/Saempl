@@ -24,35 +24,28 @@ FileFilterPanel::~FileFilterPanel()
     // Remove listeners for all rule views
     for (BlomeFileFilterRuleViewBase* ruleView : mFilterRuleViews)
     {
-        if (BlomeFileFilterRuleViewTitle* ruleViewTitle = dynamic_cast<BlomeFileFilterRuleViewTitle*>(ruleView))
-        {
-            ruleViewTitle->removeDeleteButtonListener(this);
-        }
-        else if (BlomeFileFilterRuleViewLength* ruleViewLength = dynamic_cast<BlomeFileFilterRuleViewLength*>(ruleView))
-        {
-            ruleViewLength->removeDeleteButtonListener(this);
-        }
+        ruleView->removeDeleteButtonListener(this);
     }
 }
 
 void FileFilterPanel::paint(Graphics &g)
 {
     // Draw background
-    g.setColour(COLOUR_ACCENT_MEDIUM);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);
-    g.setColour(COLOUR_BLACK_LIGHT_TRANSPARENT);
-    g.drawLine(PANEL_MARGIN / 2.0,
-               FILTER_RULE_HEIGHT + 9,
-               getWidth() - PANEL_MARGIN / 2.0,
-               FILTER_RULE_HEIGHT + 9);
+    g.setColour(style->COLOUR_ACCENT_MEDIUM);
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), style->CORNER_SIZE_MEDIUM);
+    g.setColour(style->COLOUR_BLACK_LIGHT_TRANSPARENT);
+    g.drawLine(style->PANEL_MARGIN / 2.0,
+               style->FILTER_RULE_HEIGHT + 9,
+               getWidth() - style->PANEL_MARGIN / 2.0,
+               style->FILTER_RULE_HEIGHT + 9);
     
     // Draw hint message if rules are empty
     if (libraryFileFilter.getFilterRules().isEmpty())
     {
-        g.setColour(COLOUR_ACCENT_LIGHT);
-        g.setFont(FONT_SMALL_BOLD);
+        g.setColour(style->COLOUR_ACCENT_LIGHT);
+        g.setFont(style->FONT_SMALL_BOLD);
         g.drawFittedText("Add filter rules to see them here",
-                         getLocalBounds().removeFromBottom(FILTER_RULE_HEIGHT),
+                         getLocalBounds().removeFromBottom(style->FILTER_RULE_HEIGHT),
                          Justification::centred,
                          2);
     }
@@ -62,12 +55,12 @@ void FileFilterPanel::paint(Graphics &g)
     
     for (BlomeFileFilterRuleViewBase* newRuleView : mFilterRuleViews)
     {
-        newRuleView->setBounds(PANEL_MARGIN / 2.0,
-                               PANEL_MARGIN / 2.0 + FILTER_PANEL_HEIGHT + combinedFilterRuleViewHeight,
-                               FILTER_RULE_WIDTH - PANEL_MARGIN,
-                               FILTER_RULE_HEIGHT - PANEL_MARGIN / 2.0);
+        newRuleView->setBounds(style->PANEL_MARGIN / 2.0,
+                               style->PANEL_MARGIN / 2.0 + style->FILTER_PANEL_HEIGHT + combinedFilterRuleViewHeight,
+                               style->FILTER_RULE_WIDTH - style->PANEL_MARGIN,
+                               style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN / 2.0);
         addAndMakeVisible(*newRuleView);
-        combinedFilterRuleViewHeight += FILTER_RULE_HEIGHT;
+        combinedFilterRuleViewHeight += style->FILTER_RULE_HEIGHT;
     }
 }
 
@@ -100,13 +93,13 @@ void FileFilterPanel::generateRuleView(SampleFileFilterRuleBase *rule)
 void FileFilterPanel::addFilterRuleView()
 {
     // Only add rule if type is selected, add maximum of 12 rules (reason: glitch in filter panel if more)
-    if (mNewRuleTypeChooser->getSelectedItemIndex() == -1 || libraryFileFilter.getFilterRules().size() >= 12)
+    if (mNewRuleTypeChooser->getSelectedItemIndex() == -1 || libraryFileFilter.getFilterRules().size() >= 8)
     {
         return;
     }
     
     // Add view for filter rule
-    int combinedFilterRuleViewHeight = FILTER_RULE_HEIGHT * libraryFileFilter.getFilterRules().size();
+    int combinedFilterRuleViewHeight = style->FILTER_RULE_HEIGHT * libraryFileFilter.getFilterRules().size();
     SampleFileFilterRuleBase* newRule;
     
     switch (mNewRuleTypeChooser->getSelectedItemIndex())
@@ -123,10 +116,10 @@ void FileFilterPanel::addFilterRuleView()
     }
     
     generateRuleView(newRule);
-    setSize(FILTER_PANEL_WIDTH,
-            FILTER_PANEL_HEIGHT
-            + combinedFilterRuleViewHeight + FILTER_RULE_HEIGHT
-            + PANEL_MARGIN / 2.0);
+    setSize(style->FILTER_PANEL_WIDTH,
+            style->FILTER_PANEL_HEIGHT
+            + combinedFilterRuleViewHeight + style->FILTER_RULE_HEIGHT
+            + style->PANEL_MARGIN / 2.0);
     repaint();
     sampleLibrary.refresh();
 }
@@ -140,10 +133,10 @@ void FileFilterPanel::setPanelComponents()
 {
     // Add rule type combo box
     mNewRuleTypeChooser = std::make_unique<ComboBox>("NewRuleTypeChooser");
-    mNewRuleTypeChooser->setBounds(PANEL_MARGIN / 2.0,
-                                   PANEL_MARGIN / 2.0,
-                                   COMBO_BOX_WIDTH_MEDIUM - PANEL_MARGIN / 4.0,
-                                   FILTER_RULE_HEIGHT - PANEL_MARGIN / 2.0);
+    mNewRuleTypeChooser->setBounds(style->PANEL_MARGIN / 2.0,
+                                   style->PANEL_MARGIN / 2.0,
+                                   style->COMBO_BOX_WIDTH_MEDIUM - style->PANEL_MARGIN / 4.0,
+                                   style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN / 2.0);
     mNewRuleTypeChooser->addItem("New title rule", 1);
     mNewRuleTypeChooser->addItem("New length rule", 2);
     mNewRuleTypeChooser->setTextWhenNothingSelected("Choose new rule type");
@@ -156,18 +149,18 @@ void FileFilterPanel::setPanelComponents()
                                     true,
                                     ImageCache::getFromMemory(BinaryData::add_FILL0_wght400_GRAD0_opsz24_png,
                                                               BinaryData::add_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                    BUTTON_IS_DEFAULT_ALPHA,
-                                    COLOUR_ACCENT_LIGHT,
+                                    style->BUTTON_IS_DEFAULT_ALPHA,
+                                    style->COLOUR_ACCENT_LIGHT,
                                     Image(),
-                                    BUTTON_IS_OVER_ALPHA,
-                                    COLOUR_ACCENT_LIGHT,
+                                    style->BUTTON_IS_OVER_ALPHA,
+                                    style->COLOUR_ACCENT_LIGHT,
                                     Image(),
-                                    BUTTON_IS_DOWN_ALPHA,
-                                    COLOUR_ACCENT_LIGHT);
-    mAddFilterRuleButton->setBounds(COMBO_BOX_WIDTH_MEDIUM + PANEL_MARGIN * 0.75,
-                                    PANEL_MARGIN / 2.0,
-                                    FILTER_RULE_HEIGHT - PANEL_MARGIN / 2.0,
-                                    FILTER_RULE_HEIGHT - PANEL_MARGIN / 2.0);
+                                    style->BUTTON_IS_DOWN_ALPHA,
+                                    style->COLOUR_ACCENT_LIGHT);
+    mAddFilterRuleButton->setBounds(style->COMBO_BOX_WIDTH_MEDIUM + style->PANEL_MARGIN * 0.75,
+                                    style->PANEL_MARGIN / 2.0,
+                                    style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN / 2.0,
+                                    style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN / 2.0);
     mAddFilterRuleButton->setTooltip("Add a new rule of the chosen type to the filter");
     mAddFilterRuleButton->onClick = [this]
     {
@@ -181,12 +174,12 @@ void FileFilterPanel::setPanelComponents()
     for (SampleFileFilterRuleBase* rule : libraryFileFilter.getFilterRules())
     {
         generateRuleView(rule);
-        combinedFilterRuleViewHeight += FILTER_RULE_HEIGHT;
+        combinedFilterRuleViewHeight += style->FILTER_RULE_HEIGHT;
     }
     
     // Add space for info text if there are no filter rules
-    combinedFilterRuleViewHeight = combinedFilterRuleViewHeight == 0 ? FILTER_RULE_HEIGHT : combinedFilterRuleViewHeight;
-    setSize(FILTER_PANEL_WIDTH, FILTER_PANEL_HEIGHT + combinedFilterRuleViewHeight + PANEL_MARGIN / 2.0);
+    combinedFilterRuleViewHeight = combinedFilterRuleViewHeight == 0 ? style->FILTER_RULE_HEIGHT : combinedFilterRuleViewHeight;
+    setSize(style->FILTER_PANEL_WIDTH, style->FILTER_PANEL_HEIGHT + combinedFilterRuleViewHeight + style->PANEL_MARGIN / 2.0);
 }
 
 void FileFilterPanel::buttonClicked(Button* button)
@@ -198,10 +191,10 @@ void FileFilterPanel::buttonClicked(Button* button)
         removeFilterRule(ruleView->getLinkedFilterRule());
         mFilterRuleViews.removeObject(ruleView);
         sampleLibrary.refresh();
+        
+        // Remove leftover space
+        int combinedFilterRuleViewHeight = style->FILTER_RULE_HEIGHT * libraryFileFilter.getFilterRules().size();
+        combinedFilterRuleViewHeight = combinedFilterRuleViewHeight == 0 ? style->FILTER_RULE_HEIGHT : combinedFilterRuleViewHeight;
+        setSize(style->FILTER_PANEL_WIDTH, style->FILTER_PANEL_HEIGHT + combinedFilterRuleViewHeight + style->PANEL_MARGIN / 2.0);
     }
-    
-    // Remove leftover space
-    int combinedFilterRuleViewHeight = FILTER_RULE_HEIGHT * libraryFileFilter.getFilterRules().size();
-    combinedFilterRuleViewHeight = combinedFilterRuleViewHeight == 0 ? FILTER_RULE_HEIGHT : combinedFilterRuleViewHeight;
-    setSize(FILTER_PANEL_WIDTH, FILTER_PANEL_HEIGHT + combinedFilterRuleViewHeight + PANEL_MARGIN / 2.0);
 }

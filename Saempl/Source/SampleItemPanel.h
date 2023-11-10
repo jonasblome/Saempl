@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    SampleItemPanel.h
-    Created: 22 May 2023 9:46:19am
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ SampleItemPanel.h
+ Created: 22 May 2023 9:46:19am
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -23,8 +23,9 @@
  Can preview audio files and play them.
  */
 class SampleItemPanel
-:   public PanelBase,
-    private ChangeListener
+:
+public PanelBase,
+private ChangeListener
 {
 public:
     /**
@@ -47,7 +48,7 @@ public:
      Starts or stops the playback of the audio preview panel.
      */
     void startOrStopPlayback();
-
+    
 private:
     SampleLibrary& sampleLibrary;
     std::unique_ptr<SampleEditor> mSampleEditor;
@@ -55,6 +56,7 @@ private:
     std::unique_ptr<Slider> mZoomSlider;
     std::unique_ptr<BlomeImageButton> mFollowTransportButton;
     std::unique_ptr<BlomeImageButton> mStartStopButton;
+    BlomeStyling::Ptr style;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;

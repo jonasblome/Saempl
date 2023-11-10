@@ -1,10 +1,10 @@
 /*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin processor.
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ This file contains the basic framework code for a JUCE plugin processor.
+ 
+ ==============================================================================
+ */
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
@@ -12,14 +12,14 @@
 //==============================================================================
 SaemplAudioProcessor::SaemplAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
-                      #endif
-                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                     #endif
-                       )
+: AudioProcessor (BusesProperties()
+#if ! JucePlugin_IsMidiEffect
+#if ! JucePlugin_IsSynth
+                  .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
+#endif
+                  .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
+#endif
+                  )
 #endif
 {
     mSampleLibrary = std::make_unique<SampleLibrary>();
@@ -41,29 +41,29 @@ const juce::String SaemplAudioProcessor::getName() const
 
 bool SaemplAudioProcessor::acceptsMidi() const
 {
-   #if JucePlugin_WantsMidiInput
+#if JucePlugin_WantsMidiInput
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 bool SaemplAudioProcessor::producesMidi() const
 {
-   #if JucePlugin_ProducesMidiOutput
+#if JucePlugin_ProducesMidiOutput
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 bool SaemplAudioProcessor::isMidiEffect() const
 {
-   #if JucePlugin_IsMidiEffect
+#if JucePlugin_IsMidiEffect
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 double SaemplAudioProcessor::getTailLengthSeconds() const
@@ -74,7 +74,7 @@ double SaemplAudioProcessor::getTailLengthSeconds() const
 int SaemplAudioProcessor::getNumPrograms()
 {
     return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-                // so this should be at least 1, even if you're not really implementing programs.
+    // so this should be at least 1, even if you're not really implementing programs.
 }
 
 int SaemplAudioProcessor::getCurrentProgram()
@@ -111,26 +111,26 @@ void SaemplAudioProcessor::releaseResources()
 #ifndef JucePlugin_PreferredChannelConfigurations
 bool SaemplAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-  #if JucePlugin_IsMidiEffect
+#if JucePlugin_IsMidiEffect
     juce::ignoreUnused (layouts);
     return true;
-  #else
+#else
     // This is the place where you check if the layout is supported.
     // In this template code we only support mono or stereo.
     // Some plugin hosts, such as certain GarageBand versions, will only
     // load plugins that support stereo bus layouts.
     if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
-     && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+        && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
         return false;
-
+    
     // This checks if the input layout matches the output layout
-   #if ! JucePlugin_IsSynth
+#if ! JucePlugin_IsSynth
     if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
         return false;
-   #endif
-
+#endif
+    
     return true;
-  #endif
+#endif
 }
 #endif
 
@@ -139,7 +139,7 @@ void SaemplAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce:
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
-
+    
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
     // guaranteed to be empty - they may contain garbage).
@@ -150,7 +150,7 @@ void SaemplAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce:
     {
         buffer.clear (i, 0, buffer.getNumSamples());
     }
-
+    
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
     // Make sure to reset the state if your inner loop is processing
@@ -185,24 +185,7 @@ void SaemplAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
     XmlElement* stateInfoBody = new XmlElement("Blome_StateInfoBody");
     
     // Store navigation panel state
-    String activeNavigationPanel = "";
-    
-    switch (mActiveNavigationPanelType)
-    {
-        case PANELS_LIBRARY_PANEL:
-            activeNavigationPanel = "PANELS_LIBRARY_PANEL";
-            break;
-        case PANELS_TABLE_PANEL:
-            activeNavigationPanel = "PANELS_TABLE_PANEL";
-            break;
-        case PANELS_MAP_PANEL:
-            activeNavigationPanel = "PANELS_MAP_PANEL";
-            break;
-        default:
-            break;
-    }
-    
-    stateInfoBody->setAttribute("ActiveNavigationPanel", activeNavigationPanel);
+    stateInfoBody->setAttribute("ActiveNavigationPanel", NAVIGATION_PANEL_TYPE_TO_STRING[mActiveNavigationPanelType]);
     
     // Store sorting column title state
     stateInfoBody->setAttribute("SortingColumnTitle", mSortingColumnTitle);
@@ -225,20 +208,7 @@ void SaemplAudioProcessor::setStateInformation (const void* data, int sizeInByte
     {
         for (auto* child: xmlStatePtr->getChildIterator())
         {
-            String const activeNavigationPanel = child->getStringAttribute("ActiveNavigationPanel");
-            if (activeNavigationPanel == "PANELS_LIBRARY_PANEL")
-            {
-                mActiveNavigationPanelType = PANELS_LIBRARY_PANEL;
-            }
-            else if (activeNavigationPanel == "PANELS_TABLE_PANEL")
-            {
-                mActiveNavigationPanelType = PANELS_TABLE_PANEL;
-            }
-            else if (activeNavigationPanel == "PANELS_MAP_PANEL")
-            {
-                mActiveNavigationPanelType = PANELS_MAP_PANEL;
-            }
-            
+            mActiveNavigationPanelType = STRING_TO_NAVIGATION_PANEL_TYPE[child->getStringAttribute("ActiveNavigationPanel")];
             mSortingColumnTitle = child->getStringAttribute("SortingColumnTitle");
             mSortingDirection = child->getBoolAttribute("SortingDirection");
         }
@@ -262,12 +232,12 @@ SampleLibrary& SaemplAudioProcessor::getSampleLibrary()
     return *mSampleLibrary;
 }
 
-NavigationPanelType SaemplAudioProcessor::getActiveNavigationPanel()
+NavigationPanelType& SaemplAudioProcessor::getActiveNavigationPanel()
 {
     return mActiveNavigationPanelType;
 }
 
-void SaemplAudioProcessor::setActiveNavigationPanel(NavigationPanelType inPanelType)
+void SaemplAudioProcessor::setActiveNavigationPanel(NavigationPanelType& inPanelType)
 {
     mActiveNavigationPanelType = inPanelType;
 }

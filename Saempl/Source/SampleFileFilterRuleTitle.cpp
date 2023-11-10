@@ -1,17 +1,18 @@
 /*
-  ==============================================================================
-
-    SampleFileFilterRuleTitle.cpp
-    Created: 28 Oct 2023 5:24:27pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ SampleFileFilterRuleTitle.cpp
+ Created: 28 Oct 2023 5:24:27pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #include "SampleFileFilterRuleTitle.h"
 
 SampleFileFilterRuleTitle::SampleFileFilterRuleTitle(String inRulePropertyName)
-:   SampleFileFilterRuleBase(inRulePropertyName)
+:
+SampleFileFilterRuleBase(inRulePropertyName)
 {
     mCompareValue = "";
     mCompareOperator = CONTAINS;

@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    SampleNavigationPanel.h
-    Created: 24 Jun 2023 4:28:16pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ SampleNavigationPanel.h
+ Created: 24 Jun 2023 4:28:16pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -23,7 +23,8 @@
  Includes \ref SampleLibraryPanel, \ref SampleTablePanel and \ref SampleMapPanel.
  */
 class SampleNavigationPanel
-:   public PanelBase
+:
+public PanelBase
 {
 public:
     /**
@@ -39,11 +40,7 @@ public:
      
      @param inPanelType the type of the navigation panel (library, table or map).
      */
-    void setActiveNavigationPanel(NavigationPanelType inPanelType);
-    /**
-     @returns the type of the currently shown navigation panel.
-     */
-    NavigationPanelType getActiveNavigationPanel();
+    void setActiveNavigationPanel(NavigationPanelType& inPanelType);
     /**
      Selects a random sample in the table view.
      */
@@ -53,6 +50,7 @@ private:
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<SampleLibraryPanel> mSampleLibraryPanel;
     std::unique_ptr<SampleTablePanel> mSampleTablePanel;
+    BlomeStyling::Ptr style;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;

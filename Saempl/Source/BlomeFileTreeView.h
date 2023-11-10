@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    BlomeFileTreeView.h
-    Created: 3 Jun 2023 4:59:52pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeFileTreeView.h
+ Created: 3 Jun 2023 4:59:52pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -22,8 +22,9 @@
  Can handle drag and drop of files onto and from it.
  */
 class BlomeFileTreeView
-:   public FileTreeComponent,
-    public ChangeListener
+:
+public FileTreeComponent,
+public ChangeListener
 {
 public:
     /**

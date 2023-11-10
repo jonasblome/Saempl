@@ -1,17 +1,18 @@
 /*
-  ==============================================================================
-
-    SampleFileFilterRuleLength.cpp
-    Created: 28 Oct 2023 5:24:42pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ SampleFileFilterRuleLength.cpp
+ Created: 28 Oct 2023 5:24:42pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #include "SampleFileFilterRuleLength.h"
 
 SampleFileFilterRuleLength::SampleFileFilterRuleLength(String inRulePropertyName)
-:   SampleFileFilterRuleBase(inRulePropertyName)
+:
+SampleFileFilterRuleBase(inRulePropertyName)
 {
     mCompareValue = 0.0;
     mCompareOperator = GREATER_THAN;

@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    SampleFileFilterRuleTitle.h
-    Created: 28 Oct 2023 5:24:27pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ SampleFileFilterRuleTitle.h
+ Created: 28 Oct 2023 5:24:27pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -16,7 +16,8 @@
  \ref SampleFileFilterRuleBase implementation for the title property of \ref SampleItem.
  */
 class SampleFileFilterRuleTitle
-:   public SampleFileFilterRuleBase
+:
+public SampleFileFilterRuleBase
 {
 public:
     /**

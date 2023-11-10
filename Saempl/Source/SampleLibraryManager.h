@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    SampleLibraryManager.h
-    Created: 10 Jun 2023 6:16:05pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ SampleLibraryManager.h
+ Created: 10 Jun 2023 6:16:05pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -21,8 +21,9 @@
  Writes information on all files in a sample library directory to analysis files and reads them.
  */
 class SampleLibraryManager
-:   public ThreadWithProgressWindow,
-    public ChangeBroadcaster
+:
+public ThreadWithProgressWindow,
+public ChangeBroadcaster
 {
 public:
     SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems, OwnedArray<SampleItem>& inPaletteSampleItems);
@@ -34,7 +35,6 @@ public:
      @param inSampleItems the collection of sample items from the library.
      */
     void updateSampleLibraryFile(File& inLibraryDirectory);
-    void extracted();
     /**
      Deletes all sample items where the files have been externally deleted
      and adds sample items for each new detected file.

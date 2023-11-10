@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    AudioPreviewPanel.h
-    Created: 27 May 2023 4:20:03pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ AudioPreviewPanel.h
+ Created: 27 May 2023 4:20:03pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -28,12 +28,13 @@
  Handles drag and drop of audio files, playback of the audio and zooming into the waveform.
  */
 class AudioPreviewPanel
-:   public PanelBase,
-    public FileDragAndDropTarget,
-    public DragAndDropTarget,
-    public ChangeBroadcaster,
-    private ScrollBar::Listener,
-    private Timer
+:
+public PanelBase,
+public FileDragAndDropTarget,
+public DragAndDropTarget,
+public ChangeBroadcaster,
+private ScrollBar::Listener,
+private Timer
 {
 public:
     /**
@@ -43,7 +44,9 @@ public:
      @param inSlider the zoom slider for the \ref AudioThumbnail.
      @param inSampleEditor the sample editor with the audio player.
      */
-    AudioPreviewPanel(SaemplAudioProcessor& inProcessor, Slider& inSlider, SampleEditor& inSampleEditor);
+    AudioPreviewPanel(SaemplAudioProcessor& inProcessor,
+                      Slider& inSlider,
+                      SampleEditor& inSampleEditor);
     ~AudioPreviewPanel();
     /**
      Sets the URL of the audio source.
@@ -103,7 +106,7 @@ public:
      Empties the audio resource and resets it.
      */
     void emptyAudioResource();
-
+    
 private:
     SampleEditor& sampleEditor;
     Slider& mZoomSlider;
@@ -115,6 +118,7 @@ private:
     URL lastFileDropped;
     std::unique_ptr<DrawableRectangle> mAudioPositionMarker;
     URL mCurrentAudioFile;
+    BlomeStyling::Ptr style;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;

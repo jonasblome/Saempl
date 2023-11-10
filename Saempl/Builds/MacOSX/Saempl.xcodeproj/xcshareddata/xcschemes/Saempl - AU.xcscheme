@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B3CA331BDE36AD6CBED72754"
-               BuildableName = "Auto_Sample.component"
+               BuildableName = "Saempl.component"
                BlueprintName = "Saempl - AU"
                ReferencedContainer = "container:Saempl.xcodeproj">
             </BuildableReference>
@@ -55,7 +55,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B3CA331BDE36AD6CBED72754"
-            BuildableName = "Auto_Sample.component"
+            BuildableName = "Saempl.component"
             BlueprintName = "Saempl - AU"
             ReferencedContainer = "container:Saempl.xcodeproj">
          </BuildableReference>

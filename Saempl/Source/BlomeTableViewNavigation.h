@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    BlomeTableViewNavigation.h
-    Created: 1 Nov 2023 10:34:42am
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeTableViewNavigation.h
+ Created: 1 Nov 2023 10:34:42am
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -20,8 +20,9 @@
  Handles sorting and deleting of each row's \ref SampleItem.
  */
 class BlomeTableViewNavigation
-:   public BlomeTableViewBase,
-    public ChangeListener
+:
+public BlomeTableViewBase,
+public ChangeListener
 {
 public:
     /**

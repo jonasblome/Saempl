@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    NoiseOverlayPanel.h
-    Created: 29 May 2023 9:05:27am
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ NoiseOverlayPanel.h
+ Created: 29 May 2023 9:05:27am
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -20,7 +20,8 @@
  \ref juce::Component
  */
 class NoiseOverlayPanel
-:   public Component
+:
+public Component
 {
 public:
     NoiseOverlayPanel();

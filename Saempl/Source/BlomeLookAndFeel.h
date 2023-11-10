@@ -16,27 +16,32 @@
  Custom look and feel class for the Saempl audio plugin.
  */
 class BlomeLookAndFeel
-:   public LookAndFeel_V4
+:
+public LookAndFeel_V4
 {
 public:
     BlomeLookAndFeel(SampleLibrary& inSampleDatabase)
     :   sampleLibrary(inSampleDatabase)
     {
         // ComboBox colours
-        setColour(ComboBox::backgroundColourId, COLOUR_ACCENT_DARK);
-        setColour(ComboBox::outlineColourId, COLOUR_BLACK);
-        setColour(ComboBox::arrowColourId, COLOUR_LIGHT_GRAY);
-        setColour(ComboBox::textColourId, COLOUR_LIGHT_GRAY);
-        setColour(PopupMenu::backgroundColourId, COLOUR_ACCENT_LIGHT_STRONG_TRANSPARENT);
-        setColour(AlertWindow::textColourId, COLOUR_ACCENT_DARK);
+        setColour(ComboBox::backgroundColourId, style->COLOUR_ACCENT_DARK);
+        setColour(ComboBox::outlineColourId, style->COLOUR_BLACK);
+        setColour(ComboBox::arrowColourId, style->COLOUR_LIGHT_GRAY);
+        setColour(ComboBox::textColourId, style->COLOUR_LIGHT_GRAY);
+        setColour(PopupMenu::backgroundColourId, style->COLOUR_ACCENT_LIGHT_STRONG_TRANSPARENT);
+        setColour(AlertWindow::textColourId, style->COLOUR_ACCENT_DARK);
         
         // Button text colours
-        setColour(TextButton::buttonColourId, COLOUR_ACCENT_LIGHT);
-        setColour(TextButton::textColourOnId, COLOUR_ACCENT_LIGHT);
-        setColour(TextButton::textColourOffId, COLOUR_ACCENT_LIGHT);
+        setColour(TextButton::buttonColourId, style->COLOUR_ACCENT_LIGHT);
+        setColour(TextButton::textColourOnId, style->COLOUR_ACCENT_LIGHT);
+        setColour(TextButton::textColourOffId, style->COLOUR_ACCENT_LIGHT);
         
         // Text editor colours
-        setColour(TextEditor::textColourId, COLOUR_ACCENT_LIGHT);
+        setColour(TextEditor::textColourId, style->COLOUR_ACCENT_LIGHT);
+        
+        // List box colours
+        setColour(ListBox::outlineColourId, style->COLOUR_ACCENT_LIGHT);
+        setColour(ListBox::backgroundColourId, style->COLOUR_TRANSPARENT);
     }
     
     virtual ~BlomeLookAndFeel()
@@ -46,7 +51,7 @@ public:
     
     Font getTextButtonFont(TextButton&, int buttonHeight) override
     {
-        return FONT_SMALL_BOLD;
+        return style->FONT_SMALL_BOLD;
     }
     
     void drawButtonBackground(Graphics& g,
@@ -59,15 +64,15 @@ public:
         
         if(shouldDrawButtonAsDown)
         {
-            fillColour = COLOUR_ACCENT_DARK.withAlpha(0.9f);
+            fillColour = style->COLOUR_ACCENT_DARK.withAlpha(0.9f);
         }
         else if(shouldDrawButtonAsHighlighted)
         {
-            fillColour = COLOUR_ACCENT_DARK.withAlpha(0.7f);
+            fillColour = style->COLOUR_ACCENT_DARK.withAlpha(0.7f);
         }
         else
         {
-            fillColour = COLOUR_ACCENT_DARK;
+            fillColour = style->COLOUR_ACCENT_DARK;
         }
         
         float const cornerSize = 6.0f;
@@ -87,11 +92,11 @@ public:
         
         if(shouldDrawButtonAsHighlighted)
         {
-            fillColour = COLOUR_ACCENT_DARK.withAlpha(0.7f);
+            fillColour = style->COLOUR_ACCENT_DARK.withAlpha(0.7f);
         }
         else
         {
-            fillColour = COLOUR_ACCENT_DARK;
+            fillColour = style->COLOUR_ACCENT_DARK;
         }
         
         if (!button.isEnabled())
@@ -105,14 +110,14 @@ public:
         if(button.getToggleState())
         {
             cornerSize = 4.0f;
-            g.setColour(COLOUR_ACCENT_LIGHT);
+            g.setColour(style->COLOUR_ACCENT_LIGHT);
             g.fillRoundedRectangle(bounds.reduced(3), cornerSize);
         }
     }
     
     Font getLabelFont(Label& label) override
     {
-        return FONT_SMALL_BOLD;
+        return style->FONT_SMALL_BOLD;
     }
     
     void drawPopupMenuBackgroundWithOptions(Graphics& g,
@@ -125,7 +130,7 @@ public:
                                2,
                                width,
                                height - 4,
-                               CORNER_SIZE_MEDIUM);
+                               style->CORNER_SIZE_MEDIUM);
     }
     
     void drawPopupMenuItem (Graphics& g,
@@ -144,13 +149,13 @@ public:
         
         if (isHighlighted || isTicked)
         {
-            g.setColour(isHighlighted ? COLOUR_BLACK_LIGHT_TRANSPARENT : COLOUR_ACCENT_DARK);
-            g.fillRoundedRectangle(r.reduced(1).toFloat(), CORNER_SIZE_MEDIUM);
+            g.setColour(isHighlighted ? style->COLOUR_BLACK_LIGHT_TRANSPARENT : style->COLOUR_ACCENT_DARK);
+            g.fillRoundedRectangle(r.reduced(1).toFloat(), style->CORNER_SIZE_MEDIUM);
         }
         
-        Colour fontColour = isTicked ? COLOUR_ACCENT_LIGHT : COLOUR_ACCENT_DARK;
+        Colour fontColour = isTicked ? style->COLOUR_ACCENT_LIGHT : style->COLOUR_ACCENT_DARK;
         g.setColour(fontColour);
-        g.setFont(FONT_SMALL_BOLD);
+        g.setFont(style->FONT_SMALL_BOLD);
         
         r.setLeft(10);
         r.setY(1);
@@ -169,8 +174,8 @@ public:
     {
         Rectangle<int> const boxBounds (0, 0, width, height);
         
-        g.setColour(COLOUR_ACCENT_DARK);
-        g.fillRoundedRectangle(boxBounds.toFloat(), CORNER_SIZE_MEDIUM);
+        g.setColour(style->COLOUR_ACCENT_DARK);
+        g.fillRoundedRectangle(boxBounds.toFloat(), style->CORNER_SIZE_MEDIUM);
         
         Rectangle<int> arrow (width - 30, 0, 20, height);
         
@@ -180,7 +185,7 @@ public:
         path.lineTo(arrow.toFloat().getCentreX(), arrow.toFloat().getCentreY() + 3.0f);
         path.lineTo(arrow.toFloat().getRight() - 3.0f, arrow.toFloat().getCentreY() - 2.0f);
         
-        Colour arrowColour = COLOUR_ACCENT_LIGHT.withAlpha(box.isEnabled() ? 0.9f : 0.2f);
+        Colour arrowColour = style->COLOUR_ACCENT_LIGHT.withAlpha(box.isEnabled() ? 0.9f : 0.2f);
         
         g.setColour(arrowColour);
         g.strokePath(path, PathStrokeType(2.0f));
@@ -189,16 +194,16 @@ public:
     void positionComboBoxText(ComboBox& box, Label& label) override
     {
         label.setBounds(6, 1, box.getWidth() - 30, box.getHeight() - 2);
-        label.setFont(FONT_SMALL_BOLD);
-        label.setColour(Label::ColourIds::textColourId, COLOUR_ACCENT_LIGHT);
+        label.setFont(style->FONT_SMALL_BOLD);
+        label.setColour(Label::ColourIds::textColourId, style->COLOUR_ACCENT_LIGHT);
     }
     
     void drawComboBoxTextWhenNothingSelected(Graphics& g,
                                              ComboBox& box,
                                              Label& label) override
     {
-        g.setColour(COLOUR_ACCENT_LIGHT.withAlpha(0.5f));
-        g.setFont(FONT_SMALL_BOLD);
+        g.setColour(style->COLOUR_ACCENT_LIGHT.withAlpha(0.5f));
+        g.setFont(style->FONT_SMALL_BOLD);
         
         auto textArea = getLabelBorderSize(label).subtractedFrom(label.getLocalBounds()).removeFromRight(label.getWidth() - 15);
         
@@ -213,9 +218,9 @@ public:
                            float sliderPosProportional, float rotaryStartAngle,
                            float rotaryEndAngle, Slider& slider) override
     {
-        g.setColour(COLOUR_ACCENT_DARK);
+        g.setColour(style->COLOUR_ACCENT_DARK);
         g.fillEllipse(x + 6, y + 6, width - 14, height - 14);
-        g.setColour(COLOUR_ACCENT_LIGHT);
+        g.setColour(style->COLOUR_ACCENT_LIGHT);
         Line<float> sliderTick = Line<float>::fromStartAndAngle(Point<float>(width * 0.5 - 1, height * 0.5 - 1), (width - 19) * 0.5, sliderPosProportional * M_PI * 1.5 - (M_PI * 0.75));
         g.drawLine(sliderTick, 2.0);
     }
@@ -228,19 +233,21 @@ public:
                            float sliderPos,
                            float minSliderPos,
                            float maxSliderPos,
-                           Slider::SliderStyle const style,
+                           Slider::SliderStyle const sliderStyle,
                            Slider& slider) override
     {
         if (slider.isBar())
         {
-            g.setColour(COLOUR_ACCENT_DARK);
+            g.setColour(style->COLOUR_ACCENT_DARK);
             g.fillRect(slider.isHorizontal() ? Rectangle<float>(static_cast<float> (x), (float)y + 0.5f, sliderPos - (float) x, (float) height - 1.0f)
                        : Rectangle<float>((float)x + 0.5f, sliderPos, (float)width - 1.0f, (float)y + ((float)height - sliderPos)));
         }
         else
         {
-            auto isTwoVal   = (style == Slider::SliderStyle::TwoValueVertical   || style == Slider::SliderStyle::TwoValueHorizontal);
-            auto isThreeVal = (style == Slider::SliderStyle::ThreeValueVertical || style == Slider::SliderStyle::ThreeValueHorizontal);
+            auto isTwoVal = (sliderStyle == Slider::SliderStyle::TwoValueVertical
+                             || sliderStyle == Slider::SliderStyle::TwoValueHorizontal);
+            auto isThreeVal = (sliderStyle == Slider::SliderStyle::ThreeValueVertical
+                               || sliderStyle == Slider::SliderStyle::ThreeValueHorizontal);
             
             auto trackWidth = jmin(6.0f, slider.isHorizontal() ? (float) height * 0.25f : (float) width * 0.25f);
             
@@ -253,7 +260,7 @@ public:
             Path backgroundTrack;
             backgroundTrack.startNewSubPath(startPoint);
             backgroundTrack.lineTo(endPoint);
-            g.setColour(COLOUR_ACCENT_DARK);
+            g.setColour(style->COLOUR_ACCENT_DARK);
             g.strokePath(backgroundTrack, { trackWidth, PathStrokeType::curved, PathStrokeType::rounded });
             
             Path valueTrack;
@@ -284,12 +291,12 @@ public:
             
             valueTrack.startNewSubPath (minPoint);
             valueTrack.lineTo(isThreeVal ? thumbPoint : maxPoint);
-            g.setColour(COLOUR_ACCENT_LIGHT);
+            g.setColour(style->COLOUR_ACCENT_LIGHT);
             g.strokePath(valueTrack, { trackWidth - 4, PathStrokeType::curved, PathStrokeType::rounded });
             
             if (! isTwoVal)
             {
-                g.setColour(COLOUR_ACCENT_LIGHT);
+                g.setColour(style->COLOUR_ACCENT_LIGHT);
                 g.fillEllipse (Rectangle<float> (static_cast<float> (thumbWidth), static_cast<float> (thumbWidth)).withCentre (isThreeVal ? thumbPoint : maxPoint));
             }
             
@@ -346,7 +353,7 @@ public:
         else
             thumbBounds = { thumbStartPosition, y, thumbSize, height };
         
-        g.setColour (isMouseOver ? COLOUR_ACCENT_LIGHT.withAlpha(0.7f) : COLOUR_ACCENT_LIGHT);
+        g.setColour(isMouseOver ? style->COLOUR_ACCENT_LIGHT.withAlpha(0.7f) : style->COLOUR_ACCENT_LIGHT);
         g.fillRoundedRectangle (thumbBounds.reduced(1).toFloat(), 4.0f);
     }
     
@@ -359,7 +366,7 @@ public:
         Path p;
         p.addTriangle(0.0f, 0.0f, 1.0f, isOpen ? 0.0f : 0.5f, isOpen ? 0.5f : 0.0f, 1.0f);
         
-        g.setColour(isMouseOver ? COLOUR_ACCENT_LIGHT.withAlpha(0.7f) : COLOUR_ACCENT_LIGHT);
+        g.setColour(isMouseOver ? style->COLOUR_ACCENT_LIGHT.withAlpha(0.7f) : style->COLOUR_ACCENT_LIGHT);
         g.fillPath(p, p.getTransformToScaleToFit(area.reduced(2, area.getHeight() / 3), true));
     }
     
@@ -381,14 +388,14 @@ public:
         // Markup if the row is selected
         if (isItemSelected)
         {
-            g.setColour(fileListComponent != nullptr ? COLOUR_ACCENT_DARK : COLOUR_ACCENT_DARK);
+            g.setColour(fileListComponent != nullptr ? style->COLOUR_ACCENT_DARK : style->COLOUR_ACCENT_DARK);
             g.fillRoundedRectangle(0, 0, width - 5, height, 3.0);
         }
         
         int const x = 5;
         
-        g.setColour(COLOUR_ACCENT_LIGHT);
-        g.setFont(FONT_SMALL_BOLD);
+        g.setColour(style->COLOUR_ACCENT_LIGHT);
+        g.setFont(style->FONT_SMALL_BOLD);
         
         
         g.drawFittedText(filename,
@@ -403,9 +410,9 @@ public:
     void drawTableHeaderBackground (Graphics& g, TableHeaderComponent& header) override
     {
         Rectangle<int> r = header.getLocalBounds();
-        g.setColour(COLOUR_ACCENT_LIGHT);
-        g.fillRoundedRectangle(r.toFloat(), CORNER_SIZE_MEDIUM);
-        g.setColour(COLOUR_ACCENT_DARK);
+        g.setColour(style->COLOUR_ACCENT_LIGHT);
+        g.fillRoundedRectangle(r.toFloat(), style->CORNER_SIZE_MEDIUM);
+        g.setColour(style->COLOUR_ACCENT_DARK);
         
         for (int i = header.getNumColumns(true); --i >= 0;)
         {
@@ -423,7 +430,7 @@ public:
                                bool isMouseDown,
                                int columnFlags) override
     {
-        auto highlightColour = COLOUR_ACCENT_MEDIUM.withAlpha(0.7f);
+        auto highlightColour = style->COLOUR_ACCENT_MEDIUM.withAlpha(0.7f);
         
         if (isMouseDown)
         {
@@ -444,12 +451,12 @@ public:
                                    0.5f, (columnFlags & TableHeaderComponent::sortedForwards) != 0 ? -0.8f : 0.8f,
                                    1.0f, 0.0f);
             
-            g.setColour(COLOUR_ACCENT_DARK);
-            g.fillPath (sortArrow, sortArrow.getTransformToScaleToFit (area.removeFromRight (height / 2).reduced (2).toFloat(), true));
+            g.setColour(style->COLOUR_ACCENT_DARK);
+            g.fillPath(sortArrow, sortArrow.getTransformToScaleToFit (area.removeFromRight (height / 2).reduced (2).toFloat(), true));
         }
         
-        g.setColour(COLOUR_ACCENT_DARK);
-        g.setFont(FONT_MEDIUM_SMALL_BOLD);
+        g.setColour(style->COLOUR_ACCENT_DARK);
+        g.setFont(style->FONT_MEDIUM_SMALL_BOLD);
         g.drawFittedText(columnName, area, Justification::centredLeft, 1);
     }
     
@@ -463,16 +470,16 @@ public:
             cachedImage = { Image::ARGB, box.getWidth(), box.getHeight(), true };
             Graphics g2(cachedImage);
             
-            DropShadow(COLOUR_BLACK_MEDIUM_TRANSPARENT, 8, { 2, 2 }).drawForPath(g2, path);
+            DropShadow(style->COLOUR_BLACK_MEDIUM_TRANSPARENT, 8, { 2, 2 }).drawForPath(g2, path);
         }
         
-        g.setColour(COLOUR_BLACK);
+        g.setColour(style->COLOUR_BLACK);
         g.drawImageAt(cachedImage, 0, 0);
         
-        g.setColour(COLOUR_ACCENT_DARK.withAlpha(0.8f));
+        g.setColour(style->COLOUR_ACCENT_DARK.withAlpha(0.8f));
         g.fillPath(path);
         
-        // g.setColour(COLOUR_ACCENT_LIGHT.withAlpha(0.8f));
+        // g.setColour(style->COLOUR_ACCENT_LIGHT.withAlpha(0.8f));
         // g.strokePath(path, PathStrokeType(2.0));
     }
     
@@ -483,7 +490,7 @@ public:
     
     float getCallOutBoxCornerSize(CallOutBox const &) override
     {
-        return CORNER_SIZE_MEDIUM;
+        return style->CORNER_SIZE_MEDIUM;
     }
     
     void drawAlertBox(Graphics& g,
@@ -492,8 +499,8 @@ public:
                       TextLayout& textLayout) override
     {
         // Draw alert box background
-        auto cornerSize = CORNER_SIZE_MEDIUM;
-        g.setColour(COLOUR_ACCENT_LIGHT_STRONG_TRANSPARENT);
+        auto cornerSize = style->CORNER_SIZE_MEDIUM;
+        g.setColour(style->COLOUR_ACCENT_LIGHT_STRONG_TRANSPARENT);
         g.fillRoundedRectangle(alert.getLocalBounds().toFloat(), cornerSize);
         
         // Draw alert text
@@ -506,17 +513,17 @@ public:
     
     Font getAlertWindowTitleFont() override
     {
-        return FONT_MEDIUM_SMALL_BOLD;
+        return style->FONT_MEDIUM_SMALL_BOLD;
     }
     
     Font getAlertWindowMessageFont() override
     {
-        return FONT_MEDIUM_SMALL_BOLD;
+        return style->FONT_MEDIUM_SMALL_BOLD;
     }
     
     Font getAlertWindowFont() override
     {
-        return FONT_MEDIUM_SMALL_BOLD;
+        return style->FONT_MEDIUM_SMALL_BOLD;
     }
     
     void drawTextEditorOutline(Graphics& g,
@@ -530,12 +537,12 @@ public:
             {
                 if (textEditor.hasKeyboardFocus(true) && !textEditor.isReadOnly())
                 {
-                    g.setColour(COLOUR_ACCENT_DARK);
+                    g.setColour(style->COLOUR_ACCENT_DARK);
                     g.drawRoundedRectangle(1,
                                            1,
                                            width - 2,
                                            height - 2,
-                                           CORNER_SIZE_MEDIUM - 1,
+                                           style->CORNER_SIZE_MEDIUM - 1,
                                            2.0);
                 }
             }
@@ -547,8 +554,8 @@ public:
                                   int height,
                                   TextEditor& textEditor) override
     {
-        g.setColour(COLOUR_ACCENT_DARK);
-        g.fillRoundedRectangle(0, 0, width, height, CORNER_SIZE_MEDIUM);
+        g.setColour(style->COLOUR_ACCENT_DARK);
+        g.fillRoundedRectangle(0, 0, width, height, style->CORNER_SIZE_MEDIUM);
     }
     
     void drawImageButton(Graphics& g,
@@ -570,9 +577,9 @@ public:
         RectanglePlacement(RectanglePlacement::stretchToFit)
             .getTransformToFit(image->getBounds().toFloat(),
                                Rectangle<float>(std::nearbyint(jmin(image->getWidth(),
-                                                                    button.getWidth() - PANEL_MARGIN) * 0.5f) * 2.0f - 1,
+                                                                    button.getWidth() - style->PANEL_MARGIN) * 0.5f) * 2.0f - 1,
                                                 std::nearbyint(jmin(image->getHeight(),
-                                                                    button.getHeight() - PANEL_MARGIN) * 0.5f) * 2.0f - 1)
+                                                                    button.getHeight() - style->PANEL_MARGIN) * 0.5f) * 2.0f - 1)
                                .withCentre(button.getLocalBounds().getCentre().toFloat()).toFloat());
         
         g.setColour(overlayColour.withAlpha(imageOpacity));
@@ -588,11 +595,11 @@ public:
         auto cornerSize = 5.0f;
         
         // Draw border
-        g.setColour(COLOUR_ACCENT_MEDIUM);
+        g.setColour(style->COLOUR_ACCENT_MEDIUM);
         g.fillRoundedRectangle(bounds.toFloat(), cornerSize);
         
         // Draw background
-        g.setColour(COLOUR_ACCENT_DARK);
+        g.setColour(style->COLOUR_ACCENT_DARK);
         g.drawRoundedRectangle(bounds.toFloat().reduced(0.5f, 0.5f), cornerSize, 1.0f);
         
         // Draw text
@@ -600,7 +607,7 @@ public:
         
         AttributedString tooltipText;
         tooltipText.setJustification(Justification::centred);
-        tooltipText.append(text, FONT_SMALL_BOLD, COLOUR_ACCENT_LIGHT);
+        tooltipText.append(text, style->FONT_SMALL_BOLD, style->COLOUR_ACCENT_LIGHT);
         
         TextLayout layout;
         layout.createLayoutWithBalancedLineLengths(tooltipText, (float) maxToolTipWidth);
@@ -614,8 +621,8 @@ public:
                          double progress,
                          String const & textToShow) override
     {
-        Colour background = COLOUR_ACCENT_DARK;
-        Colour foreground = COLOUR_ACCENT_MEDIUM;
+        Colour background = style->COLOUR_ACCENT_DARK;
+        Colour foreground = style->COLOUR_ACCENT_MEDIUM;
         
         Rectangle<float> barBounds = progressBar.getLocalBounds().toFloat();
         
@@ -662,8 +669,8 @@ public:
         
         if (textToShow.isNotEmpty())
         {
-            g.setColour(COLOUR_ACCENT_LIGHT);
-            g.setFont(FONT_SMALL_BOLD);
+            g.setColour(style->COLOUR_ACCENT_LIGHT);
+            g.setFont(style->FONT_SMALL_BOLD);
             
             g.drawText(textToShow, 0, 0, width, height, Justification::centred, false);
         }
@@ -671,4 +678,5 @@ public:
     
 private:
     SampleLibrary& sampleLibrary;
+    BlomeStyling::Ptr style;
 };

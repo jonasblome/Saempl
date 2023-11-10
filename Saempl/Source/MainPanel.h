@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    MainPanel.h
-    Created: 22 May 2023 6:31:37am
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ MainPanel.h
+ Created: 22 May 2023 6:31:37am
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -22,8 +22,9 @@
  \ref juce::DragAndDropContainer
  */
 class MainPanel
-:   public PanelBase,
-    public DragAndDropContainer
+:
+public PanelBase,
+public DragAndDropContainer
 {
 public:
     /**
@@ -37,6 +38,7 @@ public:
 private:
     std::unique_ptr<HeaderPanel> mHeaderPanel;
     std::unique_ptr<CenterPanel> mCenterPanel;
+    BlomeStyling::Ptr style;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;

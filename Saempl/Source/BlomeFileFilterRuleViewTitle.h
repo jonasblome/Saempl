@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    BlomeFileFilterRuleViewTitle.h
-    Created: 30 Oct 2023 7:25:08pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeFileFilterRuleViewTitle.h
+ Created: 30 Oct 2023 7:25:08pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -22,8 +22,9 @@
  Holds a \ref juce::TextEditor to change the \ref SampleFileFilterRuleTitle::mCompareValue.
  */
 class BlomeFileFilterRuleViewTitle
-:   public BlomeFileFilterRuleViewBase,
-    public TextEditor::Listener
+:
+public BlomeFileFilterRuleViewBase,
+public TextEditor::Listener
 {
 public:
     /**
@@ -41,6 +42,7 @@ public:
     
 private:
     std::unique_ptr<TextEditor> mCompareValueEditor;
+    BlomeStyling::Ptr style;
     
     void paint(Graphics& g) override;
     void setComponents() override;

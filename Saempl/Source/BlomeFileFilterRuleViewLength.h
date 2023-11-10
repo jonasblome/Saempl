@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    BlomeFileFilterRuleViewLength.h
-    Created: 30 Oct 2023 7:25:18pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeFileFilterRuleViewLength.h
+ Created: 30 Oct 2023 7:25:18pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -22,8 +22,9 @@
  Holds a \ref juce::TextEditor to change the \ref SampleFileFilterRuleLength::mCompareValue.
  */
 class BlomeFileFilterRuleViewLength
-:   public BlomeFileFilterRuleViewBase,
-    public TextEditor::Listener
+:
+public BlomeFileFilterRuleViewBase,
+public TextEditor::Listener
 {
 public:
     /**

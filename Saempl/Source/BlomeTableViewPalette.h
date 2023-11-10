@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    BlomeTableViewPalette.h
-    Created: 1 Nov 2023 10:34:25am
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeTableViewPalette.h
+ Created: 1 Nov 2023 10:34:25am
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -20,7 +20,8 @@
  Handles removing of each row's \ref SampleItem from the \ref SampleLibrary::mSampleItemsPalette.
  */
 class BlomeTableViewPalette
-:   public BlomeTableViewBase
+:
+public BlomeTableViewBase
 {
 public:
     /**

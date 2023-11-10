@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    SampleLibrariesPanel.h
-    Created: 22 May 2023 6:32:52am
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ SampleLibrariesPanel.h
+ Created: 22 May 2023 6:32:52am
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -22,9 +22,10 @@
  Handles previewing and deleting of sample files.
  */
 class SampleLibraryPanel
-:   public PanelBase,
-    private FileBrowserListener,
-    private ChangeListener
+:
+public PanelBase,
+private FileBrowserListener,
+private ChangeListener
 {
 public:
     /**
@@ -43,6 +44,7 @@ private:
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<BlomeFileTreeView> mFileTree;
+    BlomeStyling::Ptr style;
     
     void selectionChanged() override;
     void fileClicked(File const & file, MouseEvent const & mouseEvent) override;

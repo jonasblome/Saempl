@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    PanelBase.h
-    Created: 22 May 2023 6:31:30am
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ PanelBase.h
+ Created: 22 May 2023 6:31:30am
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -22,9 +22,15 @@
  Handles setting, painting and resizing it's children and components.
  */
 class PanelBase
-:   public Component
+:
+public Component
 {
 public:
+    /**
+     The constructor for the panel base class.
+     
+     @param inProcessor the processor reference of the current plugin instance.
+     */
     PanelBase(SaemplAudioProcessor& inProcessor);
     ~PanelBase();
     

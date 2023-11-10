@@ -11,7 +11,9 @@
 #include "AudioPreviewPanel.h"
 #include "BlomeFileTreeView.h"
 
-AudioPreviewPanel::AudioPreviewPanel(SaemplAudioProcessor& inProcessor, Slider& inSlider, SampleEditor& inSampleEditor)
+AudioPreviewPanel::AudioPreviewPanel(SaemplAudioProcessor& inProcessor,
+                                     Slider& inSlider,
+                                     SampleEditor& inSampleEditor)
 :
 PanelBase(inProcessor),
 sampleEditor(inSampleEditor),
@@ -20,7 +22,7 @@ mThumbnailCache(std::make_unique<AudioThumbnailCache>(5)),
 mAudioPreview(std::make_unique<AudioThumbnail>(512, sampleEditor.getAudioFormatManager(), *mThumbnailCache)),
 isFollowingTransport(false)
 {
-    setSize(SAMPLE_PREVIEW_WIDTH - PANEL_MARGIN * 1.5, SAMPLE_PREVIEW_HEIGHT - PANEL_MARGIN * 1.5);
+    setSize(style->SAMPLE_PREVIEW_WIDTH - style->PANEL_MARGIN * 1.5, style->SAMPLE_PREVIEW_HEIGHT - style->PANEL_MARGIN * 1.5);
     setPanelComponents();
 }
 
@@ -31,29 +33,29 @@ AudioPreviewPanel::~AudioPreviewPanel()
 
 void AudioPreviewPanel::paint(Graphics& g)
 {
-    auto previewArea = getLocalBounds().removeFromBottom(getHeight() - SAMPLE_PREVIEW_TITLE_HEIGHT);
+    auto previewArea = getLocalBounds().removeFromBottom(getHeight() - style->SAMPLE_PREVIEW_TITLE_HEIGHT);
     
     // Draw background
-    g.setColour(COLOUR_ACCENT_DARK);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), CORNER_SIZE_MEDIUM);
+    g.setColour(style->COLOUR_ACCENT_DARK);
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), style->CORNER_SIZE_MEDIUM);
     
     // Draw audio preview
-    g.setColour(COLOUR_ACCENT_LIGHT);
+    g.setColour(style->COLOUR_ACCENT_LIGHT);
     
     if (mAudioPreview->getTotalLength() > 0.0)
     {
         // Draw file name on title bar
-        g.setFont(FONT_SMALL_BOLD);
+        g.setFont(style->FONT_SMALL_BOLD);
         String fileName = URL::removeEscapeChars(lastFileDropped.getFileName());
         g.drawFittedText(fileName,
-                         getLocalBounds().removeFromRight(getWidth() - PANEL_MARGIN).removeFromTop(SAMPLE_PREVIEW_TITLE_HEIGHT),
+                         getLocalBounds().removeFromRight(getWidth() - style->PANEL_MARGIN).removeFromTop(style->SAMPLE_PREVIEW_TITLE_HEIGHT),
                          Justification::centredLeft,
                          2);
         
         // Draw audio preview
         previewArea.removeFromBottom(mAudioPreviewScrollbar->getHeight() + 4);
         mAudioPreview->drawChannels(g,
-                                    previewArea.reduced(PANEL_MARGIN / 2.0),
+                                    previewArea.reduced(style->PANEL_MARGIN / 2.0),
                                     visibleRange.getStart(),
                                     visibleRange.getEnd(),
                                     1.0f);
@@ -61,13 +63,18 @@ void AudioPreviewPanel::paint(Graphics& g)
     else
     {
         // Draw hint to drag in audio file
-        g.setFont(FONT_SMALL_BOLD);
+        g.setFont(style->FONT_SMALL_BOLD);
         g.drawFittedText("No audio file selected",
-                         getLocalBounds().removeFromRight(getWidth() - PANEL_MARGIN).removeFromTop(SAMPLE_PREVIEW_TITLE_HEIGHT),
+                         getLocalBounds()
+                         .removeFromRight(getWidth() - style->PANEL_MARGIN)
+                         .removeFromTop(style->SAMPLE_PREVIEW_TITLE_HEIGHT),
                          Justification::centredLeft,
                          1);
-        g.setFont(FONT_MEDIUM_BOLD);
-        g.drawFittedText("No audio file selected", getLocalBounds(), Justification::centred, 2);
+        g.setFont(style->FONT_MEDIUM_BOLD);
+        g.drawFittedText("No audio file selected",
+                         getLocalBounds(),
+                         Justification::centred,
+                         2);
     }
 }
 
@@ -83,7 +90,7 @@ void AudioPreviewPanel::setPanelComponents()
     
     // Add position marker
     mAudioPositionMarker = std::make_unique<DrawableRectangle>();
-    mAudioPositionMarker->setFill(COLOUR_GREENISH_WHITE);
+    mAudioPositionMarker->setFill(style->COLOUR_GREENISH_WHITE);
     addAndMakeVisible(*mAudioPositionMarker);
     
     // Repaint panel components
@@ -115,7 +122,7 @@ void AudioPreviewPanel::setZoomFactor(double amount)
     if (mAudioPreview->getTotalLength() > 0)
     {
         auto newScale = jmax(0.001, mAudioPreview->getTotalLength() * (1.0 - jlimit(0.0, 0.99, amount)));
-        auto timeAtCentre = xToTime((float)getWidth() / 2.0f);
+        auto timeAtCentre = xToTime((float) getWidth() / 2.0f);
         
         setRange({ timeAtCentre - newScale * 0.5, timeAtCentre + newScale * 0.5 });
     }
@@ -233,7 +240,7 @@ float AudioPreviewPanel::timeToX(double const time) const
 
 double AudioPreviewPanel::xToTime(float const x) const
 {
-    return (x / (float)getWidth()) * (visibleRange.getLength()) + visibleRange.getStart();
+    return (x / (float) getWidth()) * (visibleRange.getLength()) + visibleRange.getStart();
 }
 
 bool AudioPreviewPanel::canMoveTransport() const noexcept
@@ -270,12 +277,12 @@ void AudioPreviewPanel::updateCursorPosition()
     mAudioPositionMarker->setVisible(sampleEditor.isPlaying() || isMouseButtonDown());
     mAudioPositionMarker->setRectangle(Rectangle<float>(timeToX(sampleEditor.getCurrentReadheadPosition())
                                                        - 0.75f,
-                                                       SAMPLE_PREVIEW_TITLE_HEIGHT
-                                                       + PANEL_MARGIN / 2.0,
+                                                        style->SAMPLE_PREVIEW_TITLE_HEIGHT
+                                                       + style->PANEL_MARGIN / 2.0,
                                                        1.5f,
                                                        (float) (getHeight()
-                                                                - PANEL_MARGIN
-                                                                - SAMPLE_PREVIEW_TITLE_HEIGHT
+                                                                - style->PANEL_MARGIN
+                                                                - style->SAMPLE_PREVIEW_TITLE_HEIGHT
                                                                 - mAudioPreviewScrollbar->getHeight())));
 }
 

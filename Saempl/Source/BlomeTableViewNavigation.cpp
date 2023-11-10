@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    BlomeTableViewNavigation.cpp
-    Created: 1 Nov 2023 10:34:42am
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeTableViewNavigation.cpp
+ Created: 1 Nov 2023 10:34:42am
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #include "BlomeTableViewNavigation.h"
 
@@ -29,7 +29,8 @@ BlomeTableViewBase(inProcessor, inSampleItemPanel)
                               0);
     }
     
-    getHeader().setSortColumnId(PROPERTY_NAMES.indexOf(currentProcessor.getSortingColumnTitle()) + 1, currentProcessor.getSortingDirection());
+    getHeader().setSortColumnId(PROPERTY_NAMES.indexOf(currentProcessor.getSortingColumnTitle()) + 1,
+                                currentProcessor.getSortingDirection());
     getHeader().reSortTable();
 }
 
@@ -84,8 +85,8 @@ void BlomeTableViewNavigation::addToPalette()
     for (int r = getNumSelectedRows() - 1; r >= 0; r--)
     {
         sampleLibrary.addAllToPalette(sampleLibrary
-                                   .getSampleItems(mSampleItemCollectionType)
-                                   .getUnchecked(getSelectedRow(r))->getFilePath());
+                                      .getSampleItems(mSampleItemCollectionType)
+                                      .getUnchecked(getSelectedRow(r))->getFilePath());
     }
     
     sampleLibrary.refresh();

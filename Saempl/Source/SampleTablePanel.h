@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    SampleTablePanel.h
-    Created: 25 Jun 2023 5:51:12pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ SampleTablePanel.h
+ Created: 25 Jun 2023 5:51:12pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -21,7 +21,8 @@
  \ref PanelBase
  */
 class SampleTablePanel
-:   public PanelBase
+:
+public PanelBase
 {
 public:
     /**
@@ -41,6 +42,7 @@ private:
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<BlomeTableViewNavigation> mSampleTable;
+    BlomeStyling::Ptr style;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;

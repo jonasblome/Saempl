@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    SampleNavigationPanel.cpp
-    Created: 24 Jun 2023 4:28:16pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ SampleNavigationPanel.cpp
+ Created: 24 Jun 2023 4:28:16pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #include "SampleNavigationPanel.h"
 
@@ -15,7 +15,7 @@ SampleNavigationPanel::SampleNavigationPanel(SaemplAudioProcessor& inProcessor, 
 PanelBase(inProcessor),
 linkedSampleItemPanel(inSampleItemPanel)
 {
-    setSize(SAMPLE_NAVIGATION_PANEL_WIDTH, SAMPLE_NAVIGATION_PANEL_HEIGHT);
+    setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH, style->SAMPLE_NAVIGATION_PANEL_HEIGHT);
     setPanelComponents();
 }
 
@@ -61,7 +61,7 @@ void SampleNavigationPanel::resizePanelComponents()
     }
 }
 
-void SampleNavigationPanel::setActiveNavigationPanel(NavigationPanelType inPanelType)
+void SampleNavigationPanel::setActiveNavigationPanel(NavigationPanelType& inPanelType)
 {
     currentProcessor.setActiveNavigationPanel(inPanelType);
     

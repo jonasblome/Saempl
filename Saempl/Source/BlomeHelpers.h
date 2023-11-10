@@ -1,21 +1,21 @@
 /*
-  ==============================================================================
-
-    BlomeHelperFunctions.h
-    Created: 22 May 2023 10:47:09am
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeHelperFunctions.h
+ Created: 22 May 2023 10:47:09am
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
 #include "JuceHeader.h"
 
 #if JUCE_WINDOWS
-    static String const DIRECTORY_SEPARATOR = "\\";
+static String const DIRECTORY_SEPARATOR = "\\";
 #elif JUCE_MAC
-    static String const DIRECTORY_SEPARATOR = "/";
+static String const DIRECTORY_SEPARATOR = "/";
 #endif
 
 // Custom file extensions
@@ -33,7 +33,7 @@ static StringArray const PROPERTY_NAMES = StringArray({ "Length", "Title" });
 // Filter rule compare operators
 enum CompareOperators
 {
-    LESS_THAN,
+    LESS_THAN = 0,
     EQUAL_TO,
     GREATER_THAN,
     CONTAINS
@@ -42,9 +42,23 @@ enum CompareOperators
 // Navigation panel names
 enum NavigationPanelType
 {
-    PANELS_LIBRARY_PANEL,
+    PANELS_LIBRARY_PANEL = 0,
     PANELS_TABLE_PANEL,
     PANELS_MAP_PANEL,
+};
+
+static std::map<NavigationPanelType, String> NAVIGATION_PANEL_TYPE_TO_STRING
+{
+    { PANELS_LIBRARY_PANEL, "PANELS_LIBRARY_PANEL" },
+    { PANELS_TABLE_PANEL, "PANELS_TABLE_PANEL" },
+    { PANELS_MAP_PANEL, "PANELS_MAP_PANEL"}
+};
+
+static std::map<String, NavigationPanelType> STRING_TO_NAVIGATION_PANEL_TYPE
+{
+    { "PANELS_LIBRARY_PANEL", PANELS_LIBRARY_PANEL },
+    { "PANELS_TABLE_PANEL", PANELS_TABLE_PANEL },
+    { "PANELS_MAP_PANEL", PANELS_MAP_PANEL }
 };
 
 // Sample library collection types
@@ -60,7 +74,8 @@ inline bool isSupportedAudioFileFormat(String inExtension)
 {
     for (String extension : SUPPORTED_AUDIO_FORMATS)
     {
-        if (extension == inExtension) {
+        if (extension == inExtension)
+        {
             return true;
         }
     }

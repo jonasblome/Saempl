@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    BlomeFileFilterRuleViewBase.h
-    Created: 29 Oct 2023 12:14:30pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeFileFilterRuleViewBase.h
+ Created: 29 Oct 2023 12:14:30pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -26,8 +26,9 @@
  and a delete button to remove the filter rule.
  */
 class BlomeFileFilterRuleViewBase
-:   public Component,
-    public ComboBox::Listener
+:
+public Component,
+public ComboBox::Listener
 {
 public:
     /**
@@ -54,11 +55,12 @@ public:
     void removeDeleteButtonListener(Button::Listener* inListener);
     
 protected:
-    SampleLibrary& linkedSampleLibrary;
+    SampleLibrary& sampleLibrary;
     SampleFileFilterRuleBase& linkedFilterRule;
     std::unique_ptr<ComboBox> mCompareOperatorChooser;
     std::unique_ptr<ToggleButton> mActivateRuleButton;
     std::unique_ptr<BlomeImageButton> mDeleteRuleButton;
+    BlomeStyling::Ptr style;
     
     /**
      Initializes the panel's components and adds them to the parent component.

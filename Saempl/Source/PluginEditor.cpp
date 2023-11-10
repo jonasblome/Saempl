@@ -18,7 +18,7 @@ SaemplAudioProcessorEditor::SaemplAudioProcessorEditor (SaemplAudioProcessor& in
     LookAndFeel::setDefaultLookAndFeel(&*mLookAndFeel);
     
     // Set plugin window size
-    setSize(MAIN_PANEL_WIDTH, MAIN_PANEL_HEIGHT);
+    setSize(style->MAIN_PANEL_WIDTH, style->MAIN_PANEL_HEIGHT);
     
     // Set main panel into plugin window
     mMainPanel = std::make_unique<MainPanel>(inProcessor);
@@ -31,13 +31,14 @@ SaemplAudioProcessorEditor::SaemplAudioProcessorEditor (SaemplAudioProcessor& in
 
 SaemplAudioProcessorEditor::~SaemplAudioProcessorEditor()
 {
+    LookAndFeel::setDefaultLookAndFeel(nullptr);
 }
 
 //==============================================================================
 void SaemplAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // The plugin background
-    g.fillAll(COLOUR_ACCENT_DARK);
+    g.fillAll(style->COLOUR_ACCENT_DARK);
 }
 
 void SaemplAudioProcessorEditor::resized()

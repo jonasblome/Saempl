@@ -19,9 +19,7 @@ linkedSampleItemPanel(inSampleItemPanel)
     mComparator = std::make_unique<SampleItemComparator>();
     
     setModel(this);
-    setColour(ListBox::outlineColourId, COLOUR_ACCENT_LIGHT);
     setOutlineThickness(0);
-    setColour(backgroundColourId, COLOUR_TRANSPARENT);
     getHeader().setStretchToFitActive(true);
     setMultipleSelectionEnabled(true);
     
@@ -48,8 +46,8 @@ void BlomeTableViewBase::paintRowBackground(Graphics& g,
                                          int height,
                                          bool rowIsSelected)
 {
-    rowIsSelected ? g.setColour(COLOUR_ACCENT_DARK) : g.setColour(COLOUR_ACCENT_MEDIUM);
-    g.fillRoundedRectangle(Rectangle<float>(width, height), CORNER_SIZE_MEDIUM);
+    rowIsSelected ? g.setColour(style->COLOUR_ACCENT_DARK) : g.setColour(style->COLOUR_ACCENT_MEDIUM);
+    g.fillRoundedRectangle(Rectangle<float>(width, height), style->CORNER_SIZE_MEDIUM);
 }
 
 // This is overloaded from TableListBoxModel, and must paint any cells that aren't using custom
@@ -70,15 +68,15 @@ void BlomeTableViewBase::paintCell(Graphics& g,
     if (SampleItem* rowSampleItem = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(rowNumber))
     {
         // Draw cell background
-        g.setColour(COLOUR_ACCENT_MEDIUM);
+        g.setColour(style->COLOUR_ACCENT_MEDIUM);
         g.fillRect(width - 1,
                    0,
                    1,
                    height);
         
         // Draw cell text
-        g.setColour(COLOUR_ACCENT_LIGHT);
-        g.setFont(FONT_SMALL_BOLD);
+        g.setColour(style->COLOUR_ACCENT_LIGHT);
+        g.setFont(style->FONT_SMALL_BOLD);
         g.drawText(getCellText(rowSampleItem, getHeader().getColumnName(columnId)),
                    2,
                    0,
@@ -118,7 +116,7 @@ int BlomeTableViewBase::getColumnAutoSizeWidth(int columnId)
         if (SampleItem* sampleItem = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(r))
         {
             String text = sampleItem->getFilePath();
-            widest = jmax(widest, FONT_SMALL_BOLD.getStringWidth(text));
+            widest = jmax(widest, style->FONT_SMALL_BOLD.getStringWidth(text));
         }
     }
 
@@ -197,8 +195,7 @@ void BlomeTableViewBase::sortOrderChanged(int newSortColumnId, bool isForwards)
     {
         String columnName = getHeader().getColumnName(newSortColumnId);
         currentProcessor.setSortingColumnTitle(columnName);
-        String propertyName = newSortColumnId <= PROPERTY_NAMES.size() ? columnName : "Title";
-        mComparator->setCompareProperty(propertyName);
+        mComparator->setCompareProperty(columnName);
         mComparator->setSortingDirection(isForwards);
         sampleLibrary.getSampleItems(mSampleItemCollectionType).sort(*mComparator);
         updateContent();

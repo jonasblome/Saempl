@@ -1,10 +1,10 @@
 /*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ This file contains the basic framework code for a JUCE plugin editor.
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -16,17 +16,17 @@
 
 //==============================================================================
 /**
-*/
+ */
 class SaemplAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
     SaemplAudioProcessorEditor (SaemplAudioProcessor& inProcessor);
     ~SaemplAudioProcessorEditor() override;
-
+    
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
-
+    
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SaemplAudioProcessorEditor)
     
@@ -37,4 +37,5 @@ private:
     std::unique_ptr<NoiseOverlayPanel> mNoiseOverlayPanel;
     std::unique_ptr<BlomeLookAndFeel> mLookAndFeel;
     SharedResourcePointer<TooltipWindow> tooltipWindow;
+    BlomeStyling::Ptr style;
 };

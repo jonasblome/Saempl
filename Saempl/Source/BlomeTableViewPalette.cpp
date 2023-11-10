@@ -1,17 +1,18 @@
 /*
-  ==============================================================================
-
-    BlomeTableViewPalette.cpp
-    Created: 1 Nov 2023 10:34:25am
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeTableViewPalette.cpp
+ Created: 1 Nov 2023 10:34:25am
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #include "BlomeTableViewPalette.h"
 
 BlomeTableViewPalette::BlomeTableViewPalette(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
-:   BlomeTableViewBase(inProcessor, inSampleItemPanel)
+:
+BlomeTableViewBase(inProcessor, inSampleItemPanel)
 {
     mSampleItemCollectionType = PALETTE_SAMPLES;
     
@@ -22,7 +23,6 @@ BlomeTableViewPalette::BlomeTableViewPalette(SaemplAudioProcessor& inProcessor, 
                           400,
                           TableHeaderComponent::defaultFlags,
                           0);
-    
     getHeader().setSortColumnId(1, true);
     getHeader().reSortTable();
 }
@@ -63,8 +63,8 @@ void BlomeTableViewPalette::removeSampleItemFromPalette()
     for (int r = getNumSelectedRows() - 1; r >= 0; r--)
     {
         sampleLibrary.removeFromPalette(*sampleLibrary
-                                       .getSampleItems(mSampleItemCollectionType)
-                                       .getUnchecked(getSelectedRow(r)));
+                                        .getSampleItems(mSampleItemCollectionType)
+                                        .getUnchecked(getSelectedRow(r)));
     }
     
     sampleLibrary.refresh();

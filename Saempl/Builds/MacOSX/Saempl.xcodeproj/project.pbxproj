@@ -107,7 +107,7 @@
 		014D6602F240F9A4C0B339C7 /* juce_data_structures */ /* juce_data_structures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_data_structures; path = /Users/jonasblome/Documents/JUCE/modules/juce_data_structures; sourceTree = "<absolute>"; };
 		030348C73AB84A510C2DA66F /* juce_audio_formats */ /* juce_audio_formats */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_formats; path = /Users/jonasblome/Documents/JUCE/modules/juce_audio_formats; sourceTree = "<absolute>"; };
 		03422605513C5E57CC9CF37D /* Security.framework */ /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		048405A0D8ADDCA7AE32448A /* VST3 */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Auto_Sample.vst3; sourceTree = BUILT_PRODUCTS_DIR; };
+		048405A0D8ADDCA7AE32448A /* VST3 */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Saempl.vst3; sourceTree = BUILT_PRODUCTS_DIR; };
 		057E4E0A6217C16700DC0808 /* include_juce_audio_plugin_client_VST3.mm */ /* include_juce_audio_plugin_client_VST3.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_plugin_client_VST3.mm; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_VST3.mm; sourceTree = SOURCE_ROOT; };
 		067CC4B15EEE499A139DC017 /* noise-texture-1050x800.png */ /* noise-texture-1050x800.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "noise-texture-1050x800.png"; path = "../../Assets/noise-texture-1050x800.png"; sourceTree = SOURCE_ROOT; };
 		0680A9DA5C38F49B7EFD9879 /* delete_FILL0_wght400_GRAD0_opsz24.png */ /* delete_FILL0_wght400_GRAD0_opsz24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = delete_FILL0_wght400_GRAD0_opsz24.png; path = ../../Assets/delete_FILL0_wght400_GRAD0_opsz24.png; sourceTree = SOURCE_ROOT; };
@@ -149,7 +149,7 @@
 		404743E829B6D935E6A66BA9 /* include_juce_graphics.mm */ /* include_juce_graphics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_graphics.mm; path = ../../JuceLibraryCode/include_juce_graphics.mm; sourceTree = SOURCE_ROOT; };
 		4243F3D5F2EB53B87C7F0E03 /* include_juce_audio_plugin_client_AU_2.mm */ /* include_juce_audio_plugin_client_AU_2.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_plugin_client_AU_2.mm; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_AU_2.mm; sourceTree = SOURCE_ROOT; };
 		435BFFE4946F34EEC3885F6E /* SampleLibrary.h */ /* SampleLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleLibrary.h; path = ../../Source/SampleLibrary.h; sourceTree = SOURCE_ROOT; };
-		44352868A73B3F4ADBE3CB07 /* AU */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Auto_Sample.component; sourceTree = BUILT_PRODUCTS_DIR; };
+		44352868A73B3F4ADBE3CB07 /* AU */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Saempl.component; sourceTree = BUILT_PRODUCTS_DIR; };
 		44C9488068AF26DDD71B5BBF /* BlomeTableViewBase.cpp */ /* BlomeTableViewBase.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BlomeTableViewBase.cpp; path = ../../Source/BlomeTableViewBase.cpp; sourceTree = SOURCE_ROOT; };
 		457EC2BB95E74A78EC6787E6 /* MainPanel.cpp */ /* MainPanel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = MainPanel.cpp; path = ../../Source/MainPanel.cpp; sourceTree = SOURCE_ROOT; };
 		45816AA8ADA615404D86BD64 /* juce_audio_devices */ /* juce_audio_devices */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_devices; path = /Users/jonasblome/Documents/JUCE/modules/juce_audio_devices; sourceTree = "<absolute>"; };
@@ -163,7 +163,7 @@
 		51909787EDDC3DB4F602C289 /* BlomeFileFilterRuleViewTitle.h */ /* BlomeFileFilterRuleViewTitle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BlomeFileFilterRuleViewTitle.h; path = ../../Source/BlomeFileFilterRuleViewTitle.h; sourceTree = SOURCE_ROOT; };
 		538DED8902741739A2847F66 /* BlomeTableViewPalette.cpp */ /* BlomeTableViewPalette.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BlomeTableViewPalette.cpp; path = ../../Source/BlomeTableViewPalette.cpp; sourceTree = SOURCE_ROOT; };
 		5431FD0CCA4151786C582FE6 /* FileFilterPanel.cpp */ /* FileFilterPanel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileFilterPanel.cpp; path = ../../Source/FileFilterPanel.cpp; sourceTree = SOURCE_ROOT; };
-		5470E08ECFA1760679218614 /* Standalone Plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Auto_Sample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5470E08ECFA1760679218614 /* Standalone Plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Saempl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		562BB1156B8606918CB19BF2 /* SampleItemComparator.cpp */ /* SampleItemComparator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SampleItemComparator.cpp; path = ../../Source/SampleItemComparator.cpp; sourceTree = SOURCE_ROOT; };
 		5681728E59E782547AA6492D /* CoreAudio.framework */ /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		59320E9AD337C3B24DC20BD4 /* WebKit.framework */ /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -229,7 +229,7 @@
 		CA10BFB669070EC7520A24F5 /* include_juce_audio_plugin_client_Standalone.cpp */ /* include_juce_audio_plugin_client_Standalone.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_audio_plugin_client_Standalone.cpp; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_Standalone.cpp; sourceTree = SOURCE_ROOT; };
 		CAF71BEDFC5B227C772B3095 /* BinaryData.cpp */ /* BinaryData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BinaryData.cpp; path = ../../JuceLibraryCode/BinaryData.cpp; sourceTree = SOURCE_ROOT; };
 		CE6D46B39DB23911953FE9EC /* SamplePalettePanel.h */ /* SamplePalettePanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SamplePalettePanel.h; path = ../../Source/SamplePalettePanel.h; sourceTree = SOURCE_ROOT; };
-		D01272D076D6C24C63783DB7 /* Shared Code */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAuto_Sample.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D01272D076D6C24C63783DB7 /* Shared Code */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSaempl.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D74344FEF409F4925275BFB5 /* SampleAnalyser.cpp */ /* SampleAnalyser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SampleAnalyser.cpp; path = ../../Source/SampleAnalyser.cpp; sourceTree = SOURCE_ROOT; };
 		D8C143139E5E1A6876E95C0A /* BinaryData.h */ /* BinaryData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BinaryData.h; path = ../../JuceLibraryCode/BinaryData.h; sourceTree = SOURCE_ROOT; };
 		DAE00B42967EB21EC7C89B97 /* SampleLibraryManager.cpp */ /* SampleLibraryManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SampleLibraryManager.cpp; path = ../../Source/SampleLibraryManager.cpp; sourceTree = SOURCE_ROOT; };
@@ -1142,9 +1142,9 @@
 				INFOPLIST_PREPROCESS = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_HEADER_SEARCH_PATHS = "/Users/jonasblome/Documents/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jonasblome/Documents/JUCE/modules /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/AU";
-				OTHER_LDFLAGS = "-lAuto_Sample";
+				OTHER_LDFLAGS = "-lSaempl";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Blome.Saempl;
-				PRODUCT_NAME = "Auto_Sample";
+				PRODUCT_NAME = "Saempl";
 				USE_HEADERMAP = NO;
 				VALID_ARCHS = "i386 x86_64 arm64 arm64e";
 			};
@@ -1253,9 +1253,9 @@
 				LIBRARY_STYLE = Bundle;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_HEADER_SEARCH_PATHS = "/Users/jonasblome/Documents/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jonasblome/Documents/JUCE/modules /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/AU";
-				OTHER_LDFLAGS = "-bundle -lAuto_Sample";
+				OTHER_LDFLAGS = "-bundle -lSaempl";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Blome.Saempl;
-				PRODUCT_NAME = "Auto_Sample";
+				PRODUCT_NAME = "Saempl";
 				USE_HEADERMAP = NO;
 				VALID_ARCHS = "i386 x86_64 arm64 arm64e";
 				WRAPPER_EXTENSION = vst3;
@@ -1374,9 +1374,9 @@
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_HEADER_SEARCH_PATHS = "/Users/jonasblome/Documents/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jonasblome/Documents/JUCE/modules /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/AU";
-				OTHER_LDFLAGS = "-bundle -lAuto_Sample";
+				OTHER_LDFLAGS = "-bundle -lSaempl";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Blome.Saempl;
-				PRODUCT_NAME = "Auto_Sample";
+				PRODUCT_NAME = "Saempl";
 				USE_HEADERMAP = NO;
 				VALID_ARCHS = "i386 x86_64 arm64 arm64e";
 				WRAPPER_EXTENSION = vst3;
@@ -1485,7 +1485,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_HEADER_SEARCH_PATHS = "/Users/jonasblome/Documents/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jonasblome/Documents/JUCE/modules /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/AU";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Blome.Saempl;
-				PRODUCT_NAME = "Auto_Sample";
+				PRODUCT_NAME = "Saempl";
 				SKIP_INSTALL = YES;
 				USE_HEADERMAP = NO;
 				VALID_ARCHS = "i386 x86_64 arm64 arm64e";
@@ -1640,7 +1640,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				PRODUCT_NAME = "Auto_Sample";
+				PRODUCT_NAME = "Saempl";
 				SDKROOT = macosx;
 				WARNING_CFLAGS = "-Wreorder";
 				ZERO_LINK = NO;
@@ -1855,7 +1855,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_HEADER_SEARCH_PATHS = "/Users/jonasblome/Documents/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jonasblome/Documents/JUCE/modules /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/AU";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Blome.Saempl;
-				PRODUCT_NAME = "Auto_Sample";
+				PRODUCT_NAME = "Saempl";
 				SKIP_INSTALL = YES;
 				USE_HEADERMAP = NO;
 				VALID_ARCHS = "i386 x86_64 arm64 arm64e";
@@ -1966,10 +1966,10 @@
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_HEADER_SEARCH_PATHS = "/Users/jonasblome/Documents/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jonasblome/Documents/JUCE/modules /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/AU";
-				OTHER_LDFLAGS = "-bundle -lAuto_Sample";
+				OTHER_LDFLAGS = "-bundle -lSaempl";
 				OTHER_REZFLAGS = "-d ppc_$ppc -d i386_$i386 -d ppc64_$ppc64 -d x86_64_$x86_64 -d arm64_$arm64 -I /System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Versions/A/Headers -I \"$(DEVELOPER_DIR)/Extras/CoreAudio/AudioUnits/AUPublic/AUBase\" -I \"$(DEVELOPER_DIR)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioUnit.framework/Headers\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Blome.Saempl;
-				PRODUCT_NAME = "Auto_Sample";
+				PRODUCT_NAME = "Saempl";
 				USE_HEADERMAP = NO;
 				VALID_ARCHS = "i386 x86_64 arm64 arm64e";
 				WRAPPER_EXTENSION = component;
@@ -2077,9 +2077,9 @@
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_HEADER_SEARCH_PATHS = "/Users/jonasblome/Documents/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jonasblome/Documents/JUCE/modules /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/AU";
-				OTHER_LDFLAGS = "-lAuto_Sample";
+				OTHER_LDFLAGS = "-lSaempl";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Blome.Saempl;
-				PRODUCT_NAME = "Auto_Sample";
+				PRODUCT_NAME = "Saempl";
 				USE_HEADERMAP = NO;
 				VALID_ARCHS = "i386 x86_64 arm64 arm64e";
 			};
@@ -2134,7 +2134,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = "Auto_Sample";
+				PRODUCT_NAME = "Saempl";
 				SDKROOT = macosx;
 				WARNING_CFLAGS = "-Wreorder";
 				ZERO_LINK = NO;
@@ -2244,10 +2244,10 @@
 				LIBRARY_STYLE = Bundle;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_HEADER_SEARCH_PATHS = "/Users/jonasblome/Documents/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode /Users/jonasblome/Documents/JUCE/modules /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/AU";
-				OTHER_LDFLAGS = "-bundle -lAuto_Sample";
+				OTHER_LDFLAGS = "-bundle -lSaempl";
 				OTHER_REZFLAGS = "-d ppc_$ppc -d i386_$i386 -d ppc64_$ppc64 -d x86_64_$x86_64 -d arm64_$arm64 -I /System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Versions/A/Headers -I \"$(DEVELOPER_DIR)/Extras/CoreAudio/AudioUnits/AUPublic/AUBase\" -I \"$(DEVELOPER_DIR)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioUnit.framework/Headers\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Blome.Saempl;
-				PRODUCT_NAME = "Auto_Sample";
+				PRODUCT_NAME = "Saempl";
 				USE_HEADERMAP = NO;
 				VALID_ARCHS = "i386 x86_64 arm64 arm64e";
 				WRAPPER_EXTENSION = component;

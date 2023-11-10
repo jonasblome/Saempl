@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    SampleItemComparator.h
-    Created: 23 Oct 2023 10:12:45pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ SampleItemComparator.h
+ Created: 23 Oct 2023 10:12:45pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -31,9 +31,9 @@ public:
      @param first the first sample item to compare.
      @param second the second sample item to compare.
      
-     @returns -1 if the property of first is smaller than seconds, 0 if equal and 1 if first is bigger than second.
+     @returns -1 if the property of first is smaller than second, 0 if equal and 1 if first is bigger than second.
      */
-    int compareElements (SampleItem* first, SampleItem* second);
+    int compareElements(SampleItem* first, SampleItem* second);
     /**
      Sets the name of the property over which to compare the two sample items.
      

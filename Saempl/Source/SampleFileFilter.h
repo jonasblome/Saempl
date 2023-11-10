@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    SampleFileFilter.h
-    Created: 10 Jun 2023 6:14:59pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ SampleFileFilter.h
+ Created: 10 Jun 2023 6:14:59pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -23,7 +23,8 @@
  Holds a collection of \ref SampleFileFilterRuleBase objects.
  */
 class SampleFileFilter
-:   public FileFilter
+:
+public FileFilter
 {
 public:
     /**

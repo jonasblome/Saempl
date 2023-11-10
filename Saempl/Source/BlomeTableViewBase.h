@@ -50,6 +50,7 @@ protected:
     int numRows;
     std::unique_ptr<SampleItemComparator> mComparator;
     SampleItemCollectionScope mSampleItemCollectionType;
+    BlomeStyling::Ptr style;
     
     void paintRowBackground(Graphics& g,
                             int rowNumber,

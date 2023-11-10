@@ -1,18 +1,19 @@
 /*
-  ==============================================================================
-
-    BlomeFileTreeView.cpp
-    Created: 3 Jun 2023 4:59:52pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeFileTreeView.cpp
+ Created: 3 Jun 2023 4:59:52pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #include "BlomeFileTreeView.h"
 
 BlomeFileTreeView::BlomeFileTreeView(SampleLibrary& inSampleLibrary)
-:   FileTreeComponent(inSampleLibrary.getDirectoryList()),
-    sampleLibrary(inSampleLibrary)
+:
+FileTreeComponent(inSampleLibrary.getDirectoryList()),
+sampleLibrary(inSampleLibrary)
 {
     // Mouse listener catches events from the tree view's children
     addMouseListener(this, true);

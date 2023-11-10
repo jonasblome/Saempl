@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    AudioPlayer.cpp
-    Created: 25 May 2023 12:56:15am
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ AudioPlayer.cpp
+ Created: 25 May 2023 12:56:15am
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #include "AudioPlayer.h"
 
@@ -25,9 +25,9 @@ AudioPlayer::AudioPlayer()
     RuntimePermissions::request(RuntimePermissions::recordAudio,
                                 [this] (bool granted)
                                 {
-                                    int numInputChannels = granted ? 2 : 0;
-                                    mAudioDeviceManager->initialise(numInputChannels, 2, nullptr, true, {}, nullptr);
-                                });
+        int numInputChannels = granted ? 2 : 0;
+        mAudioDeviceManager->initialise(numInputChannels, 2, nullptr, true, {}, nullptr);
+    });
     mAudioDeviceManager->addAudioCallback(&*mAudioSourcePlayer);
     mAudioSourcePlayer->setSource(&*mTransportSource);
 }
@@ -89,36 +89,36 @@ bool AudioPlayer::loadURLIntoTransport(URL const & inURL)
     mTransportSource->stop();
     mTransportSource->setSource(nullptr);
     mCurrentAudioFileSource.reset();
-
+    
     auto const source = std::make_unique<URLInputSource>(inURL);
-
+    
     if (source == nullptr)
     {
         return false;
     }
-
+    
     auto stream = rawToUniquePtr(source->createInputStream());
-
+    
     if (stream == nullptr)
     {
         return false;
     }
-
+    
     auto reader = rawToUniquePtr(mFormatManager->createReaderFor(std::move(stream)));
-
+    
     if (reader == nullptr)
     {
         return false;
     }
-
+    
     mCurrentAudioFileSource = std::make_unique<AudioFormatReaderSource>(reader.release(), true);
-
+    
     // Plug new audio source into our transport source
     mTransportSource->setSource(mCurrentAudioFileSource.get(),
-                               32768,                   // Tells it to buffer this many samples ahead
-                               &*mThread,                 // This is the background thread to use for reading-ahead
-                               mCurrentAudioFileSource->getAudioFormatReader()->sampleRate);     // Allows for sample rate correction
-
+                                32768,                   // Tells it to buffer this many samples ahead
+                                &*mThread,                 // This is the background thread to use for reading-ahead
+                                mCurrentAudioFileSource->getAudioFormatReader()->sampleRate);     // Allows for sample rate correction
+    
     return true;
 }
 

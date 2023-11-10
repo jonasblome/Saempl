@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    CenterPanel.h
-    Created: 27 May 2023 9:07:59pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ CenterPanel.h
+ Created: 27 May 2023 9:07:59pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -23,7 +23,8 @@
  Includes the sample navigation panels and the \ref SampleItemPanel for audio previewing.
  */
 class CenterPanel
-:   public PanelBase
+:
+public PanelBase
 {
 public:
     /**
@@ -53,6 +54,7 @@ private:
     std::unique_ptr<SamplePalettePanel> mSamplePalettePanel;
     std::unique_ptr<SampleItemPanel> mSampleItemPanel;
     std::unique_ptr<ToggleButton> mToggleSampleItemPanelButton;
+    BlomeStyling::Ptr style;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;

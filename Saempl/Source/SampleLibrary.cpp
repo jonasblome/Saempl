@@ -41,9 +41,12 @@ SampleLibrary::~SampleLibrary()
     mThread->stopThread(10);
 }
 
-SampleItem* SampleLibrary::addToSampleItems(File const & newFile)
+SampleItem* SampleLibrary::addToSampleItems(File const & inFile)
 {
     // Add file to current directory and create SampleItem
+    String fileName = inFile.getFileName();
+    File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
+    inFile.copyFileTo(newFile);
     return mSampleLibraryManager->createSampleItem(newFile);
 }
 
@@ -76,22 +79,18 @@ void SampleLibrary::addAllToSampleItems(File const & inFile)
     }
     else if (isSupportedAudioFileFormat(newFile.getFileExtension()))
     {
-        inFile.copyFileTo(newFile);
-        addToSampleItems(newFile);
+        addToSampleItems(inFile);
     }
 }
 
-void SampleLibrary::addToPalette(const File &inFile)
+void SampleLibrary::addToPalette(const File & inFile)
 {
     SampleItem* itemToAdd = mSampleLibraryManager->getSampleItemWithFileName(inFile.getFileName());
     
     // Create item if it doesn't yet exist
     if (itemToAdd == nullptr)
     {
-        String fileName = inFile.getFileName();
-        File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
-        inFile.copyFileTo(newFile);
-        itemToAdd = addToSampleItems(newFile);
+        itemToAdd = addToSampleItems(inFile);
     }
     
     // Check if item is already in palette

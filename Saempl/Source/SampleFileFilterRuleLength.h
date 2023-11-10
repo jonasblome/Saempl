@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    SampleFileFilterRuleLength.h
-    Created: 28 Oct 2023 5:24:42pm
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ SampleFileFilterRuleLength.h
+ Created: 28 Oct 2023 5:24:42pm
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -16,7 +16,8 @@
  \ref SampleFileFilterRuleBase implementation for the length property of \ref SampleItem.
  */
 class SampleFileFilterRuleLength
-:   public SampleFileFilterRuleBase
+:
+public SampleFileFilterRuleBase
 {
 public:
     /**

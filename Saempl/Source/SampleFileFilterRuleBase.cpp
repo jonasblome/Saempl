@@ -1,17 +1,18 @@
 /*
-  ==============================================================================
-
-    SampleFileFilterRuleBase.cpp
-    Created: 26 Oct 2023 10:50:12am
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ SampleFileFilterRuleBase.cpp
+ Created: 26 Oct 2023 10:50:12am
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #include "SampleFileFilterRuleBase.h"
 
 SampleFileFilterRuleBase::SampleFileFilterRuleBase(String inRulePropertyName)
-:   mRulePropertyName(inRulePropertyName)
+:
+mRulePropertyName(inRulePropertyName)
 {
     isActive = true;
 }

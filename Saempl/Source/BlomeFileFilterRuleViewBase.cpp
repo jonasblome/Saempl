@@ -12,7 +12,8 @@
 
 BlomeFileFilterRuleViewBase::BlomeFileFilterRuleViewBase(SampleFileFilterRuleBase& inFilterRule,
                                                          SampleLibrary& inSampleLibrary)
-:   linkedSampleLibrary(inSampleLibrary),
+:
+sampleLibrary(inSampleLibrary),
 linkedFilterRule(inFilterRule)
 {
     setComponents();
@@ -20,18 +21,18 @@ linkedFilterRule(inFilterRule)
 
 BlomeFileFilterRuleViewBase::~BlomeFileFilterRuleViewBase()
 {
-    
+    mCompareOperatorChooser->removeListener(this);
 }
 
-void BlomeFileFilterRuleViewBase::paint(Graphics &g)
+void BlomeFileFilterRuleViewBase::paint(Graphics& g)
 {
     // Paint rule title
     Rectangle<int> area = getLocalBounds()
-        .removeFromLeft(FILTER_RULE_TITLE_WIDTH + BUTTON_SIZE_SMALL)
-        .removeFromRight(FILTER_RULE_TITLE_WIDTH);
-    area.reduce(PANEL_MARGIN / 2.0, 0);
-    g.setFont(FONT_SMALL_BOLD);
-    g.setColour(COLOUR_ACCENT_LIGHT);
+        .removeFromLeft(style->FILTER_RULE_TITLE_WIDTH + style->BUTTON_SIZE_SMALL)
+        .removeFromRight(style->FILTER_RULE_TITLE_WIDTH);
+    area.reduce(style->PANEL_MARGIN / 2.0, 0);
+    g.setFont(style->FONT_SMALL_BOLD);
+    g.setColour(style->COLOUR_ACCENT_LIGHT);
     g.drawFittedText(getLinkedFilterRule().getRulePropertyName(),
                      area,
                      Justification::right,
@@ -47,7 +48,7 @@ void BlomeFileFilterRuleViewBase::setComponents()
     mActivateRuleButton->onClick = [this]
     {
         linkedFilterRule.setIsActive(mActivateRuleButton->getToggleState());
-        linkedSampleLibrary.refresh();
+        sampleLibrary.refresh();
     };
     addAndMakeVisible(*mActivateRuleButton);
     
@@ -68,13 +69,13 @@ void BlomeFileFilterRuleViewBase::setComponents()
                                  true,
                                  ImageCache::getFromMemory(BinaryData::delete_FILL0_wght400_GRAD0_opsz24_png,
                                                            BinaryData::delete_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                 BUTTON_IS_DEFAULT_ALPHA,
-                                 COLOUR_ACCENT_LIGHT,
+                                 style->BUTTON_IS_DEFAULT_ALPHA,
+                                 style->COLOUR_ACCENT_LIGHT,
                                  Image(),
-                                 BUTTON_IS_OVER_ALPHA,
+                                 style->BUTTON_IS_OVER_ALPHA,
                                  Colour(),
                                  Image(),
-                                 BUTTON_IS_DOWN_ALPHA,
+                                 style->BUTTON_IS_DOWN_ALPHA,
                                  Colour());
     mDeleteRuleButton->setTooltip("Delete this filter rule");
     mDeleteRuleButton->onClick = [this]
@@ -86,20 +87,20 @@ void BlomeFileFilterRuleViewBase::setComponents()
 
 void BlomeFileFilterRuleViewBase::resized()
 {
-    mActivateRuleButton->setBounds(FILTER_RULE_HEIGHT / 2.0
-                                   - BUTTON_SIZE_SMALL / 2.0
-                                   + PANEL_MARGIN / 2.0,
-                                   FILTER_RULE_HEIGHT / 2.0
-                                   - BUTTON_SIZE_SMALL / 2.0
-                                   + PANEL_MARGIN / 4.0,
-                                   BUTTON_SIZE_SMALL - PANEL_MARGIN,
-                                   BUTTON_SIZE_SMALL - PANEL_MARGIN);
+    mActivateRuleButton->setBounds(style->FILTER_RULE_HEIGHT / 2.0
+                                   - style->BUTTON_SIZE_SMALL / 2.0
+                                   + style->PANEL_MARGIN / 2.0,
+                                   style->FILTER_RULE_HEIGHT / 2.0
+                                   - style->BUTTON_SIZE_SMALL / 2.0
+                                   + style->PANEL_MARGIN / 4.0,
+                                   style->BUTTON_SIZE_SMALL - style->PANEL_MARGIN,
+                                   style->BUTTON_SIZE_SMALL - style->PANEL_MARGIN);
     
-    mCompareOperatorChooser->setBounds(BUTTON_SIZE_SMALL
-                                       + FILTER_RULE_TITLE_WIDTH,
+    mCompareOperatorChooser->setBounds(style->BUTTON_SIZE_SMALL
+                                       + style->FILTER_RULE_TITLE_WIDTH,
                                        0,
-                                       COMBO_BOX_WIDTH_MEDIUM
-                                       - PANEL_MARGIN / 4.0,
+                                       style->COMBO_BOX_WIDTH_MEDIUM
+                                       - style->PANEL_MARGIN / 4.0,
                                        getHeight());
     
     mDeleteRuleButton->setBounds(getWidth() - getHeight(),
@@ -111,26 +112,8 @@ void BlomeFileFilterRuleViewBase::resized()
 void BlomeFileFilterRuleViewBase::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
 {
     // Set rule to chosen compare operator
-    switch (comboBoxThatHasChanged->getSelectedItemIndex())
-    {
-        case 0:
-            linkedFilterRule.setCompareOperator(CompareOperators::LESS_THAN);
-            break;
-        case 1:
-            linkedFilterRule.setCompareOperator(CompareOperators::EQUAL_TO);
-            break;
-        case 2:
-            linkedFilterRule.setCompareOperator(CompareOperators::GREATER_THAN);
-            break;
-        case 3:
-            linkedFilterRule.setCompareOperator(CompareOperators::CONTAINS);
-            break;
-        default:
-            jassertfalse;
-            break;
-    }
-    
-    linkedSampleLibrary.refresh();
+    linkedFilterRule.setCompareOperator(static_cast<CompareOperators>(comboBoxThatHasChanged->getSelectedItemIndex()));
+    sampleLibrary.refresh();
 }
 
 SampleFileFilterRuleBase& BlomeFileFilterRuleViewBase::getLinkedFilterRule()

@@ -11,7 +11,8 @@
 #include "SampleLibraryManager.h"
 
 SampleLibraryManager::SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems, OwnedArray<SampleItem>& inPaletteSampleItems)
-:   ThreadWithProgressWindow("Synching sample library", true, false),
+:
+ThreadWithProgressWindow("Synching sample library", true, false),
 allSampleItems(inAllSampleItems),
 paletteSampleItems(inPaletteSampleItems)
 {
@@ -75,14 +76,13 @@ void SampleLibraryManager::synchWithLibraryDirectory()
 
 void SampleLibraryManager::run()
 {
-    
     // Go through all files in directory, check if a corresponding sample item
     // already exists in the sample item list, if not add it
     Array<File> allSampleFiles = libraryDirectory.findChildFiles(File::findFiles,
                                                                  true,
                                                                  SUPPORTED_AUDIO_FORMATS_WILDCARD);
-    int itemsToProcess = allSampleFiles.size() + allSampleItems.size();
-    int processedItems = 0;
+    int numItemsToProcess = allSampleFiles.size() + allSampleItems.size();
+    int numProcessedItems = 0;
     setProgress(0.0);
     
     // Go through all current sample items, check if corresponding audio file still exists
@@ -96,8 +96,8 @@ void SampleLibraryManager::run()
             addedFilePaths.removeString(sampleItem->getFilePath());
         }
         
-        processedItems++;
-        setProgress(processedItems / (double) itemsToProcess);
+        numProcessedItems++;
+        setProgress(numProcessedItems / (double) numItemsToProcess);
     }
     
     // All files have already been loaded
@@ -114,8 +114,8 @@ void SampleLibraryManager::run()
             createSampleItem(sampleFile);
         }
         
-        processedItems++;
-        setProgress(processedItems / (double) itemsToProcess);
+        numProcessedItems++;
+        setProgress(numProcessedItems / (double) numItemsToProcess);
     }
 }
 
@@ -133,7 +133,7 @@ void SampleLibraryManager::loadSampleLibrary(File& inLibraryDirectory)
                             + libraryDirectory.getFileNameWithoutExtension()
                             + SAMPLE_LIBRARY_FILE_EXTENSION);
     
-    // Check if sample library file (.bslf) exists
+    // Check if sample library file exists
     if (libraryFile.exists())
     {
         // Get data from library file
@@ -150,16 +150,18 @@ void SampleLibraryManager::loadSampleLibrary(File& inLibraryDirectory)
                 // Create new sample item
                 SampleItem* sampleItem = allSampleItems.add(new SampleItem());
                 String filePath = sampleItemXml->getStringAttribute("FilePath");
-                addedFilePaths.add(filePath);
                 sampleItem->setFilePath(filePath);
+                addedFilePaths.add(filePath);
+                
+                // Adding properties to item
                 XmlElement* samplePropertiesXml = sampleItemXml->getChildByName("SampleProperties");
                 
-                // Add title property to item
+                // Adding title property to item
                 XmlElement* samplePropertyXml = samplePropertiesXml->getChildByName("Title");
                 String title = samplePropertyXml->getStringAttribute("PropertyValue");
                 sampleItem->setTitle(title);
                 
-                // Add length property to item
+                // Adding length property to item
                 samplePropertyXml = samplePropertiesXml->getChildByName("Length");
                 double length = samplePropertyXml->getDoubleAttribute("PropertyValue");
                 sampleItem->setLength(length);
@@ -172,18 +174,18 @@ void SampleLibraryManager::loadSampleLibrary(File& inLibraryDirectory)
 
 String SampleLibraryManager::getLastOpenedDirectory()
 {
+    String lastOpenedDirectoryPath = mDefaultLibraryDirectoryPath;
+    
     File saemplDataFile = File(mSaemplDataFilePath);
     
     if (!saemplDataFile.exists())
     {
-        return mDefaultLibraryDirectoryPath;
+        return lastOpenedDirectoryPath;
     }
     
     // Get data from library file
     XmlElement saemplDataXml = loadFileAsXml(saemplDataFile);
     XmlElement* saemplDataXmlPointer = &saemplDataXml;
-    
-    String lastOpenedDirectoryPath = "";
     
     if (saemplDataXmlPointer)
     {
