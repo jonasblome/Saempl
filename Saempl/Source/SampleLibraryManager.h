@@ -75,7 +75,19 @@ public:
      
      @returns the sample item with that file path.
      */
-    SampleItem* getSampleItemWithFileName(String const & inFilePath);
+    SampleItem* getSampleItemWithFilePath(String const & inFilePath);
+    /**
+     @param inFilePath the file path to check.
+     
+     @returns whether a file with the given file path has already been added to the library.
+     */
+    bool fileHasBeenAdded(String const & inFilePath);
+    /**
+     Analyses all analysis properties of the given sample file.
+     
+     @param inSampleItem the sample item to write the property values to.
+     @param inFile the sample file to analyse.
+     */
     void analyseSampleItem(SampleItem& inSampleItem, File const & inFile);
     
 private:

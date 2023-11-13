@@ -88,7 +88,7 @@ void BlomeTableViewBase::paintCell(Graphics& g,
                    height);
         
         // Draw cell text
-        g.setColour(style->COLOUR_ACCENT_LIGHT);
+        g.setColour(style->COLOUR_ACCENT_DARK);
         g.setFont(style->FONT_SMALL_BOLD);
         g.drawText(getCellText(rowSampleItem, getHeader().getColumnName(columnId)),
                    2,

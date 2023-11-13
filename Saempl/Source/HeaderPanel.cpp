@@ -35,8 +35,9 @@ void HeaderPanel::paint(Graphics& g)
                            .withTrimmedTop(style->PANEL_MARGIN / 4.0),
                            style->CORNER_SIZE_MEDIUM);
     
+    // Draw filter on/off button line
     g.setColour(style->COLOUR_ACCENT_DARK);
-    g.fillRoundedRectangle(225, getHeight() / 2.0 - 1, 10, 2, 1.0);
+    g.fillRoundedRectangle(263, getHeight() / 2.0 - 1, 10, 2, 1.0);
     
     // Draw logo text
     int const logoWidth = 220;
@@ -106,49 +107,49 @@ void HeaderPanel::setPanelComponents()
     x += buttonWidth + style->PANEL_MARGIN * 1.5 + groupDistance;
     
     // Add toggle for library panel
-    mToggleLibraryPanelButton = std::make_unique<BlomeImageButton>("Toggle SampleLibraryPanel", false);
-    mToggleLibraryPanelButton->setImages(false,
-                                         true,
-                                         true,
-                                         ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
-                                                                   BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                         currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL
-                                         ? style->BUTTON_IS_DEFAULT_ALPHA
-                                         : style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
-                                         style->COLOUR_HEADER_BUTTONS,
-                                         Image(),
-                                         currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL
-                                         ? style->BUTTON_IS_OVER_ALPHA
-                                         : style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
-                                         style->COLOUR_HEADER_BUTTONS,
-                                         Image(),
-                                         currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL
-                                         ? style->BUTTON_IS_DOWN_ALPHA
-                                         : style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
-                                         style->COLOUR_HEADER_BUTTONS);
-    mToggleLibraryPanelButton->setBounds(x,
-                                         style->PANEL_MARGIN,
-                                         buttonWidth,
-                                         buttonWidth);
-    mToggleLibraryPanelButton->setTooltip("Folder View - Show the folder structure of your library directory");
-    mToggleLibraryPanelButton->onClick = [this]
+    mToggleSampleLibraryPanelButton = std::make_unique<BlomeImageButton>("Toggle SampleLibraryPanel", false);
+    mToggleSampleLibraryPanelButton->setImages(false,
+                                               true,
+                                               true,
+                                               ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
+                                                                         BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                               currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL
+                                               ? style->BUTTON_IS_DEFAULT_ALPHA
+                                               : style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                               style->COLOUR_HEADER_BUTTONS,
+                                               Image(),
+                                               currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL
+                                               ? style->BUTTON_IS_OVER_ALPHA
+                                               : style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                               style->COLOUR_HEADER_BUTTONS,
+                                               Image(),
+                                               currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL
+                                               ? style->BUTTON_IS_DOWN_ALPHA
+                                               : style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                               style->COLOUR_HEADER_BUTTONS);
+    mToggleSampleLibraryPanelButton->setBounds(x,
+                                               style->PANEL_MARGIN,
+                                               buttonWidth,
+                                               buttonWidth);
+    mToggleSampleLibraryPanelButton->setTooltip("Folder View - Show the folder structure of your library directory");
+    mToggleSampleLibraryPanelButton->onClick = [this]
     {
-        if (currentProcessor.getActiveNavigationPanel() == PANELS_TABLE_PANEL)
+        if (currentProcessor.getActiveNavigationPanel() != PANELS_LIBRARY_PANEL)
         {
             linkedCenterPanel.setActiveNavigationPanel(PANELS_LIBRARY_PANEL);
-            mToggleLibraryPanelButton->setImages(false,
-                                                 true,
-                                                 true,
-                                                 ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
-                                                                           BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                                 style->BUTTON_IS_DEFAULT_ALPHA,
-                                                 style->COLOUR_HEADER_BUTTONS,
-                                                 Image(),
-                                                 style->BUTTON_IS_OVER_ALPHA,
-                                                 style->COLOUR_HEADER_BUTTONS,
-                                                 Image(),
-                                                 style->BUTTON_IS_DOWN_ALPHA,
-                                                 style->COLOUR_HEADER_BUTTONS);
+            mToggleSampleLibraryPanelButton->setImages(false,
+                                                       true,
+                                                       true,
+                                                       ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
+                                                                                 BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                                       style->BUTTON_IS_DEFAULT_ALPHA,
+                                                       style->COLOUR_HEADER_BUTTONS,
+                                                       Image(),
+                                                       style->BUTTON_IS_OVER_ALPHA,
+                                                       style->COLOUR_HEADER_BUTTONS,
+                                                       Image(),
+                                                       style->BUTTON_IS_DOWN_ALPHA,
+                                                       style->COLOUR_HEADER_BUTTONS);
             mToggleSampleTablePanelButton->setImages(false,
                                                      true,
                                                      true,
@@ -162,10 +163,23 @@ void HeaderPanel::setPanelComponents()
                                                      Image(),
                                                      style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
                                                      style->COLOUR_HEADER_BUTTONS);
+            mToggleSampleGridPanelButton->setImages(false,
+                                                    true,
+                                                    true,
+                                                    ImageCache::getFromMemory(BinaryData::grid_view_FILL0_wght400_GRAD0_opsz24_png,
+                                                                              BinaryData::grid_view_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                                    style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                                    style->COLOUR_HEADER_BUTTONS,
+                                                    Image(),
+                                                    style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                                    style->COLOUR_HEADER_BUTTONS,
+                                                    Image(),
+                                                    style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                                    style->COLOUR_HEADER_BUTTONS);
         }
     };
-    addAndMakeVisible(*mToggleLibraryPanelButton);
-    x += buttonWidth + style->PANEL_MARGIN / 2.0;
+    addAndMakeVisible(*mToggleSampleLibraryPanelButton);
+    x += buttonWidth + style->PANEL_MARGIN * 0.5;
     
     // Add toggle for sample table panel
     mToggleSampleTablePanelButton = std::make_unique<BlomeImageButton>("Toggle SampleTablePanel", false);
@@ -195,22 +209,22 @@ void HeaderPanel::setPanelComponents()
     mToggleSampleTablePanelButton->setTooltip("Table View - Show a table with all samples in your library");
     mToggleSampleTablePanelButton->onClick = [this]
     {
-        if (currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL)
+        if (currentProcessor.getActiveNavigationPanel() != PANELS_TABLE_PANEL)
         {
             linkedCenterPanel.setActiveNavigationPanel(PANELS_TABLE_PANEL);
-            mToggleLibraryPanelButton->setImages(false,
-                                                 true,
-                                                 true,
-                                                 ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
-                                                                           BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                                 style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
-                                                 style->COLOUR_HEADER_BUTTONS,
-                                                 Image(),
-                                                 style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
-                                                 style->COLOUR_HEADER_BUTTONS,
-                                                 Image(),
-                                                 style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
-                                                 style->COLOUR_HEADER_BUTTONS);
+            mToggleSampleLibraryPanelButton->setImages(false,
+                                                       true,
+                                                       true,
+                                                       ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
+                                                                                 BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                                       style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                                       style->COLOUR_HEADER_BUTTONS,
+                                                       Image(),
+                                                       style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                                       style->COLOUR_HEADER_BUTTONS,
+                                                       Image(),
+                                                       style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                                       style->COLOUR_HEADER_BUTTONS);
             mToggleSampleTablePanelButton->setImages(false,
                                                      true,
                                                      true,
@@ -224,9 +238,97 @@ void HeaderPanel::setPanelComponents()
                                                      Image(),
                                                      style->BUTTON_IS_DOWN_ALPHA,
                                                      style->COLOUR_HEADER_BUTTONS);
+            mToggleSampleGridPanelButton->setImages(false,
+                                                    true,
+                                                    true,
+                                                    ImageCache::getFromMemory(BinaryData::grid_view_FILL0_wght400_GRAD0_opsz24_png,
+                                                                              BinaryData::grid_view_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                                    style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                                    style->COLOUR_HEADER_BUTTONS,
+                                                    Image(),
+                                                    style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                                    style->COLOUR_HEADER_BUTTONS,
+                                                    Image(),
+                                                    style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                                    style->COLOUR_HEADER_BUTTONS);
         }
     };
     addAndMakeVisible(*mToggleSampleTablePanelButton);
+    x += buttonWidth + style->PANEL_MARGIN * 0.5;
+    
+    // Add toggle for sample table panel
+    mToggleSampleGridPanelButton = std::make_unique<BlomeImageButton>("Toggle SampleTablePanel", false);
+    mToggleSampleGridPanelButton->setImages(false,
+                                            true,
+                                            true,
+                                            ImageCache::getFromMemory(BinaryData::grid_view_FILL0_wght400_GRAD0_opsz24_png,
+                                                                      BinaryData::grid_view_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                            currentProcessor.getActiveNavigationPanel() == PANELS_GRID_PANEL
+                                            ? style->BUTTON_IS_DEFAULT_ALPHA
+                                            : style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                            style->COLOUR_HEADER_BUTTONS,
+                                            Image(),
+                                            currentProcessor.getActiveNavigationPanel() == PANELS_GRID_PANEL
+                                            ? style->BUTTON_IS_OVER_ALPHA
+                                            : style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                            style->COLOUR_HEADER_BUTTONS,
+                                            Image(),
+                                            currentProcessor.getActiveNavigationPanel() == PANELS_GRID_PANEL
+                                            ? style->BUTTON_IS_DOWN_ALPHA
+                                            : style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                            style->COLOUR_HEADER_BUTTONS);
+    mToggleSampleGridPanelButton->setBounds(x,
+                                            style->PANEL_MARGIN,
+                                            buttonWidth,
+                                            buttonWidth);
+    mToggleSampleGridPanelButton->setTooltip("Table View - Show a table with all samples in your library");
+    mToggleSampleGridPanelButton->onClick = [this]
+    {
+        if (currentProcessor.getActiveNavigationPanel() != PANELS_GRID_PANEL)
+        {
+            linkedCenterPanel.setActiveNavigationPanel(PANELS_GRID_PANEL);
+            mToggleSampleLibraryPanelButton->setImages(false,
+                                                       true,
+                                                       true,
+                                                       ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
+                                                                                 BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                                       style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                                       style->COLOUR_HEADER_BUTTONS,
+                                                       Image(),
+                                                       style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                                       style->COLOUR_HEADER_BUTTONS,
+                                                       Image(),
+                                                       style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                                       style->COLOUR_HEADER_BUTTONS);
+            mToggleSampleTablePanelButton->setImages(false,
+                                                     true,
+                                                     true,
+                                                     ImageCache::getFromMemory(BinaryData::table_rows_FILL0_wght400_GRAD0_opsz24_png,
+                                                                               BinaryData::table_rows_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                                     style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                                     style->COLOUR_HEADER_BUTTONS,
+                                                     Image(),
+                                                     style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                                     style->COLOUR_HEADER_BUTTONS,
+                                                     Image(),
+                                                     style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                                     style->COLOUR_HEADER_BUTTONS);
+            mToggleSampleGridPanelButton->setImages(false,
+                                                    true,
+                                                    true,
+                                                    ImageCache::getFromMemory(BinaryData::grid_view_FILL0_wght400_GRAD0_opsz24_png,
+                                                                              BinaryData::grid_view_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                                    style->BUTTON_IS_DEFAULT_ALPHA,
+                                                    style->COLOUR_HEADER_BUTTONS,
+                                                    Image(),
+                                                    style->BUTTON_IS_OVER_ALPHA,
+                                                    style->COLOUR_HEADER_BUTTONS,
+                                                    Image(),
+                                                    style->BUTTON_IS_DOWN_ALPHA,
+                                                    style->COLOUR_HEADER_BUTTONS);
+        }
+    };
+    addAndMakeVisible(*mToggleSampleGridPanelButton);
     x += buttonWidth + style->PANEL_MARGIN * 1.5 + groupDistance;
     
     // Add button for editing the file filter rules

@@ -13,6 +13,7 @@
 #include "PanelBase.h"
 #include "SampleLibraryPanel.h"
 #include "SampleTablePanel.h"
+#include "SampleGridPanel.h"
 #include "SampleItemPanel.h"
 
 /**
@@ -20,7 +21,7 @@
  
  Implements:
  \ref PanelBase
- Includes \ref SampleLibraryPanel, \ref SampleTablePanel and \ref SampleMapPanel.
+ Includes \ref SampleLibraryPanel, \ref SampleTablePanel and \ref SampleGridPanel.
  */
 class SampleNavigationPanel
 :
@@ -36,9 +37,9 @@ public:
     SampleNavigationPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~SampleNavigationPanel();
     /**
-     Toggles between showing the library panel, the table panel and the map panel.
+     Toggles between showing the library panel, the table panel and the grid panel.
      
-     @param inPanelType the type of the navigation panel (library, table or map).
+     @param inPanelType the type of the navigation panel (library, table or grid).
      */
     void setActiveNavigationPanel(NavigationPanelType& inPanelType);
     /**
@@ -50,6 +51,7 @@ private:
     SampleItemPanel& linkedSampleItemPanel;
     std::unique_ptr<SampleLibraryPanel> mSampleLibraryPanel;
     std::unique_ptr<SampleTablePanel> mSampleTablePanel;
+    std::unique_ptr<SampleGridPanel> mSampleGridPanel;
     BlomeStyling::Ptr style;
     
     void paint(Graphics& g) override;

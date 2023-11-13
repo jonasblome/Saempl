@@ -41,6 +41,11 @@ void SampleNavigationPanel::setPanelComponents()
     mSampleTablePanel->setTopLeftPosition(0, 0);
     addChildComponent(*mSampleTablePanel);
     
+    // Add sample table panel
+    mSampleGridPanel = std::make_unique<SampleGridPanel>(currentProcessor, linkedSampleItemPanel);
+    mSampleGridPanel->setTopLeftPosition(0, 0);
+    addChildComponent(*mSampleGridPanel);
+    
     // Set active panel
     setActiveNavigationPanel(currentProcessor.getActiveNavigationPanel());
 }
@@ -56,6 +61,11 @@ void SampleNavigationPanel::resizePanelComponents()
     {
         mSampleTablePanel->setBounds(0, 0, getWidth(), getHeight());
     }
+    
+    if (mSampleGridPanel != nullptr)
+    {
+        mSampleGridPanel->setBounds(0, 0, getWidth(), getHeight());
+    }
 }
 
 void SampleNavigationPanel::setActiveNavigationPanel(NavigationPanelType& inPanelType)
@@ -66,14 +76,23 @@ void SampleNavigationPanel::setActiveNavigationPanel(NavigationPanelType& inPane
     {
         case PANELS_LIBRARY_PANEL:
         {
-            mSampleTablePanel->setVisible(false);
             mSampleLibraryPanel->setVisible(true);
+            mSampleTablePanel->setVisible(false);
+            mSampleGridPanel->setVisible(false);
             break;
         }
         case PANELS_TABLE_PANEL:
         {
-            mSampleTablePanel->setVisible(true);
             mSampleLibraryPanel->setVisible(false);
+            mSampleTablePanel->setVisible(true);
+            mSampleGridPanel->setVisible(false);
+            break;
+        }
+        case PANELS_GRID_PANEL:
+        {
+            mSampleLibraryPanel->setVisible(false);
+            mSampleTablePanel->setVisible(false);
+            mSampleGridPanel->setVisible(true);
             break;
         }
         default:

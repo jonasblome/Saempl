@@ -77,7 +77,7 @@ struct BlomeStyling
     Colour const COLOUR_DARK_GRAY = Colour(40, 40, 40);
     
     Colour const COLOUR_BLACK = Colour(0, 0, 0);
-    Colour const COLOUR_BLACK_SUPERLIGHT_TRANSPARENT = Colour(COLOUR_BLACK).withAlpha(0.23f);
+    Colour const COLOUR_BLACK_SUPERLIGHT_TRANSPARENT = Colour(COLOUR_BLACK).withAlpha(0.20f);
     Colour const COLOUR_BLACK_LIGHT_TRANSPARENT = Colour(COLOUR_BLACK).withAlpha(0.35f);
     Colour const COLOUR_BLACK_MEDIUM_TRANSPARENT = Colour(COLOUR_BLACK).withAlpha(0.78f);
     Colour const COLOUR_BLACK_STRONG_TRANSPARENT = Colour(COLOUR_BLACK).withAlpha(0.95f);
@@ -89,11 +89,11 @@ struct BlomeStyling
     Colour const COLOUR_ACCENT_LIGHT = Colour(142, 158, 90); // 207, 191, 163 // 21, 149, 178 // 190, 215, 238
     Colour const COLOUR_ACCENT_LIGHT_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_LIGHT).withAlpha(0.99f);
     
-    Colour const COLOUR_ACCENT_MEDIUM = Colour(71, 88, 65); // 71, 24, 19 // 18, 44, 55 // 15, 71, 82
+    Colour const COLOUR_ACCENT_MEDIUM = Colour(80, 97, 74); // 71, 24, 19 // 18, 44, 55 // 15, 71, 82
     Colour const COLOUR_ACCENT_MEDIUM_MEDIUM_TRANSPARENT = Colour(COLOUR_ACCENT_MEDIUM).withAlpha(0.78f);
     Colour const COLOUR_ACCENT_MEDIUM_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_MEDIUM).withAlpha(0.99f);
     
-    Colour const COLOUR_ACCENT_DARK = Colour(48, 50, 41); // 33, 16, 15 // 15, 25, 31 // 19, 41, 47
+    Colour const COLOUR_ACCENT_DARK = Colour(41, 43, 34); // 33, 16, 15 // 15, 25, 31 // 19, 41, 47
     Colour const COLOUR_ACCENT_DARK_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_DARK).withAlpha(0.99f);
     
     Colour const COLOUR_HEADER_BUTTONS = COLOUR_ACCENT_DARK;

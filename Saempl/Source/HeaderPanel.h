@@ -43,8 +43,9 @@ private:
     std::unique_ptr<BlomeImageButton> mRefreshLibraryButton;
     std::unique_ptr<BlomeImageButton> mChooseLibraryFolderButton;
     std::unique_ptr<FileChooser> mFileChooser;
-    std::unique_ptr<BlomeImageButton> mToggleLibraryPanelButton;
+    std::unique_ptr<BlomeImageButton> mToggleSampleLibraryPanelButton;
     std::unique_ptr<BlomeImageButton> mToggleSampleTablePanelButton;
+    std::unique_ptr<BlomeImageButton> mToggleSampleGridPanelButton;
     std::unique_ptr<BlomeImageButton> mChangeFilterButton;
     std::unique_ptr<BlomeImageButton> mToggleFilterButton;
     std::unique_ptr<BlomeImageButton> mRandomSampleButton;

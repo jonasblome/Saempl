@@ -257,7 +257,7 @@ float AudioPreviewPanel::timeToX(double const time) const
         return 0;
     }
     
-    return (float) getWidth() * (float) ((time - visibleRange.getStart()) / visibleRange.getLength());
+    return (float) getWidth() * (float) ((time - visibleRange.getStart()) / visibleRange.getLength()) + style->PANEL_MARGIN * 0.5;
 }
 
 double AudioPreviewPanel::xToTime(float const x) const
@@ -298,14 +298,13 @@ void AudioPreviewPanel::updateCursorPosition()
 {
     mAudioPositionMarker->setVisible(sampleEditor.isPlaying() || isMouseButtonDown());
     mAudioPositionMarker->setRectangle(Rectangle<float>(timeToX(sampleEditor.getCurrentReadheadPosition())
-                                                       - 0.75f,
-                                                        style->SAMPLE_PREVIEW_TITLE_HEIGHT
-                                                       + style->PANEL_MARGIN / 2.0,
-                                                       1.5f,
-                                                       (float) (getHeight()
-                                                                - style->PANEL_MARGIN
-                                                                - style->SAMPLE_PREVIEW_TITLE_HEIGHT
-                                                                - mAudioPreviewScrollbar->getHeight())));
+                                                        - 0.75f,
+                                                        style->SAMPLE_PREVIEW_TITLE_HEIGHT,
+                                                        1.5f,
+                                                        (float) (getHeight()
+                                                                 - style->PANEL_MARGIN * 1.5
+                                                                 - style->SAMPLE_PREVIEW_TITLE_HEIGHT
+                                                                 - mAudioPreviewScrollbar->getHeight())));
 }
 
 void AudioPreviewPanel::showAudioResource()

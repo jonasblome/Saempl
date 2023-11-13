@@ -369,8 +369,7 @@ public:
     {
         Path p;
         p.addTriangle(0.0f, 0.0f, 1.0f, isOpen ? 0.0f : 0.5f, isOpen ? 0.5f : 0.0f, 1.0f);
-        
-        g.setColour(isMouseOver ? style->COLOUR_ACCENT_LIGHT.withAlpha(0.7f) : style->COLOUR_ACCENT_LIGHT);
+        g.setColour(isMouseOver ? style->COLOUR_ACCENT_DARK.withAlpha(0.7f) : style->COLOUR_ACCENT_DARK);
         g.fillPath(p, p.getTransformToScaleToFit(area.reduced(2, area.getHeight() / 3), true));
     }
     
@@ -398,7 +397,7 @@ public:
         
         int const x = 5;
         
-        g.setColour(style->COLOUR_ACCENT_LIGHT);
+        g.setColour(style->COLOUR_ACCENT_DARK);
         g.setFont(style->FONT_SMALL_BOLD);
         
         

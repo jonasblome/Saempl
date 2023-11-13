@@ -85,8 +85,10 @@ void SampleLibraryManager::run()
     int numProcessedItems = 0;
     setProgress(0.0);
     
-    // Go through all current sample items, check if corresponding audio file still exists
-    // and if not, delete sample item from all items and palette collection
+    // Go through all current sample items,
+    // check if corresponding audio file still exists
+    // and if not, delete sample item
+    // from all items and palette collection
     for (SampleItem* sampleItem : allSampleItems)
     {
         if (!File(sampleItem->getFilePath()).exists())
@@ -107,7 +109,9 @@ void SampleLibraryManager::run()
         return;
     }
     
-    for (File sampleFile : allSampleFiles)
+    // Go through all files in directory and add sample items
+    // for all that are not yet loaded into the library
+    for (File const & sampleFile : allSampleFiles)
     {
         if (!addedFilePaths.contains(sampleFile.getFullPathName()))
         {
@@ -140,12 +144,12 @@ void SampleLibraryManager::loadSampleLibrary(File& inLibraryDirectory)
         XmlElement libraryXml = loadFileAsXml(libraryFile);
         XmlElement* libraryXmlPointer = &libraryXml;
         
-        if(libraryXmlPointer)
+        if (libraryXmlPointer)
         {
             XmlElement* sampleItemsXml = libraryXmlPointer->getChildByName("SampleItems");
             
             // Go over all sample items
-            for (XmlElement* sampleItemXml : sampleItemsXml->getChildIterator())
+            for (XmlElement const * sampleItemXml : sampleItemsXml->getChildIterator())
             {
                 // Create new sample item
                 SampleItem* sampleItem = allSampleItems.add(new SampleItem());
@@ -234,17 +238,22 @@ SampleItem* SampleLibraryManager::createSampleItem(File const & inFile)
     return newItem;
 }
 
-SampleItem* SampleLibraryManager::getSampleItemWithFileName(String const & inFileName)
+SampleItem* SampleLibraryManager::getSampleItemWithFilePath(String const & inFileName)
 {
     for (SampleItem* sampleItem : allSampleItems)
     {
-        if (File(sampleItem->getFilePath()).getFileName().convertToPrecomposedUnicode().compare(inFileName.convertToPrecomposedUnicode()) == 0)
+        if (sampleItem->getFilePath().convertToPrecomposedUnicode().compare(inFileName.convertToPrecomposedUnicode()) == 0)
         {
             return sampleItem;
         }
     }
     
     return nullptr;
+}
+
+bool SampleLibraryManager::fileHasBeenAdded(String const & inFilePath)
+{
+    return addedFilePaths.contains(inFilePath);
 }
 
 void SampleLibraryManager::analyseSampleItem(SampleItem& inSampleItem, File const & inFile)

@@ -56,7 +56,7 @@ void SampleLibrary::addAllToSampleItems(File const & inFile)
     File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
     
     // Don't add files if they already exist in the current library
-    if (mSampleLibraryManager->getSampleItemWithFileName(newFile.getFileName()) != nullptr)
+    if (mSampleLibraryManager->fileHasBeenAdded(newFile.getFullPathName()))
     {
         return;
     }
@@ -85,7 +85,7 @@ void SampleLibrary::addAllToSampleItems(File const & inFile)
 
 void SampleLibrary::addToPalette(const File & inFile)
 {
-    SampleItem* itemToAdd = mSampleLibraryManager->getSampleItemWithFileName(inFile.getFileName());
+    SampleItem* itemToAdd = mSampleLibraryManager->getSampleItemWithFilePath(inFile.getFullPathName());
     
     // Create item if it doesn't yet exist
     if (itemToAdd == nullptr)
@@ -122,7 +122,7 @@ void SampleLibrary::removeSampleItem(String const & inFilePath, bool deletePerma
     File fileToDelete = File(inFilePath);
     
     // Delete sample item
-    SampleItem* itemToDelete = mSampleLibraryManager->getSampleItemWithFileName(fileToDelete.getFileName());
+    SampleItem* itemToDelete = mSampleLibraryManager->getSampleItemWithFilePath(fileToDelete.getFullPathName());
     removeFromPalette(*itemToDelete);
     mAllSampleItems.removeObject(itemToDelete);
     
@@ -244,6 +244,6 @@ void SampleLibrary::synchWithLibraryDirectory()
 void SampleLibrary::reanalyseSampleItem(File const & inFile)
 {
     // Delete sample item
-    SampleItem* itemToReanalyse = mSampleLibraryManager->getSampleItemWithFileName(inFile.getFileName());
+    SampleItem* itemToReanalyse = mSampleLibraryManager->getSampleItemWithFilePath(inFile.getFullPathName());
     mSampleLibraryManager->analyseSampleItem(*itemToReanalyse, inFile);
 }

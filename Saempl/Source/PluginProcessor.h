@@ -67,9 +67,9 @@ public:
      */
     NavigationPanelType& getActiveNavigationPanel();
     /**
-     Toggles between showing the library panel, the table panel and the map panel.
+     Toggles between showing the library panel, the table panel and the grid panel.
      
-     @param inPanelType the type of the navigation panel (library, table or map).
+     @param inPanelType the type of the navigation panel (library, table or grid).
      */
     void setActiveNavigationPanel(NavigationPanelType& inPanelType);
     /**
