@@ -111,6 +111,10 @@ String BlomeTableViewBase::getCellText(SampleItem* inSampleItem, String columnNa
     {
         return std::to_string(inSampleItem->getLength());
     }
+    else if (columnName == "Loudness")
+    {
+        return std::to_string(inSampleItem->getLoudness());
+    }
     else
     {
         return "unknown";

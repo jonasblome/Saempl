@@ -49,3 +49,13 @@ void SampleItem::setLength(double inLength)
 {
     mLength = inLength;
 }
+
+double SampleItem::getLoudness() const
+{
+    return mLoudness;
+}
+
+void SampleItem::setLoudness(double inLoudness)
+{
+    mLoudness = inLoudness;
+}

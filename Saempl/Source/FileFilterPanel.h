@@ -14,6 +14,7 @@
 #include "BlomeFileFilterRuleViewBase.h"
 #include "BlomeFileFilterRuleViewTitle.h"
 #include "BlomeFileFilterRuleViewLength.h"
+#include "BlomeFileFilterRuleViewLoudness.h"
 #include "NoiseOverlayPanel.h"
 
 /**

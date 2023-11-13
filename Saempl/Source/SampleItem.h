@@ -50,9 +50,20 @@ public:
      @param inLength the length to set.
      */
     void setLength(double inLength);
+    /**
+     @returns the samples loudness in dB.
+     */
+    double getLoudness() const;
+    /**
+     Sets the loudness of the sample item in dB.
+     
+     @param inLoudness the loudness to set.
+     */
+    void setLoudness(double inLoudness);
     
 private:
     String mFilePath;
     String mTitle;
     double mLength;
+    double mLoudness;
 };

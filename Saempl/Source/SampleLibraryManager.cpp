@@ -45,14 +45,12 @@ void SampleLibraryManager::updateSampleLibraryFile(File& inLibraryDirectory)
         XmlElement* samplePropertiesXml = new XmlElement("SampleProperties");
         
         // Adding length property
-        XmlElement* samplePropertyXml = new XmlElement(PROPERTY_NAMES[0]);
-        samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLength());
-        samplePropertiesXml->prependChildElement(samplePropertyXml);
-        
-        // Adding title property
-        samplePropertyXml = new XmlElement(PROPERTY_NAMES[1]);
-        samplePropertyXml->setAttribute("PropertyValue", sampleItem->getTitle());
-        samplePropertiesXml->prependChildElement(samplePropertyXml);
+        for (int p = 0; p < PROPERTY_NAMES.size(); p++)
+        {
+            XmlElement* samplePropertyXml = new XmlElement(PROPERTY_NAMES[p]);
+            samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLength());
+            samplePropertiesXml->prependChildElement(samplePropertyXml);
+        }
         
         sampleItemXml->prependChildElement(samplePropertiesXml);
         
@@ -169,6 +167,11 @@ void SampleLibraryManager::loadSampleLibrary(File& inLibraryDirectory)
                 samplePropertyXml = samplePropertiesXml->getChildByName("Length");
                 double length = samplePropertyXml->getDoubleAttribute("PropertyValue");
                 sampleItem->setLength(length);
+                
+                // Adding length property to item
+                samplePropertyXml = samplePropertiesXml->getChildByName("Loudness");
+                double loudness = samplePropertyXml->getDoubleAttribute("PropertyValue");
+                sampleItem->setLength(loudness);
             }
         }
     }
@@ -259,4 +262,5 @@ bool SampleLibraryManager::fileHasBeenAdded(String const & inFilePath)
 void SampleLibraryManager::analyseSampleItem(SampleItem& inSampleItem, File const & inFile)
 {
     inSampleItem.setLength(mSampleAnalyser->analyseSampleLength(inFile));
+    inSampleItem.setLoudness(mSampleAnalyser->analyseSampleLoudness(inFile));
 }

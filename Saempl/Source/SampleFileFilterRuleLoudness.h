@@ -1,32 +1,32 @@
 /*
- ==============================================================================
- 
- SampleFileFilterRuleLength.h
- Created: 28 Oct 2023 5:24:42pm
- Author:  Jonas Blome
- 
- ==============================================================================
- */
+  ==============================================================================
+
+    SampleFileFilterRuleLoudness.h
+    Created: 13 Nov 2023 7:56:17pm
+    Author:  Jonas Blome
+
+  ==============================================================================
+*/
 
 #pragma once
 
 #include "SampleFileFilterRuleBase.h"
 
 /**
- \ref SampleFileFilterRuleBase implementation for the length property of \ref SampleItem.
+ \ref SampleFileFilterRuleBase implementation for the loudness property of \ref SampleItem.
  */
-class SampleFileFilterRuleLength
+class SampleFileFilterRuleLoudness
 :
 public SampleFileFilterRuleBase
 {
 public:
     /**
-     The constructor of the length rule.
+     The constructor of the loudness rule.
      
      @param inRulePropertyName the rule's property name.
      */
-    SampleFileFilterRuleLength(String inRulePropertyName);
-    ~SampleFileFilterRuleLength();
+    SampleFileFilterRuleLoudness(String inRulePropertyName);
+    ~SampleFileFilterRuleLoudness();
     bool matches(SampleItem const & inSampleItem) override;
     /**
      @returns the compare value of the rule.

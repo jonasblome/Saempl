@@ -29,6 +29,11 @@ double SampleAnalyser::analyseSampleLength(File const & inFile)
     return length;
 }
 
+double SampleAnalyser::analyseSampleLoudness(const File &inFile)
+{
+    return 0.0;
+}
+
 void SampleAnalyser::loadAudioFileSource(File const & inFile)
 {
     mCurrentAudioFileSource.reset();

@@ -28,6 +28,14 @@ public:
      @returns the length of the audio file in seconds.
      */
     double analyseSampleLength(File const & inFile);
+    /**
+     Analyses the loudness of the given file in dB.
+     
+     @param inFile the file to analyse.
+     
+     @returns the loudness of the audio file in dB.
+     */
+    double analyseSampleLoudness(File const & inFile);
     
 private:
     std::unique_ptr<AudioFormatReaderSource> mCurrentAudioFileSource;
