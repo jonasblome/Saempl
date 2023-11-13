@@ -14,7 +14,7 @@ CenterPanel::CenterPanel(SaemplAudioProcessor& inProcessor)
 :
 PanelBase(inProcessor)
 {
-    setSize(style->CENTER_PANEL_WIDTH - style->PANEL_MARGIN / 2.0, style->CENTER_PANEL_HEIGHT - style->PANEL_MARGIN / 2.0);
+    setSize(style->CENTER_PANEL_WIDTH, style->CENTER_PANEL_HEIGHT);
     setPanelComponents();
 }
 
@@ -25,12 +25,15 @@ CenterPanel::~CenterPanel()
 
 void CenterPanel::paint(Graphics& g)
 {
+    // Draw sample item toggle area background
     g.setColour(style->COLOUR_ACCENT_MEDIUM);
     g.fillRoundedRectangle(getLocalBounds()
-                           .removeFromBottom(style->BUTTON_SIZE_SMALL + style->PANEL_MARGIN)
+                           .removeFromBottom(style->BUTTON_SIZE_SMALL + style->PANEL_MARGIN * 0.75)
                            .removeFromLeft(style->SAMPLE_NAVIGATION_PANEL_WIDTH)
-                           .reduced(0, style->PANEL_MARGIN / 2.0)
-                           .removeFromLeft(style->SAMPLE_NAVIGATION_PANEL_WIDTH - style->PANEL_MARGIN / 2.0)
+                           .withTrimmedLeft(style->PANEL_MARGIN * 0.5)
+                           .withTrimmedTop(style->PANEL_MARGIN * 0.25)
+                           .withTrimmedRight(style->PANEL_MARGIN * 0.25)
+                           .withTrimmedBottom(style->PANEL_MARGIN * 0.5)
                            .toFloat(),
                            style->CORNER_SIZE_MEDIUM);
 }
@@ -53,46 +56,39 @@ void CenterPanel::setPanelComponents()
     addAndMakeVisible(*mSamplePalettePanel);
     
     // Add toggle panel button
-    mToggleSampleItemPanelButton = std::make_unique<ToggleButton>("Toggle SampleItemPanel");
-    mToggleSampleItemPanelButton->setToggleState(true, NotificationType::dontSendNotification);
-    mToggleSampleItemPanelButton->setBounds(style->PANEL_MARGIN / 2.0,
+    mToggleSampleItemPanelButton = std::make_unique<ToggleButton>("ToggleSampleItemPanel");
+    mToggleSampleItemPanelButton->setBounds(style->PANEL_MARGIN,
                                             style->SAMPLE_NAVIGATION_PANEL_HEIGHT
                                             + style->SAMPLE_ITEM_PANEL_HEIGHT
-                                            + style->PANEL_MARGIN / 2.0,
+                                            + style->PANEL_MARGIN,
                                             style->BUTTON_SIZE_SMALL - style->PANEL_MARGIN,
                                             style->BUTTON_SIZE_SMALL - style->PANEL_MARGIN);
-    mToggleSampleItemPanelButton->setTooltip("Toggle visibility of audio preview");
-    mToggleSampleItemPanelButton->onClick = [this] { toggleSampleItemPanel(); };
+    mToggleSampleItemPanelButton->setTooltip("Toggle visibility of the audio player");
+    mToggleSampleItemPanelButton->onClick = [this] { setSampleItemPanelVisibility(mToggleSampleItemPanelButton->getToggleState()); };
+    mToggleSampleItemPanelButton->setToggleState(currentProcessor.getSampleItemPanelIsVisible(), NotificationType::dontSendNotification);
     addAndMakeVisible(*mToggleSampleItemPanelButton);
     
-    // Repaint panel
-    repaint();
+    // Set visibility of sample item panel
+    setSampleItemPanelVisibility(currentProcessor.getSampleItemPanelIsVisible());
 }
 
-/**
- Toggles the visibility of the SampleItemPanel
- */
-void CenterPanel::toggleSampleItemPanel()
+void CenterPanel::setSampleItemPanelVisibility(bool inShouldBeVisible)
 {
-    mSampleItemPanel->setVisible(!mSampleItemPanel->isVisible());
+    mSampleItemPanel->setVisible(inShouldBeVisible);
+    currentProcessor.setSampleItemIsVisible(inShouldBeVisible);
     
-    if (mSampleItemPanel->isVisible())
+    if (inShouldBeVisible)
     {
-        mSampleNavigationPanel->setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH 
-                                        - style->PANEL_MARGIN / 2.0,
-                                        style->SAMPLE_NAVIGATION_PANEL_HEIGHT
-                                        - style->PANEL_MARGIN / 2.0);
+        mSampleNavigationPanel->setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH,
+                                        style->SAMPLE_NAVIGATION_PANEL_HEIGHT);
     }
     else
     {
-        mSampleNavigationPanel->setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH
-                                        - style->PANEL_MARGIN / 2.0,
+        mSampleNavigationPanel->setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH,
                                         style->CENTER_PANEL_HEIGHT
                                         - style->BUTTON_SIZE_SMALL
-                                        - style->PANEL_MARGIN * 1.5);
+                                        - style->PANEL_MARGIN * 0.75);
     }
-    
-    mSampleNavigationPanel->repaint();
 }
 
 void CenterPanel::setActiveNavigationPanel(NavigationPanelType inPanelType)

@@ -21,15 +21,11 @@ AudioPlayer::AudioPlayer()
     mTransportSource = std::make_unique<AudioTransportSource>();
     mAudioDeviceManager = std::make_unique<AudioDeviceManager>();
     mAudioSourcePlayer = std::make_unique<AudioSourcePlayer>();
+    initialiseDefaultDevice();
     mFormatManager->registerBasicFormats();
-    RuntimePermissions::request(RuntimePermissions::recordAudio,
-                                [this] (bool granted)
-                                {
-        int numInputChannels = granted ? 2 : 0;
-        mAudioDeviceManager->initialise(numInputChannels, 2, nullptr, true, {}, nullptr);
-    });
     mAudioDeviceManager->addAudioCallback(&*mAudioSourcePlayer);
     mAudioSourcePlayer->setSource(&*mTransportSource);
+    startTimerHz(5);
 }
 
 AudioPlayer::~AudioPlayer()
@@ -38,6 +34,7 @@ AudioPlayer::~AudioPlayer()
     mAudioSourcePlayer->setSource(nullptr);
     mAudioDeviceManager->removeAudioCallback(&*mAudioSourcePlayer);
     mThread->stopThread(10);
+    stopTimer();
 }
 
 AudioFormatManager& AudioPlayer::getFormatManager()
@@ -127,4 +124,24 @@ void AudioPlayer::emptyTransport()
     mTransportSource->stop();
     mTransportSource->setSource(nullptr);
     mCurrentAudioFileSource.reset();
+}
+
+void AudioPlayer::timerCallback()
+{
+    int defaultDeviceIndex = mAudioDeviceManager->getCurrentDeviceTypeObject()->getDefaultDeviceIndex(false);
+    String defaultDeviceName = mAudioDeviceManager->getCurrentDeviceTypeObject()->getDeviceNames()[defaultDeviceIndex];
+    
+    if (defaultDeviceName != mAudioDeviceManager->getCurrentAudioDevice()->getName())
+    {
+        initialiseDefaultDevice();
+    }
+}
+
+void AudioPlayer::initialiseDefaultDevice()
+{
+    int numInputChannels = 0;
+    RuntimePermissions::request(RuntimePermissions::recordAudio,
+                                [&numInputChannels] (bool granted)
+                                { numInputChannels = granted ? 2 : 0; });
+    mAudioDeviceManager->initialise(numInputChannels, 2, nullptr, true, {}, nullptr);
 }

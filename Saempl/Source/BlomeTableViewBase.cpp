@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    BlomeTableView.cpp
-    Created: 26 Jun 2023 12:54:09am
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeTableView.cpp
+ Created: 26 Jun 2023 12:54:09am
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #include "BlomeTableViewBase.h"
 
@@ -32,6 +32,16 @@ BlomeTableViewBase::~BlomeTableViewBase()
     removeMouseListener(this);
 }
 
+void BlomeTableViewBase::paint(Graphics& g)
+{
+    drawDropShadow(g,
+                   Rectangle<int>(0, 0, getWidth(), 0),
+                   0,
+                   0,
+                   40,
+                   style);
+}
+
 // This is overloaded from TableListBoxModel, and must return the total number of rows in our table
 int BlomeTableViewBase::getNumRows()
 {
@@ -41,13 +51,16 @@ int BlomeTableViewBase::getNumRows()
 
 // This is overloaded from TableListBoxModel, and should fill in the background of the whole row
 void BlomeTableViewBase::paintRowBackground(Graphics& g,
-                                         int rowNumber,
-                                         int width,
-                                         int height,
-                                         bool rowIsSelected)
+                                            int rowNumber,
+                                            int width,
+                                            int height,
+                                            bool rowIsSelected)
 {
-    rowIsSelected ? g.setColour(style->COLOUR_ACCENT_DARK) : g.setColour(style->COLOUR_ACCENT_MEDIUM);
-    g.fillRoundedRectangle(Rectangle<float>(width, height), style->CORNER_SIZE_MEDIUM);
+    if (rowIsSelected)
+    {
+        g.setColour(style->COLOUR_ACCENT_DARK);
+        g.fillRoundedRectangle(Rectangle<float>(width, height), style->CORNER_SIZE_MEDIUM);
+    }
 }
 
 // This is overloaded from TableListBoxModel, and must paint any cells that aren't using custom
@@ -67,7 +80,7 @@ void BlomeTableViewBase::paintCell(Graphics& g,
     
     if (SampleItem* rowSampleItem = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(rowNumber))
     {
-        // Draw cell background
+        // Draw cell separators
         g.setColour(style->COLOUR_ACCENT_MEDIUM);
         g.fillRect(width - 1,
                    0,
@@ -109,7 +122,7 @@ String BlomeTableViewBase::getCellText(SampleItem* inSampleItem, String columnNa
 int BlomeTableViewBase::getColumnAutoSizeWidth(int columnId)
 {
     int widest = 32;
-
+    
     // Find the widest bit of text in this column..
     for (int r = getNumRows(); --r >= 0;)
     {
@@ -119,7 +132,7 @@ int BlomeTableViewBase::getColumnAutoSizeWidth(int columnId)
             widest = jmax(widest, style->FONT_SMALL_BOLD.getStringWidth(text));
         }
     }
-
+    
     return widest + 8;
 }
 
@@ -200,4 +213,17 @@ void BlomeTableViewBase::sortOrderChanged(int newSortColumnId, bool isForwards)
         sampleLibrary.getSampleItems(mSampleItemCollectionType).sort(*mComparator);
         updateContent();
     }
+}
+
+void BlomeTableViewBase::reanalyseSamples()
+{
+    // Reanalyse all selected files
+    for (int r = getNumSelectedRows() - 1; r >= 0; r--)
+    {
+        sampleLibrary.reanalyseSampleItem(sampleLibrary
+                                          .getSampleItems(mSampleItemCollectionType)
+                                          .getUnchecked(getSelectedRow(r))->getFilePath());
+    }
+    
+    sampleLibrary.refresh();
 }

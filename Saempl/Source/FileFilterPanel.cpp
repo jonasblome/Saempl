@@ -150,13 +150,13 @@ void FileFilterPanel::setPanelComponents()
                                     ImageCache::getFromMemory(BinaryData::add_FILL0_wght400_GRAD0_opsz24_png,
                                                               BinaryData::add_FILL0_wght400_GRAD0_opsz24_pngSize),
                                     style->BUTTON_IS_DEFAULT_ALPHA,
-                                    style->COLOUR_ACCENT_LIGHT,
+                                    style->COLOUR_SYMBOL_BUTTON,
                                     Image(),
                                     style->BUTTON_IS_OVER_ALPHA,
-                                    style->COLOUR_ACCENT_LIGHT,
+                                    style->COLOUR_SYMBOL_BUTTON,
                                     Image(),
                                     style->BUTTON_IS_DOWN_ALPHA,
-                                    style->COLOUR_ACCENT_LIGHT);
+                                    style->COLOUR_SYMBOL_BUTTON);
     mAddFilterRuleButton->setBounds(style->COMBO_BOX_WIDTH_MEDIUM + style->PANEL_MARGIN * 0.75,
                                     style->PANEL_MARGIN / 2.0,
                                     style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN / 2.0,

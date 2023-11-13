@@ -26,6 +26,7 @@ SaemplAudioProcessor::SaemplAudioProcessor()
     mActiveNavigationPanelType = PANELS_LIBRARY_PANEL;
     mSortingColumnTitle = "Title";
     mSortingDirection = true;
+    mSampleItemPanelIsVisible = true;
 }
 
 SaemplAudioProcessor::~SaemplAudioProcessor()
@@ -184,14 +185,11 @@ void SaemplAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
     XmlElement stateInfo("Blome_StateInfo");
     XmlElement* stateInfoBody = new XmlElement("Blome_StateInfoBody");
     
-    // Store navigation panel state
+    // Storing states
     stateInfoBody->setAttribute("ActiveNavigationPanel", NAVIGATION_PANEL_TYPE_TO_STRING[mActiveNavigationPanelType]);
-    
-    // Store sorting column title state
     stateInfoBody->setAttribute("SortingColumnTitle", mSortingColumnTitle);
-    
-    // Store sorting direction state
     stateInfoBody->setAttribute("SortingDirection", mSortingDirection);
+    stateInfoBody->setAttribute("SampleItemPanelIsVisible", mSampleItemPanelIsVisible);
     
     stateInfo.addChildElement(stateInfoBody);
     copyXmlToBinary(stateInfo, destData);
@@ -204,13 +202,14 @@ void SaemplAudioProcessor::setStateInformation (const void* data, int sizeInByte
     juce::XmlElement xmlState = *getXmlFromBinary(data, sizeInBytes);
     juce::XmlElement* xmlStatePtr = &xmlState;
     
-    if(xmlStatePtr)
+    if (xmlStatePtr)
     {
         for (auto* child: xmlStatePtr->getChildIterator())
         {
             mActiveNavigationPanelType = STRING_TO_NAVIGATION_PANEL_TYPE[child->getStringAttribute("ActiveNavigationPanel")];
             mSortingColumnTitle = child->getStringAttribute("SortingColumnTitle");
             mSortingDirection = child->getBoolAttribute("SortingDirection");
+            mSampleItemPanelIsVisible = child->getBoolAttribute("SampleItemPanelIsVisible");
         }
     }
     else
@@ -260,4 +259,14 @@ bool SaemplAudioProcessor::getSortingDirection()
 void SaemplAudioProcessor::setSortingDirection(bool inDirection)
 {
     mSortingDirection = inDirection;
+}
+
+bool SaemplAudioProcessor::getSampleItemPanelIsVisible()
+{
+    return mSampleItemPanelIsVisible;
+}
+
+void SaemplAudioProcessor::setSampleItemIsVisible(bool inPanelIsVisible)
+{
+    mSampleItemPanelIsVisible = inPanelIsVisible;
 }

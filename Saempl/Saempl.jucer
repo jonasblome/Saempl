@@ -70,12 +70,12 @@
             file="Source/BlomeTableViewPalette.h"/>
     </GROUP>
     <GROUP id="{6D66FD26-8F3F-0894-5730-966778E462FE}" name="BlomePanels">
-      <FILE id="lThgmA" name="PanelBase.cpp" compile="1" resource="0" file="Source/PanelBase.cpp"/>
-      <FILE id="EsamqD" name="PanelBase.h" compile="0" resource="0" file="Source/PanelBase.h"/>
       <FILE id="AN94IY" name="NoiseOverlayPanel.cpp" compile="1" resource="0"
             file="Source/NoiseOverlayPanel.cpp"/>
       <FILE id="bTcNiy" name="NoiseOverlayPanel.h" compile="0" resource="0"
             file="Source/NoiseOverlayPanel.h"/>
+      <FILE id="lThgmA" name="PanelBase.cpp" compile="1" resource="0" file="Source/PanelBase.cpp"/>
+      <FILE id="EsamqD" name="PanelBase.h" compile="0" resource="0" file="Source/PanelBase.h"/>
       <FILE id="OyVv0E" name="MainPanel.cpp" compile="1" resource="0" file="Source/MainPanel.cpp"/>
       <FILE id="NTzZV2" name="MainPanel.h" compile="0" resource="0" file="Source/MainPanel.h"/>
       <FILE id="dcV6X9" name="HeaderPanel.cpp" compile="1" resource="0" file="Source/HeaderPanel.cpp"/>

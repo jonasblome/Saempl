@@ -16,8 +16,8 @@ PanelBase(inProcessor),
 sampleLibrary(currentProcessor.getSampleLibrary()),
 linkedSampleItemPanel(inSampleItemPanel)
 {
-    setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH - style->PANEL_MARGIN / 2.0,
-            style->SAMPLE_NAVIGATION_PANEL_HEIGHT - style->PANEL_MARGIN / 2.0);
+    setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH,
+            style->SAMPLE_NAVIGATION_PANEL_HEIGHT);
     setPanelComponents();
 }
 
@@ -30,22 +30,37 @@ void SampleTablePanel::paint(Graphics& g)
 {
     // Set background
     g.setColour(style->COLOUR_ACCENT_MEDIUM);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), style->CORNER_SIZE_MEDIUM);
+    g.fillRoundedRectangle(getLocalBounds()
+                           .toFloat()
+                           .withTrimmedLeft(style->PANEL_MARGIN * 0.5)
+                           .withTrimmedTop(style->PANEL_MARGIN * 0.25)
+                           .withTrimmedRight(style->PANEL_MARGIN * 0.25)
+                           .withTrimmedBottom(style->PANEL_MARGIN * 0.25),
+                           style->CORNER_SIZE_MEDIUM);
     
     // Draw Title
+    drawDropShadow(g,
+                   Rectangle<int>(0, 0, getWidth(), 20),
+                   0,
+                   0,
+                   70,
+                   style);
     g.setColour(style->COLOUR_ACCENT_DARK);
-    g.fillRoundedRectangle(getLocalBounds().
-                           removeFromTop(style->PANEL_TITLE_HEIGHT).
-                           reduced(style->PANEL_MARGIN / 2.0).
-                           toFloat(),
+    g.fillRoundedRectangle(getLocalBounds()
+                           .removeFromTop(style->PANEL_TITLE_HEIGHT)
+                           .withTrimmedLeft(style->PANEL_MARGIN)
+                           .withTrimmedTop(style->PANEL_MARGIN * 0.75)
+                           .withTrimmedRight(style->PANEL_MARGIN * 0.75)
+                           .withTrimmedBottom(style->PANEL_MARGIN * 0.25)
+                           .toFloat(),
                            style->CORNER_SIZE_MEDIUM);
     g.setFont(style->FONT_MEDIUM_SMALL_BOLD);
-    g.setColour(style->COLOUR_ACCENT_LIGHT);
-    g.drawFittedText("All Samples - " + sampleLibrary.getCurrentLibraryPath(),
-                     style->PANEL_MARGIN / 2.0,
-                     style->PANEL_MARGIN / 2.0,
-                     getWidth() - style->PANEL_MARGIN,
-                     style->PANEL_TITLE_HEIGHT - style->PANEL_MARGIN,
+    g.setColour(style->COLOUR_PANEL_TITLE_FONT);
+    g.drawFittedText("Table View - " + sampleLibrary.getCurrentLibraryPath(),
+                     0,
+                     0,
+                     getWidth(),
+                     style->PANEL_TITLE_HEIGHT,
                      Justification::centred,
                      1);
     
@@ -56,10 +71,7 @@ void SampleTablePanel::setPanelComponents()
 {
     // Set sample table component
     mSampleTable = std::make_unique<BlomeTableViewNavigation>(currentProcessor, linkedSampleItemPanel);
-    mSampleTable->setBounds(style->PANEL_MARGIN / 2.0,
-                            style->PANEL_TITLE_HEIGHT,
-                            getWidth() - style->PANEL_MARGIN,
-                            getHeight() - style->PANEL_TITLE_HEIGHT - style->PANEL_MARGIN / 2.0);
+    resizePanelComponents();
     addAndMakeVisible(*mSampleTable);
 }
 
@@ -67,10 +79,10 @@ void SampleTablePanel::resizePanelComponents()
 {
     if (mSampleTable != nullptr)
     {
-        mSampleTable->setBounds(style->PANEL_MARGIN / 2.0,
-                                style->PANEL_TITLE_HEIGHT,
-                                getWidth() - style->PANEL_MARGIN,
-                                getHeight() - style->PANEL_TITLE_HEIGHT - style->PANEL_MARGIN / 2.0);
+        mSampleTable->setBounds(style->PANEL_MARGIN,
+                                style->PANEL_TITLE_HEIGHT + style->PANEL_MARGIN * 0.25,
+                                getWidth() - style->PANEL_MARGIN * 1.75,
+                                getHeight() - style->PANEL_TITLE_HEIGHT - style->PANEL_MARGIN);
     }
 }
 

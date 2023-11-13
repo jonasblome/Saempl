@@ -43,9 +43,6 @@ void SampleNavigationPanel::setPanelComponents()
     
     // Set active panel
     setActiveNavigationPanel(currentProcessor.getActiveNavigationPanel());
-    
-    // Repaint panel
-    repaint();
 }
 
 void SampleNavigationPanel::resizePanelComponents()
@@ -71,14 +68,12 @@ void SampleNavigationPanel::setActiveNavigationPanel(NavigationPanelType& inPane
         {
             mSampleTablePanel->setVisible(false);
             mSampleLibraryPanel->setVisible(true);
-            mSampleLibraryPanel->repaint();
             break;
         }
         case PANELS_TABLE_PANEL:
         {
             mSampleTablePanel->setVisible(true);
             mSampleLibraryPanel->setVisible(false);
-            mSampleTablePanel->repaint();
             break;
         }
         default:

@@ -111,6 +111,10 @@ public:
      and adds sample items for each new detected file.
      */
     void synchWithLibraryDirectory();
+    /**
+     Reanalyses the sample and sets the properties to the newly analysed values.
+     */
+    void reanalyseSampleItem(File const & inFile);
     
 private:
     std::unique_ptr<TimeSliceThread> mThread;

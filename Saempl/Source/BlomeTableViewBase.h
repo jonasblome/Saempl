@@ -52,6 +52,7 @@ protected:
     SampleItemCollectionScope mSampleItemCollectionType;
     BlomeStyling::Ptr style;
     
+    void paint(Graphics& g) override;
     void paintRowBackground(Graphics& g,
                             int rowNumber,
                             int width,
@@ -82,4 +83,8 @@ protected:
     bool isInterestedInFileDrag(StringArray const & files) override;
     void returnKeyPressed (int lastRowSelected) override;
     void sortOrderChanged(int newSortColumnId, bool isForwards) override;
+    /**
+     Reanalyses all selected samples.
+     */
+    void reanalyseSamples();
 };

@@ -27,7 +27,7 @@ public:
      
      @returns the length of the audio file in seconds.
      */
-    double analyseSampleLength(File inFile);
+    double analyseSampleLength(File const & inFile);
     
 private:
     std::unique_ptr<AudioFormatReaderSource> mCurrentAudioFileSource;
@@ -38,5 +38,5 @@ private:
      
      @param inFile the file to load into the audio file source.
      */
-    void loadAudioFileSource(File inFile);
+    void loadAudioFileSource(File const & inFile);
 };

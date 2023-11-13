@@ -11,6 +11,7 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include "BlomeStyleDefinitions.h"
 
 #if JUCE_WINDOWS
 static String const DIRECTORY_SEPARATOR = "\\";
@@ -81,6 +82,20 @@ inline bool isSupportedAudioFileFormat(String inExtension)
     }
     
     return false;
+}
+
+inline void drawDropShadow(Graphics& g,
+                           Rectangle<int> dropShadowArea,
+                           int offsetX,
+                           int offsetY,
+                           int radius,
+                           BlomeStyling::Ptr const & style)
+{
+    Image dropShadowImage(Image::ARGB, g.getClipBounds().getWidth(), g.getClipBounds().getHeight(), true);
+    Graphics g2(dropShadowImage);
+    DropShadow(style->COLOUR_BLACK_SUPERLIGHT_TRANSPARENT, radius, { offsetX, offsetY }).drawForRectangle(g2, dropShadowArea);
+    g.setColour(style->COLOUR_BLACK);
+    g.drawImageAt(dropShadowImage, 0, 0);
 }
 
 inline void showFileDeletedWarning()

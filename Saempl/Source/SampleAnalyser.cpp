@@ -21,7 +21,7 @@ SampleAnalyser::~SampleAnalyser()
     
 }
 
-double SampleAnalyser::analyseSampleLength(File inFile)
+double SampleAnalyser::analyseSampleLength(File const & inFile)
 {
     loadAudioFileSource(inFile);
     double length = mCurrentAudioFileSource->getTotalLength() / mCurrentAudioFileSource->getAudioFormatReader()->sampleRate;
@@ -29,7 +29,7 @@ double SampleAnalyser::analyseSampleLength(File inFile)
     return length;
 }
 
-void SampleAnalyser::loadAudioFileSource(File inFile)
+void SampleAnalyser::loadAudioFileSource(File const & inFile)
 {
     mCurrentAudioFileSource.reset();
     AudioFormatReader* reader = mFormatManager->createReaderFor(inFile);

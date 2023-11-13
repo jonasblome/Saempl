@@ -12,7 +12,7 @@
 
 SampleLibraryManager::SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems, OwnedArray<SampleItem>& inPaletteSampleItems)
 :
-ThreadWithProgressWindow("Synching sample library", true, false),
+ThreadWithProgressWindow("Synching sample library", true, false, 10000, "", nullptr),
 allSampleItems(inAllSampleItems),
 paletteSampleItems(inPaletteSampleItems)
 {
@@ -223,12 +223,12 @@ void SampleLibraryManager::writeXmlToFile(XmlElement& inXml, File& inFile)
     inFile.replaceWithData(destinationData.getData(), destinationData.getSize());
 }
 
-SampleItem* SampleLibraryManager::createSampleItem(File inFile)
+SampleItem* SampleLibraryManager::createSampleItem(File const & inFile)
 {
     SampleItem* newItem = allSampleItems.add(new SampleItem());
     newItem->setFilePath(inFile.getFullPathName());
     newItem->setTitle(inFile.getFileNameWithoutExtension());
-    newItem->setLength(mSampleAnalyser->analyseSampleLength(inFile));
+    analyseSampleItem(*newItem, inFile);
     addedFilePaths.add(newItem->getFilePath());
     
     return newItem;
@@ -238,11 +238,16 @@ SampleItem* SampleLibraryManager::getSampleItemWithFileName(String const & inFil
 {
     for (SampleItem* sampleItem : allSampleItems)
     {
-        if (File(sampleItem->getFilePath()).getFileName().compare(inFileName) == 0)
+        if (File(sampleItem->getFilePath()).getFileName().convertToPrecomposedUnicode().compare(inFileName.convertToPrecomposedUnicode()) == 0)
         {
             return sampleItem;
         }
     }
     
     return nullptr;
+}
+
+void SampleLibraryManager::analyseSampleItem(SampleItem& inSampleItem, File const & inFile)
+{
+    inSampleItem.setLength(mSampleAnalyser->analyseSampleLength(inFile));
 }

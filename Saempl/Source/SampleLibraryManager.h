@@ -69,13 +69,14 @@ public:
      
      @returns the newly created sample item.
      */
-    SampleItem* createSampleItem(File inFile);
+    SampleItem* createSampleItem(File const & inFile);
     /**
      @param inFilePath the file path for which to get the corresponding sample item.
      
      @returns the sample item with that file path.
      */
     SampleItem* getSampleItemWithFileName(String const & inFilePath);
+    void analyseSampleItem(SampleItem& inSampleItem, File const & inFile);
     
 private:
     File libraryDirectory;

@@ -15,8 +15,11 @@
  Handles audio playback for different audio formats.
  */
 class AudioPlayer
+:
+private Timer
 {
 public:
+    
     AudioPlayer();
     ~AudioPlayer();
     /**
@@ -69,4 +72,10 @@ private:
     std::unique_ptr<AudioSourcePlayer> mAudioSourcePlayer;
     std::unique_ptr<AudioTransportSource> mTransportSource;
     std::unique_ptr<AudioFormatReaderSource> mCurrentAudioFileSource;
+    
+    void timerCallback() override;
+    /**
+     Gets permission for audio recording and set audio i/o to default in- and ouput channels.
+     */
+    void initialiseDefaultDevice();
 };

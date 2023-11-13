@@ -25,6 +25,8 @@ struct BlomeStyling
     float const BUTTON_IS_OVER_DEACTIVATED_ALPHA = 0.05;
     float const BUTTON_IS_DOWN_DEACTIVATED_ALPHA = 0.1;
     int const PANEL_MARGIN = 8;
+    int const PANEL_TITLE_HEIGHT = 42;
+    int const SAMPLE_PREVIEW_TITLE_HEIGHT = 25;
     int const BUTTON_SIZE_MEDIUM = 25;
     int const BUTTON_SIZE_SMALL = 20;
     int const COMBO_BOX_WIDTH_MEDIUM = 180;
@@ -63,9 +65,6 @@ struct BlomeStyling
     int const SAMPLE_PREVIEW_WIDTH = SAMPLE_ITEM_PANEL_WIDTH - SAMPLE_CONTROL_WIDTH;
     int const SAMPLE_PREVIEW_HEIGHT = SAMPLE_ITEM_PANEL_HEIGHT;
     
-    int const SAMPLE_PREVIEW_TITLE_HEIGHT = 25;
-    int const PANEL_TITLE_HEIGHT = 42;
-    
     
     // Colour definitions
     Colour const COLOUR_GREENISH_WHITE = Colour(235, 255, 235);
@@ -78,7 +77,7 @@ struct BlomeStyling
     Colour const COLOUR_DARK_GRAY = Colour(40, 40, 40);
     
     Colour const COLOUR_BLACK = Colour(0, 0, 0);
-    Colour const COLOUR_BLACK_SUPERLIGHT_TRANSPARENT = Colour(COLOUR_BLACK).withAlpha(0.15f);
+    Colour const COLOUR_BLACK_SUPERLIGHT_TRANSPARENT = Colour(COLOUR_BLACK).withAlpha(0.23f);
     Colour const COLOUR_BLACK_LIGHT_TRANSPARENT = Colour(COLOUR_BLACK).withAlpha(0.35f);
     Colour const COLOUR_BLACK_MEDIUM_TRANSPARENT = Colour(COLOUR_BLACK).withAlpha(0.78f);
     Colour const COLOUR_BLACK_STRONG_TRANSPARENT = Colour(COLOUR_BLACK).withAlpha(0.95f);
@@ -87,15 +86,19 @@ struct BlomeStyling
     
     Colour const COLOUR_GREENISH_BLACK = Colour(0, 25, 0);
     
-    Colour const COLOUR_ACCENT_LIGHT = Colour(207, 191, 163);
+    Colour const COLOUR_ACCENT_LIGHT = Colour(142, 158, 90); // 207, 191, 163 // 21, 149, 178 // 190, 215, 238
     Colour const COLOUR_ACCENT_LIGHT_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_LIGHT).withAlpha(0.99f);
     
-    Colour const COLOUR_ACCENT_MEDIUM = Colour(71, 24, 19);
+    Colour const COLOUR_ACCENT_MEDIUM = Colour(71, 88, 65); // 71, 24, 19 // 18, 44, 55 // 15, 71, 82
+    Colour const COLOUR_ACCENT_MEDIUM_MEDIUM_TRANSPARENT = Colour(COLOUR_ACCENT_MEDIUM).withAlpha(0.78f);
     Colour const COLOUR_ACCENT_MEDIUM_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_MEDIUM).withAlpha(0.99f);
     
-    Colour const COLOUR_ACCENT_DARK = Colour(33, 16, 15);
+    Colour const COLOUR_ACCENT_DARK = Colour(48, 50, 41); // 33, 16, 15 // 15, 25, 31 // 19, 41, 47
     Colour const COLOUR_ACCENT_DARK_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_DARK).withAlpha(0.99f);
     
+    Colour const COLOUR_HEADER_BUTTONS = COLOUR_ACCENT_DARK;
+    Colour const COLOUR_SYMBOL_BUTTON = COLOUR_ACCENT_LIGHT;
+    Colour const COLOUR_PANEL_TITLE_FONT = COLOUR_ACCENT_MEDIUM;
     
     // Fonts
     Font const FONT_SMALL = Font("Helvetica Neue", 12.00f, Font::plain);

@@ -11,6 +11,7 @@
 #pragma once
 #include "JuceHeader.h"
 #include "BlomeStyleDefinitions.h"
+#include "BlomeHelpers.h"
 
 class BlomeImageButton
 :

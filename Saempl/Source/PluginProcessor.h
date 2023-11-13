@@ -90,6 +90,16 @@ public:
      @param inDirection true for fowards, false for backwards.
      */
     void setSortingDirection(bool inDirection);
+    /**
+     @returns the current visibility of the sample preview panel.
+     */
+    bool getSampleItemPanelIsVisible();
+    /**
+     Sets the current visibility of the sample preview panel.
+     
+     @param inPanelIsVisible whether the panel is visible or not.
+     */
+    void setSampleItemIsVisible(bool inPanelIsVisible);
     
 private:
     //==============================================================================
@@ -99,4 +109,5 @@ private:
     NavigationPanelType mActiveNavigationPanelType;
     String mSortingColumnTitle;
     bool mSortingDirection;
+    bool mSampleItemPanelIsVisible;
 };

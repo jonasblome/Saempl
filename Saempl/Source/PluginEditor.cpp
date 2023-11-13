@@ -25,8 +25,8 @@ SaemplAudioProcessorEditor::SaemplAudioProcessorEditor (SaemplAudioProcessor& in
     addAndMakeVisible(*mMainPanel);
     
     // Add noise overlay
-    // mNoiseOverlayPanel = std::make_unique<NoiseOverlayPanel>();
-    // addAndMakeVisible(*mNoiseOverlayPanel);
+    mNoiseOverlayPanel = std::make_unique<NoiseOverlayPanel>();
+    addAndMakeVisible(*mNoiseOverlayPanel);
 }
 
 SaemplAudioProcessorEditor::~SaemplAudioProcessorEditor()
@@ -35,7 +35,7 @@ SaemplAudioProcessorEditor::~SaemplAudioProcessorEditor()
 }
 
 //==============================================================================
-void SaemplAudioProcessorEditor::paint (juce::Graphics& g)
+void SaemplAudioProcessorEditor::paint(juce::Graphics& g)
 {
     // The plugin background
     g.fillAll(style->COLOUR_ACCENT_DARK);

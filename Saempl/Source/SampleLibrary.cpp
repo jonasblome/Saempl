@@ -240,3 +240,10 @@ void SampleLibrary::synchWithLibraryDirectory()
 {
     mSampleLibraryManager->synchWithLibraryDirectory();
 }
+
+void SampleLibrary::reanalyseSampleItem(File const & inFile)
+{
+    // Delete sample item
+    SampleItem* itemToReanalyse = mSampleLibraryManager->getSampleItemWithFileName(inFile.getFileName());
+    mSampleLibraryManager->analyseSampleItem(*itemToReanalyse, inFile);
+}

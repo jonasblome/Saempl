@@ -225,16 +225,16 @@ public:
         g.drawLine(sliderTick, 2.0);
     }
     
-    void drawLinearSlider (Graphics& g,
-                           int x,
-                           int y,
-                           int width,
-                           int height,
-                           float sliderPos,
-                           float minSliderPos,
-                           float maxSliderPos,
-                           Slider::SliderStyle const sliderStyle,
-                           Slider& slider) override
+    void drawLinearSlider(Graphics& g,
+                          int x,
+                          int y,
+                          int width,
+                          int height,
+                          float sliderPos,
+                          float minSliderPos,
+                          float maxSliderPos,
+                          Slider::SliderStyle const sliderStyle,
+                          Slider& slider) override
     {
         if (slider.isBar())
         {
@@ -349,12 +349,16 @@ public:
         Rectangle<int> thumbBounds;
         
         if (isScrollbarVertical)
+        {
             thumbBounds = { x, thumbStartPosition, width, thumbSize };
+        }
         else
+        {
             thumbBounds = { thumbStartPosition, y, thumbSize, height };
+        }
         
         g.setColour(isMouseOver ? style->COLOUR_ACCENT_LIGHT.withAlpha(0.7f) : style->COLOUR_ACCENT_LIGHT);
-        g.fillRoundedRectangle (thumbBounds.reduced(1).toFloat(), 4.0f);
+        g.fillRoundedRectangle(thumbBounds.reduced(1).toFloat(), 4.0f);
     }
     
     void drawTreeviewPlusMinusBox(Graphics& g,
@@ -407,13 +411,20 @@ public:
                          1);
     }
     
-    void drawTableHeaderBackground (Graphics& g, TableHeaderComponent& header) override
+    void drawTableHeaderBackground(Graphics& g, TableHeaderComponent& header) override
     {
-        Rectangle<int> r = header.getLocalBounds();
-        g.setColour(style->COLOUR_ACCENT_LIGHT);
-        g.fillRoundedRectangle(r.toFloat(), style->CORNER_SIZE_MEDIUM);
-        g.setColour(style->COLOUR_ACCENT_DARK);
+        // Draw drop shadow
+        Rectangle<float> area = header.getLocalBounds().toFloat().reduced(0.5);
         
+        // Draw outline
+        g.setColour(style->COLOUR_ACCENT_MEDIUM);
+        g.fillRoundedRectangle(area, style->CORNER_SIZE_MEDIUM);
+        g.setColour(style->COLOUR_ACCENT_MEDIUM_MEDIUM_TRANSPARENT);
+        g.fillRect(area.withTrimmedBottom(header.getHeight() / 2.0));
+        g.setColour(style->COLOUR_ACCENT_DARK);
+        g.drawRoundedRectangle(area, style->CORNER_SIZE_MEDIUM, 1.0);
+        
+        // Draw column separators
         for (int i = header.getNumColumns(true); --i >= 0;)
         {
             g.fillRect(header.getColumnPosition(i).removeFromRight(1));
@@ -430,31 +441,38 @@ public:
                                bool isMouseDown,
                                int columnFlags) override
     {
+        // Draw highlight
+        Rectangle<float> r = header.getLocalBounds().toFloat().reduced(0.5);
+        g.setColour(style->COLOUR_ACCENT_DARK);
         auto highlightColour = style->COLOUR_ACCENT_MEDIUM.withAlpha(0.7f);
         
         if (isMouseDown)
         {
-            g.fillAll(highlightColour);
+            g.setColour(highlightColour);
+            g.drawRoundedRectangle(r, style->CORNER_SIZE_MEDIUM, 1.0);
         }
         else if (isMouseOver)
         {
-            g.fillAll(highlightColour.withMultipliedAlpha (0.625f));
+            g.setColour(highlightColour.withMultipliedAlpha(0.625f));
+            g.drawRoundedRectangle(r, style->CORNER_SIZE_MEDIUM, 1.0);
         }
         
-        Rectangle<int> area (width, height);
-        area.reduce (4, 0);
+        // Draw sorting arrow
+        Rectangle<int> area(width, height);
+        area.reduce(4, 0);
         
         if ((columnFlags & (TableHeaderComponent::sortedForwards | TableHeaderComponent::sortedBackwards)) != 0)
         {
             Path sortArrow;
-            sortArrow.addTriangle (0.0f, 0.0f,
-                                   0.5f, (columnFlags & TableHeaderComponent::sortedForwards) != 0 ? -0.8f : 0.8f,
-                                   1.0f, 0.0f);
+            sortArrow.addTriangle(0.0f, 0.0f,
+                                  0.5f, (columnFlags & TableHeaderComponent::sortedForwards) != 0 ? -0.8f : 0.8f,
+                                  1.0f, 0.0f);
             
             g.setColour(style->COLOUR_ACCENT_DARK);
-            g.fillPath(sortArrow, sortArrow.getTransformToScaleToFit (area.removeFromRight (height / 2).reduced (2).toFloat(), true));
+            g.fillPath(sortArrow, sortArrow.getTransformToScaleToFit(area.removeFromRight(height / 2).reduced(2).toFloat(), true));
         }
         
+        // Draw text
         g.setColour(style->COLOUR_ACCENT_DARK);
         g.setFont(style->FONT_MEDIUM_SMALL_BOLD);
         g.drawFittedText(columnName, area, Justification::centredLeft, 1);

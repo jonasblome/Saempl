@@ -62,4 +62,8 @@ private:
      Add all selected files to the sample item palette collection.
      */
     void addToPalette();
+    /**
+     Reanalyses all selected samples.
+     */
+    void reanalyseSamples();
 };

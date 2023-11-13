@@ -61,5 +61,5 @@ private:
     /**
      Toggles the sample item's visibility on/off and rescales the navigation panels.
      */
-    void toggleSampleItemPanel();
+    void setSampleItemPanelVisibility(bool newIsVisible);
 };
