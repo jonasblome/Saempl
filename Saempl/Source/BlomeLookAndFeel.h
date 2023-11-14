@@ -386,12 +386,10 @@ public:
                             int itemIndex,
                             DirectoryContentsDisplayComponent& directoryDisplayer) override
     {
-        auto fileListComponent = dynamic_cast<Component*>(&directoryDisplayer);
-        
         // Markup if the row is selected
         if (isItemSelected)
         {
-            g.setColour(fileListComponent != nullptr ? style->COLOUR_ACCENT_DARK : style->COLOUR_ACCENT_DARK);
+            g.setColour(style->COLOUR_ACCENT_LIGHT);
             g.fillRoundedRectangle(0, 0, width - 5, height, 3.0);
         }
         

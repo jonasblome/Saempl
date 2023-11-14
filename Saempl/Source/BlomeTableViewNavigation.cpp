@@ -95,5 +95,8 @@ void BlomeTableViewNavigation::addToPalette()
 
 void BlomeTableViewNavigation::changeListenerCallback(ChangeBroadcaster *source)
 {
-    getHeader().reSortTable();
+    if (source == &sampleLibrary)
+    {
+        getHeader().reSortTable();
+    }
 }

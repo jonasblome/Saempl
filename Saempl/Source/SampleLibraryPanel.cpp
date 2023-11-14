@@ -150,17 +150,6 @@ void SampleLibraryPanel::addToPalette()
     sampleLibrary.refresh();
 }
 
-bool SampleLibraryPanel::keyPressed(const KeyPress& key)
-{
-    if (key.getKeyCode() == KeyPress::returnKey)
-    {
-        fileDoubleClicked(mFileTree->getSelectedFile(0));
-        return true;
-    }
-    
-    return false;
-}
-
 void SampleLibraryPanel::reanalyseSamples()
 {
     // Reanalyse all selected files
@@ -170,4 +159,15 @@ void SampleLibraryPanel::reanalyseSamples()
     }
     
     sampleLibrary.refresh();
+}
+
+bool SampleLibraryPanel::keyPressed(const KeyPress& key)
+{
+    if (key.getKeyCode() == KeyPress::returnKey)
+    {
+        fileDoubleClicked(mFileTree->getSelectedFile(0));
+        return true;
+    }
+    
+    return false;
 }

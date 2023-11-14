@@ -58,7 +58,7 @@ void BlomeTableViewBase::paintRowBackground(Graphics& g,
 {
     if (rowIsSelected)
     {
-        g.setColour(style->COLOUR_ACCENT_DARK);
+        g.setColour(style->COLOUR_ACCENT_LIGHT);
         g.fillRoundedRectangle(Rectangle<float>(width, height), style->CORNER_SIZE_MEDIUM);
     }
 }
@@ -161,7 +161,8 @@ void BlomeTableViewBase::cellDoubleClicked(int rowNumber, int columnId, MouseEve
 void BlomeTableViewBase::mouseDrag(MouseEvent const & e)
 {
     // If the drag was at least 50ms after the mouse was pressed
-    if (e.getLengthOfMousePress() > 50) {
+    if (e.getLengthOfMousePress() > 100)
+    {
         Point<int> mousePosition = e.getEventRelativeTo(this).position.toInt();
         
         // Check if any of the selected rows was dragged

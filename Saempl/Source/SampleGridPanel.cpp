@@ -66,31 +66,24 @@ void SampleGridPanel::paint(Graphics& g)
 
 void SampleGridPanel::setPanelComponents()
 {
-    for (SampleItem* sampleItem : sampleLibrary.getSampleItems(ALL_SAMPLES))
-    {
-        if (mSampleItemTiles.size() < 21)
-        {
-            addAndMakeVisible(mSampleItemTiles.add(new BlomeSampleItemTileView(*sampleItem, linkedSampleItemPanel)));
-        }
-    }
+    mSampleTileGrid = std::make_unique<BlomeSampleTileGridView>(sampleLibrary, linkedSampleItemPanel);
     
-    // Setup tile grid
-    mSampleTileGrid = std::make_unique<Grid>();
-    mSampleTileGrid->setGap(Grid::Px(style->PANEL_MARGIN * 0.5f));
-    using Track = Grid::TrackInfo;
-    mSampleTileGrid->templateRows = { Track(1_fr), Track(1_fr), Track(1_fr) };
-    mSampleTileGrid->templateColumns = { Track (1_fr), Track(1_fr), Track(1_fr) };
-    mSampleTileGrid->autoRows = Track(1_fr);
-    mSampleTileGrid->autoColumns = Track(1_fr);
-    mSampleTileGrid->autoFlow = Grid::AutoFlow::column;
-    mSampleTileGrid->items.addArray(mSampleItemTiles);
-    mSampleTileGrid->performLayout(Rectangle<int>(style->PANEL_MARGIN,
-                                                  style->PANEL_TITLE_HEIGHT + style->PANEL_MARGIN * 0.25,
-                                                  getWidth() - style->PANEL_MARGIN * 1.75,
-                                                  getHeight() - style->PANEL_TITLE_HEIGHT - style->PANEL_MARGIN));
+    mGridViewport = std::make_unique<Viewport>();
+    mGridViewport->setViewedComponent(&*mSampleTileGrid);
+    mGridViewport->setBounds(style->PANEL_MARGIN,
+                             style->PANEL_TITLE_HEIGHT + style->PANEL_MARGIN * 0.25,
+                             getWidth() - style->PANEL_MARGIN * 1.75,
+                             getHeight() - style->PANEL_TITLE_HEIGHT - style->PANEL_MARGIN);
+    addAndMakeVisible(*mGridViewport);
 }
 
 void SampleGridPanel::resizePanelComponents()
 {
-    
+    if (mGridViewport != nullptr)
+    {
+        mGridViewport->setBounds(style->PANEL_MARGIN,
+                                 style->PANEL_TITLE_HEIGHT + style->PANEL_MARGIN * 0.25,
+                                 getWidth() - style->PANEL_MARGIN * 1.75,
+                                 getHeight() - style->PANEL_TITLE_HEIGHT - style->PANEL_MARGIN);
+    }
 }

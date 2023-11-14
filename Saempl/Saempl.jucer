@@ -76,6 +76,10 @@
             file="Source/BlomeTableViewPalette.cpp"/>
       <FILE id="MuMIeK" name="BlomeTableViewPalette.h" compile="0" resource="0"
             file="Source/BlomeTableViewPalette.h"/>
+      <FILE id="y7kZFT" name="BlomeSampleTileGridView.cpp" compile="1" resource="0"
+            file="Source/BlomeSampleTileGridView.cpp"/>
+      <FILE id="CRAXtH" name="BlomeSampleTileGridView.h" compile="0" resource="0"
+            file="Source/BlomeSampleTileGridView.h"/>
       <FILE id="nGo8kE" name="BlomeSampleItemTileView.cpp" compile="1" resource="0"
             file="Source/BlomeSampleItemTileView.cpp"/>
       <FILE id="q3qX8z" name="BlomeSampleItemTileView.h" compile="0" resource="0"

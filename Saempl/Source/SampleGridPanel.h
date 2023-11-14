@@ -12,7 +12,7 @@
 
 #include "PanelBase.h"
 #include "SampleItemPanel.h"
-#include "BlomeSampleItemTileView.h"
+#include "BlomeSampleTileGridView.h"
 
 /**
  Holds the table for displaying all \ref SampleLibrary::mAllSampleItems
@@ -38,8 +38,8 @@ private:
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
     BlomeStyling::Ptr style;
-    std::unique_ptr<Grid> mSampleTileGrid;
-    OwnedArray<BlomeSampleItemTileView> mSampleItemTiles;
+    std::unique_ptr<BlomeSampleTileGridView> mSampleTileGrid;
+    std::unique_ptr<Viewport> mGridViewport;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;

@@ -201,12 +201,14 @@ OwnedArray<SampleItem>& SampleLibrary::getSampleItems(SampleItemCollectionScope 
 void SampleLibrary::applyFilter()
 {
     mFilteredSampleItems.clear(false);
+    sendChangeMessage();
     
     for (SampleItem* sampleItem : mAllSampleItems)
     {
         if (mFileFilter->matchesRules(*sampleItem))
         {
             mFilteredSampleItems.add(sampleItem);
+            sendChangeMessage();
         }
     }
 }
@@ -221,6 +223,7 @@ void SampleLibrary::clearSampleItemCollections()
     mPaletteSampleItems.clear(false);
     mFilteredSampleItems.clear(false);
     mAllSampleItems.clear();
+    sendChangeMessage();
 }
 
 void SampleLibrary::changeListenerCallback(ChangeBroadcaster* inSource)

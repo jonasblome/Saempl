@@ -44,13 +44,20 @@ void SampleLibraryManager::updateSampleLibraryFile(File& inLibraryDirectory)
         // Adding sample properties xml to sample item xml
         XmlElement* samplePropertiesXml = new XmlElement("SampleProperties");
         
+        // Adding loudness property
+        XmlElement* samplePropertyXml = new XmlElement(PROPERTY_NAMES[0]);
+        samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLoudness());
+        samplePropertiesXml->prependChildElement(samplePropertyXml);
+        
         // Adding length property
-        for (int p = 0; p < PROPERTY_NAMES.size(); p++)
-        {
-            XmlElement* samplePropertyXml = new XmlElement(PROPERTY_NAMES[p]);
-            samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLength());
-            samplePropertiesXml->prependChildElement(samplePropertyXml);
-        }
+        samplePropertyXml = new XmlElement(PROPERTY_NAMES[1]);
+        samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLength());
+        samplePropertiesXml->prependChildElement(samplePropertyXml);
+        
+        // Adding title property
+        samplePropertyXml = new XmlElement(PROPERTY_NAMES[2]);
+        samplePropertyXml->setAttribute("PropertyValue", sampleItem->getTitle());
+        samplePropertiesXml->prependChildElement(samplePropertyXml);
         
         sampleItemXml->prependChildElement(samplePropertiesXml);
         
