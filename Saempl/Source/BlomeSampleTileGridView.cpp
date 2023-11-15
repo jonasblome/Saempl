@@ -31,17 +31,60 @@ void BlomeSampleTileGridView::paint(Graphics& g)
 
 void BlomeSampleTileGridView::setupGrid()
 {
-    mSampleItemTiles.clear();
-    
-    for (SampleItem* sample : sampleLibrary.getSampleItems(FILTERED_SAMPLES))
-    {
-        addAndMakeVisible(mSampleItemTiles.add(new BlomeSampleItemTileView(*sample, sampleLibrary, linkedSampleItemPanel)));
-    }
+//    mSampleItemTiles.clear();
+//    
+//    for (SampleItem* sample : sampleLibrary.getSampleItems(FILTERED_SAMPLES))
+//    {
+//        addAndMakeVisible(mSampleItemTiles.add(new BlomeSampleItemTileView(*sample, sampleLibrary, linkedSampleItemPanel)));
+//    }
     
     // Setup tile grid
     mSampleTileGrid = std::make_unique<Grid>();
     mSampleTileGrid->setGap(Grid::Px(style->PANEL_MARGIN * 0.5f));
+    mSampleTileGrid->autoFlow = Grid::AutoFlow::column;
     using Track = Grid::TrackInfo;
+    mSampleTileGrid->autoRows = Track(1_fr);
+    mSampleTileGrid->autoColumns = Track(1_fr);
+    
+    // Go through all tiles and check if corresponding
+    // sample items exist, and if not delete them
+    OwnedArray<BlomeSampleItemTileView> tilesToDelete;
+    
+    if (mAddedSampleFilePaths.size() != sampleLibrary.getFilteredFilePaths().size())
+    {
+        for (BlomeSampleItemTileView* tile : mSampleItemTiles)
+        {
+            String tileFilePath = tile->getSampleItemFilePath().convertToPrecomposedUnicode();
+            
+            if (!sampleLibrary.getFilteredFilePaths().contains(tileFilePath))
+            {
+                tilesToDelete.add(tile);
+                mAddedSampleFilePaths.removeString(tileFilePath);
+            }
+        }
+    }
+    
+    for (BlomeSampleItemTileView* tile : tilesToDelete)
+    {
+        mSampleItemTiles.removeObject(tile);
+    }
+    
+    tilesToDelete.clear(false);
+    
+    // Add tiles for each new sample item
+    if (mAddedSampleFilePaths.size() != sampleLibrary.getFilteredFilePaths().size())
+    {
+        for (SampleItem* sample: sampleLibrary.getSampleItems(FILTERED_SAMPLES))
+        {
+            if (!mAddedSampleFilePaths.contains(sample->getFilePath()))
+            {
+                addAndMakeVisible(mSampleItemTiles.add(new BlomeSampleItemTileView(sample, sampleLibrary, linkedSampleItemPanel)));
+            }
+            
+            mAddedSampleFilePaths.add(sample->getFilePath().convertToPrecomposedUnicode());
+        }
+    }
+    
     mSampleTileGrid->templateRows = Array<Track>();
     for (int i = 0; i < sqrt(mSampleItemTiles.size()); i++)
     {
@@ -52,9 +95,6 @@ void BlomeSampleTileGridView::setupGrid()
     {
         mSampleTileGrid->templateColumns.add(Track(1_fr));
     }
-    mSampleTileGrid->autoFlow = Grid::AutoFlow::column;
-    mSampleTileGrid->autoRows = Track(1_fr);
-    mSampleTileGrid->autoColumns = Track(1_fr);
     mSampleTileGrid->items.addArray(mSampleItemTiles);
     setBounds(0,
               0,

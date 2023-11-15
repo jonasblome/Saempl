@@ -53,9 +53,6 @@ void BlomeTableViewNavigation::cellClicked(int rowNumber, int columnId, MouseEve
     }
 }
 
-/**
- Handles what happens when files are dropped onto the tree view.
- */
 void BlomeTableViewNavigation::filesDropped(StringArray const & files, int x, int y)
 {
     // Adding all the dropped files to the database

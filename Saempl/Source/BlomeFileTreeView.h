@@ -41,5 +41,5 @@ private:
     void filesDropped(StringArray const & files, int x, int y) override;
     bool isInterestedInFileDrag(StringArray const & files) override;
     void changeListenerCallback(ChangeBroadcaster* source) override;
-    void mouseDrag(MouseEvent const & e) override;
+    void mouseDrag(MouseEvent const & mouseEvent) override;
 };

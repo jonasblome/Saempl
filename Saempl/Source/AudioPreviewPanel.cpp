@@ -185,31 +185,6 @@ void AudioPreviewPanel::filesDropped(StringArray const & files, int x, int y)
     }
 }
 
-bool AudioPreviewPanel::isInterestedInDragSource(SourceDetails const & dragSourceDetails)
-{
-    return true;
-}
-
-void AudioPreviewPanel::itemDropped(SourceDetails const & dragSourceDetails)
-{
-    // Set resource fom sample item drag source
-    if (dragSourceDetails.description == "SampleItemFile")
-    {
-        Component* dragSourceComponent = dragSourceDetails.sourceComponent.get();
-        if (BlomeFileTreeView* fileTreeView = dynamic_cast<BlomeFileTreeView*>(dragSourceComponent))
-        {
-            File sampleFile = fileTreeView->getSelectedFile();
-            File linkedAudioFile = File(sampleFile.getParentDirectory().getFullPathName() +  DIRECTORY_SEPARATOR + sampleFile.getFileNameWithoutExtension());
-            
-            if (!sampleFile.isDirectory() && isSupportedAudioFileFormat(linkedAudioFile.getFileExtension()))
-            {
-                lastFileDropped = URL(sampleFile);
-                sendChangeMessage();
-            }
-        }
-    }
-}
-
 void AudioPreviewPanel::mouseDown(MouseEvent const & e)
 {
     mouseDrag(e);

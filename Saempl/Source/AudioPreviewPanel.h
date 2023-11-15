@@ -21,7 +21,6 @@
  Implements:
  \ref PanelBase
  \ref juce::FileDragAndDropTarget
- \ref juce::DragAndDropTarget
  \ref juce::ChangeBroadcaster
  \ref juce::ScrollBar::Listener
  \ref juce::Timer
@@ -31,7 +30,6 @@ class AudioPreviewPanel
 :
 public PanelBase,
 public FileDragAndDropTarget,
-public DragAndDropTarget,
 public ChangeBroadcaster,
 private ScrollBar::Listener,
 private Timer
@@ -124,8 +122,6 @@ private:
     void setPanelComponents() override;
     bool isInterestedInFileDrag(StringArray const & files) override;
     void filesDropped(StringArray const & files, int x, int y) override;
-    bool isInterestedInDragSource(SourceDetails const& dragSourceDetails) override;
-    void itemDropped(SourceDetails const & dragSourceDetails) override;
     void mouseDown(MouseEvent const & e) override;
     void mouseDrag(MouseEvent const & e) override;
     void mouseUp(MouseEvent const &) override;

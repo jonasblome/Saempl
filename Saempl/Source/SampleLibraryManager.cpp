@@ -98,9 +98,9 @@ void SampleLibraryManager::run()
     {
         if (!File(sampleItem->getFilePath()).exists())
         {
+            addedFilePaths.removeString(sampleItem->getFilePath());
             paletteSampleItems.removeObject(sampleItem, false);
             allSampleItems.removeObject(sampleItem);
-            addedFilePaths.removeString(sampleItem->getFilePath());
         }
         
         numProcessedItems++;
@@ -178,7 +178,7 @@ void SampleLibraryManager::loadSampleLibrary(File& inLibraryDirectory)
                 // Adding length property to item
                 samplePropertyXml = samplePropertiesXml->getChildByName("Loudness");
                 double loudness = samplePropertyXml->getDoubleAttribute("PropertyValue");
-                sampleItem->setLength(loudness);
+                sampleItem->setLoudness(loudness);
             }
         }
     }
@@ -240,8 +240,8 @@ void SampleLibraryManager::writeXmlToFile(XmlElement& inXml, File& inFile)
 SampleItem* SampleLibraryManager::createSampleItem(File const & inFile)
 {
     SampleItem* newItem = allSampleItems.add(new SampleItem());
-    newItem->setFilePath(inFile.getFullPathName());
-    newItem->setTitle(inFile.getFileNameWithoutExtension());
+    newItem->setFilePath(inFile.getFullPathName().convertToPrecomposedUnicode());
+    newItem->setTitle(inFile.getFileNameWithoutExtension().convertToPrecomposedUnicode());
     analyseSampleItem(*newItem, inFile);
     addedFilePaths.add(newItem->getFilePath());
     

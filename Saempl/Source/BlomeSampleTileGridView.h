@@ -31,6 +31,7 @@ private:
     std::unique_ptr<Grid> mSampleTileGrid;
     SampleItemPanel& linkedSampleItemPanel;
     OwnedArray<BlomeSampleItemTileView> mSampleItemTiles;
+    StringArray mAddedSampleFilePaths;
     
     void paint(Graphics& g) override;
     void changeListenerCallback(ChangeBroadcaster* source) override;

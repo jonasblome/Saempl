@@ -79,9 +79,9 @@ protected:
      */
     void loadSelectedRowIntoAudioPlayer(int rowNumber);
     void cellDoubleClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent) override;
-    void mouseDrag(MouseEvent const & e) override;
+    void mouseDrag(MouseEvent const & mouseEvent) override;
     bool isInterestedInFileDrag(StringArray const & files) override;
-    void returnKeyPressed (int lastRowSelected) override;
+    void returnKeyPressed(int lastRowSelected) override;
     void sortOrderChanged(int newSortColumnId, bool isForwards) override;
     /**
      Reanalyses all selected samples.

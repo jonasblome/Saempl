@@ -69,7 +69,7 @@ void SampleGridPanel::setPanelComponents()
     mSampleTileGrid = std::make_unique<BlomeSampleTileGridView>(sampleLibrary, linkedSampleItemPanel);
     
     mGridViewport = std::make_unique<Viewport>();
-    mGridViewport->setViewedComponent(&*mSampleTileGrid);
+    mGridViewport->setViewedComponent(&*mSampleTileGrid, false);
     mGridViewport->setBounds(style->PANEL_MARGIN,
                              style->PANEL_TITLE_HEIGHT + style->PANEL_MARGIN * 0.25,
                              getWidth() - style->PANEL_MARGIN * 1.75,

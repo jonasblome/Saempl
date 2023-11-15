@@ -42,14 +42,12 @@ void BlomeTableViewBase::paint(Graphics& g)
                    style);
 }
 
-// This is overloaded from TableListBoxModel, and must return the total number of rows in our table
 int BlomeTableViewBase::getNumRows()
 {
     numRows = sampleLibrary.getSampleItems(mSampleItemCollectionType).size();
     return numRows;
 }
 
-// This is overloaded from TableListBoxModel, and should fill in the background of the whole row
 void BlomeTableViewBase::paintRowBackground(Graphics& g,
                                             int rowNumber,
                                             int width,
@@ -63,8 +61,6 @@ void BlomeTableViewBase::paintRowBackground(Graphics& g,
     }
 }
 
-// This is overloaded from TableListBoxModel, and must paint any cells that aren't using custom
-// components.
 void BlomeTableViewBase::paintCell(Graphics& g,
                                    int rowNumber,
                                    int columnId,
@@ -121,8 +117,6 @@ String BlomeTableViewBase::getCellText(SampleItem* inSampleItem, String columnNa
     }
 }
 
-// This is overloaded from TableListBoxModel, and should choose the best width for the specified
-// column.
 int BlomeTableViewBase::getColumnAutoSizeWidth(int columnId)
 {
     int widest = 32;
@@ -155,15 +149,12 @@ void BlomeTableViewBase::cellDoubleClicked(int rowNumber, int columnId, MouseEve
     loadSelectedRowIntoAudioPlayer(rowNumber);
 }
 
-/**
- Determines the components behaviour when the mouse is being dragged on it.
- */
-void BlomeTableViewBase::mouseDrag(MouseEvent const & e)
+void BlomeTableViewBase::mouseDrag(MouseEvent const & mouseEvent)
 {
     // If the drag was at least 50ms after the mouse was pressed
-    if (e.getLengthOfMousePress() > 100)
+    if (mouseEvent.getLengthOfMousePress() > 100)
     {
-        Point<int> mousePosition = e.getEventRelativeTo(this).position.toInt();
+        Point<int> mousePosition = mouseEvent.getEventRelativeTo(this).position.toInt();
         
         // Check if any of the selected rows was dragged
         for (int s = 0; s < getNumSelectedRows(); s++)
@@ -189,9 +180,6 @@ void BlomeTableViewBase::mouseDrag(MouseEvent const & e)
     }
 }
 
-/**
- Sets a flag if the tree view is interested in drag and drop of files.
- */
 bool BlomeTableViewBase::isInterestedInFileDrag(StringArray const & files)
 {
     return true;
@@ -202,8 +190,6 @@ void BlomeTableViewBase::returnKeyPressed(int lastRowSelected)
     loadSelectedRowIntoAudioPlayer(lastRowSelected);
 }
 
-// This is overloaded from TableListBoxModel, and tells us that the user has clicked a table header
-// to change the sort order.
 void BlomeTableViewBase::sortOrderChanged(int newSortColumnId, bool isForwards)
 {
     currentProcessor.setSortingDirection(isForwards);

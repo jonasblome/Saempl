@@ -19,23 +19,25 @@ class BlomeSampleItemTileView
 public Component
 {
 public:
-    BlomeSampleItemTileView(SampleItem& inSampleItem, SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
+    BlomeSampleItemTileView(SampleItem* inSampleItem, SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
     ~BlomeSampleItemTileView();
     /**
-     @returns the \ref SampleItem linked to the view.
+     @returns the title of the sample item linked to the view.
      */
-    SampleItem& getLinkedSampleItem();
+    String getSampleItemFilePath();
     
 private:
-    SampleItem& linkedSampleItem;
+    SampleItem* linkedSampleItem;
     SampleLibrary& sampleLibrary;
     SampleItemPanel& linkedSampleItemPanel;
     BlomeStyling::Ptr style;
+    String linkedSampleItemFilePath;
+    bool isSelected;
     
     void paint(Graphics& g) override;
     void mouseDoubleClick (const MouseEvent& event) override;
-    void mouseDrag(MouseEvent const & e) override;
-    void mouseUp (const MouseEvent& event) override;
+    void mouseDrag(MouseEvent const & mouseEvent) override;
+    void mouseUp(const MouseEvent & mouseEvent) override;
     /**
      Deletes the files selected in the file tree view.
      

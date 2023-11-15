@@ -115,6 +115,10 @@ public:
      Reanalyses the sample and sets the properties to the newly analysed values.
      */
     void reanalyseSampleItem(File const & inFile);
+    /**
+     @returns the array with the file paths of all filtered samples.
+     */
+    StringArray& getFilteredFilePaths();
     
 private:
     std::unique_ptr<TimeSliceThread> mThread;
@@ -123,6 +127,7 @@ private:
     std::unique_ptr<DirectoryContentsList> mDirectoryContent;
     OwnedArray<SampleItem> mAllSampleItems;
     OwnedArray<SampleItem> mFilteredSampleItems;
+    StringArray mFilteredFilePaths;
     OwnedArray<SampleItem> mPaletteSampleItems;
     String mDirectoryPathToAddFilesTo;
     std::unique_ptr<SampleLibraryManager> mSampleLibraryManager;

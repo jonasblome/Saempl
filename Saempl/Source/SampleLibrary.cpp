@@ -152,7 +152,7 @@ void SampleLibrary::refresh()
 {
     applyFilter();
     mDirectoryContent->refresh();
-    sendChangeMessage();
+    sendSynchronousChangeMessage();
 }
 
 void SampleLibrary::setDirectory(String inDirectoryPath)
@@ -201,16 +201,18 @@ OwnedArray<SampleItem>& SampleLibrary::getSampleItems(SampleItemCollectionScope 
 void SampleLibrary::applyFilter()
 {
     mFilteredSampleItems.clear(false);
-    sendChangeMessage();
+    mFilteredFilePaths.clear();
     
     for (SampleItem* sampleItem : mAllSampleItems)
     {
         if (mFileFilter->matchesRules(*sampleItem))
         {
             mFilteredSampleItems.add(sampleItem);
-            sendChangeMessage();
+            mFilteredFilePaths.add(sampleItem->getFilePath());
         }
     }
+    
+    sendSynchronousChangeMessage();
 }
 
 String SampleLibrary::getCurrentLibraryPath()
@@ -222,8 +224,9 @@ void SampleLibrary::clearSampleItemCollections()
 {
     mPaletteSampleItems.clear(false);
     mFilteredSampleItems.clear(false);
+    mFilteredFilePaths.clear();
     mAllSampleItems.clear();
-    sendChangeMessage();
+    sendSynchronousChangeMessage();
 }
 
 void SampleLibrary::changeListenerCallback(ChangeBroadcaster* inSource)
@@ -249,4 +252,9 @@ void SampleLibrary::reanalyseSampleItem(File const & inFile)
     // Delete sample item
     SampleItem* itemToReanalyse = mSampleLibraryManager->getSampleItemWithFilePath(inFile.getFullPathName());
     mSampleLibraryManager->analyseSampleItem(*itemToReanalyse, inFile);
+}
+
+StringArray& SampleLibrary::getFilteredFilePaths()
+{
+    return mFilteredFilePaths;
 }
