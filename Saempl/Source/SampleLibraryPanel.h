@@ -42,7 +42,7 @@ public:
     
 private:
     SampleLibrary& sampleLibrary;
-    SampleItemPanel& linkedSampleItemPanel;
+    SampleItemPanel& sampleItemPanel;
     std::unique_ptr<BlomeFileTreeView> mFileTree;
     BlomeStyling::Ptr style;
     

@@ -16,7 +16,7 @@ BlomeTableViewBase(inProcessor, inSampleItemPanel)
 {
     mSampleItemCollectionType = PALETTE_SAMPLES;
     
-    getHeader().addColumn(PROPERTY_NAMES[PROPERTY_NAMES.size() - 1],
+    getHeader().addColumn(PROPERTY_NAMES[0],
                           1,
                           200,
                           50,
@@ -54,8 +54,6 @@ void BlomeTableViewPalette::filesDropped(StringArray const & files, int x, int y
     {
         sampleLibrary.addAllToPalette(files[f]);
     }
-    
-    sampleLibrary.refresh();
 }
 
 void BlomeTableViewPalette::removeSampleItemFromPalette()
@@ -67,6 +65,4 @@ void BlomeTableViewPalette::removeSampleItemFromPalette()
                                         .getSampleItems(mSampleItemCollectionType)
                                         .getUnchecked(getSelectedRow(r)));
     }
-    
-    sampleLibrary.refresh();
 }

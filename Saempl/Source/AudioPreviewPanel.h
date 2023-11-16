@@ -13,7 +13,7 @@
 #include "PanelBase.h"
 #include "BlomeHelpers.h"
 #include "BlomeLookAndFeel.h"
-#include "SampleEditor.h"
+#include "AudioPlayer.h"
 
 /**
  Holds the \ref AudioThumbnail and displays the audio's waveform.
@@ -40,11 +40,11 @@ public:
      
      @param inProcessor the audio processor of the current plugin instance.
      @param inSlider the zoom slider for the \ref AudioThumbnail.
-     @param inSampleEditor the sample editor with the audio player.
+     @param inAudioPlayer the sample editor with the audio player.
      */
     AudioPreviewPanel(SaemplAudioProcessor& inProcessor,
                       Slider& inSlider,
-                      SampleEditor& inSampleEditor);
+                      AudioPlayer& inAudioPlayer);
     ~AudioPreviewPanel();
     /**
      Sets the URL of the audio source.
@@ -106,7 +106,7 @@ public:
     void emptyAudioResource();
     
 private:
-    SampleEditor& sampleEditor;
+    AudioPlayer& audioPlayer;
     Slider& mZoomSlider;
     std::unique_ptr<ScrollBar> mAudioPreviewScrollbar;
     std::unique_ptr<AudioThumbnailCache> mThumbnailCache;

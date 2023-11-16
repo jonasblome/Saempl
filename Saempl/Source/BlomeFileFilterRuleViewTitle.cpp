@@ -33,7 +33,7 @@ void BlomeFileFilterRuleViewTitle::setComponents()
     mCompareValueEditor = std::make_unique<TextEditor>("CompareValueEditor");
     mCompareValueEditor->setFont(style->FONT_SMALL_BOLD);
     mCompareValueEditor->setJustification(Justification::centredLeft);
-    mCompareValueEditor->setText(getLinkedFilterRule().getCompareValue());
+    mCompareValueEditor->setText(getFilterRule().getCompareValue());
     mCompareValueEditor->addListener(this);
     addAndMakeVisible(*mCompareValueEditor);
 }
@@ -70,11 +70,11 @@ void BlomeFileFilterRuleViewTitle::textEditorFocusLost(TextEditor& textEditor)
 {
     // Lose focus, set compare value and refresh library
     mCompareValueEditor->giveAwayKeyboardFocus();
-    getLinkedFilterRule().setCompareValue(textEditor.getText());
+    getFilterRule().setCompareValue(textEditor.getText());
     sampleLibrary.refresh();
 }
 
-SampleFileFilterRuleTitle& BlomeFileFilterRuleViewTitle::getLinkedFilterRule()
+SampleFileFilterRuleTitle& BlomeFileFilterRuleViewTitle::getFilterRule()
 {
-    return *dynamic_cast<SampleFileFilterRuleTitle*>(&linkedFilterRule);
+    return *dynamic_cast<SampleFileFilterRuleTitle*>(&filterRule);
 }

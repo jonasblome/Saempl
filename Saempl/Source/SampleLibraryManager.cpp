@@ -44,9 +44,9 @@ void SampleLibraryManager::updateSampleLibraryFile(File& inLibraryDirectory)
         // Adding sample properties xml to sample item xml
         XmlElement* samplePropertiesXml = new XmlElement("SampleProperties");
         
-        // Adding loudness property
+        // Adding title property
         XmlElement* samplePropertyXml = new XmlElement(PROPERTY_NAMES[0]);
-        samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLoudness());
+        samplePropertyXml->setAttribute("PropertyValue", sampleItem->getTitle());
         samplePropertiesXml->prependChildElement(samplePropertyXml);
         
         // Adding length property
@@ -54,9 +54,9 @@ void SampleLibraryManager::updateSampleLibraryFile(File& inLibraryDirectory)
         samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLength());
         samplePropertiesXml->prependChildElement(samplePropertyXml);
         
-        // Adding title property
+        // Adding loudness property
         samplePropertyXml = new XmlElement(PROPERTY_NAMES[2]);
-        samplePropertyXml->setAttribute("PropertyValue", sampleItem->getTitle());
+        samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLoudness());
         samplePropertiesXml->prependChildElement(samplePropertyXml);
         
         sampleItemXml->prependChildElement(samplePropertiesXml);
@@ -116,9 +116,11 @@ void SampleLibraryManager::run()
     
     // Go through all files in directory and add sample items
     // for all that are not yet loaded into the library
+    bool isLoadingNewLibrary = allSampleItems.size() == 0;
+    
     for (File const & sampleFile : allSampleFiles)
     {
-        if (!addedFilePaths.contains(sampleFile.getFullPathName()))
+        if (isLoadingNewLibrary || !addedFilePaths.contains(sampleFile.getFullPathName()))
         {
             createSampleItem(sampleFile);
         }

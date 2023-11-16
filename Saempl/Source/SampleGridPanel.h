@@ -36,7 +36,7 @@ public:
     
 private:
     SampleLibrary& sampleLibrary;
-    SampleItemPanel& linkedSampleItemPanel;
+    SampleItemPanel& sampleItemPanel;
     BlomeStyling::Ptr style;
     std::unique_ptr<BlomeSampleTileGridView> mSampleTileGrid;
     std::unique_ptr<Viewport> mGridViewport;

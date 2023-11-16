@@ -29,7 +29,7 @@ static String const SUPPORTED_AUDIO_FORMATS_WILDCARD = "*.wav;*.mp3;*.aiff;*.m4a
 static String const SUPPORTED_AUDIO_FORMATS_EXTENSIONS = ".wav;.mp3;.aiff;.m4a";
 
 // Property names
-static StringArray const PROPERTY_NAMES = StringArray({ "Loudness", "Length", "Title" });
+static StringArray const PROPERTY_NAMES = StringArray({ "Title", "Length", "Loudness" });
 
 // Filter rule compare operators
 enum CompareOperators

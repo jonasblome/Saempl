@@ -15,7 +15,7 @@
 #include "BlomeImageButton.h"
 
 /**
- Holds the audio file preview panel and the \ref SampleEditor
+ Holds the audio file preview panel and the \ref AudioPlayer
  
  Implements:
  \ref PanelBase
@@ -51,7 +51,7 @@ public:
     
 private:
     SampleLibrary& sampleLibrary;
-    std::unique_ptr<SampleEditor> mSampleEditor;
+    std::unique_ptr<AudioPlayer> mAudioPlayer;
     std::unique_ptr<AudioPreviewPanel> mAudioPreviewPanel;
     std::unique_ptr<Slider> mZoomSlider;
     std::unique_ptr<BlomeImageButton> mFollowTransportButton;

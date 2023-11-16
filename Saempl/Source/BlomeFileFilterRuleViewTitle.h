@@ -38,7 +38,7 @@ public:
     /**
      @returns the \ref SampleFileFilterRuleBase linked to the view.
      */
-    SampleFileFilterRuleTitle& getLinkedFilterRule();
+    SampleFileFilterRuleTitle& getFilterRule();
     
 private:
     std::unique_ptr<TextEditor> mCompareValueEditor;

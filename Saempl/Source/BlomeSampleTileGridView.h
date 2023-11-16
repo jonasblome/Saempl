@@ -29,7 +29,7 @@ private:
     SampleLibrary& sampleLibrary;
     BlomeStyling::Ptr style;
     std::unique_ptr<Grid> mSampleTileGrid;
-    SampleItemPanel& linkedSampleItemPanel;
+    SampleItemPanel& sampleItemPanel;
     OwnedArray<BlomeSampleItemTileView> mSampleItemTiles;
     StringArray mAddedSampleFilePaths;
     

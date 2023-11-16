@@ -48,7 +48,7 @@ public:
     void selectRandomSample();
     
 private:
-    SampleItemPanel& linkedSampleItemPanel;
+    SampleItemPanel& sampleItemPanel;
     std::unique_ptr<SampleLibraryPanel> mSampleLibraryPanel;
     std::unique_ptr<SampleTablePanel> mSampleTablePanel;
     std::unique_ptr<SampleGridPanel> mSampleGridPanel;

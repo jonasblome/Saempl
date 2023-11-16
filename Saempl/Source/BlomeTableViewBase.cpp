@@ -14,7 +14,7 @@ BlomeTableViewBase::BlomeTableViewBase(SaemplAudioProcessor& inProcessor, Sample
 :
 currentProcessor(inProcessor),
 sampleLibrary(currentProcessor.getSampleLibrary()),
-linkedSampleItemPanel(inSampleItemPanel)
+sampleItemPanel(inSampleItemPanel)
 {
     mComparator = std::make_unique<SampleItemComparator>();
     
@@ -134,10 +134,11 @@ int BlomeTableViewBase::getColumnAutoSizeWidth(int columnId)
     return widest + 8;
 }
 
-void BlomeTableViewBase::loadSelectedRowIntoAudioPlayer(int rowNumber) {
+void BlomeTableViewBase::loadSelectedRowIntoAudioPlayer(int rowNumber)
+{
     File inFile = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(rowNumber)->getFilePath();
     
-    if (!linkedSampleItemPanel.tryShowAudioResource(inFile))
+    if (!sampleItemPanel.tryShowAudioResource(inFile))
     {
         showFileDeletedWarning();
     }
@@ -215,6 +216,4 @@ void BlomeTableViewBase::reanalyseSamples()
                                           .getSampleItems(mSampleItemCollectionType)
                                           .getUnchecked(getSelectedRow(r))->getFilePath());
     }
-    
-    sampleLibrary.refresh();
 }

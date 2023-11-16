@@ -25,8 +25,8 @@ SaemplAudioProcessorEditor::SaemplAudioProcessorEditor (SaemplAudioProcessor& in
     addAndMakeVisible(*mMainPanel);
     
     // Add noise overlay
-    mNoiseOverlayPanel = std::make_unique<NoiseOverlayPanel>();
-    addAndMakeVisible(*mNoiseOverlayPanel);
+    // mNoiseOverlayPanel = std::make_unique<NoiseOverlayPanel>();
+    // addAndMakeVisible(*mNoiseOverlayPanel);
 }
 
 SaemplAudioProcessorEditor::~SaemplAudioProcessorEditor()

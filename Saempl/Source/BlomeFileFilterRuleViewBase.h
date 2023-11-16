@@ -42,7 +42,7 @@ public:
     /**
      @returns the \ref SampleFileFilterRuleBase linked to the view.
      */
-    SampleFileFilterRuleBase& getLinkedFilterRule();
+    SampleFileFilterRuleBase& getFilterRule();
     /**
      Adds a listener to the \ref mDeleteRuleButton.
      @param inListener the listener object to add.
@@ -56,7 +56,7 @@ public:
     
 protected:
     SampleLibrary& sampleLibrary;
-    SampleFileFilterRuleBase& linkedFilterRule;
+    SampleFileFilterRuleBase& filterRule;
     std::unique_ptr<ComboBox> mCompareOperatorChooser;
     std::unique_ptr<ToggleButton> mActivateRuleButton;
     std::unique_ptr<BlomeImageButton> mDeleteRuleButton;

@@ -480,22 +480,20 @@ public:
                                   Path const & path,
                                   Image& cachedImage) override
     {
+        // Draw drop shadow
         if (cachedImage.isNull())
         {
             cachedImage = { Image::ARGB, box.getWidth(), box.getHeight(), true };
             Graphics g2(cachedImage);
-            
             DropShadow(style->COLOUR_BLACK_MEDIUM_TRANSPARENT, 8, { 2, 2 }).drawForPath(g2, path);
         }
         
         g.setColour(style->COLOUR_BLACK);
         g.drawImageAt(cachedImage, 0, 0);
         
-        g.setColour(style->COLOUR_ACCENT_DARK.withAlpha(0.8f));
+        // Draw border
+        g.setColour(style->COLOUR_ACCENT_DARK);
         g.fillPath(path);
-        
-        // g.setColour(style->COLOUR_ACCENT_LIGHT.withAlpha(0.8f));
-        // g.strokePath(path, PathStrokeType(2.0));
     }
     
     int getCallOutBoxBorderSize(CallOutBox const &) override

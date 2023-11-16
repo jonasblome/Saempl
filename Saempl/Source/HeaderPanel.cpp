@@ -14,7 +14,7 @@ HeaderPanel::HeaderPanel(SaemplAudioProcessor& inProcessor, CenterPanel& inCente
 :
 PanelBase(inProcessor),
 sampleLibrary(currentProcessor.getSampleLibrary()),
-linkedCenterPanel(inCenterPanel)
+centerPanel(inCenterPanel)
 {
     setSize(style->HEADER_PANEL_WIDTH, style->HEADER_PANEL_HEIGHT);
     setPanelComponents();
@@ -52,13 +52,8 @@ void HeaderPanel::paint(Graphics& g)
                      1);
 }
 
-void HeaderPanel::setPanelComponents()
+void HeaderPanel::setRefreshLibraryButton(int buttonWidth, int x)
 {
-    int x = style->PANEL_MARGIN;
-    int buttonWidth = getHeight() - style->PANEL_MARGIN * 2.0;
-    int groupDistance = 10;
-    
-    // Add refresh sample library button
     mRefreshLibraryButton = std::make_unique<BlomeImageButton>("Refresh", false);
     mRefreshLibraryButton->setImages(false,
                                      true,
@@ -80,11 +75,12 @@ void HeaderPanel::setPanelComponents()
     mRefreshLibraryButton->setTooltip("Scans for new files and removes externally deleted files");
     mRefreshLibraryButton->onClick = [this] { sampleLibrary.synchWithLibraryDirectory(); };
     addAndMakeVisible(*mRefreshLibraryButton);
-    x += buttonWidth + style->PANEL_MARGIN / 2.0;
-    
-    // Add choose library directory button
-    mChooseLibraryFolderButton = std::make_unique<BlomeImageButton>("Choose Dir.", false);
-    mChooseLibraryFolderButton->setImages(false,
+}
+
+void HeaderPanel::setChooseLibraryDirectoryButton(int buttonWidth, int x)
+{
+    mChooseLibraryDirectoryButton = std::make_unique<BlomeImageButton>("Choose Dir.", false);
+    mChooseLibraryDirectoryButton->setImages(false,
                                           true,
                                           true,
                                           ImageCache::getFromMemory(BinaryData::folder_open_FILL0_wght400_GRAD0_opsz24_png,
@@ -97,16 +93,17 @@ void HeaderPanel::setPanelComponents()
                                           Image(),
                                           style->BUTTON_IS_DOWN_ALPHA,
                                           style->COLOUR_HEADER_BUTTONS);
-    mChooseLibraryFolderButton->setBounds(x,
+    mChooseLibraryDirectoryButton->setBounds(x,
                                           style->PANEL_MARGIN,
                                           buttonWidth,
                                           buttonWidth);
-    mChooseLibraryFolderButton->setTooltip("Choose a new directory as your current sample library");
-    mChooseLibraryFolderButton->onClick = [this] { showLibraryChooser(); };
-    addAndMakeVisible(*mChooseLibraryFolderButton);
-    x += buttonWidth + style->PANEL_MARGIN * 1.5 + groupDistance;
-    
-    // Add toggle for library panel
+    mChooseLibraryDirectoryButton->setTooltip("Choose a new directory as your current sample library");
+    mChooseLibraryDirectoryButton->onClick = [this] { showLibraryChooser(); };
+    addAndMakeVisible(*mChooseLibraryDirectoryButton);
+}
+
+void HeaderPanel::setToggleSampleLibraryPanelButton(int buttonWidth, int x)
+{
     mToggleSampleLibraryPanelButton = std::make_unique<BlomeImageButton>("Toggle SampleLibraryPanel", false);
     mToggleSampleLibraryPanelButton->setImages(false,
                                                true,
@@ -136,7 +133,7 @@ void HeaderPanel::setPanelComponents()
     {
         if (currentProcessor.getActiveNavigationPanel() != PANELS_LIBRARY_PANEL)
         {
-            linkedCenterPanel.setActiveNavigationPanel(PANELS_LIBRARY_PANEL);
+            centerPanel.setActiveNavigationPanel(PANELS_LIBRARY_PANEL);
             mToggleSampleLibraryPanelButton->setImages(false,
                                                        true,
                                                        true,
@@ -179,9 +176,10 @@ void HeaderPanel::setPanelComponents()
         }
     };
     addAndMakeVisible(*mToggleSampleLibraryPanelButton);
-    x += buttonWidth + style->PANEL_MARGIN * 0.5;
-    
-    // Add toggle for sample table panel
+}
+
+void HeaderPanel::setToggleSampleTablePanelButton(int buttonWidth, int x)
+{
     mToggleSampleTablePanelButton = std::make_unique<BlomeImageButton>("Toggle SampleTablePanel", false);
     mToggleSampleTablePanelButton->setImages(false,
                                              true,
@@ -211,7 +209,7 @@ void HeaderPanel::setPanelComponents()
     {
         if (currentProcessor.getActiveNavigationPanel() != PANELS_TABLE_PANEL)
         {
-            linkedCenterPanel.setActiveNavigationPanel(PANELS_TABLE_PANEL);
+            centerPanel.setActiveNavigationPanel(PANELS_TABLE_PANEL);
             mToggleSampleLibraryPanelButton->setImages(false,
                                                        true,
                                                        true,
@@ -254,9 +252,10 @@ void HeaderPanel::setPanelComponents()
         }
     };
     addAndMakeVisible(*mToggleSampleTablePanelButton);
-    x += buttonWidth + style->PANEL_MARGIN * 0.5;
-    
-    // Add toggle for sample table panel
+}
+
+void HeaderPanel::setToggleSampleGridPanelButton(int buttonWidth, int x)
+{
     mToggleSampleGridPanelButton = std::make_unique<BlomeImageButton>("Toggle SampleTablePanel", false);
     mToggleSampleGridPanelButton->setImages(false,
                                             true,
@@ -286,7 +285,7 @@ void HeaderPanel::setPanelComponents()
     {
         if (currentProcessor.getActiveNavigationPanel() != PANELS_GRID_PANEL)
         {
-            linkedCenterPanel.setActiveNavigationPanel(PANELS_GRID_PANEL);
+            centerPanel.setActiveNavigationPanel(PANELS_GRID_PANEL);
             mToggleSampleLibraryPanelButton->setImages(false,
                                                        true,
                                                        true,
@@ -329,9 +328,9 @@ void HeaderPanel::setPanelComponents()
         }
     };
     addAndMakeVisible(*mToggleSampleGridPanelButton);
-    x += buttonWidth + style->PANEL_MARGIN * 1.5 + groupDistance;
-    
-    // Add button for editing the file filter rules
+}
+
+void HeaderPanel::setChangeFilterButton(int buttonWidth, int x) {
     mChangeFilterButton = std::make_unique<BlomeImageButton>("Filter", false);
     mChangeFilterButton->setImages(false,
                                    true,
@@ -357,9 +356,10 @@ void HeaderPanel::setPanelComponents()
         CallOutBox::launchAsynchronously(std::move(fileFilterPanel), mChangeFilterButton->getScreenBounds(), nullptr);
     };
     addAndMakeVisible(*mChangeFilterButton);
-    x += buttonWidth + style->PANEL_MARGIN / 2.0;
-    
-    // Add button for toggling filter on and off
+}
+
+void HeaderPanel::setToggleFilterButton(int buttonWidth, int x)
+{
     mToggleFilterButton = std::make_unique<BlomeImageButton>("ToggleFilterButton", false);
     mToggleFilterButton->setImages(false,
                                    true,
@@ -419,8 +419,10 @@ void HeaderPanel::setPanelComponents()
                                        style->COLOUR_HEADER_BUTTONS);
     };
     addAndMakeVisible(*mToggleFilterButton);
-    x += buttonWidth + style->PANEL_MARGIN * 1.5 + groupDistance;
-    
+}
+
+void HeaderPanel::setRandomSampleButton(int buttonWidth, int x)
+{
     mRandomSampleButton = std::make_unique<BlomeImageButton>("RandomSampleButton", false);
     mRandomSampleButton->setImages(false,
                                    true,
@@ -443,9 +445,47 @@ void HeaderPanel::setPanelComponents()
     mRandomSampleButton->onClick = [this]
     {
         mToggleSampleTablePanelButton->triggerClick();
-        linkedCenterPanel.selectRandomSample();
+        centerPanel.selectRandomSample();
     };
     addAndMakeVisible(*mRandomSampleButton);
+}
+
+void HeaderPanel::setPanelComponents()
+{
+    int x = style->PANEL_MARGIN;
+    int buttonWidth = getHeight() - style->PANEL_MARGIN * 2.0;
+    int groupDistance = 10;
+    
+    // Add refresh sample library button
+    setRefreshLibraryButton(buttonWidth, x);
+    x += buttonWidth + style->PANEL_MARGIN * 0.5;
+    
+    // Add choose library directory button
+    setChooseLibraryDirectoryButton(buttonWidth, x);
+    x += buttonWidth + style->PANEL_MARGIN * 1.5 + groupDistance;
+    
+    // Add toggle for library panel
+    setToggleSampleLibraryPanelButton(buttonWidth, x);
+    x += buttonWidth + style->PANEL_MARGIN * 0.5;
+    
+    // Add toggle for sample table panel
+    setToggleSampleTablePanelButton(buttonWidth, x);
+    x += buttonWidth + style->PANEL_MARGIN * 0.5;
+    
+    // Add toggle for sample table panel
+    setToggleSampleGridPanelButton(buttonWidth, x);
+    x += buttonWidth + style->PANEL_MARGIN * 1.5 + groupDistance;
+    
+    // Add button for editing the file filter rules
+    setChangeFilterButton(buttonWidth, x);
+    x += buttonWidth + style->PANEL_MARGIN * 0.5;
+    
+    // Add button for toggling filter on and off
+    setToggleFilterButton(buttonWidth, x);
+    x += buttonWidth + style->PANEL_MARGIN * 1.5 + groupDistance;
+    
+    // Add button to select random sample on the table panel
+    setRandomSampleButton(buttonWidth, x);
 }
 
 void HeaderPanel::showLibraryChooser()

@@ -18,7 +18,7 @@ BlomeTableViewBase(inProcessor, inSampleItemPanel)
     mSampleItemCollectionType = FILTERED_SAMPLES;
     
     // Add all sample item properties as table columns
-    for (int c = 0; c < PROPERTY_NAMES.size(); c++)
+    for (int c = PROPERTY_NAMES.size() - 1; c >= 0 ; c--)
     {
         getHeader().addColumn(PROPERTY_NAMES[c],
                               c + 1,
@@ -60,8 +60,6 @@ void BlomeTableViewNavigation::filesDropped(StringArray const & files, int x, in
     {
         sampleLibrary.addAllToSampleItems(files[f]);
     }
-    
-    sampleLibrary.refresh();
 }
 
 void BlomeTableViewNavigation::deleteFiles(bool deletePermanently = false)
@@ -74,8 +72,6 @@ void BlomeTableViewNavigation::deleteFiles(bool deletePermanently = false)
                                        .getUnchecked(getSelectedRow(r))->getFilePath(),
                                        deletePermanently);
     }
-    
-    sampleLibrary.refresh();
 }
 
 void BlomeTableViewNavigation::addToPalette()
@@ -86,8 +82,6 @@ void BlomeTableViewNavigation::addToPalette()
                                       .getSampleItems(mSampleItemCollectionType)
                                       .getUnchecked(getSelectedRow(r))->getFilePath());
     }
-    
-    sampleLibrary.refresh();
 }
 
 void BlomeTableViewNavigation::changeListenerCallback(ChangeBroadcaster *source)

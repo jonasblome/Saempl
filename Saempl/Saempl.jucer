@@ -42,24 +42,22 @@
             file="Source/BlomeImageButton.cpp"/>
       <FILE id="DYAKmb" name="BlomeImageButton.h" compile="0" resource="0"
             file="Source/BlomeImageButton.h"/>
-      <GROUP id="{003C4F4C-D564-18D9-CE8A-CED41457C425}" name="BlomeRuleViews">
-        <FILE id="qeGOnn" name="BlomeFileFilterRuleViewBase.cpp" compile="1"
-              resource="0" file="Source/BlomeFileFilterRuleViewBase.cpp"/>
-        <FILE id="eeWtdy" name="BlomeFileFilterRuleViewBase.h" compile="0"
-              resource="0" file="Source/BlomeFileFilterRuleViewBase.h"/>
-        <FILE id="sji7rW" name="BlomeFileFilterRuleViewTitle.cpp" compile="1"
-              resource="0" file="Source/BlomeFileFilterRuleViewTitle.cpp"/>
-        <FILE id="FvL4Ds" name="BlomeFileFilterRuleViewTitle.h" compile="0"
-              resource="0" file="Source/BlomeFileFilterRuleViewTitle.h"/>
-        <FILE id="Eu12LZ" name="BlomeFileFilterRuleViewLength.cpp" compile="1"
-              resource="0" file="Source/BlomeFileFilterRuleViewLength.cpp"/>
-        <FILE id="a5ieSp" name="BlomeFileFilterRuleViewLength.h" compile="0"
-              resource="0" file="Source/BlomeFileFilterRuleViewLength.h"/>
-        <FILE id="NnAbsu" name="BlomeFileFilterRuleViewLoudness.cpp" compile="1"
-              resource="0" file="Source/BlomeFileFilterRuleViewLoudness.cpp"/>
-        <FILE id="tcU2d1" name="BlomeFileFilterRuleViewLoudness.h" compile="0"
-              resource="0" file="Source/BlomeFileFilterRuleViewLoudness.h"/>
-      </GROUP>
+      <FILE id="qeGOnn" name="BlomeFileFilterRuleViewBase.cpp" compile="1"
+            resource="0" file="Source/BlomeFileFilterRuleViewBase.cpp"/>
+      <FILE id="eeWtdy" name="BlomeFileFilterRuleViewBase.h" compile="0"
+            resource="0" file="Source/BlomeFileFilterRuleViewBase.h"/>
+      <FILE id="sji7rW" name="BlomeFileFilterRuleViewTitle.cpp" compile="1"
+            resource="0" file="Source/BlomeFileFilterRuleViewTitle.cpp"/>
+      <FILE id="FvL4Ds" name="BlomeFileFilterRuleViewTitle.h" compile="0"
+            resource="0" file="Source/BlomeFileFilterRuleViewTitle.h"/>
+      <FILE id="Eu12LZ" name="BlomeFileFilterRuleViewLength.cpp" compile="1"
+            resource="0" file="Source/BlomeFileFilterRuleViewLength.cpp"/>
+      <FILE id="a5ieSp" name="BlomeFileFilterRuleViewLength.h" compile="0"
+            resource="0" file="Source/BlomeFileFilterRuleViewLength.h"/>
+      <FILE id="NnAbsu" name="BlomeFileFilterRuleViewLoudness.cpp" compile="1"
+            resource="0" file="Source/BlomeFileFilterRuleViewLoudness.cpp"/>
+      <FILE id="tcU2d1" name="BlomeFileFilterRuleViewLoudness.h" compile="0"
+            resource="0" file="Source/BlomeFileFilterRuleViewLoudness.h"/>
       <FILE id="WxYaGi" name="BlomeFileTreeView.cpp" compile="1" resource="0"
             file="Source/BlomeFileTreeView.cpp"/>
       <FILE id="eHx4JX" name="BlomeFileTreeView.h" compile="0" resource="0"
@@ -143,9 +141,6 @@
             file="Source/SampleAnalyser.cpp"/>
       <FILE id="Vj1R2H" name="SampleAnalyser.h" compile="0" resource="0"
             file="Source/SampleAnalyser.h"/>
-      <FILE id="xJkutK" name="SampleEditor.cpp" compile="1" resource="0"
-            file="Source/SampleEditor.cpp"/>
-      <FILE id="eGotgT" name="SampleEditor.h" compile="0" resource="0" file="Source/SampleEditor.h"/>
       <FILE id="njsawu" name="AudioPlayer.cpp" compile="1" resource="0" file="Source/AudioPlayer.cpp"/>
       <FILE id="NcbmLC" name="AudioPlayer.h" compile="0" resource="0" file="Source/AudioPlayer.h"/>
     </GROUP>
@@ -161,24 +156,22 @@
             file="Source/SampleFileFilter.cpp"/>
       <FILE id="krBDMF" name="SampleFileFilter.h" compile="0" resource="0"
             file="Source/SampleFileFilter.h"/>
-      <GROUP id="{865452CA-6E54-6891-9C87-6C0C2CEEF9C0}" name="SampleFileFilterRules">
-        <FILE id="NFTqs2" name="SampleFileFilterRuleBase.cpp" compile="1" resource="0"
-              file="Source/SampleFileFilterRuleBase.cpp"/>
-        <FILE id="xzn8A3" name="SampleFileFilterRuleBase.h" compile="0" resource="0"
-              file="Source/SampleFileFilterRuleBase.h"/>
-        <FILE id="PoJDHD" name="SampleFileFilterRuleTitle.cpp" compile="1"
-              resource="0" file="Source/SampleFileFilterRuleTitle.cpp"/>
-        <FILE id="Z9NwLN" name="SampleFileFilterRuleTitle.h" compile="0" resource="0"
-              file="Source/SampleFileFilterRuleTitle.h"/>
-        <FILE id="zL5bUL" name="SampleFileFilterRuleLength.cpp" compile="1"
-              resource="0" file="Source/SampleFileFilterRuleLength.cpp"/>
-        <FILE id="fMAOY3" name="SampleFileFilterRuleLength.h" compile="0" resource="0"
-              file="Source/SampleFileFilterRuleLength.h"/>
-        <FILE id="pqJxhH" name="SampleFileFilterRuleLoudness.cpp" compile="1"
-              resource="0" file="Source/SampleFileFilterRuleLoudness.cpp"/>
-        <FILE id="eYL8eY" name="SampleFileFilterRuleLoudness.h" compile="0"
-              resource="0" file="Source/SampleFileFilterRuleLoudness.h"/>
-      </GROUP>
+      <FILE id="NFTqs2" name="SampleFileFilterRuleBase.cpp" compile="1" resource="0"
+            file="Source/SampleFileFilterRuleBase.cpp"/>
+      <FILE id="xzn8A3" name="SampleFileFilterRuleBase.h" compile="0" resource="0"
+            file="Source/SampleFileFilterRuleBase.h"/>
+      <FILE id="PoJDHD" name="SampleFileFilterRuleTitle.cpp" compile="1"
+            resource="0" file="Source/SampleFileFilterRuleTitle.cpp"/>
+      <FILE id="Z9NwLN" name="SampleFileFilterRuleTitle.h" compile="0" resource="0"
+            file="Source/SampleFileFilterRuleTitle.h"/>
+      <FILE id="zL5bUL" name="SampleFileFilterRuleLength.cpp" compile="1"
+            resource="0" file="Source/SampleFileFilterRuleLength.cpp"/>
+      <FILE id="fMAOY3" name="SampleFileFilterRuleLength.h" compile="0" resource="0"
+            file="Source/SampleFileFilterRuleLength.h"/>
+      <FILE id="pqJxhH" name="SampleFileFilterRuleLoudness.cpp" compile="1"
+            resource="0" file="Source/SampleFileFilterRuleLoudness.cpp"/>
+      <FILE id="eYL8eY" name="SampleFileFilterRuleLoudness.h" compile="0"
+            resource="0" file="Source/SampleFileFilterRuleLoudness.h"/>
       <FILE id="i4IYPu" name="SampleItem.cpp" compile="1" resource="0" file="Source/SampleItem.cpp"/>
       <FILE id="i15BWX" name="SampleItem.h" compile="0" resource="0" file="Source/SampleItem.h"/>
       <FILE id="fjhQHu" name="SampleItemComparator.cpp" compile="1" resource="0"

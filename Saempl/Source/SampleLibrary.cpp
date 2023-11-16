@@ -60,6 +60,10 @@ void SampleLibrary::addAllToSampleItems(File const & inFile)
     {
         return;
     }
+    else if (mSampleLibraryManager->fileHasBeenAdded(inFile.getFullPathName()))
+    {
+        return;
+    }
     
     // Check directory recursively for audio files and subdirectories
     if (inFile.isDirectory())
@@ -80,6 +84,7 @@ void SampleLibrary::addAllToSampleItems(File const & inFile)
     else if (isSupportedAudioFileFormat(newFile.getFileExtension()))
     {
         addToSampleItems(inFile);
+        refresh();
     }
 }
 
@@ -91,6 +96,7 @@ void SampleLibrary::addToPalette(const File & inFile)
     if (itemToAdd == nullptr)
     {
         itemToAdd = addToSampleItems(inFile);
+        refresh();
     }
     
     // Check if item is already in palette
@@ -131,6 +137,8 @@ void SampleLibrary::removeSampleItem(String const & inFilePath, bool deletePerma
     {
         deletePermanently ? fileToDelete.deleteRecursively() : fileToDelete.moveToTrash();
     }
+    
+    refresh();
 }
 
 void SampleLibrary::removeFromPalette(SampleItem& inSampleItem)
@@ -152,7 +160,6 @@ void SampleLibrary::refresh()
 {
     applyFilter();
     mDirectoryContent->refresh();
-    sendSynchronousChangeMessage();
 }
 
 void SampleLibrary::setDirectory(String inDirectoryPath)
@@ -252,6 +259,7 @@ void SampleLibrary::reanalyseSampleItem(File const & inFile)
     // Delete sample item
     SampleItem* itemToReanalyse = mSampleLibraryManager->getSampleItemWithFilePath(inFile.getFullPathName());
     mSampleLibraryManager->analyseSampleItem(*itemToReanalyse, inFile);
+    refresh();
 }
 
 StringArray& SampleLibrary::getFilteredFilePaths()

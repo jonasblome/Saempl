@@ -39,7 +39,7 @@ void SampleItemPanel::paint(Graphics& g)
 void SampleItemPanel::setPanelComponents()
 {
     // Add sample editor component
-    mSampleEditor = std::make_unique<SampleEditor>();
+    mAudioPlayer = std::make_unique<AudioPlayer>();
     
     int followTransportButtonHeight = 34;
     
@@ -124,7 +124,7 @@ void SampleItemPanel::setPanelComponents()
     addAndMakeVisible(*mZoomSlider);
     
     // Add audio thumbnail component
-    mAudioPreviewPanel = std::make_unique<AudioPreviewPanel>(currentProcessor, *mZoomSlider, *mSampleEditor);
+    mAudioPreviewPanel = std::make_unique<AudioPreviewPanel>(currentProcessor, *mZoomSlider, *mAudioPlayer);
     mAudioPreviewPanel->setTopLeftPosition(style->PANEL_MARGIN / 2.0 + style->SAMPLE_CONTROL_WIDTH, style->PANEL_MARGIN / 2.0);
     addAndMakeVisible(mAudioPreviewPanel.get());
     mAudioPreviewPanel->addChangeListener(this);
@@ -133,7 +133,7 @@ void SampleItemPanel::setPanelComponents()
 void SampleItemPanel::changeListenerCallback(ChangeBroadcaster* source)
 {
     // If file was dropped into audio preview panel
-    if (source == mAudioPreviewPanel.get())
+    if (source == &*mAudioPreviewPanel)
     {
         mAudioPreviewPanel->showAudioResource();
     }

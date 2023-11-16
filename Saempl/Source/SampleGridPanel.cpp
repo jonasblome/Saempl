@@ -14,7 +14,7 @@ SampleGridPanel::SampleGridPanel(SaemplAudioProcessor& inProcessor, SampleItemPa
 :
 PanelBase(inProcessor),
 sampleLibrary(currentProcessor.getSampleLibrary()),
-linkedSampleItemPanel(inSampleItemPanel)
+sampleItemPanel(inSampleItemPanel)
 {
     setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH, style->SAMPLE_NAVIGATION_PANEL_HEIGHT);
     setPanelComponents();
@@ -66,7 +66,7 @@ void SampleGridPanel::paint(Graphics& g)
 
 void SampleGridPanel::setPanelComponents()
 {
-    mSampleTileGrid = std::make_unique<BlomeSampleTileGridView>(sampleLibrary, linkedSampleItemPanel);
+    mSampleTileGrid = std::make_unique<BlomeSampleTileGridView>(sampleLibrary, sampleItemPanel);
     
     mGridViewport = std::make_unique<Viewport>();
     mGridViewport->setViewedComponent(&*mSampleTileGrid, false);

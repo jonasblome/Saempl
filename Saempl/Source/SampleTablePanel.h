@@ -40,7 +40,7 @@ public:
     
 private:
     SampleLibrary& sampleLibrary;
-    SampleItemPanel& linkedSampleItemPanel;
+    SampleItemPanel& sampleItemPanel;
     std::unique_ptr<BlomeTableViewNavigation> mSampleTable;
     BlomeStyling::Ptr style;
     

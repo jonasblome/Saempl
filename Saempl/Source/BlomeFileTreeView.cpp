@@ -31,8 +31,6 @@ void BlomeFileTreeView::filesDropped(StringArray const & files, int x, int y)
     {
         sampleLibrary.addAllToSampleItems(files[f]);
     }
-    
-    sampleLibrary.refresh();
 }
 
 bool BlomeFileTreeView::isInterestedInFileDrag(StringArray const & files)

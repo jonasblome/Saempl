@@ -46,7 +46,7 @@ public:
 protected:
     SaemplAudioProcessor& currentProcessor;
     SampleLibrary& sampleLibrary;
-    SampleItemPanel& linkedSampleItemPanel;
+    SampleItemPanel& sampleItemPanel;
     int numRows;
     std::unique_ptr<SampleItemComparator> mComparator;
     SampleItemCollectionScope mSampleItemCollectionType;

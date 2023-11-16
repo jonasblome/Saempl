@@ -73,8 +73,8 @@ void FileFilterPanel::generateRuleView(SampleFileFilterRuleBase *rule)
         case 0:
         {
             newRuleView = mFilterRuleViews
-                .add(std::make_unique<BlomeFileFilterRuleViewLoudness>(*dynamic_cast<SampleFileFilterRuleLoudness*>(rule),
-                                                                       sampleLibrary));
+                .add(std::make_unique<BlomeFileFilterRuleViewTitle>(*dynamic_cast<SampleFileFilterRuleTitle*>(rule),
+                                                                    sampleLibrary));
             break;
         }
         case 1:
@@ -85,10 +85,12 @@ void FileFilterPanel::generateRuleView(SampleFileFilterRuleBase *rule)
             break;
         }
         case 2:
+        {
             newRuleView = mFilterRuleViews
-                .add(std::make_unique<BlomeFileFilterRuleViewTitle>(*dynamic_cast<SampleFileFilterRuleTitle*>(rule),
-                                                                    sampleLibrary));
+                .add(std::make_unique<BlomeFileFilterRuleViewLoudness>(*dynamic_cast<SampleFileFilterRuleLoudness*>(rule),
+                                                                       sampleLibrary));
             break;
+        }
         default:
             jassertfalse;
             break;
@@ -99,7 +101,7 @@ void FileFilterPanel::generateRuleView(SampleFileFilterRuleBase *rule)
 
 void FileFilterPanel::addFilterRuleView()
 {
-    // Only add rule if type is selected, add maximum of 12 rules (reason: glitch in filter panel if more)
+    // Only add rule if type is selected, add maximum of 8 rules (reason: glitch in filter panel if more)
     if (mNewRuleTypeChooser->getSelectedItemIndex() == -1 || libraryFileFilter.getFilterRules().size() >= 8)
     {
         return;
@@ -112,17 +114,25 @@ void FileFilterPanel::addFilterRuleView()
     switch (mNewRuleTypeChooser->getSelectedItemIndex())
     {
         case 0:
+        {
             newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleTitle("Title"));
             break;
+        }
         case 1:
+        {
             newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleLength("Length"));
             break;
+        }
         case 2:
+        {
             newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleLoudness("Loudness"));
             break;
+        }
         default:
+        {
             jassertfalse;
             break;
+        }
     }
     
     generateRuleView(newRule);
@@ -139,22 +149,9 @@ void FileFilterPanel::removeFilterRule(SampleFileFilterRuleBase const & inFilter
     libraryFileFilter.getFilterRules().removeObject(&inFilterRule);
 }
 
-void FileFilterPanel::setPanelComponents()
+void FileFilterPanel::setAddFilterRuleButton()
 {
-    // Add rule type combo box
-    mNewRuleTypeChooser = std::make_unique<ComboBox>("NewRuleTypeChooser");
-    mNewRuleTypeChooser->setBounds(style->PANEL_MARGIN / 2.0,
-                                   style->PANEL_MARGIN / 2.0,
-                                   style->COMBO_BOX_WIDTH_MEDIUM - style->PANEL_MARGIN / 4.0,
-                                   style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN / 2.0);
-    mNewRuleTypeChooser->addItem("New title rule", 1);
-    mNewRuleTypeChooser->addItem("New length rule", 2);
-    mNewRuleTypeChooser->addItem("New loudness rule", 3);
-    mNewRuleTypeChooser->setTextWhenNothingSelected("Choose new rule type");
-    addAndMakeVisible(*mNewRuleTypeChooser);
-    
-    // Add button for adding filter rules
-    mAddFilterRuleButton = std::make_unique<BlomeImageButton>("Add filter", true);
+    mAddFilterRuleButton = std::make_unique<BlomeImageButton>("AddFilterRule", true);
     mAddFilterRuleButton->setImages(false,
                                     true,
                                     true,
@@ -178,6 +175,28 @@ void FileFilterPanel::setPanelComponents()
         addFilterRuleView();
     };
     addAndMakeVisible(*mAddFilterRuleButton);
+}
+
+void FileFilterPanel::setNewRuleTypeChooser() {
+    mNewRuleTypeChooser = std::make_unique<ComboBox>("NewRuleTypeChooser");
+    mNewRuleTypeChooser->setBounds(style->PANEL_MARGIN / 2.0,
+                                   style->PANEL_MARGIN / 2.0,
+                                   style->COMBO_BOX_WIDTH_MEDIUM - style->PANEL_MARGIN / 4.0,
+                                   style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN / 2.0);
+    mNewRuleTypeChooser->addItem("New title rule", 1);
+    mNewRuleTypeChooser->addItem("New length rule", 2);
+    mNewRuleTypeChooser->addItem("New loudness rule", 3);
+    mNewRuleTypeChooser->setTextWhenNothingSelected("Choose new rule type");
+    addAndMakeVisible(*mNewRuleTypeChooser);
+}
+
+void FileFilterPanel::setPanelComponents()
+{
+    // Add rule type combo box
+    setNewRuleTypeChooser();
+    
+    // Add button for adding filter rules
+    setAddFilterRuleButton();
     
     // Filter rule components
     int combinedFilterRuleViewHeight = 0;
@@ -199,7 +218,7 @@ void FileFilterPanel::buttonClicked(Button* button)
     if (BlomeFileFilterRuleViewBase* ruleView = dynamic_cast<BlomeFileFilterRuleViewBase*>(button->getParentComponent()))
     {
         ruleView->removeDeleteButtonListener(this);
-        removeFilterRule(ruleView->getLinkedFilterRule());
+        removeFilterRule(ruleView->getFilterRule());
         mFilterRuleViews.removeObject(ruleView);
         sampleLibrary.refresh();
         

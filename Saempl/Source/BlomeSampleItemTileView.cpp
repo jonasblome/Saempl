@@ -12,11 +12,11 @@
 
 BlomeSampleItemTileView::BlomeSampleItemTileView(SampleItem* inSampleItem, SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel)
 :
-linkedSampleItem(inSampleItem),
+sampleItem(inSampleItem),
 sampleLibrary(inSampleLibrary),
-linkedSampleItemPanel(inSampleItemPanel)
+sampleItemPanel(inSampleItemPanel)
 {
-    linkedSampleItemFilePath = linkedSampleItem->getFilePath();
+    sampleItemFilePath = sampleItem->getFilePath();
 }
 
 BlomeSampleItemTileView::~BlomeSampleItemTileView()
@@ -31,16 +31,10 @@ void BlomeSampleItemTileView::paint(Graphics& g)
     g.setColour(style->COLOUR_ACCENT_DARK);
     g.drawRoundedRectangle(outline, style->CORNER_SIZE_MEDIUM, 1.0);
     
-    if (isSelected)
-    {
-        g.setColour(style->COLOUR_ACCENT_LIGHT);
-        g.fillRoundedRectangle(getLocalBounds().toFloat().reduced(1.0), style->CORNER_SIZE_MEDIUM);
-    }
-    
     // Draw sample title
     g.setFont(style->FONT_SMALL_BOLD);
     g.setColour(style->COLOUR_ACCENT_DARK);
-    g.drawFittedText(linkedSampleItem->getTitle(),
+    g.drawFittedText(sampleItem->getTitle(),
                      getLocalBounds().reduced(style->PANEL_MARGIN),
                      Justification::centred,
                      5);
@@ -48,9 +42,9 @@ void BlomeSampleItemTileView::paint(Graphics& g)
 
 void BlomeSampleItemTileView::mouseDoubleClick(const MouseEvent& event)
 {
-    File inFile = linkedSampleItem->getFilePath();
+    File inFile = sampleItem->getFilePath();
     
-    if (!linkedSampleItemPanel.tryShowAudioResource(inFile))
+    if (!sampleItemPanel.tryShowAudioResource(inFile))
     {
         showFileDeletedWarning();
     }
@@ -58,7 +52,7 @@ void BlomeSampleItemTileView::mouseDoubleClick(const MouseEvent& event)
 
 String BlomeSampleItemTileView::getSampleItemFilePath()
 {
-    return linkedSampleItemFilePath;
+    return sampleItemFilePath;
 }
 
 void BlomeSampleItemTileView::mouseDrag(MouseEvent const & mouseEvent)
@@ -71,7 +65,7 @@ void BlomeSampleItemTileView::mouseDrag(MouseEvent const & mouseEvent)
         if (getLocalBounds().contains(mousePosition))
         {
             StringArray selectedFilePaths;
-            selectedFilePaths.add(linkedSampleItem->getFilePath());
+            selectedFilePaths.add(sampleItem->getFilePath());
             DragAndDropContainer* dragContainer = DragAndDropContainer::findParentDragContainerFor(this);
             dragContainer->performExternalDragDropOfFiles(selectedFilePaths, false, this);
         }
@@ -90,27 +84,19 @@ void BlomeSampleItemTileView::mouseUp(MouseEvent const & mouseEvent)
         popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
     }
-    else if (mouseEvent.mods.isLeftButtonDown())
-    {
-        isSelected = true;
-        repaint();
-    }
 }
 
 void BlomeSampleItemTileView::deleteFiles(bool deletePermanently = false)
 {
-    sampleLibrary.removeSampleItem(linkedSampleItem->getFilePath(), deletePermanently);
-    sampleLibrary.refresh();
+    sampleLibrary.removeSampleItem(sampleItem->getFilePath(), deletePermanently);
 }
 
 void BlomeSampleItemTileView::addToPalette()
 {
-    sampleLibrary.addAllToPalette(linkedSampleItem->getFilePath());
-    sampleLibrary.refresh();
+    sampleLibrary.addAllToPalette(sampleItem->getFilePath());
 }
 
 void BlomeSampleItemTileView::reanalyseSamples()
 {
-    sampleLibrary.reanalyseSampleItem(linkedSampleItem->getFilePath());
-    sampleLibrary.refresh();
+    sampleLibrary.reanalyseSampleItem(sampleItem->getFilePath());
 }

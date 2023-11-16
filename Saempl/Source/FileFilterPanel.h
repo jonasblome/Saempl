@@ -62,6 +62,10 @@ private:
      Removes a rule from the \ref SampleFileFilter and its respective view.
      */
     void removeFilterRule(SampleFileFilterRuleBase const & inFilterRule);
-    void setPanelComponents() override;
+    void setAddFilterRuleButton();
+    
+    void setNewRuleTypeChooser();
+    
+void setPanelComponents() override;
     void buttonClicked(Button* button) override;
 };

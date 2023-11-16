@@ -14,7 +14,7 @@ SampleLibraryPanel::SampleLibraryPanel(SaemplAudioProcessor& inProcessor, Sample
 :
 PanelBase(inProcessor),
 sampleLibrary(currentProcessor.getSampleLibrary()),
-linkedSampleItemPanel(inSampleItemPanel)
+sampleItemPanel(inSampleItemPanel)
 {
     setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH, style->SAMPLE_NAVIGATION_PANEL_HEIGHT);
     setPanelComponents();
@@ -112,7 +112,7 @@ void SampleLibraryPanel::fileClicked(File const & file, MouseEvent const & mouse
 
 void SampleLibraryPanel::fileDoubleClicked(File const & inFile)
 {
-    if (!inFile.isDirectory() && !linkedSampleItemPanel.tryShowAudioResource(inFile))
+    if (!inFile.isDirectory() && !sampleItemPanel.tryShowAudioResource(inFile))
     {
         showFileDeletedWarning();
     }
@@ -136,8 +136,6 @@ void SampleLibraryPanel::deleteFiles(bool deletePermanently = false)
     {
         sampleLibrary.removeSampleItem(mFileTree->getSelectedFile(f).getFullPathName(), deletePermanently);
     }
-    
-    sampleLibrary.refresh();
 }
 
 void SampleLibraryPanel::addToPalette()
@@ -146,8 +144,6 @@ void SampleLibraryPanel::addToPalette()
     {
         sampleLibrary.addAllToPalette(mFileTree->getSelectedFile(f).getFullPathName());
     }
-    
-    sampleLibrary.refresh();
 }
 
 void SampleLibraryPanel::reanalyseSamples()
@@ -157,8 +153,6 @@ void SampleLibraryPanel::reanalyseSamples()
     {
         sampleLibrary.reanalyseSampleItem(mFileTree->getSelectedFile(f).getFullPathName());
     }
-    
-    sampleLibrary.refresh();
 }
 
 bool SampleLibraryPanel::keyPressed(const KeyPress& key)

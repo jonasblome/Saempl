@@ -14,7 +14,7 @@ BlomeFileFilterRuleViewBase::BlomeFileFilterRuleViewBase(SampleFileFilterRuleBas
                                                          SampleLibrary& inSampleLibrary)
 :
 sampleLibrary(inSampleLibrary),
-linkedFilterRule(inFilterRule)
+filterRule(inFilterRule)
 {
     setComponents();
 }
@@ -33,7 +33,7 @@ void BlomeFileFilterRuleViewBase::paint(Graphics& g)
     area.reduce(style->PANEL_MARGIN / 2.0, 0);
     g.setFont(style->FONT_SMALL_BOLD);
     g.setColour(style->COLOUR_ACCENT_LIGHT);
-    g.drawFittedText(getLinkedFilterRule().getRulePropertyName(),
+    g.drawFittedText(getFilterRule().getRulePropertyName(),
                      area,
                      Justification::right,
                      1);
@@ -43,11 +43,11 @@ void BlomeFileFilterRuleViewBase::setComponents()
 {
     // Add button to activate filter rule
     mActivateRuleButton = std::make_unique<ToggleButton>("ActivateRuleButton");
-    mActivateRuleButton->setToggleState(linkedFilterRule.getIsActive(), NotificationType::dontSendNotification);
+    mActivateRuleButton->setToggleState(filterRule.getIsActive(), NotificationType::dontSendNotification);
     mActivateRuleButton->setTooltip("Activate/deactivate this filter rule");
     mActivateRuleButton->onClick = [this]
     {
-        linkedFilterRule.setIsActive(mActivateRuleButton->getToggleState());
+        filterRule.setIsActive(mActivateRuleButton->getToggleState());
         sampleLibrary.refresh();
     };
     addAndMakeVisible(*mActivateRuleButton);
@@ -58,7 +58,7 @@ void BlomeFileFilterRuleViewBase::setComponents()
     mCompareOperatorChooser->addItem("is equal to", 2);
     mCompareOperatorChooser->addItem("is greater than", 3);
     mCompareOperatorChooser->addItem("contains", 4);
-    mCompareOperatorChooser->setSelectedItemIndex(getLinkedFilterRule().getCompareOperator());
+    mCompareOperatorChooser->setSelectedItemIndex(getFilterRule().getCompareOperator());
     mCompareOperatorChooser->addListener(this);
     addAndMakeVisible(*mCompareOperatorChooser);
     
@@ -112,13 +112,13 @@ void BlomeFileFilterRuleViewBase::resized()
 void BlomeFileFilterRuleViewBase::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
 {
     // Set rule to chosen compare operator
-    linkedFilterRule.setCompareOperator(static_cast<CompareOperators>(comboBoxThatHasChanged->getSelectedItemIndex()));
+    filterRule.setCompareOperator(static_cast<CompareOperators>(comboBoxThatHasChanged->getSelectedItemIndex()));
     sampleLibrary.refresh();
 }
 
-SampleFileFilterRuleBase& BlomeFileFilterRuleViewBase::getLinkedFilterRule()
+SampleFileFilterRuleBase& BlomeFileFilterRuleViewBase::getFilterRule()
 {
-    return linkedFilterRule;
+    return filterRule;
 }
 
 void BlomeFileFilterRuleViewBase::addDeleteButtonListener(Button::Listener* inListener)

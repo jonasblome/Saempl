@@ -14,7 +14,7 @@ SampleTablePanel::SampleTablePanel(SaemplAudioProcessor& inProcessor, SampleItem
 :
 PanelBase(inProcessor),
 sampleLibrary(currentProcessor.getSampleLibrary()),
-linkedSampleItemPanel(inSampleItemPanel)
+sampleItemPanel(inSampleItemPanel)
 {
     setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH,
             style->SAMPLE_NAVIGATION_PANEL_HEIGHT);
@@ -70,7 +70,7 @@ void SampleTablePanel::paint(Graphics& g)
 void SampleTablePanel::setPanelComponents()
 {
     // Set sample table component
-    mSampleTable = std::make_unique<BlomeTableViewNavigation>(currentProcessor, linkedSampleItemPanel);
+    mSampleTable = std::make_unique<BlomeTableViewNavigation>(currentProcessor, sampleItemPanel);
     resizePanelComponents();
     addAndMakeVisible(*mSampleTable);
 }

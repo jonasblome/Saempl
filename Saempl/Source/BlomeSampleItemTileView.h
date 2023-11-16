@@ -27,12 +27,11 @@ public:
     String getSampleItemFilePath();
     
 private:
-    SampleItem* linkedSampleItem;
+    SampleItem* sampleItem;
     SampleLibrary& sampleLibrary;
-    SampleItemPanel& linkedSampleItemPanel;
+    SampleItemPanel& sampleItemPanel;
     BlomeStyling::Ptr style;
-    String linkedSampleItemFilePath;
-    bool isSelected;
+    String sampleItemFilePath;
     
     void paint(Graphics& g) override;
     void mouseDoubleClick (const MouseEvent& event) override;
