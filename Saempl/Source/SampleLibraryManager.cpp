@@ -2,7 +2,6 @@
  ==============================================================================
  
  SampleLibraryManager.cpp
- Created: 10 Jun 2023 6:16:05pm
  Author:  Jonas Blome
  
  ==============================================================================
@@ -221,7 +220,7 @@ void SampleLibraryManager::storeLastOpenedDirectory(String& inDirectoryPath)
 
 XmlElement SampleLibraryManager::loadFileAsXml(File& inFile)
 {
-    const InterProcessLock::ScopedLockType scopedLock(fileLock);
+    const InterProcessLock::ScopedLockType scopedLock(mFileLock);
     
     MemoryBlock fileData;
     inFile.loadFileAsData(fileData);
@@ -232,7 +231,7 @@ XmlElement SampleLibraryManager::loadFileAsXml(File& inFile)
 
 void SampleLibraryManager::writeXmlToFile(XmlElement& inXml, File& inFile)
 {
-    const InterProcessLock::ScopedLockType scopedLock(fileLock);
+    const InterProcessLock::ScopedLockType scopedLock(mFileLock);
     
     MemoryBlock destinationData;
     AudioPluginInstance::copyXmlToBinary(inXml, destinationData);

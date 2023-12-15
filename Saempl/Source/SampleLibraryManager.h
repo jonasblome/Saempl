@@ -2,7 +2,6 @@
  ==============================================================================
  
  SampleLibraryManager.h
- Created: 10 Jun 2023 6:16:05pm
  Author:  Jonas Blome
  
  ==============================================================================
@@ -96,7 +95,7 @@ private:
     OwnedArray<SampleItem>& paletteSampleItems;
     std::unique_ptr<SampleAnalyser> mSampleAnalyser;
     StringArray addedFilePaths;
-    InterProcessLock fileLock{"fileLock"};
+    InterProcessLock mFileLock{"fileLock"};
     String mDefaultLibraryDirectoryPath =
     (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
     + DIRECTORY_SEPARATOR

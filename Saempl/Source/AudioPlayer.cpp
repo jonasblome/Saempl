@@ -2,7 +2,6 @@
  ==============================================================================
  
  AudioPlayer.cpp
- Created: 25 May 2023 12:56:15am
  Author:  Jonas Blome
  
  ==============================================================================
@@ -33,7 +32,7 @@ AudioPlayer::~AudioPlayer()
     mTransportSource->setSource(nullptr);
     mAudioSourcePlayer->setSource(nullptr);
     mAudioDeviceManager->removeAudioCallback(&*mAudioSourcePlayer);
-    mThread->stopThread(10);
+    mThread->stopThread(10000);
     stopTimer();
 }
 

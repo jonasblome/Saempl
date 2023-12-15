@@ -2,7 +2,6 @@
  ==============================================================================
  
  SampleLibrary.h
- Created: 21 May 2023 2:45:47pm
  Author:  Jonas Blome
  
  ==============================================================================
@@ -121,10 +120,10 @@ public:
     StringArray& getFilteredFilePaths();
     
 private:
-    std::unique_ptr<TimeSliceThread> mThread;
+    std::unique_ptr<TimeSliceThread> mDirectoryScannerThread;
     std::unique_ptr<SampleFileFilter> mFileFilter;
     String mCurrentLibraryPath;
-    std::unique_ptr<DirectoryContentsList> mDirectoryContent;
+    std::unique_ptr<DirectoryContentsList> mDirectoryContentsList;
     OwnedArray<SampleItem> mAllSampleItems;
     OwnedArray<SampleItem> mFilteredSampleItems;
     StringArray mFilteredFilePaths;

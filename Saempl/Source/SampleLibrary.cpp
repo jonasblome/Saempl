@@ -2,7 +2,6 @@
   ==============================================================================
 
     SampleLibrary.cpp
-    Created: 21 May 2023 2:45:47pm
     Author:  Jonas Blome
 
   ==============================================================================
@@ -13,8 +12,8 @@
 SampleLibrary::SampleLibrary()
 {
     // Create thread for scanning the sample library directory
-    mThread = std::make_unique<TimeSliceThread>("DirectoryReaderThread");
-    mThread->startThread(Thread::Priority::normal);
+    mDirectoryScannerThread = std::make_unique<TimeSliceThread>("DirectoryReaderThread");
+    mDirectoryScannerThread->startThread(Thread::Priority::normal);
     
     // Initialize library manager
     mSampleLibraryManager = std::make_unique<SampleLibraryManager>(mAllSampleItems, mPaletteSampleItems);
@@ -22,10 +21,10 @@ SampleLibrary::SampleLibrary()
     
     // Set file filter
     mFileFilter = std::make_unique<SampleFileFilter>("AudioFormatsFilter", mFilteredSampleItems);
-    mDirectoryContent = std::make_unique<DirectoryContentsList>(&*mFileFilter, *mThread);
+    mDirectoryContentsList = std::make_unique<DirectoryContentsList>(&*mFileFilter, *mDirectoryScannerThread);
     
     // Set directory
-    mDirectoryContent->addChangeListener(this);
+    mDirectoryContentsList->addChangeListener(this);
     String lastOpenedDirectory = mSampleLibraryManager->getLastOpenedDirectory();
     setDirectory(lastOpenedDirectory);
 }
@@ -34,11 +33,11 @@ SampleLibrary::~SampleLibrary()
 {
     mSampleLibraryManager->storeLastOpenedDirectory(mCurrentLibraryPath);
     mSampleLibraryManager->removeChangeListener(this);
-    mDirectoryContent->removeChangeListener(this);
+    mDirectoryContentsList->removeChangeListener(this);
     File currentLibrary(mCurrentLibraryPath);
     mSampleLibraryManager->updateSampleLibraryFile(currentLibrary);
     clearSampleItemCollections();
-    mThread->stopThread(10);
+    mDirectoryScannerThread->stopThread(10000);
 }
 
 SampleItem* SampleLibrary::addToSampleItems(File const & inFile)
@@ -148,7 +147,7 @@ void SampleLibrary::removeFromPalette(SampleItem& inSampleItem)
 
 DirectoryContentsList& SampleLibrary::getDirectoryList()
 {
-    return *mDirectoryContent;
+    return *mDirectoryContentsList;
 }
 
 SampleFileFilter& SampleLibrary::getFileFilter()
@@ -159,7 +158,7 @@ SampleFileFilter& SampleLibrary::getFileFilter()
 void SampleLibrary::refresh()
 {
     applyFilter();
-    mDirectoryContent->refresh();
+    mDirectoryContentsList->refresh();
 }
 
 void SampleLibrary::setDirectory(String inDirectoryPath)
@@ -183,7 +182,7 @@ void SampleLibrary::setDirectory(String inDirectoryPath)
     // Load new library
     clearSampleItemCollections();
     mSampleLibraryManager->loadSampleLibrary(currentLibraryDirectory);
-    mDirectoryContent->setDirectory(File(mCurrentLibraryPath), true, true);
+    mDirectoryContentsList->setDirectory(File(mCurrentLibraryPath), true, true);
 }
 
 OwnedArray<SampleItem>& SampleLibrary::getSampleItems(SampleItemCollectionScope inCollectionScope)
@@ -239,9 +238,9 @@ void SampleLibrary::clearSampleItemCollections()
 void SampleLibrary::changeListenerCallback(ChangeBroadcaster* inSource)
 {
     // Set new directory if directory changes
-    if (inSource == mDirectoryContent.get())
+    if (inSource == mDirectoryContentsList.get())
     {
-        mDirectoryPathToAddFilesTo = mDirectoryContent->getDirectory().getFullPathName();
+        mDirectoryPathToAddFilesTo = mDirectoryContentsList->getDirectory().getFullPathName();
     }
     else if (inSource == mSampleLibraryManager.get())
     {
