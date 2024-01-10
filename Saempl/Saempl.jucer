@@ -54,10 +54,14 @@
             resource="0" file="Source/BlomeFileFilterRuleViewLength.cpp"/>
       <FILE id="a5ieSp" name="BlomeFileFilterRuleViewLength.h" compile="0"
             resource="0" file="Source/BlomeFileFilterRuleViewLength.h"/>
-      <FILE id="NnAbsu" name="BlomeFileFilterRuleViewLoudness.cpp" compile="1"
-            resource="0" file="Source/BlomeFileFilterRuleViewLoudness.cpp"/>
-      <FILE id="tcU2d1" name="BlomeFileFilterRuleViewLoudness.h" compile="0"
-            resource="0" file="Source/BlomeFileFilterRuleViewLoudness.h"/>
+      <FILE id="NnAbsu" name="BlomeFileFilterRuleViewLoudnessDecibel.cpp"
+            compile="1" resource="0" file="Source/BlomeFileFilterRuleViewLoudnessDecibel.cpp"/>
+      <FILE id="tcU2d1" name="BlomeFileFilterRuleViewLoudnessDecibel.h" compile="0"
+            resource="0" file="Source/BlomeFileFilterRuleViewLoudnessDecibel.h"/>
+      <FILE id="ocSs5g" name="BlomeFileFilterRuleViewLoudnessLUFS.cpp" compile="1"
+            resource="0" file="Source/BlomeFileFilterRuleViewLoudnessLUFS.cpp"/>
+      <FILE id="oKd4Io" name="BlomeFileFilterRuleViewLoudnessLUFS.h" compile="0"
+            resource="0" file="Source/BlomeFileFilterRuleViewLoudnessLUFS.h"/>
       <FILE id="WxYaGi" name="BlomeFileTreeView.cpp" compile="1" resource="0"
             file="Source/BlomeFileTreeView.cpp"/>
       <FILE id="eHx4JX" name="BlomeFileTreeView.h" compile="0" resource="0"
@@ -141,6 +145,10 @@
             file="Source/SampleAnalyser.cpp"/>
       <FILE id="Vj1R2H" name="SampleAnalyser.h" compile="0" resource="0"
             file="Source/SampleAnalyser.h"/>
+      <FILE id="veLVxA" name="SecondOrderIIRFilter.cpp" compile="1" resource="0"
+            file="Source/SecondOrderIIRFilter.cpp"/>
+      <FILE id="hGpdKL" name="SecondOrderIIRFilter.h" compile="0" resource="0"
+            file="Source/SecondOrderIIRFilter.h"/>
       <FILE id="njsawu" name="AudioPlayer.cpp" compile="1" resource="0" file="Source/AudioPlayer.cpp"/>
       <FILE id="NcbmLC" name="AudioPlayer.h" compile="0" resource="0" file="Source/AudioPlayer.h"/>
     </GROUP>
@@ -168,10 +176,14 @@
             resource="0" file="Source/SampleFileFilterRuleLength.cpp"/>
       <FILE id="fMAOY3" name="SampleFileFilterRuleLength.h" compile="0" resource="0"
             file="Source/SampleFileFilterRuleLength.h"/>
-      <FILE id="pqJxhH" name="SampleFileFilterRuleLoudness.cpp" compile="1"
-            resource="0" file="Source/SampleFileFilterRuleLoudness.cpp"/>
-      <FILE id="eYL8eY" name="SampleFileFilterRuleLoudness.h" compile="0"
-            resource="0" file="Source/SampleFileFilterRuleLoudness.h"/>
+      <FILE id="pqJxhH" name="SampleFileFilterRuleLoudnessDecibel.cpp" compile="1"
+            resource="0" file="Source/SampleFileFilterRuleLoudnessDecibel.cpp"/>
+      <FILE id="eYL8eY" name="SampleFileFilterRuleLoudnessDecibel.h" compile="0"
+            resource="0" file="Source/SampleFileFilterRuleLoudnessDecibel.h"/>
+      <FILE id="Pp1tdU" name="SampleFileFilterRuleLoudnessLUFS.cpp" compile="1"
+            resource="0" file="Source/SampleFileFilterRuleLoudnessLUFS.cpp"/>
+      <FILE id="urj6sF" name="SampleFileFilterRuleLoudnessLUFS.h" compile="0"
+            resource="0" file="Source/SampleFileFilterRuleLoudnessLUFS.h"/>
       <FILE id="i4IYPu" name="SampleItem.cpp" compile="1" resource="0" file="Source/SampleItem.cpp"/>
       <FILE id="i15BWX" name="SampleItem.h" compile="0" resource="0" file="Source/SampleItem.h"/>
       <FILE id="fjhQHu" name="SampleItemComparator.cpp" compile="1" resource="0"
@@ -194,7 +206,9 @@
     <XCODE_MAC targetFolder="Builds/MacOSX">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="Saempl"/>
-        <CONFIGURATION isDebug="0" name="Release" targetName="Saempl"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="Saempl" enablePluginBinaryCopyStep="1"
+                       auBinaryLocation="/Users/jonasblome/Documents/Musikproduktion/Plugins/Saempl/Saempl/Builds/MacOSX/build"
+                       vst3BinaryLocation="/Users/jonasblome/Documents/Musikproduktion/Plugins/Saempl/Saempl/Builds/MacOSX/build"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="../../../../JUCE/modules"/>

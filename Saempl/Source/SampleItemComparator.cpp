@@ -21,13 +21,21 @@ SampleItemComparator::~SampleItemComparator()
 
 int SampleItemComparator::compareElements(SampleItem* first, SampleItem* second)
 {
-    if (mComparePropertyName == "Title")
+    if (mComparePropertyName == PROPERTY_NAMES[0])
     {
         return compareElements<String>(first->getTitle(), second->getTitle());
     }
-    else if (mComparePropertyName == "Length")
+    else if (mComparePropertyName == PROPERTY_NAMES[1])
     {
         return compareElements<double>(first->getLength(), second->getLength());
+    }
+    else if (mComparePropertyName == PROPERTY_NAMES[2])
+    {
+        return compareElements<double>(first->getLoudnessDecibel(), second->getLoudnessDecibel());
+    }
+    else if (mComparePropertyName == PROPERTY_NAMES[3])
+    {
+        return compareElements<double>(first->getLoudnessLUFS(), second->getLoudnessLUFS());
     }
     
     return 0;

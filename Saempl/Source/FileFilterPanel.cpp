@@ -86,7 +86,14 @@ void FileFilterPanel::generateRuleView(SampleFileFilterRuleBase *rule)
         case 2:
         {
             newRuleView = mFilterRuleViews
-                .add(std::make_unique<BlomeFileFilterRuleViewLoudness>(*dynamic_cast<SampleFileFilterRuleLoudness*>(rule),
+                .add(std::make_unique<BlomeFileFilterRuleViewLoudnessDecibel>(*dynamic_cast<SampleFileFilterRuleLoudnessDecibel*>(rule),
+                                                                       sampleLibrary));
+            break;
+        }
+        case 3:
+        {
+            newRuleView = mFilterRuleViews
+                .add(std::make_unique<BlomeFileFilterRuleViewLoudnessLUFS>(*dynamic_cast<SampleFileFilterRuleLoudnessLUFS*>(rule),
                                                                        sampleLibrary));
             break;
         }
@@ -114,17 +121,22 @@ void FileFilterPanel::addFilterRuleView()
     {
         case 0:
         {
-            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleTitle("Title"));
+            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleTitle(PROPERTY_NAMES[0]));
             break;
         }
         case 1:
         {
-            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleLength("Length"));
+            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleLength(PROPERTY_NAMES[1]));
             break;
         }
         case 2:
         {
-            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleLoudness("Loudness"));
+            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleLoudnessDecibel(PROPERTY_NAMES[2]));
+            break;
+        }
+        case 3:
+        {
+            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleLoudnessLUFS(PROPERTY_NAMES[3]));
             break;
         }
         default:
@@ -184,7 +196,8 @@ void FileFilterPanel::setNewRuleTypeChooser() {
                                    style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN / 2.0);
     mNewRuleTypeChooser->addItem("New title rule", 1);
     mNewRuleTypeChooser->addItem("New length rule", 2);
-    mNewRuleTypeChooser->addItem("New loudness rule", 3);
+    mNewRuleTypeChooser->addItem("New loudness(dB) rule", 3);
+    mNewRuleTypeChooser->addItem("New loudness(LUFS) rule", 3);
     mNewRuleTypeChooser->setTextWhenNothingSelected("Choose new rule type");
     addAndMakeVisible(*mNewRuleTypeChooser);
 }

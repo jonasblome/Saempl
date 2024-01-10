@@ -98,17 +98,21 @@ void BlomeTableViewBase::paintCell(Graphics& g,
 String BlomeTableViewBase::getCellText(SampleItem* inSampleItem, String columnName)
 {
     // Get text for sample item property
-    if (columnName == "Title")
+    if (columnName == PROPERTY_NAMES[0])
     {
         return inSampleItem->getTitle();
     }
-    else if (columnName == "Length")
+    else if (columnName == PROPERTY_NAMES[1])
     {
         return std::to_string(inSampleItem->getLength());
     }
-    else if (columnName == "Loudness")
+    else if (columnName == PROPERTY_NAMES[2])
     {
-        return std::to_string(inSampleItem->getLoudness());
+        return std::to_string(inSampleItem->getLoudnessDecibel());
+    }
+    else if (columnName == PROPERTY_NAMES[3])
+    {
+        return std::to_string(inSampleItem->getLoudnessLUFS());
     }
     else
     {

@@ -53,9 +53,14 @@ void SampleLibraryManager::updateSampleLibraryFile(File& inLibraryDirectory)
         samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLength());
         samplePropertiesXml->prependChildElement(samplePropertyXml);
         
-        // Adding loudness property
+        // Adding decibel loudness property
         samplePropertyXml = new XmlElement(PROPERTY_NAMES[2]);
-        samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLoudness());
+        samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLoudnessDecibel());
+        samplePropertiesXml->prependChildElement(samplePropertyXml);
+        
+        // Adding LUFS loudness property
+        samplePropertyXml = new XmlElement(PROPERTY_NAMES[3]);
+        samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLoudnessLUFS());
         samplePropertiesXml->prependChildElement(samplePropertyXml);
         
         sampleItemXml->prependChildElement(samplePropertiesXml);
@@ -167,19 +172,24 @@ void SampleLibraryManager::loadSampleLibrary(File& inLibraryDirectory)
                 XmlElement* samplePropertiesXml = sampleItemXml->getChildByName("SampleProperties");
                 
                 // Adding title property to item
-                XmlElement* samplePropertyXml = samplePropertiesXml->getChildByName("Title");
+                XmlElement* samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[0]);
                 String title = samplePropertyXml->getStringAttribute("PropertyValue");
                 sampleItem->setTitle(title);
                 
                 // Adding length property to item
-                samplePropertyXml = samplePropertiesXml->getChildByName("Length");
+                samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[1]);
                 double length = samplePropertyXml->getDoubleAttribute("PropertyValue");
                 sampleItem->setLength(length);
                 
-                // Adding length property to item
-                samplePropertyXml = samplePropertiesXml->getChildByName("Loudness");
-                double loudness = samplePropertyXml->getDoubleAttribute("PropertyValue");
-                sampleItem->setLoudness(loudness);
+                // Adding decibel property to item
+                samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[2]);
+                double loudnessDecibel = samplePropertyXml->getDoubleAttribute("PropertyValue");
+                sampleItem->setLoudnessDecibel(loudnessDecibel);
+                
+                // Adding LUFS property to item
+                samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[3]);
+                double loudnessLUFS = samplePropertyXml->getDoubleAttribute("PropertyValue");
+                sampleItem->setLoudnessLUFS(loudnessLUFS);
             }
         }
     }
@@ -270,5 +280,6 @@ bool SampleLibraryManager::fileHasBeenAdded(String const & inFilePath)
 void SampleLibraryManager::analyseSampleItem(SampleItem& inSampleItem, File const & inFile)
 {
     inSampleItem.setLength(mSampleAnalyser->analyseSampleLength(inFile));
-    inSampleItem.setLoudness(mSampleAnalyser->analyseSampleLoudness(inFile));
+    inSampleItem.setLoudnessDecibel(mSampleAnalyser->analyseSampleLoudnessDecibel(inFile));
+    inSampleItem.setLoudnessLUFS(mSampleAnalyser->analyseSampleLoudnessLUFS(inFile));
 }

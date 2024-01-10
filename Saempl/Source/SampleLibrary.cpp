@@ -55,11 +55,11 @@ void SampleLibrary::addAllToSampleItems(File const & inFile)
     File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
     
     // Don't add files if they already exist in the current library
-    if (mSampleLibraryManager->fileHasBeenAdded(newFile.getFullPathName()))
+    if (mSampleLibraryManager->fileHasBeenAdded(inFile.getFullPathName()))
     {
         return;
     }
-    else if (mSampleLibraryManager->fileHasBeenAdded(inFile.getFullPathName()))
+    else if (mSampleLibraryManager->fileHasBeenAdded(newFile.getFullPathName()))
     {
         return;
     }

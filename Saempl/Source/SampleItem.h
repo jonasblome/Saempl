@@ -52,17 +52,28 @@ public:
     /**
      @returns the samples loudness in dB.
      */
-    double getLoudness() const;
+    double getLoudnessDecibel() const;
     /**
      Sets the loudness of the sample item in dB.
      
      @param inLoudness the loudness to set.
      */
-    void setLoudness(double inLoudness);
+    void setLoudnessDecibel(double inDB);
+    /**
+     @returns the samples loudness in LUFS.
+     */
+    double getLoudnessLUFS() const;
+    /**
+     Sets the loudness of the sample item in LUFS.
+     
+     @param inLoudness the loudness to set.
+     */
+    void setLoudnessLUFS(double inLUFS);
     
 private:
     String mFilePath;
     String mTitle;
     double mLength;
-    double mLoudness;
+    double mLoudnessDecibel;
+    double mLoudnessLUFS;
 };
