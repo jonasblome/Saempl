@@ -32,6 +32,7 @@ double SampleAnalyser::analyseSampleLoudnessDecibel(const File &inFile)
 {
     loadAudioFileSource(inFile);
     int numChannels = mCurrentAudioFileSource->getAudioFormatReader()->numChannels;
+    analysisBuffer = AudioBuffer<float>(numChannels, bufferSize);
     int64 totalNumSamples = mCurrentAudioFileSource->getTotalLength();
     int numBlocks = int (totalNumSamples / bufferSize) + 1;
     int lastBlockLength = totalNumSamples % bufferSize;
@@ -71,11 +72,27 @@ double SampleAnalyser::analyseSampleLoudnessDecibel(const File &inFile)
     decibel = jmax<float>(decibel, 0.00000001);
     
     return 20 * log10(decibel);
+    return 0.0;
 }
 
 double SampleAnalyser::analyseSampleLoudnessLUFS(const File &inFile)
 {
-    return 0.0;
+    loadAudioFileSource(inFile);
+    int numChannels = mCurrentAudioFileSource->getAudioFormatReader()->numChannels;
+    analysisBuffer = AudioBuffer<float>(numChannels, bufferSize);
+    int64 totalNumSamples = mCurrentAudioFileSource->getTotalLength();
+    int numBlocks = int (totalNumSamples * 1.0 / bufferSize) + 1;
+    ebuLoudnessMeter.prepareToPlay(mCurrentAudioFileSource->getAudioFormatReader()->sampleRate,
+                                   mCurrentAudioFileSource->getAudioFormatReader()->numChannels,
+                                   bufferSize);
+    
+    for (int b = 0; b < numBlocks; b++)
+    {
+        mCurrentAudioFileSource->getAudioFormatReader()->read(&analysisBuffer, 0, bufferSize, b * bufferSize, true, true);
+        ebuLoudnessMeter.processBlock(analysisBuffer);
+    }
+    
+    return ebuLoudnessMeter.getIntegratedLoudness();
 }
 
 void SampleAnalyser::loadAudioFileSource(File const & inFile)

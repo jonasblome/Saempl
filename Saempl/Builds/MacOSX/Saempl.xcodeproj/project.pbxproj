@@ -34,6 +34,7 @@
 		1AA9856D02A62C11D011985F /* SampleFileFilterRuleLength.cpp */ = {isa = PBXBuildFile; fileRef = 466EB9CAD7F0E3EA66432FBB; };
 		1EF84598234FEADFE922C34E /* PluginEditor.cpp */ = {isa = PBXBuildFile; fileRef = 143B41D5D8F463FD85572884; };
 		22C31CA52CB9D29A01040A20 /* FileFilterPanel.cpp */ = {isa = PBXBuildFile; fileRef = 5431FD0CCA4151786C582FE6; };
+		24811BD86DA3086B36F51D03 /* Ebu128LoudnessMeter.cpp */ = {isa = PBXBuildFile; fileRef = FBA90969DBBE68D819B21951; };
 		25A831211BAE8895EA3BBEA0 /* AudioUnit.framework */ = {isa = PBXBuildFile; fileRef = 2D41EF36D719CEE725A5134E; };
 		2845A6857B7340BB5DAC9024 /* SampleNavigationPanel.cpp */ = {isa = PBXBuildFile; fileRef = 7CAFDB97D20F9E166EB9CA80; };
 		2A0CDA67A311EFD165BC8A17 /* BlomeFileFilterRuleViewLoudnessLUFS.cpp */ = {isa = PBXBuildFile; fileRef = 159B4947BEBAFEDD0D63BE65; };
@@ -156,6 +157,7 @@
 		3CAE8FB96832AC1F340FD7B4 /* SampleFileFilterRuleTitle.cpp */ /* SampleFileFilterRuleTitle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SampleFileFilterRuleTitle.cpp; path = ../../Source/SampleFileFilterRuleTitle.cpp; sourceTree = SOURCE_ROOT; };
 		3D6456DEA9AD3495C23920EB /* Cocoa.framework */ /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		3FF9E04643D23895C7BA2789 /* grid_view_FILL0_wght400_GRAD0_opsz24.png */ /* grid_view_FILL0_wght400_GRAD0_opsz24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = grid_view_FILL0_wght400_GRAD0_opsz24.png; path = ../../Assets/grid_view_FILL0_wght400_GRAD0_opsz24.png; sourceTree = SOURCE_ROOT; };
+		401C488B127EF035C6B11F15 /* Ebu128LoudnessMeter.h */ /* Ebu128LoudnessMeter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Ebu128LoudnessMeter.h; path = ../../Source/Ebu128LoudnessMeter.h; sourceTree = SOURCE_ROOT; };
 		404743E829B6D935E6A66BA9 /* include_juce_graphics.mm */ /* include_juce_graphics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_graphics.mm; path = ../../JuceLibraryCode/include_juce_graphics.mm; sourceTree = SOURCE_ROOT; };
 		4243F3D5F2EB53B87C7F0E03 /* include_juce_audio_plugin_client_AU_2.mm */ /* include_juce_audio_plugin_client_AU_2.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_plugin_client_AU_2.mm; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_AU_2.mm; sourceTree = SOURCE_ROOT; };
 		435BFFE4946F34EEC3885F6E /* SampleLibrary.h */ /* SampleLibrary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleLibrary.h; path = ../../Source/SampleLibrary.h; sourceTree = SOURCE_ROOT; };
@@ -267,6 +269,7 @@
 		F0EBDC99D514A7AAA718796C /* SampleLibrary.cpp */ /* SampleLibrary.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SampleLibrary.cpp; path = ../../Source/SampleLibrary.cpp; sourceTree = SOURCE_ROOT; };
 		F54B4827E112ED529BDE5661 /* PanelBase.cpp */ /* PanelBase.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PanelBase.cpp; path = ../../Source/PanelBase.cpp; sourceTree = SOURCE_ROOT; };
 		F7C6721E275E832A4BC0B0F3 /* AudioPlayer.cpp */ /* AudioPlayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AudioPlayer.cpp; path = ../../Source/AudioPlayer.cpp; sourceTree = SOURCE_ROOT; };
+		FBA90969DBBE68D819B21951 /* Ebu128LoudnessMeter.cpp */ /* Ebu128LoudnessMeter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Ebu128LoudnessMeter.cpp; path = ../../Source/Ebu128LoudnessMeter.cpp; sourceTree = SOURCE_ROOT; };
 		FBE053E824BD2010ABB53F99 /* HeaderPanel.h */ /* HeaderPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HeaderPanel.h; path = ../../Source/HeaderPanel.h; sourceTree = SOURCE_ROOT; };
 		FED5BC8AD42DD2DF71B9108F /* SampleItem.h */ /* SampleItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleItem.h; path = ../../Source/SampleItem.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -452,6 +455,8 @@
 			children = (
 				D74344FEF409F4925275BFB5,
 				BB1E978058C5187E51C55D15,
+				FBA90969DBBE68D819B21951,
+				401C488B127EF035C6B11F15,
 				1F639A190DBA3788A5321E1F,
 				62372E9E969BEB9B34CF461C,
 				F7C6721E275E832A4BC0B0F3,
@@ -1005,6 +1010,7 @@
 				DF160FBE26137E23AEF1B604,
 				A5FB8F1EA5AC2408D9ECCA87,
 				B9A7964D7AD1C51A0D95DF3B,
+				24811BD86DA3086B36F51D03,
 				D27D188774BD25196E97C74F,
 				69169312CD3AFD8B5EA84F1C,
 				B1DE1EA6643FB5788C36E515,

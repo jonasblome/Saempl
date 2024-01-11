@@ -145,6 +145,10 @@
             file="Source/SampleAnalyser.cpp"/>
       <FILE id="Vj1R2H" name="SampleAnalyser.h" compile="0" resource="0"
             file="Source/SampleAnalyser.h"/>
+      <FILE id="bxJcVD" name="Ebu128LoudnessMeter.cpp" compile="1" resource="0"
+            file="Source/Ebu128LoudnessMeter.cpp"/>
+      <FILE id="G1zpRK" name="Ebu128LoudnessMeter.h" compile="0" resource="0"
+            file="Source/Ebu128LoudnessMeter.h"/>
       <FILE id="veLVxA" name="SecondOrderIIRFilter.cpp" compile="1" resource="0"
             file="Source/SecondOrderIIRFilter.cpp"/>
       <FILE id="hGpdKL" name="SecondOrderIIRFilter.h" compile="0" resource="0"

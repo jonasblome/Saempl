@@ -10,6 +10,7 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include "Ebu128LoudnessMeter.h"
 
 /**
  Analyses sample files for given categories.
@@ -47,8 +48,9 @@ public:
 private:
     std::unique_ptr<AudioFormatReaderSource> mCurrentAudioFileSource;
     std::unique_ptr<AudioFormatManager> mFormatManager;
-    int bufferSize = 44100;
+    int bufferSize = 512;
     AudioBuffer<float> analysisBuffer = AudioBuffer<float>(5, bufferSize);
+    Ebu128LoudnessMeter ebuLoudnessMeter;
     
     /**
      Loads the given file into a audio source.
