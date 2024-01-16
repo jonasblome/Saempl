@@ -37,6 +37,10 @@ int SampleItemComparator::compareElements(SampleItem* first, SampleItem* second)
     {
         return compareElements<double>(first->getLoudnessLUFS(), second->getLoudnessLUFS());
     }
+    else if (mComparePropertyName == PROPERTY_NAMES[4])
+    {
+        return compareElements<double>(first->getTempo(), second->getTempo());
+    }
     
     return 0;
 }

@@ -68,3 +68,13 @@ void SampleItem::setLoudnessLUFS(double inLUFS)
 {
     mLoudnessLUFS = inLUFS;
 }
+
+int SampleItem::getTempo() const
+{
+    return mTempo;
+}
+
+void SampleItem::setTempo(int inTempo)
+{
+    mTempo = inTempo;
+}

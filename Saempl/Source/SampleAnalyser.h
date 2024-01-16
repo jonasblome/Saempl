@@ -44,13 +44,26 @@ public:
      @returns the loudness of the audio file in LUFS.
      */
     double analyseSampleLoudnessLUFS(File const & inFile);
+    /**
+     Analyses the tempo of the given file in bpm.
+     
+     @param inFile the file to analyse.
+     
+     @returns the tempo of the audio file in bpm.
+     */
+    int analyseSampleTempo(File const & inFile);
     
 private:
     std::unique_ptr<AudioFormatReaderSource> mCurrentAudioFileSource;
     std::unique_ptr<AudioFormatManager> mFormatManager;
-    int bufferSize = 512;
-    AudioBuffer<float> analysisBuffer = AudioBuffer<float>(5, bufferSize);
-    Ebu128LoudnessMeter ebuLoudnessMeter;
+    AudioBuffer<float> mAnalysisBuffer;
+    Ebu128LoudnessMeter mEbuLoudnessMeter;
+    static const int fftOrder = 10;
+    static const int fftSize = 1 << fftOrder;
+    static const int bufferSize = 2 * fftSize;
+    dsp::FFT mForwardFFT;
+    dsp::WindowingFunction<float> hannWindow;
+    Array<float> mWindowedFFTData;
     
     /**
      Loads the given file into a audio source.

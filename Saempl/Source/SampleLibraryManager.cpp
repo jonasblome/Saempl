@@ -63,6 +63,11 @@ void SampleLibraryManager::updateSampleLibraryFile(File& inLibraryDirectory)
         samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLoudnessLUFS());
         samplePropertiesXml->prependChildElement(samplePropertyXml);
         
+        // Adding LUFS loudness property
+        samplePropertyXml = new XmlElement(PROPERTY_NAMES[4]);
+        samplePropertyXml->setAttribute("PropertyValue", sampleItem->getTempo());
+        samplePropertiesXml->prependChildElement(samplePropertyXml);
+        
         sampleItemXml->prependChildElement(samplePropertiesXml);
         
         sampleItemsXml->prependChildElement(sampleItemXml);
@@ -190,6 +195,11 @@ void SampleLibraryManager::loadSampleLibrary(File& inLibraryDirectory)
                 samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[3]);
                 double loudnessLUFS = samplePropertyXml->getDoubleAttribute("PropertyValue");
                 sampleItem->setLoudnessLUFS(loudnessLUFS);
+                
+                // Adding tempo property to item
+                samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[4]);
+                int tempo = samplePropertyXml->getDoubleAttribute("PropertyValue");
+                sampleItem->setTempo(tempo);
             }
         }
     }
@@ -282,4 +292,5 @@ void SampleLibraryManager::analyseSampleItem(SampleItem& inSampleItem, File cons
     inSampleItem.setLength(mSampleAnalyser->analyseSampleLength(inFile));
     inSampleItem.setLoudnessDecibel(mSampleAnalyser->analyseSampleLoudnessDecibel(inFile));
     inSampleItem.setLoudnessLUFS(mSampleAnalyser->analyseSampleLoudnessLUFS(inFile));
+    inSampleItem.setTempo(mSampleAnalyser->analyseSampleTempo(inFile));
 }

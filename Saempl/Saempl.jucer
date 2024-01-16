@@ -62,6 +62,10 @@
             resource="0" file="Source/BlomeFileFilterRuleViewLoudnessLUFS.cpp"/>
       <FILE id="oKd4Io" name="BlomeFileFilterRuleViewLoudnessLUFS.h" compile="0"
             resource="0" file="Source/BlomeFileFilterRuleViewLoudnessLUFS.h"/>
+      <FILE id="A0O5uM" name="BlomeFileFilterRuleViewTempo.cpp" compile="1"
+            resource="0" file="Source/BlomeFileFilterRuleViewTempo.cpp"/>
+      <FILE id="Nf883X" name="BlomeFileFilterRuleViewTempo.h" compile="0"
+            resource="0" file="Source/BlomeFileFilterRuleViewTempo.h"/>
       <FILE id="WxYaGi" name="BlomeFileTreeView.cpp" compile="1" resource="0"
             file="Source/BlomeFileTreeView.cpp"/>
       <FILE id="eHx4JX" name="BlomeFileTreeView.h" compile="0" resource="0"
@@ -188,6 +192,10 @@
             resource="0" file="Source/SampleFileFilterRuleLoudnessLUFS.cpp"/>
       <FILE id="urj6sF" name="SampleFileFilterRuleLoudnessLUFS.h" compile="0"
             resource="0" file="Source/SampleFileFilterRuleLoudnessLUFS.h"/>
+      <FILE id="zMSK6D" name="SampleFileFilterRuleTempo.cpp" compile="1"
+            resource="0" file="Source/SampleFileFilterRuleTempo.cpp"/>
+      <FILE id="lksA9N" name="SampleFileFilterRuleTempo.h" compile="0" resource="0"
+            file="Source/SampleFileFilterRuleTempo.h"/>
       <FILE id="i4IYPu" name="SampleItem.cpp" compile="1" resource="0" file="Source/SampleItem.cpp"/>
       <FILE id="i15BWX" name="SampleItem.h" compile="0" resource="0" file="Source/SampleItem.h"/>
       <FILE id="fjhQHu" name="SampleItemComparator.cpp" compile="1" resource="0"
@@ -227,6 +235,7 @@
         <MODULEPATH id="juce_graphics" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../../../JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
   </EXPORTFORMATS>
@@ -240,6 +249,7 @@
     <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>

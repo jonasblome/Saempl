@@ -69,6 +69,16 @@ public:
      @param inLoudness the loudness to set.
      */
     void setLoudnessLUFS(double inLUFS);
+    /**
+     @returns the samples tempo in bpm.
+     */
+    int getTempo() const;
+    /**
+     Sets the tempo of the sample item in bpm.
+     
+     @param inTempo the tempo to set.
+     */
+    void setTempo(int inTempo);
     
 private:
     String mFilePath;
@@ -76,4 +86,5 @@ private:
     double mLength;
     double mLoudnessDecibel;
     double mLoudnessLUFS;
+    int mTempo;
 };

@@ -97,6 +97,13 @@ void FileFilterPanel::generateRuleView(SampleFileFilterRuleBase *rule)
                                                                        sampleLibrary));
             break;
         }
+        case 4:
+        {
+            newRuleView = mFilterRuleViews
+                .add(std::make_unique<BlomeFileFilterRuleViewTempo>(*dynamic_cast<SampleFileFilterRuleTempo*>(rule),
+                                                                       sampleLibrary));
+            break;
+        }
         default:
             jassertfalse;
             break;
@@ -137,6 +144,11 @@ void FileFilterPanel::addFilterRuleView()
         case 3:
         {
             newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleLoudnessLUFS(PROPERTY_NAMES[3]));
+            break;
+        }
+        case 4:
+        {
+            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleTempo(PROPERTY_NAMES[4]));
             break;
         }
         default:
@@ -197,7 +209,8 @@ void FileFilterPanel::setNewRuleTypeChooser() {
     mNewRuleTypeChooser->addItem("New title rule", 1);
     mNewRuleTypeChooser->addItem("New length rule", 2);
     mNewRuleTypeChooser->addItem("New loudness(dB) rule", 3);
-    mNewRuleTypeChooser->addItem("New loudness(LUFS) rule", 3);
+    mNewRuleTypeChooser->addItem("New loudness(LUFS) rule", 4);
+    mNewRuleTypeChooser->addItem("New tempo rule", 5);
     mNewRuleTypeChooser->setTextWhenNothingSelected("Choose new rule type");
     addAndMakeVisible(*mNewRuleTypeChooser);
 }
