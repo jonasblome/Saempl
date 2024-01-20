@@ -19,11 +19,8 @@
 #include "NoiseOverlayPanel.h"
 
 /**
- Holds the \ref BlomeFileFilterRuleViewBase components.
+ Holds the BlomeFileFilterRuleViewBase components.
  
- Implements:
- \ref PanelBase
- \ref juce::TextButton::Listener
  Has dropdown and button to add new filter rules of different types.
  */
 class FileFilterPanel
@@ -50,17 +47,17 @@ private:
     
     void paint(Graphics& g) override;
     /**
-     Generates a \ref BlomeFileFilterRuleViewBase for the given rule and adds it to the \ref FileFilterPanel::mFilterRuleViews collection.
+     Generates a BlomeFileFilterRuleViewBase for the given rule and adds it to the FileFilterPanel::mFilterRuleViews collection.
      
      @param rule the rule for which to create the view.
      */
     void generateRuleView(SampleFileFilterRuleBase* rule);
     /**
-     Adds a new rule to the \ref SampleFileFilter and adds a view to the panel.
+     Adds a new rule to the SampleFileFilter and adds a view to the panel.
      */
     void addFilterRuleView();
     /**
-     Removes a rule from the \ref SampleFileFilter and its respective view.
+     Removes a rule from the SampleFileFilter and its respective view.
      */
     void removeFilterRule(SampleFileFilterRuleBase const & inFilterRule);
     void setAddFilterRuleButton();

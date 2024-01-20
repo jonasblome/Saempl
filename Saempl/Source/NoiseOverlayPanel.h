@@ -14,9 +14,6 @@
 
 /**
  Draws a layer of transparent grainy noise over the plugin editor window.
- 
- Implements:
- \ref juce::Component
  */
 class NoiseOverlayPanel
 :

@@ -18,19 +18,13 @@ static String const DIRECTORY_SEPARATOR = "\\";
 static String const DIRECTORY_SEPARATOR = "/";
 #endif
 
-// Custom file extensions
 static String const SAMPLE_LIBRARY_FILE_EXTENSION = ".bslf";
 static String const SAEMPL_DATA_FILE_EXTENSION = ".saempl";
-
-// Audio formats
 static StringArray const SUPPORTED_AUDIO_FORMATS = StringArray({ ".mp3", ".wav", ".aiff", ".m4a" });
 static String const SUPPORTED_AUDIO_FORMATS_WILDCARD = "*.wav;*.mp3;*.aiff;*.m4a";
 static String const SUPPORTED_AUDIO_FORMATS_EXTENSIONS = ".wav;.mp3;.aiff;.m4a";
-
-// Property names
 static StringArray const PROPERTY_NAMES = StringArray({ "Title", "Length", "dB", "LUFS", "Tempo" });
 
-// Filter rule compare operators
 enum CompareOperators
 {
     LESS_THAN = 0,
@@ -39,7 +33,6 @@ enum CompareOperators
     CONTAINS
 };
 
-// Navigation panel names
 enum NavigationPanelType
 {
     PANELS_LIBRARY_PANEL = 0,
@@ -69,7 +62,13 @@ enum SampleItemCollectionScope
     PALETTE_SAMPLES,
 };
 
-// Helper functions
+/**
+ Checks if a file extension is a supported audio format.
+ 
+ @param inExtension the string to check.
+ 
+ @returns whether the extension is supported or not.
+ */
 inline bool isSupportedAudioFileFormat(String inExtension)
 {
     for (String extension : SUPPORTED_AUDIO_FORMATS)
@@ -83,6 +82,16 @@ inline bool isSupportedAudioFileFormat(String inExtension)
     return false;
 }
 
+/**
+ Draws a drop shadow for a given area and position.
+ 
+ @param g the graphics object.
+ @param dropShadowArea the area to draw the shadow in.
+ @param offsetX the amount to offset the shadow in the x direction.
+ @param offsetY the amount to offset the shadow in the y direction.
+ @param radius the shadows gradient radius.
+ @param style the styling object that provides global styling definitions.
+ */
 inline void drawDropShadow(Graphics& g,
                            Rectangle<int> dropShadowArea,
                            int offsetX,
@@ -97,9 +106,11 @@ inline void drawDropShadow(Graphics& g,
     g.drawImageAt(dropShadowImage, 0, 0);
 }
 
+/**
+ Shows a warning message when a file has externally been deleted.
+ */
 inline void showFileDeletedWarning()
 {
-    // Show warning popup message
     AlertWindow::showAsync(MessageBoxOptions()
                            .withIconType(MessageBoxIconType::NoIcon)
                            .withTitle("File not available!")

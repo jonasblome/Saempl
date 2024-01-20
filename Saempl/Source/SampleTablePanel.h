@@ -14,10 +14,7 @@
 #include "BlomeTableViewNavigation.h"
 
 /**
- Holds the table for displaying all \ref SampleLibrary::mAllSampleItems
- 
- Implements:
- \ref PanelBase
+ Holds the table for displaying all SampleLibrary::mAllSampleItems.
  */
 class SampleTablePanel
 :
@@ -28,7 +25,7 @@ public:
      The constructor for the sample table panel.
      
      @param inSampleLibrary the library object of the current plugin instance.
-     @param inSampleItemPanel the panel for previewing \ref SampleItem objects.
+     @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
     SampleTablePanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~SampleTablePanel();

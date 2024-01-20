@@ -16,14 +16,10 @@
 #include "SampleItemPanel.h"
 
 /**
- The base class for displaying \ref SampleItem collections in a table.
+ The base class for displaying SampleItem collections in a table.
  
- Implements
- \ref juce::TableListBoxModel
- \ref juce::TableListBox
- \ref juce::FileDragAndDropTarget
  Handles drag and drop of files onto and from it.
- Retrieves its cell text information from \ref SampleItem properties.
+ Retrieves its cell text information from SampleItem properties.
  */
 class BlomeTableViewBase
 :
@@ -33,10 +29,10 @@ public FileDragAndDropTarget
 {
 public:
     /**
-     Constructor for the table view base on the \ref SampleLibrary.
+     Constructor for the table view base on the SampleLibrary.
      
      @param inSampleLibrary the sample library of the current plugin instance.
-     @param inSampleItemPanel the panel for previewing \ref SampleItem objects.
+     @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
     BlomeTableViewBase(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~BlomeTableViewBase();
@@ -64,9 +60,9 @@ protected:
                    int height,
                    bool rowIsSelected) override;
     /**
-     Gets the text for the property of the \ref SampleItem and the given column name.
+     Gets the text for the property of the SampleItem and the given column name.
      
-     @param inSampleItem the \ref SampleItem from which to get the property value.
+     @param inSampleItem the SampleItem from which to get the property value.
      @param columnName the name of the property to retrieve.
      
      @returns the string that represents the property value of the given column.

@@ -13,12 +13,9 @@
 #include "SampleFileFilterRuleLoudnessLUFS.h"
 
 /**
- The view class for \ref SampleFileFilterRuleLoudnessLUFS.
+ The view class for SampleFileFilterRuleLoudnessLUFS.
  
- Implements:
- \ref BlomeFileFilterRuleViewBase
- \ref juce::TextEditor::Listener
- Holds a \ref juce::TextEditor to change the \ref SampleFileFilterRuleLoudnessLUFS::mCompareValue.
+ Holds a juce::TextEditor to change the SampleFileFilterRuleLoudnessLUFS::mCompareValue.
  */
 class BlomeFileFilterRuleViewLoudnessLUFS
 :
@@ -35,7 +32,7 @@ public:
     BlomeFileFilterRuleViewLoudnessLUFS(SampleFileFilterRuleLoudnessLUFS& inFilterRule, SampleLibrary& inSampleLibrary);
     ~BlomeFileFilterRuleViewLoudnessLUFS();
     /**
-     @returns the \ref SampleFileFilterRuleBase linked to the view.
+     @returns the SampleFileFilterRuleBase linked to the view.
      */
     SampleFileFilterRuleLoudnessLUFS& getFilterRule();
     

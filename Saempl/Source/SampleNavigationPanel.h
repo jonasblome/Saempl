@@ -18,9 +18,7 @@
 /**
  Holds the panels for sample navigation.
  
- Implements:
- \ref PanelBase
- Includes \ref SampleLibraryPanel, \ref SampleTablePanel and \ref SampleGridPanel.
+ Includes SampleLibraryPanel, SampleTablePanel and SampleGridPanel.
  */
 class SampleNavigationPanel
 :
@@ -31,7 +29,7 @@ public:
      The constructor for the navigation panel.
      
      @param inProcessor the audio processor of the current plugin instance.
-     @param inSampleItemPanel the panel for previewing \ref SampleItem objects.
+     @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
     SampleNavigationPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~SampleNavigationPanel();

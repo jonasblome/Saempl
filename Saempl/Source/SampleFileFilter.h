@@ -15,11 +15,9 @@
 #include "SampleFileFilterRuleBase.h"
 
 /**
- The filter class to check if \ref SampleItem objects and files are matching the filter rules.
+ The filter class to check if SampleItem objects and files are matching the filter rules.
  
- Implements:
- \ref FileFilter
- Holds a collection of \ref SampleFileFilterRuleBase objects.
+ Holds a collection of SampleFileFilterRuleBase objects.
  */
 class SampleFileFilter
 :

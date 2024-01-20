@@ -14,7 +14,7 @@
 #include "BlomeHelpers.h"
 
 /**
- The base class for \ref SampleFileFilter rules.
+ The base class for SampleFileFilter rules.
  
  Can be toggled and holds a compare operator.
  */

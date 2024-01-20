@@ -13,10 +13,7 @@
 #include "BlomeTableViewPalette.h"
 
 /**
- Holds the table for displaying the \ref SampleLibrary::mPaletteSampleItems
- 
- Implements:
- \ref PanelBase
+ Holds the table for displaying the SampleLibrary::mPaletteSampleItems.
  */
 class SamplePalettePanel
 :
@@ -27,7 +24,7 @@ public:
      The constructor for the sample palette panel.
      
      @param inSampleLibrary the library object of the current plugin instance.
-     @param inSampleItemPanel the panel for previewing \ref SampleItem objects.
+     @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
     SamplePalettePanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~SamplePalettePanel();

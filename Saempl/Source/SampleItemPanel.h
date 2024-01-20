@@ -14,11 +14,8 @@
 #include "BlomeImageButton.h"
 
 /**
- Holds the audio file preview panel and the \ref AudioPlayer
+ Holds the audio file preview panel and the AudioPlayer.
  
- Implements:
- \ref PanelBase
- \ref juce::ChangeListener
  Can preview audio files and play them.
  */
 class SampleItemPanel

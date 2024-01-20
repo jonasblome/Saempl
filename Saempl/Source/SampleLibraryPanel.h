@@ -14,10 +14,8 @@
 #include "SampleItemPanel.h"
 
 /**
- Holds the \ref BlomeFileTreeView and controls the \ref SampleLibrary.
+ Holds the BlomeFileTreeView and controls the SampleLibrary.
  
- Implements:
- \ref PanelBase
  Handles previewing and deleting of sample files.
  */
 class SampleLibraryPanel
@@ -31,7 +29,7 @@ public:
      The constructor for the sample library panel.
      
      @param inSampleLibrary the library object of the current plugin instance.
-     @param inSampleItemPanel the panel for previewing \ref SampleItem objects.
+     @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
     SampleLibraryPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~SampleLibraryPanel();

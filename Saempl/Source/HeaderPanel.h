@@ -17,8 +17,6 @@
 /**
  Holds the logo, and components for global functionality.
  
- Implements:
- \ref PanelBase
  Encompasses the refresh button, the file chooser button,
  the navigation panel toggles and the filter settings.
  */

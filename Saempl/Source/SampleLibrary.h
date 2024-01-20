@@ -17,14 +17,11 @@
 #include "SampleFileFilterRuleLength.h"
 
 /**
- Manages storage and handling of \ref SampleItems.
+ Manages storage and handling of SampleItems.
  
- Implements:
- \ref juce::ChangeListener
- \ref ChangeBroadcaster
- Stores \ref SampleItem objects in collections, adds or removes them, filters them.
+ Stores SampleItem objects in collections, adds or removes them, filters them.
  Can scan the file system for  files and add them to the library.
- Can filter through stored \ref SampleItem objects and files from the file system.
+ Can filter through stored SampleItem objects and files from the file system.
  */
 class SampleLibrary
 :
@@ -32,9 +29,6 @@ public ChangeListener,
 public ChangeBroadcaster
 {
 public:
-    /**
-     The constructor of the sample library.
-     */
     SampleLibrary();
     ~SampleLibrary();
     /**
@@ -132,11 +126,11 @@ private:
     std::unique_ptr<SampleLibraryManager> mSampleLibraryManager;
     
     /**
-     Deletes \ref SampleItem objects in all collections (all, filtered, palette).
+     Deletes SampleItem objects in all collections (all, filtered, palette).
      */
     void clearSampleItemCollections();
     /**
-     Applies the filter to all sample items and adds filtered items to \ref mFilteredSampleItems collection.
+     Applies the filter to all sample items and adds filtered items to mFilteredSampleItems collection.
      */
     void applyFilter();
 };

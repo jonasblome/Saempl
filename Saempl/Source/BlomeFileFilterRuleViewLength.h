@@ -13,12 +13,9 @@
 #include "SampleFileFilterRuleLength.h"
 
 /**
- The view class for \ref SampleFileFilterRuleLength.
+ The view class for SampleFileFilterRuleLength.
  
- Implements:
- \ref BlomeFileFilterRuleViewBase
- \ref juce::TextEditor::Listener
- Holds a \ref juce::TextEditor to change the \ref SampleFileFilterRuleLength::mCompareValue.
+ Holds a juce::TextEditor to change the SampleFileFilterRuleLength::mCompareValue.
  */
 class BlomeFileFilterRuleViewLength
 :
@@ -35,7 +32,7 @@ public:
     BlomeFileFilterRuleViewLength(SampleFileFilterRuleLength& inFilterRule, SampleLibrary& inSampleLibrary);
     ~BlomeFileFilterRuleViewLength();
     /**
-     @returns the \ref SampleFileFilterRuleBase linked to the view.
+     @returns the SampleFileFilterRuleBase linked to the view.
      */
     SampleFileFilterRuleLength& getFilterRule();
     

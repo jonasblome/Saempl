@@ -13,11 +13,8 @@
 #include "SampleLibrary.h"
 
 /**
- The view class for displaying the \ref SampleLibrary directory file tree.
+ The view class for displaying the SampleLibrary directory file tree.
  
- Implements:
- \ref juce::ChangeListener
- \ref juce::FileTreeComponent
  Can handle drag and drop of files onto and from it.
  */
 class BlomeFileTreeView
@@ -27,7 +24,7 @@ public ChangeListener
 {
 public:
     /**
-     The constructor for the file tree view of the \ref SampleLibrary.
+     The constructor for the file tree view of the SampleLibrary.
      
      @param inSampleLibrary the library object of the plugin instance.
      */

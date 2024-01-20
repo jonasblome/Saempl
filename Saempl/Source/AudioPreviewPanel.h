@@ -15,14 +15,8 @@
 #include "AudioPlayer.h"
 
 /**
- Holds the \ref AudioThumbnail and displays the audio's waveform.
+ Holds the AudioThumbnail and displays the audio's waveform.
  
- Implements:
- \ref PanelBase
- \ref juce::FileDragAndDropTarget
- \ref juce::ChangeBroadcaster
- \ref juce::ScrollBar::Listener
- \ref juce::Timer
  Handles drag and drop of audio files, playback of the audio and zooming into the waveform.
  */
 class AudioPreviewPanel
@@ -38,7 +32,7 @@ public:
      The constructor for the audio preview panel.
      
      @param inProcessor the audio processor of the current plugin instance.
-     @param inSlider the zoom slider for the \ref AudioThumbnail.
+     @param inSlider the zoom slider for the AudioThumbnail.
      @param inAudioPlayer the sample editor with the audio player.
      */
     AudioPreviewPanel(SaemplAudioProcessor& inProcessor,
@@ -56,13 +50,13 @@ public:
      */
     URL getLastDroppedFile() const noexcept;
     /**
-     Sets the zoom factor of the \ref AudioThumbnail content.
+     Sets the zoom factor of the AudioThumbnail content.
      
      @param amount the zoom amount.
      */
     void setZoomFactor(double amount);
     /**
-     Sets the visible range of the \ref AudioThumbnail preview.
+     Sets the visible range of the AudioThumbnail preview.
      
      @param newRange the range to set the preview to.
      */

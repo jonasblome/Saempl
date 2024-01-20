@@ -12,7 +12,7 @@
 #include "SampleFileFilterRuleBase.h"
 
 /**
- \ref SampleFileFilterRuleBase implementation for the length property of \ref SampleItem.
+ SampleFileFilterRuleBase implementation for the length property of SampleItem.
  */
 class SampleFileFilterRuleLength
 :

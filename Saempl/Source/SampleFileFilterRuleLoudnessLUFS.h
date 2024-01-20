@@ -12,7 +12,7 @@
 #include "SampleFileFilterRuleBase.h"
 
 /**
- \ref SampleFileFilterRuleBase implementation for the LUFS loudness property of \ref SampleItem.
+ SampleFileFilterRuleBase implementation for the LUFS loudness property of SampleItem.
  */
 class SampleFileFilterRuleLoudnessLUFS
 :

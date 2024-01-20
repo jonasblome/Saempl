@@ -289,8 +289,5 @@ bool SampleLibraryManager::fileHasBeenAdded(String const & inFilePath)
 
 void SampleLibraryManager::analyseSampleItem(SampleItem& inSampleItem, File const & inFile)
 {
-    inSampleItem.setLength(mSampleAnalyser->analyseSampleLength(inFile));
-    inSampleItem.setLoudnessDecibel(mSampleAnalyser->analyseSampleLoudnessDecibel(inFile));
-    inSampleItem.setLoudnessLUFS(mSampleAnalyser->analyseSampleLoudnessLUFS(inFile));
-    inSampleItem.setTempo(mSampleAnalyser->analyseSampleTempo(inFile));
+    mSampleAnalyser->analyseSample(inSampleItem, inFile);
 }

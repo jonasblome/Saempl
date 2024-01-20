@@ -13,12 +13,9 @@
 #include "SampleFileFilterRuleTitle.h"
 
 /**
- The view class for \ref SampleFileFilterRuleTitle.
+ The view class for SampleFileFilterRuleTitle.
  
- Implements:
- \ref BlomeFileFilterRuleViewBase
- \ref juce::TextEditor::Listener
- Holds a \ref juce::TextEditor to change the \ref SampleFileFilterRuleTitle::mCompareValue.
+ Holds a juce::TextEditor to change the SampleFileFilterRuleTitle::mCompareValue.
  */
 class BlomeFileFilterRuleViewTitle
 :
@@ -35,7 +32,7 @@ public:
     BlomeFileFilterRuleViewTitle(SampleFileFilterRuleTitle& inFilterRule, SampleLibrary& inSampleLibrary);
     ~BlomeFileFilterRuleViewTitle();
     /**
-     @returns the \ref SampleFileFilterRuleBase linked to the view.
+     @returns the SampleFileFilterRuleBase linked to the view.
      */
     SampleFileFilterRuleTitle& getFilterRule();
     

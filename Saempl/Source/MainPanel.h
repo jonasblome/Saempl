@@ -15,10 +15,6 @@
 
 /**
  Holds all the panels and components of the plugin editor window.
- 
- Implements:
- \ref PanelBase
- \ref juce::DragAndDropContainer
  */
 class MainPanel
 :

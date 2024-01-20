@@ -12,7 +12,7 @@
 #include "SampleFileFilterRuleBase.h"
 
 /**
- \ref SampleFileFilterRuleBase implementation for the title property of \ref SampleItem.
+ SampleFileFilterRuleBase implementation for the title property of SampleItem.
  */
 class SampleFileFilterRuleTitle
 :

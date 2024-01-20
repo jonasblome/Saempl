@@ -17,9 +17,7 @@
 /**
  Holds the central components of the UI.
  
- Implements:
- \ref PanelBase
- Includes the sample navigation panels and the \ref SampleItemPanel for audio previewing.
+ Includes the sample navigation panels and the SampleItemPanel for audio previewing.
  */
 class CenterPanel
 :

@@ -12,11 +12,9 @@
 #include "BlomeTableViewBase.h"
 
 /**
- Implements \ref BlomeTableViewBase for the \ref SampleTablePanel.
+ Implements BlomeTableViewBase for the SampleTablePanel.
  
- Implements:
- \ref BlomeTableViewBase
- Handles sorting and deleting of each row's \ref SampleItem.
+ Handles sorting and deleting of each row's SampleItem.
  */
 class BlomeTableViewNavigation
 :
@@ -25,10 +23,10 @@ public ChangeListener
 {
 public:
     /**
-     Constructor for the table view on the \ref SampleLibrary::mFilteredSampleItems collection.
+     Constructor for the table view on the SampleLibrary::mFilteredSampleItems collection.
      
      @param inSampleLibrary the sample library of the current plugin instance.
-     @param inSampleItemPanel the panel for previewing \ref SampleItem objects.
+     @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
     BlomeTableViewNavigation(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~BlomeTableViewNavigation();

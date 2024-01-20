@@ -13,12 +13,9 @@
 #include "SampleFileFilterRuleLoudnessDecibel.h"
 
 /**
- The view class for \ref SampleFileFilterRuleLoudnessDecibel.
+ The view class for SampleFileFilterRuleLoudnessDecibel.
  
- Implements:
- \ref BlomeFileFilterRuleViewBase
- \ref juce::TextEditor::Listener
- Holds a \ref juce::TextEditor to change the \ref SampleFileFilterRuleLoudnessDecibel::mCompareValue.
+ Holds a juce::TextEditor to change the SampleFileFilterRuleLoudnessDecibel::mCompareValue.
  */
 class BlomeFileFilterRuleViewLoudnessDecibel
 :
@@ -35,7 +32,7 @@ public:
     BlomeFileFilterRuleViewLoudnessDecibel(SampleFileFilterRuleLoudnessDecibel& inFilterRule, SampleLibrary& inSampleLibrary);
     ~BlomeFileFilterRuleViewLoudnessDecibel();
     /**
-     @returns the \ref SampleFileFilterRuleBase linked to the view.
+     @returns the SampleFileFilterRuleBase linked to the view.
      */
     SampleFileFilterRuleLoudnessDecibel& getFilterRule();
     

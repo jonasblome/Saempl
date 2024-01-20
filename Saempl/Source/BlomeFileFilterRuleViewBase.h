@@ -15,13 +15,10 @@
 #include "BlomeImageButton.h"
 
 /**
- The base class for views to the \ref SampleFileFilterRuleBase classes.
+ The base class for views to the SampleFileFilterRuleBase classes.
  
- Implements:
- \ref juce::Component
- \ref juce::ComboBox::Listener
  The component holds a button for toggling the filter rule's active state,
- a combo box for choosing the \ref SampleFileFilterRuleBase::mCompareOperator
+ a combo box for choosing the SampleFileFilterRuleBase::mCompareOperator
  and a delete button to remove the filter rule.
  */
 class BlomeFileFilterRuleViewBase
@@ -39,16 +36,16 @@ public:
     BlomeFileFilterRuleViewBase(SampleFileFilterRuleBase& inFilterRule, SampleLibrary& inSampleLibrary);
     virtual ~BlomeFileFilterRuleViewBase();
     /**
-     @returns the \ref SampleFileFilterRuleBase linked to the view.
+     @returns the SampleFileFilterRuleBase linked to the view.
      */
     SampleFileFilterRuleBase& getFilterRule();
     /**
-     Adds a listener to the \ref mDeleteRuleButton.
+     Adds a listener to the mDeleteRuleButton.
      @param inListener the listener object to add.
      */
     void addDeleteButtonListener(Button::Listener* inListener);
     /**
-     Removes a listener from the \ref mDeleteRuleButton.
+     Removes a listener from the mDeleteRuleButton.
      @param inListener the listener object to remove.
      */
     void removeDeleteButtonListener(Button::Listener* inListener);

@@ -12,7 +12,7 @@
 #include "SampleFileFilterRuleBase.h"
 
 /**
- \ref SampleFileFilterRuleBase implementation for the tempo property of \ref SampleItem.
+ SampleFileFilterRuleBase implementation for the tempo property of SampleItem.
  */
 class SampleFileFilterRuleTempo
 :

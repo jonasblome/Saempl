@@ -13,12 +13,9 @@
 #include "SampleFileFilterRuleTempo.h"
 
 /**
- The view class for \ref SampleFileFilterRuleTempo.
+ The view class for SampleFileFilterRuleTempo.
  
- Implements:
- \ref BlomeFileFilterRuleViewBase
- \ref juce::TextEditor::Listener
- Holds a \ref juce::TextEditor to change the \ref SampleFileFilterRuleTempo::mCompareValue.
+ Holds a juce::TextEditor to change the SampleFileFilterRuleTempo::mCompareValue.
  */
 class BlomeFileFilterRuleViewTempo
 :
@@ -35,7 +32,7 @@ public:
     BlomeFileFilterRuleViewTempo(SampleFileFilterRuleTempo& inFilterRule, SampleLibrary& inSampleLibrary);
     ~BlomeFileFilterRuleViewTempo();
     /**
-     @returns the \ref SampleFileFilterRuleBase linked to the view.
+     @returns the SampleFileFilterRuleBase linked to the view.
      */
     SampleFileFilterRuleTempo& getFilterRule();
     

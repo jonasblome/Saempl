@@ -16,8 +16,6 @@
 /**
  The base class for UI panels.
  
- Implements:
- \ref juce::Component
  Handles setting, painting and resizing it's children and components.
  */
 class PanelBase
