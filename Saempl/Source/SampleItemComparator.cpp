@@ -39,7 +39,11 @@ int SampleItemComparator::compareElements(SampleItem* first, SampleItem* second)
     }
     else if (mComparePropertyName == PROPERTY_NAMES[4])
     {
-        return compareElements<double>(first->getTempo(), second->getTempo());
+        return compareElements<int>(first->getTempo(), second->getTempo());
+    }
+    else if (mComparePropertyName == PROPERTY_NAMES[5])
+    {
+        return compareElements<String>(first->getKey(), second->getKey());
     }
     
     return 0;

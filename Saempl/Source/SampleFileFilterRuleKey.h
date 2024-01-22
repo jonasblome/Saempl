@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    SampleFileFilterRuleLoudnessLUFS.h
+    SampleFileFilterRuleKey.h
     Author:  Jonas Blome
 
   ==============================================================================
@@ -12,32 +12,32 @@
 #include "SampleFileFilterRuleBase.h"
 
 /**
- SampleFileFilterRuleBase implementation for the LUFS loudness property of SampleItem.
+ SampleFileFilterRuleBase implementation for the key property of SampleItem.
  */
-class SampleFileFilterRuleLoudnessLUFS
+class SampleFileFilterRuleKey
 :
 public SampleFileFilterRuleBase
 {
 public:
     /**
-     The constructor of the LUFS loudness rule.
+     The constructor of the key rule.
      
      @param inRulePropertyName the rule's property name.
      */
-    SampleFileFilterRuleLoudnessLUFS(String inRulePropertyName);
-    ~SampleFileFilterRuleLoudnessLUFS();
+    SampleFileFilterRuleKey(String inRulePropertyName);
+    ~SampleFileFilterRuleKey();
     bool matches(SampleItem const & inSampleItem) override;
     /**
      @returns the compare value of the rule.
      */
-    double getCompareValue();
+    String getCompareValue();
     /**
      Sets the compare value of the rule.
      
      @param inCompareValue the value to set.
      */
-    void setCompareValue(double const & inCompareValue);
+    void setCompareValue(String const & inCompareValue);
     
 private:
-    double mCompareValue;
+    String mCompareValue;
 };

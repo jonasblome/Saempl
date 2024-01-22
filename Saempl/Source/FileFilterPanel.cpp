@@ -104,6 +104,13 @@ void FileFilterPanel::generateRuleView(SampleFileFilterRuleBase *rule)
                                                                        sampleLibrary));
             break;
         }
+        case 5:
+        {
+            newRuleView = mFilterRuleViews
+                .add(std::make_unique<BlomeFileFilterRuleViewKey>(*dynamic_cast<SampleFileFilterRuleKey*>(rule),
+                                                                       sampleLibrary));
+            break;
+        }
         default:
             jassertfalse;
             break;

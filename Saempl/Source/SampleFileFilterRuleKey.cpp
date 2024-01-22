@@ -1,30 +1,30 @@
 /*
- ==============================================================================
- 
- SampleFileFilterRuleLength.cpp
- Author:  Jonas Blome
- 
- ==============================================================================
- */
+  ==============================================================================
 
-#include "SampleFileFilterRuleLength.h"
+    SampleFileFilterRuleKey.cpp
+    Author:  Jonas Blome
 
-SampleFileFilterRuleLength::SampleFileFilterRuleLength(String inRulePropertyName)
+  ==============================================================================
+*/
+
+#include "SampleFileFilterRuleKey.h"
+
+SampleFileFilterRuleKey::SampleFileFilterRuleKey(String inRulePropertyName)
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = 0.0;
+    mCompareValue = "C";
     mCompareOperator = GREATER_THAN;
 }
 
-SampleFileFilterRuleLength::~SampleFileFilterRuleLength()
+SampleFileFilterRuleKey::~SampleFileFilterRuleKey()
 {
     
 }
 
-bool SampleFileFilterRuleLength::matches(SampleItem const & inSampleItem)
+bool SampleFileFilterRuleKey::matches(SampleItem const & inSampleItem)
 {
-    int propertyValue = inSampleItem.getLength();
+    String propertyValue = inSampleItem.getKey();
     
     switch (mCompareOperator) {
         case LESS_THAN:
@@ -53,12 +53,12 @@ bool SampleFileFilterRuleLength::matches(SampleItem const & inSampleItem)
     };
 }
 
-double SampleFileFilterRuleLength::getCompareValue()
+String SampleFileFilterRuleKey::getCompareValue()
 {
     return mCompareValue;
 }
 
-void SampleFileFilterRuleLength::setCompareValue(double const & inCompareValue)
+void SampleFileFilterRuleKey::setCompareValue(String const & inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

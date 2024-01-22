@@ -78,3 +78,13 @@ void SampleItem::setTempo(int inTempo)
 {
     mTempo = inTempo;
 }
+
+String SampleItem::getKey() const
+{
+    return mKey;
+}
+
+void SampleItem::setKey(String inKey)
+{
+    mKey = inKey;
+}

@@ -79,6 +79,16 @@ public:
      @param inTempo the tempo to set.
      */
     void setTempo(int inTempo);
+    /**
+     @returns the samples key.
+     */
+    String getKey() const;
+    /**
+     Sets the key of the sample item.
+     
+     @param inKey the key to set.
+     */
+    void setKey(String inKey);
     
 private:
     String mFilePath;
@@ -87,4 +97,5 @@ private:
     double mLoudnessDecibel;
     double mLoudnessLUFS;
     int mTempo;
+    String mKey;
 };

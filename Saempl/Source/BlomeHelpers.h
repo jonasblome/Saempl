@@ -23,7 +23,7 @@ static String const SAEMPL_DATA_FILE_EXTENSION = ".saempl";
 static StringArray const SUPPORTED_AUDIO_FORMATS = StringArray({ ".mp3", ".wav", ".aiff", ".m4a" });
 static String const SUPPORTED_AUDIO_FORMATS_WILDCARD = "*.wav;*.mp3;*.aiff;*.m4a";
 static String const SUPPORTED_AUDIO_FORMATS_EXTENSIONS = ".wav;.mp3;.aiff;.m4a";
-static StringArray const PROPERTY_NAMES = StringArray({ "Title", "Length", "dB", "LUFS", "Tempo" });
+static StringArray const PROPERTY_NAMES = StringArray({ "Title", "Length", "dB", "LUFS", "Tempo", "Key" });
 
 enum CompareOperators
 {
@@ -52,6 +52,22 @@ static std::map<String, NavigationPanelType> STRING_TO_NAVIGATION_PANEL_TYPE
     { "PANELS_LIBRARY_PANEL", PANELS_LIBRARY_PANEL },
     { "PANELS_TABLE_PANEL", PANELS_TABLE_PANEL },
     { "PANELS_GRID_PANEL", PANELS_GRID_PANEL }
+};
+
+static std::map<int, String> CHROMA_INDEX_TO_KEY
+{
+    { 0, "Cmaj" },
+    { 1, "Db maj" },
+    { 2, "D maj" },
+    { 3, "Eb maj" },
+    { 4, "E maj" },
+    { 5, "F maj" },
+    { 6, "Gb maj" },
+    { 7, "G maj" },
+    { 8, "Ab maj" },
+    { 9, "A maj" },
+    { 10, "Bb maj" },
+    { 11, "B maj" }
 };
 
 // Sample library collection types

@@ -118,6 +118,10 @@ String BlomeTableViewBase::getCellText(SampleItem* inSampleItem, String columnNa
     {
         return std::to_string(inSampleItem->getTempo());
     }
+    else if (columnName == PROPERTY_NAMES[5])
+    {
+        return inSampleItem->getKey();
+    }
     else
     {
         return "unknown";

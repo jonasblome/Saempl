@@ -53,12 +53,12 @@ bool SampleFileFilterRuleLoudnessLUFS::matches(SampleItem const & inSampleItem)
     };
 }
 
-int SampleFileFilterRuleLoudnessLUFS::getCompareValue()
+double SampleFileFilterRuleLoudnessLUFS::getCompareValue()
 {
     return mCompareValue;
 }
 
-void SampleFileFilterRuleLoudnessLUFS::setCompareValue(int const & inCompareValue)
+void SampleFileFilterRuleLoudnessLUFS::setCompareValue(double const & inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

@@ -53,12 +53,12 @@ bool SampleFileFilterRuleLoudnessDecibel::matches(SampleItem const & inSampleIte
     };
 }
 
-int SampleFileFilterRuleLoudnessDecibel::getCompareValue()
+double SampleFileFilterRuleLoudnessDecibel::getCompareValue()
 {
     return mCompareValue;
 }
 
-void SampleFileFilterRuleLoudnessDecibel::setCompareValue(int const & inCompareValue)
+void SampleFileFilterRuleLoudnessDecibel::setCompareValue(double const & inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

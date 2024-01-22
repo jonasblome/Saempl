@@ -63,9 +63,14 @@ void SampleLibraryManager::updateSampleLibraryFile(File& inLibraryDirectory)
         samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLoudnessLUFS());
         samplePropertiesXml->prependChildElement(samplePropertyXml);
         
-        // Adding LUFS loudness property
+        // Adding tempo property
         samplePropertyXml = new XmlElement(PROPERTY_NAMES[4]);
         samplePropertyXml->setAttribute("PropertyValue", sampleItem->getTempo());
+        samplePropertiesXml->prependChildElement(samplePropertyXml);
+        
+        // Adding key property
+        samplePropertyXml = new XmlElement(PROPERTY_NAMES[5]);
+        samplePropertyXml->setAttribute("PropertyValue", sampleItem->getKey());
         samplePropertiesXml->prependChildElement(samplePropertyXml);
         
         sampleItemXml->prependChildElement(samplePropertiesXml);
@@ -198,8 +203,13 @@ void SampleLibraryManager::loadSampleLibrary(File& inLibraryDirectory)
                 
                 // Adding tempo property to item
                 samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[4]);
-                int tempo = samplePropertyXml->getDoubleAttribute("PropertyValue");
+                int tempo = samplePropertyXml->getIntAttribute("PropertyValue");
                 sampleItem->setTempo(tempo);
+                
+                // Adding key property to item
+                samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[5]);
+                String key = samplePropertyXml->getStringAttribute("PropertyValue");
+                sampleItem->setKey(key);
             }
         }
     }

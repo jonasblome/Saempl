@@ -16,6 +16,7 @@
 #include "BlomeFileFilterRuleViewLoudnessDecibel.h"
 #include "BlomeFileFilterRuleViewLoudnessLUFS.h"
 #include "BlomeFileFilterRuleViewTempo.h"
+#include "BlomeFileFilterRuleViewKey.h"
 #include "NoiseOverlayPanel.h"
 
 /**
