@@ -158,7 +158,9 @@ void Ebu128LoudnessMeter::prepareToPlay(double sampleRate,
     reset();
 }
 
-void Ebu128LoudnessMeter::processBlock(juce::AudioSampleBuffer const & buffer)
+void Ebu128LoudnessMeter::processBlock(juce::AudioSampleBuffer const & buffer,
+                                       int & numZeroCrossings,
+                                       float & decibel)
 {
     // Copy the buffer, such that all upcoming calculations won't affect the audio output
     // We want the audio output to be exactly the same as the input
@@ -198,15 +200,37 @@ void Ebu128LoudnessMeter::processBlock(juce::AudioSampleBuffer const & buffer)
     
     // STEP 2: Mean square
     // --------------------
-    for (int k = 0; k != bufferForMeasurement.getNumChannels(); ++k)
+    float decibelSumBlock = 0.0;
+    bool signalIsPositive = true;
+    int numChannels = bufferForMeasurement.getNumChannels();
+    
+    for (int ch = 0; ch != numChannels; ++ch)
     {
-        float* theKthChannelData = bufferForMeasurement.getWritePointer(k);
+        float* theKthChannelData = bufferForMeasurement.getWritePointer(ch);
+        double decibelSumChannel = 0.0;
+        int numSamples = bufferForMeasurement.getNumSamples();
         
-        for (int i = 0; i != bufferForMeasurement.getNumSamples(); ++i)
+        for (int s = 0; s != numSamples; ++s)
         {
-            theKthChannelData[i] = theKthChannelData[i] * theKthChannelData[i];
+            float sample = theKthChannelData[s];
+            decibelSumChannel += abs(sample);
+            
+            // Count zero crossings
+            if ((signalIsPositive && sample < 0) || (!signalIsPositive && sample > 0))
+            {
+                signalIsPositive = !signalIsPositive;
+                numZeroCrossings++;
+            }
+            
+            theKthChannelData[s] = sample * sample;
         }
+        
+        decibelSumChannel /= numSamples;
+        decibelSumBlock += decibelSumChannel;
     }
+    
+    decibelSumBlock /= numChannels;
+    decibel += decibelSumBlock;
     
     const int numberOfChannels = bufferForMeasurement.getNumChannels();
     

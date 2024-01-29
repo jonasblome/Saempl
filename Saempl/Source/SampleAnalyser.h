@@ -15,7 +15,7 @@
 #include "BlomeHelpers.h"
 
 /**
- Analyses sample files for given categories.
+ Analyses properties of given sample files.
  */
 class SampleAnalyser
 {
@@ -26,8 +26,10 @@ public:
      Analyses all properties of a given file and sets the properties in the provided SampleItem object.
      
      @param inSampleItem the sample item to set the properties for.
+     @param inFile the file belonging to the sample item.
+     @param forceAnalysis forces analysis even for files longer than one minute.
      */
-    void analyseSample(SampleItem& inSampleItem, File const & inFile);
+    void analyseSample(SampleItem& inSampleItem, File const & inFile, bool forceAnalysis);
     
 private:
     std::unique_ptr<AudioFormatReaderSource> mCurrentAudioFileSource;
@@ -35,16 +37,14 @@ private:
     AudioBuffer<float> mAnalysisBuffer;
     Ebu128LoudnessMeter mEbuLoudnessMeter;
     dsp::FFT mForwardFFT;
-    dsp::WindowingFunction<float> hannWindow;
-    Array<Array<float>> mSTFTSpectrum;
+    dsp::WindowingFunction<float> mWindowFunction;
     Array<float> mWindowedFFTData;
+    Array<Array<float>> mSTFTSpectrum;
     // Higher values increase temporal resolution of the STFT spectrum
-    static const int tempoFFTOrder = 10;
+    static const int tempoFFTOrder = 11;
     static const int tempoFFTSize = 1 << tempoFFTOrder;
-    static const int tempoBufferLength = 2 * tempoFFTSize;
-    static const int tempoFFTHopLength = tempoBufferLength / 2;
-    // Use higher values to enhance quiter elements in a sample's spectrum
-    constexpr static const float compressionFactor = 10.0;
+    static const int tempoWindowLength = tempoFFTSize;
+    static const int tempoFFTHopLength = tempoWindowLength / 2;
     // Higher values to decrease temporal resolution in tempogram calculation
     static const int tempogramHopLength = 1;
     // Higher values require more periodicity to trigger tempo detection
@@ -53,14 +53,33 @@ private:
     static const int lowerBPMLimit = 70 - ignoreTopAndBottomTempi;
     static const int upperBPMLimit = 180 + ignoreTopAndBottomTempi;
     static const int numTempi = upperBPMLimit - lowerBPMLimit;
-    // Higher values remove more of the smallest local novelty peaks
-    constexpr static const float noveltyAveragingWindowLengthInSeconds = upperBPMLimit * 1.0 / 60;
-    static const int keyFFTOrder = 13;
+    static const int keyFFTOrder = 16;
     static const int keyFFTSize = 1 << keyFFTOrder;
-    static const int keyBufferLength = 2 * keyFFTSize;
-    static const int keyFFTHopLength = keyBufferLength / 2;
+    static const int keyWindowLength = keyFFTSize;
+    static const int keyFFTHopLength = keyWindowLength / 2;
+    static const int loudnessBufferSize = 8192;
     static const int numChroma = 12;
-    static const int loudnessBufferSize = 2048;
+    static const int numSpectralBands = 16;
+    float mSpectralDistribution[numSpectralBands];
+    float mChromaDistribution[numChroma];
+    // Change to only count local tempo optima that are above the local average
+    constexpr static const float tempoAverageBinHeightThresholdFactor = 1.2;
+    // Change to only count a key that has a correlation that is above the average correlation
+    constexpr static const float keyHistogramCorrelationThresholdFactor = 1.03;
+    // Use higher values to enhance quieter elements in a sample's spectrum
+    constexpr static const float tempoCompressionFactor = 0.0;
+    constexpr static const float keyCompressionFactor = 0.0;
+    // Higher values remove more of the smallest local novelty peaks
+    constexpr static const float noveltyAveragingWindowLengthInSeconds = 60 * 1.0 / upperBPMLimit;
+    float decibel;
+    float integratedLUFS;
+    float lufsRangeStart;
+    float lufsRangeEnd;
+    float zeroCrossingRate;
+    float spectralCentroid;
+    float spectralSpread;
+    float spectralFlux;
+    float chromaFlux;
     int numChannels;
     int sampleRate;
     int numBlocks;
@@ -68,6 +87,8 @@ private:
     int fftWindowLength;
     int numFFTWindows;
     int noveltyFunctionSampleRate;
+    int spectralRollOffBandIndex;
+    int numZeroCrossings;
     
     /**
      Loads the given file into a audio source.
@@ -76,54 +97,48 @@ private:
      */
     void loadAudioFileSource(File const & inFile);
     /**
-     Analyses the length of the given file in seconds.
-     
-     @param inFile the file to analyse.
-     
-     @returns the length of the audio file in seconds.
+     Analyses the loudness of the given file in LUFS and dB.
      */
-    double analyseSampleLength(File const & inFile);
-    /**
-     Analyses the loudness of the given file in dB.
-     
-     @param inFile the file to analyse.
-     
-     @returns the loudness of the audio file in dB.
-     */
-    double analyseSampleLoudnessDecibel();
-    /**
-     Analyses the loudness of the given file in LUFS.
-     
-     @param inFile the file to analyse.
-     
-     @returns the loudness of the audio file in LUFS.
-     */
-    double analyseSampleLoudnessLUFS();
+    void analyseSampleLoudness();
     /**
      Calculates the STFT spectrum from the loaded audio source.
+     
+     @param inFFTOrder the order of the fft to operate on.
+     @param inWindowLength the length of each analysed window.
+     @param inFFTHopLength the hop length with which to shift the windows.
+     @param inCompressionFactor the logarithmic compression factor of the frequency coefficients.
      */
-    void calculateSTFTSpectrum(int inBufferSize, int inFFTHopLength);
+    void calculateSTFTSpectrum(int inFFTOrder, int inBufferSize, int inFFTHopLength, float compressionFactor);
     /**
-     Calculates a discrete derivative for a spectrum, applies half-wave rectification,
-     accumulates the values, subtracts a local average and normalizes the final novelty function.
+     Calculates the novelty function and the spectral centroid and flux.
      
-     @returns the novelty function array.
+     @returns the novelty function as an array.
      */
-    Array<float> calculateSpectralNoveltyFunction();
+    Array<float> calculateNoveltyFunction();
     /**
-     Calculates a tempogram from a novelty function that covers a certain bpm range.
+     Subtracts the local average from a given novelty function.
      
-     @param noveltyFunction a reference to the novelty function array.
-     @param noveltyFunctionSampleRate the rate at which the novelty function samples the original signal.
-     @param numTempogramWindows the amount of windows that cover the whole novelty function.
-     @param tempogramWindowLength the length of the windows for the tempogram calculation.
-     
-     @returns the tempogram as a 2-dimensional time-bpm array.
+     @param noveltyFunction the novelty function to subtract the average from.
      */
-    Array<Array<float>> calculateFourierTempogram(Array<float>& noveltyFunction,
-                                                  int noveltyFunctionSampleRate,
-                                                  int numTempogramWindows,
-                                                  int tempogramWindowLength);
+    void noveltyFunctionSubtractAverage(Array<float> & noveltyFunction);
+    /**
+     Calculates a tempogram from a given novelty function.
+     
+     @param noveltyFunction the function to calculate the tempogram from.
+     @param numTempogramWindows the amount of windows in the tempogram.
+     
+     @returns the tempogram as a 2d array.
+     */
+    Array<Array<float>> calculateTempogram(Array<float> & noveltyFunction, int & numTempogramWindows);
+    /**
+     Calculates a tempo histogram with the optimal pitch at each position from a given tempogram.
+     
+     @param numTempogramWindows the amount of windows in the tempogram.
+     @param spectralTempogram the tempogram to calculate the histogram from
+     
+     @returns histogram of optimal tempi in the tempogram.
+     */
+    Array<int> calculateTempoHistogram(int numTempogramWindows, Array<Array<float>> & spectralTempogram);
     /**
      Analyses the tempo of the given file in bpm.
      
@@ -132,6 +147,27 @@ private:
      @returns the tempo of the audio file in bpm.
      */
     int analyseSampleTempo();
+    /**
+     Calculates a spectrogram with a logarithmic frequency axis, representing the MIDI pitches.
+     
+     @param coefficientSum the sum of all coefficient amplitudes in the spectrogram.
+     
+     @returns the log-spectrogram.
+     */
+    Array<Array<float>> calculateLogSpectrogram(float & coefficientSum);
+    /**
+     Calculates the distribution of chroma in the given spectrogram.
+     
+     @param logSpectrogram the spectrogram to calculate the chroma distribution from.
+     */
+    void calculateChromaDistribution(Array<Array<float>> & logSpectrogram);
+    /**
+     Calculates the correlation between the chroma distribution and the index list for each key.
+     
+     @param averageCorrelation the output variable for the average key chroma correlation.
+     @param numKeys the amount of keys to correlate with.
+     */
+    Array<float> calculateKeyChromaCorrelations(float & averageCorrelation, int & numKeys);
     /**
      Analyses the key of the given file.
      
@@ -146,8 +182,10 @@ private:
      Reference pitch is A4 at index 69 with a reference frequency of 440 Hz.
      
      @param inPitchIndex the index of the pitch to convert.
+     @param referenceIndex the index of the reference pitch.
+     @param referenceFrequency the frequency of the reference pitch.
      
      @returns the frequency of that pitch.
      */
-    float pitchToFrequency(float inPitchIndex);
+    float pitchToFrequency(float inPitchIndex, int referenceIndex = 69, float referenceFrequency = 440.0);
 };

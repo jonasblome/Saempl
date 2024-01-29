@@ -273,7 +273,7 @@ SampleItem* SampleLibraryManager::createSampleItem(File const & inFile)
     SampleItem* newItem = allSampleItems.add(new SampleItem());
     newItem->setFilePath(inFile.getFullPathName().convertToPrecomposedUnicode());
     newItem->setTitle(inFile.getFileNameWithoutExtension().convertToPrecomposedUnicode());
-    analyseSampleItem(*newItem, inFile);
+    analyseSampleItem(*newItem, inFile, false);
     addedFilePaths.add(newItem->getFilePath());
     
     return newItem;
@@ -297,7 +297,7 @@ bool SampleLibraryManager::fileHasBeenAdded(String const & inFilePath)
     return addedFilePaths.contains(inFilePath);
 }
 
-void SampleLibraryManager::analyseSampleItem(SampleItem& inSampleItem, File const & inFile)
+void SampleLibraryManager::analyseSampleItem(SampleItem& inSampleItem, File const & inFile, bool forceAnalysis)
 {
-    mSampleAnalyser->analyseSample(inSampleItem, inFile);
+    mSampleAnalyser->analyseSample(inSampleItem, inFile, forceAnalysis);
 }

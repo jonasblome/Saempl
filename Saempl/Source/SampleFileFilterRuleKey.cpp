@@ -13,7 +13,7 @@ SampleFileFilterRuleKey::SampleFileFilterRuleKey(String inRulePropertyName)
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = "C";
+    mCompareValue = "C maj/A min";
     mCompareOperator = GREATER_THAN;
 }
 

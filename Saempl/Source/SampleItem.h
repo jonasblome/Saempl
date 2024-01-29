@@ -22,7 +22,7 @@ public:
     SampleItem();
     ~SampleItem();
     /**
-     @returns the file path.
+     @returns the sample's file path.
      */
     String getFilePath() const;
     /**
@@ -40,7 +40,7 @@ public:
      */
     void setTitle(String inTitle);
     /**
-     @returns the samples length in seconds.
+     @returns the sample's length in seconds.
      */
     double getLength() const;
     /**
@@ -50,7 +50,7 @@ public:
      */
     void setLength(double inLength);
     /**
-     @returns the samples loudness in dB.
+     @returns the sample's loudness in dB.
      */
     double getLoudnessDecibel() const;
     /**
@@ -60,7 +60,7 @@ public:
      */
     void setLoudnessDecibel(double inDB);
     /**
-     @returns the samples loudness in LUFS.
+     @returns the sample's loudness in LUFS.
      */
     double getLoudnessLUFS() const;
     /**
@@ -70,7 +70,7 @@ public:
      */
     void setLoudnessLUFS(double inLUFS);
     /**
-     @returns the samples tempo in bpm.
+     @returns the sample's tempo in bpm.
      */
     int getTempo() const;
     /**
@@ -80,7 +80,7 @@ public:
      */
     void setTempo(int inTempo);
     /**
-     @returns the samples key.
+     @returns the sample's key.
      */
     String getKey() const;
     /**
@@ -89,6 +89,16 @@ public:
      @param inKey the key to set.
      */
     void setKey(String inKey);
+    /**
+     @returns the sample's feature vector.
+     */
+    std::vector<float> getFeatureVector() const;
+    /**
+     Sets the feature vector of the sample item.
+     
+     @param inFeatureVector the vector to set.
+     */
+    void setFeatureVector(std::vector<float> inFeatureVector);
     
 private:
     String mFilePath;
@@ -98,4 +108,5 @@ private:
     double mLoudnessLUFS;
     int mTempo;
     String mKey;
+    std::vector<float> mFeatureVector;
 };

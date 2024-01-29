@@ -86,8 +86,9 @@ public:
      
      @param inSampleItem the sample item to write the property values to.
      @param inFile the sample file to analyse.
+     @param forceAnalysis forces analysis even for files longer than one minute.
      */
-    void analyseSampleItem(SampleItem& inSampleItem, File const & inFile);
+    void analyseSampleItem(SampleItem& inSampleItem, File const & inFile, bool forceAnalysis);
     
 private:
     File libraryDirectory;

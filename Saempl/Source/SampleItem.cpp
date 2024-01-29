@@ -11,7 +11,7 @@
 
 SampleItem::SampleItem()
 {
-    
+    mKey = "Not analysed; Reanalyse to get key";
 }
 
 SampleItem::~SampleItem()
@@ -87,4 +87,14 @@ String SampleItem::getKey() const
 void SampleItem::setKey(String inKey)
 {
     mKey = inKey;
+}
+
+std::vector<float> SampleItem::getFeatureVector() const
+{
+    return mFeatureVector;
+}
+
+void SampleItem::setFeatureVector(std::vector<float> inFeatureVector)
+{
+    mFeatureVector = inFeatureVector;
 }

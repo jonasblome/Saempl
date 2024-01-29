@@ -86,7 +86,7 @@ public:
                        int numberOfInputChannels,
                        int estimatedSamplesPerBlock);
     
-    void processBlock(AudioSampleBuffer const & buffer);
+    void processBlock(AudioSampleBuffer const & buffer, int & numZeroCrossings, float & decibel);
     
     float getShortTermLoudness() const;
     float getMaximumShortTermLoudness() const;

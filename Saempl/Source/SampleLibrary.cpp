@@ -257,7 +257,7 @@ void SampleLibrary::reanalyseSampleItem(File const & inFile)
 {
     // Delete sample item
     SampleItem* itemToReanalyse = mSampleLibraryManager->getSampleItemWithFilePath(inFile.getFullPathName());
-    mSampleLibraryManager->analyseSampleItem(*itemToReanalyse, inFile);
+    mSampleLibraryManager->analyseSampleItem(*itemToReanalyse, inFile, true);
     refresh();
 }
 

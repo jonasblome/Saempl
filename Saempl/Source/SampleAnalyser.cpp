@@ -12,7 +12,7 @@
 SampleAnalyser::SampleAnalyser()
 :
 mForwardFFT(tempoFFTOrder),
-hannWindow(sizeof(tempoBufferLength), juce::dsp::WindowingFunction<float>::hann)
+mWindowFunction(tempoWindowLength + 1, juce::dsp::WindowingFunction<float>::hann)
 {
     mFormatManager = std::make_unique<AudioFormatManager>();
     mFormatManager->registerBasicFormats();
@@ -23,30 +23,78 @@ SampleAnalyser::~SampleAnalyser()
     
 }
 
-void SampleAnalyser::analyseSample(SampleItem& inSampleItem, File const & inFile)
+void SampleAnalyser::analyseSample(SampleItem& inSampleItem, File const & inFile, bool forceAnalysis)
 {
+    std::vector<float> featureVector = std::vector<float>(39);
+    
     // Load audio file
+    DBG(inSampleItem.getTitle());
     loadAudioFileSource(inFile);
     
-    // Set item properties
-    inSampleItem.setLength(analyseSampleLength(inFile));
-    inSampleItem.setLoudnessDecibel(0.0);
-//    inSampleItem.setLoudnessDecibel(analyseSampleLoudnessDecibel());
-    inSampleItem.setLoudnessLUFS(0.0);
-//    inSampleItem.setLoudnessLUFS(analyseSampleLoudnessLUFS());
+    // Set sample length
+    float length = totalNumSamples * 1.0 / sampleRate;
+    inSampleItem.setLength(length);
+    featureVector.at(0) = length;
     
-    // Don't analyse samples that are less than 4 beats of the lower bpm limit long
-//    if (inSampleItem.getLength() < 60.0 / lowerBPMLimit * 4)
-//    {
-//        inSampleItem.setTempo(0.0);
-//    }
-//    else
-//    {
-//        inSampleItem.setTempo(analyseSampleTempo());
-//    }
-    inSampleItem.setTempo(0);
+    // Set sample loudness and loudness range
+    analyseSampleLoudness();
+    inSampleItem.setLoudnessDecibel(decibel);
+    inSampleItem.setLoudnessLUFS(integratedLUFS);
+    featureVector.at(1) = integratedLUFS;
+    featureVector.at(2) = lufsRangeStart;
+    featureVector.at(3) = lufsRangeEnd;
     
-    inSampleItem.setKey(analyseSampleKey());
+    // Set zero crossing rate
+    featureVector.at(4) = zeroCrossingRate;
+    
+    // Maximum length for initial analysis is 1 minute
+    if (length <= 60 || forceAnalysis)
+    {
+        // Set sample tempo
+        float tempo = 0.0;
+        
+        // Only analyse samples that are longer than 4 beats of the lower bpm limit
+        if (length >= 60.0 / upperBPMLimit * 4)
+        {
+            tempo = analyseSampleTempo();
+        }
+        
+        inSampleItem.setTempo(tempo);
+        featureVector.at(5) = tempo;
+        
+        // Set sample key
+        inSampleItem.setKey(analyseSampleKey());
+        
+        // Set spectral distribution coefficients
+        for (int b = 0; b < numSpectralBands; b++)
+        {
+            featureVector.at(6 + b) = mSpectralDistribution[b];
+        }
+        
+        // Set spectral centroid
+        featureVector.at(22) = spectralCentroid;
+        
+        // Set spectral spread
+        featureVector.at(23) = spectralSpread;
+        
+        // Set spectral roll off
+        featureVector.at(24) = spectralRollOffBandIndex;
+        
+        // Set spectral flux
+        featureVector.at(25) = spectralFlux;
+        
+        // Set chroma flux
+        featureVector.at(26) = chromaFlux;
+        
+        // Set chroma distribution coefficients
+        for (int c = 0; c < numChroma; c++)
+        {
+            featureVector.at(27 + c) = mChromaDistribution[c];
+        }
+    }
+    
+    // Set sample item's feature vector
+    inSampleItem.setFeatureVector(featureVector);
 }
 
 void SampleAnalyser::loadAudioFileSource(File const & inFile)
@@ -56,91 +104,75 @@ void SampleAnalyser::loadAudioFileSource(File const & inFile)
     mCurrentAudioFileSource = std::make_unique<AudioFormatReaderSource>(reader, true);
     numChannels = mCurrentAudioFileSource->getAudioFormatReader()->numChannels;
     sampleRate = mCurrentAudioFileSource->getAudioFormatReader()->sampleRate;
-    numBlocks = int (totalNumSamples / tempoBufferLength) + 1;
+    totalNumSamples = int (mCurrentAudioFileSource->getTotalLength());
+    numBlocks = int (totalNumSamples / loudnessBufferSize) + 1;
 }
 
-double SampleAnalyser::analyseSampleLength(File const & inFile)
+void SampleAnalyser::analyseSampleLoudness()
 {
-    double length = mCurrentAudioFileSource->getTotalLength() / mCurrentAudioFileSource->getAudioFormatReader()->sampleRate;
-    
-    return length;
-}
-
-double SampleAnalyser::analyseSampleLoudnessDecibel()
-{
+    // Reset parameters
     mAnalysisBuffer = AudioBuffer<float>(numChannels, loudnessBufferSize);
-    int lastBlockLength = totalNumSamples % loudnessBufferSize;
-    double decibel = 0.0;
-
+    decibel = 0.0;
+    integratedLUFS = 0.0;
+    numZeroCrossings = 0;
+    mEbuLoudnessMeter.prepareToPlay(sampleRate,
+                                    numChannels,
+                                    loudnessBufferSize);
+    
     for (int b = 0; b < numBlocks; b++)
     {
-        mCurrentAudioFileSource->getAudioFormatReader()->read(&mAnalysisBuffer, 0, loudnessBufferSize, b * loudnessBufferSize, true, true);
-        double decibelSumBlock = 0.0;
-
-        for (int channel = 0; channel < numChannels; ++channel)
-        {
-            auto* channelData = mAnalysisBuffer.getWritePointer(channel);
-            double decibelSumChannel = 0.0;
-            int numSamples = mAnalysisBuffer.getNumSamples();
-
-            for (int s = 0; s < numSamples; s++)
-            {
-                float sample = abs(channelData[s]);
-                decibelSumChannel += sample;
-
-                if (b == numBlocks - 1 && s == lastBlockLength - 1)
-                {
-                    s = numSamples;
-                }
-            }
-
-            decibelSumChannel /= numSamples;
-            decibelSumBlock += decibelSumChannel;
-        }
-
-        decibelSumBlock /= numChannels;
-        decibel += decibelSumBlock;
+        // Read in block of audio
+        mCurrentAudioFileSource->getAudioFormatReader()->read(&mAnalysisBuffer,
+                                                              0,
+                                                              loudnessBufferSize,
+                                                              b * loudnessBufferSize,
+                                                              true,
+                                                              true);
+        
+        // Calculate LUFS and Decibels for block
+        mEbuLoudnessMeter.processBlock(mAnalysisBuffer, numZeroCrossings, decibel);
     }
-
+    
+    // Calculate Decibel
     decibel /= numBlocks;
     decibel = jmax<float>(decibel, 0.00000001);
-
-    return 20 * log10(decibel);
+    decibel = 20 * log10(decibel);
+    
+    // Retrieve LUFS values
+    integratedLUFS = mEbuLoudnessMeter.getIntegratedLoudness();
+    lufsRangeStart = mEbuLoudnessMeter.getLoudnessRangeStart();
+    lufsRangeEnd = mEbuLoudnessMeter.getLoudnessRangeEnd();
+    
+    // Calculate zero crossing rate
+    zeroCrossingRate = (numZeroCrossings * 1.0 / numChannels) * 1.0 / totalNumSamples;
 }
 
-double SampleAnalyser::analyseSampleLoudnessLUFS()
-{
-    mAnalysisBuffer = AudioBuffer<float>(numChannels, loudnessBufferSize);
-    mEbuLoudnessMeter.prepareToPlay(mCurrentAudioFileSource->getAudioFormatReader()->sampleRate,
-                                   mCurrentAudioFileSource->getAudioFormatReader()->numChannels,
-                                   loudnessBufferSize);
-
-    for (int b = 0; b < numBlocks; b++)
-    {
-        mCurrentAudioFileSource->getAudioFormatReader()->read(&mAnalysisBuffer, 0, loudnessBufferSize, b * loudnessBufferSize, true, true);
-        mEbuLoudnessMeter.processBlock(mAnalysisBuffer);
-    }
-
-    return mEbuLoudnessMeter.getIntegratedLoudness();
-}
-
-void SampleAnalyser::calculateSTFTSpectrum(int inWindowLength, int inFFTHopLength)
+void SampleAnalyser::calculateSTFTSpectrum(int inFFTOrder,
+                                           int inWindowLength,
+                                           int inFFTHopLength,
+                                           float inCompressionFactor)
 {
     mSTFTSpectrum.clear();
-    totalNumSamples = int (mCurrentAudioFileSource->getTotalLength());
-    fftWindowLength = jmin<int>(inWindowLength, totalNumSamples);
-    numFFTWindows = ((totalNumSamples - fftWindowLength) / inFFTHopLength) + 1;
-    hannWindow.fillWindowingTables(sizeof(inWindowLength), juce::dsp::WindowingFunction<float>::hann);
+    mForwardFFT = dsp::FFT(inFFTOrder);
+    numFFTWindows = ((jmax<int>(0, totalNumSamples - inWindowLength)) / inFFTHopLength) + 1;
+    mWindowFunction.fillWindowingTables(inWindowLength + 1, juce::dsp::WindowingFunction<float>::hann);
     mAnalysisBuffer = AudioBuffer<float>(numChannels, inWindowLength);
+    mWindowedFFTData.clear();
+    mWindowedFFTData.resize(inWindowLength * 2);
     
+    // Loop over all windows
     for (int w = 0; w < numFFTWindows; w++)
     {
         // Read audio for window length
-        mCurrentAudioFileSource->getAudioFormatReader()->read(&mAnalysisBuffer, 0, fftWindowLength, w * inFFTHopLength, true, true);
-        mWindowedFFTData.clear();
+        mCurrentAudioFileSource->getAudioFormatReader()->read(&mAnalysisBuffer,
+                                                              0,
+                                                              inWindowLength,
+                                                              w * inFFTHopLength,
+                                                              true,
+                                                              true);
         
-        // Create mono signal
-        for (int s = 0; s < mAnalysisBuffer.getNumSamples(); s++)
+        // Create mono signal and write into FFT data array
+        for (int s = 0; s < inWindowLength; s++)
         {
             float summedChannelMagnitude = 0.0;
             
@@ -152,20 +184,19 @@ void SampleAnalyser::calculateSTFTSpectrum(int inWindowLength, int inFFTHopLengt
             mWindowedFFTData.set(s, summedChannelMagnitude);
         }
         
-        
         // Apply window function to buffer
-        hannWindow.multiplyWithWindowingTable(mWindowedFFTData.getRawDataPointer(), sizeof(mAnalysisBuffer));
+        mWindowFunction.multiplyWithWindowingTable(mWindowedFFTData.getRawDataPointer(), inWindowLength);
         
         // Perform FFT on buffer
-        mForwardFFT.performFrequencyOnlyForwardTransform(mWindowedFFTData.getRawDataPointer());
+        mForwardFFT.performFrequencyOnlyForwardTransform(mWindowedFFTData.getRawDataPointer(), true);
         
         // Apply logarithmic compression to frequency coefficients
-        if (compressionFactor > 0)
+        if (inCompressionFactor > 0.0)
         {
-            for (int fc = 0; fc < mWindowedFFTData.size() / 2 + 1; fc++)
+            for (int fc = 0; fc < (inWindowLength / 2) + 1; fc++)
             {
-                float frequencyCoefficient = mWindowedFFTData[fc];
-                float compressedCoefficient = log(1 + compressionFactor * frequencyCoefficient);
+                float frequencyCoefficient = mWindowedFFTData.getReference(fc);
+                float compressedCoefficient = log(1 + tempoCompressionFactor * frequencyCoefficient);
                 mWindowedFFTData.set(fc, compressedCoefficient);
             }
         }
@@ -175,20 +206,32 @@ void SampleAnalyser::calculateSTFTSpectrum(int inWindowLength, int inFFTHopLengt
     }
 }
 
-Array<float> SampleAnalyser::calculateSpectralNoveltyFunction()
+Array<float> SampleAnalyser::calculateNoveltyFunction()
 {
     Array<float> noveltyFunction;
+    int numCoefficients = (tempoWindowLength / 2) + 1;
+    float coefficientSum = 0.0;
+    spectralFlux = 0.0;
+    spectralCentroid = 0.0;
     
     // Calculate discrete derivative
     for (int w = 1; w < numFFTWindows; w++)
     {
         float localNovelty = 0.0;
         
-        for (int fc = 0; fc < tempoBufferLength / 2 + 1; fc++)
+        for (int fc = 0; fc < numCoefficients; fc++)
         {
+            // Calculate derivative
             float currentCoefficient = mSTFTSpectrum.getReference(w).getReference(fc);
             float previousCoefficient = mSTFTSpectrum.getReference(w - 1).getReference(fc);
             float localDerivative = currentCoefficient - previousCoefficient;
+            
+            // Calculate spectral flux
+            spectralFlux += abs(localDerivative);
+            
+            // Calculate spectral centroid
+            spectralCentroid += fc * currentCoefficient;
+            coefficientSum += currentCoefficient;
             
             // Apply half-wave rectification and accumulate bin values for each window
             localNovelty += jmax<float>(localDerivative, 0);
@@ -197,7 +240,18 @@ Array<float> SampleAnalyser::calculateSpectralNoveltyFunction()
         noveltyFunction.set(w - 1, localNovelty);
     }
     
-    // Subtract local average
+    // Calculate spectral flux
+    spectralFlux = (spectralFlux / numFFTWindows) / numCoefficients;
+    
+    // Calculate spectral centroid
+    spectralCentroid = spectralCentroid / coefficientSum;
+    spectralCentroid = (spectralCentroid * sampleRate) / tempoWindowLength;
+    
+    return noveltyFunction;
+}
+
+void SampleAnalyser::noveltyFunctionSubtractAverage(Array<float> &noveltyFunction)
+{
     noveltyFunctionSampleRate = sampleRate / tempoFFTHopLength;
     int noveltyAveragingWindowLength = noveltyFunctionSampleRate * noveltyAveragingWindowLengthInSeconds;
     
@@ -208,7 +262,7 @@ Array<float> SampleAnalyser::calculateSpectralNoveltyFunction()
         int currentWindowEnd = jmin<int>(w + noveltyAveragingWindowLength + 1, numFFTWindows - 1);
         int currentWindowLength = currentWindowEnd - currentWindowStart;
         
-        for (int m = 0; m < currentWindowLength; m++)
+        for (int m = currentWindowStart; m < currentWindowEnd; m++)
         {
             localAverage += noveltyFunction.getReference(m) / currentWindowLength;
         }
@@ -216,25 +270,21 @@ Array<float> SampleAnalyser::calculateSpectralNoveltyFunction()
         // Apply half-wave rectification
         noveltyFunction.set(w, jmax<float>(noveltyFunction.getReference(w) - localAverage, 0));
     }
-    
-    // Normalize novelty function
-    float max = *std::max_element(noveltyFunction.getRawDataPointer(), noveltyFunction.getRawDataPointer() + numFFTWindows - 1);
-    
-    for (int w = 0; w < numFFTWindows - 1; w++)
-    {
-        noveltyFunction.getReference(w) /= max;
-    }
-    
-    return noveltyFunction;
 }
 
-Array<Array<float>> SampleAnalyser::calculateFourierTempogram(Array<float>& noveltyFunction,
-                                                              int noveltyFunctionSampleRate,
-                                                              int numTempogramWindows,
-                                                              int tempogramWindowLength)
+Array<Array<float>> SampleAnalyser::calculateTempogram(Array<float> & noveltyFunction, int & numTempogramWindows)
 {
     Array<Array<float>> spectralTempogram;
-    hannWindow.fillWindowingTables(sizeof(tempogramWindowLength), juce::dsp::WindowingFunction<float>::hann);
+    int tempogramWindowLength = jmin(noveltyFunctionSampleRate * tempogramWindowLengthInSeconds, noveltyFunction.size());
+    int paddingLength = tempogramWindowLength / 2;
+    float zeroPadding[paddingLength];
+    memset(zeroPadding, 0, sizeof(float) * paddingLength);
+    noveltyFunction.insertArray(0, zeroPadding, paddingLength);
+    noveltyFunction.addArray(zeroPadding, paddingLength);
+    numTempogramWindows = ((noveltyFunction.size() - tempogramWindowLength) / tempogramHopLength) + 1;
+    
+    // Calculate Fourier Tempogram
+    mWindowFunction.fillWindowingTables(tempogramWindowLength + 1, juce::dsp::WindowingFunction<float>::hann);
     std::complex<float> i(0.0, 1.0);
     
     // Project novelty function onto each tempo sinusoid
@@ -262,7 +312,7 @@ Array<Array<float>> SampleAnalyser::calculateFourierTempogram(Array<float>& nove
             int windowEnd = windowStart + tempogramWindowLength;
             float windowedProjection[tempogramWindowLength];
             std::copy(noveltyFunctionProjection + windowStart, noveltyFunctionProjection + windowEnd, windowedProjection);
-            hannWindow.multiplyWithWindowingTable(windowedProjection, tempogramWindowLength);
+            mWindowFunction.multiplyWithWindowingTable(windowedProjection, tempogramWindowLength);
             
             // Accumulate all windowed values for the current window position
             for (int m = 0; m < tempogramWindowLength; m++)
@@ -277,177 +327,266 @@ Array<Array<float>> SampleAnalyser::calculateFourierTempogram(Array<float>& nove
     return spectralTempogram;
 }
 
-int SampleAnalyser::analyseSampleTempo()
+Array<int> SampleAnalyser::calculateTempoHistogram(int numTempogramWindows, Array<Array<float>> & spectralTempogram)
 {
-    // Calculate STFT spectrum
-    calculateSTFTSpectrum(tempoBufferLength, tempoFFTHopLength);
-
-    // Calculate spectral novelty function
-    Array<float> noveltyFunction = calculateSpectralNoveltyFunction();
-    
-    // Padding novelty function to apply a centered windowing function at position t = 0
-    int tempogramWindowLength = jmin(noveltyFunctionSampleRate * tempogramWindowLengthInSeconds, noveltyFunction.size());
-    int paddingLength = tempogramWindowLength / 2;
-    float zeroPadding[paddingLength];
-    memset(zeroPadding, 0, sizeof(float) * paddingLength);
-    noveltyFunction.insertArray(0, zeroPadding, paddingLength);
-    noveltyFunction.addArray(zeroPadding, paddingLength);
-    int numTempogramWindows = ((noveltyFunction.size() - tempogramWindowLength) / tempogramHopLength) + 1;
-    
-    // Calculate Fourier Tempogram
-    Array<Array<float>> spectralTempogram = calculateFourierTempogram(noveltyFunction,
-                                                                      noveltyFunctionSampleRate,
-                                                                      numTempogramWindows,
-                                                                      tempogramWindowLength);
-    
-    // Calculate histogram of optimal local tempo
-    int tempoEstimationsHistogram[numTempi];
-    memset(tempoEstimationsHistogram, 0, sizeof(tempoEstimationsHistogram));
+    Array<int> tempoEstimationsHistogram;
+    tempoEstimationsHistogram.resize(numTempi);
     
     for (int w = 0; w < numTempogramWindows; w++)
     {
         // Pick optimal tempo estimation for each position of the tempogram
         int optimalTempoIndex = 0;
-        float optimalTempoEstimation = 0.0;
+        float optimalTempoBinHeight = 0.0;
+        float localAverageBinHeight = 0.0;
         
         for (int t = 0; t < numTempi; t++)
         {
-            float currentTempoEstimation = spectralTempogram.getReference(t).getReference(w);
+            float currentTempoBinHeight = spectralTempogram.getReference(t).getReference(w);
+            localAverageBinHeight += currentTempoBinHeight;
             
-            if (currentTempoEstimation > optimalTempoEstimation)
+            if (currentTempoBinHeight > optimalTempoBinHeight)
             {
-                optimalTempoEstimation = currentTempoEstimation;
+                optimalTempoBinHeight = currentTempoBinHeight;
                 optimalTempoIndex = t;
             }
         }
         
         // Assemble histogram of all tempo estimations
-        tempoEstimationsHistogram[optimalTempoIndex] += 1;
-    }
-    
-    // Find the most prominent tempo in the histogram
-    int bestTempoIndex = 0;
-    int bestTempoBinHeight = 0;
-    
-    for (int t = ignoreTopAndBottomTempi; t < numTempi - ignoreTopAndBottomTempi; t++)
-    {
-        float currentEstimation = tempoEstimationsHistogram[t];
+        localAverageBinHeight /= numTempi;
         
-        if (currentEstimation > bestTempoBinHeight)
+        // Check if optimal is above local average
+        if (optimalTempoBinHeight > localAverageBinHeight * tempoAverageBinHeightThresholdFactor)
         {
-            bestTempoIndex = t;
-            bestTempoBinHeight = currentEstimation;
+            tempoEstimationsHistogram.getReference(optimalTempoIndex) += 1;
         }
     }
+    
+    return tempoEstimationsHistogram;
+}
+
+int SampleAnalyser::analyseSampleTempo()
+{
+    // Calculate STFT spectrum
+    calculateSTFTSpectrum(tempoFFTOrder, tempoWindowLength, tempoFFTHopLength, tempoCompressionFactor);
+    
+    // Calculate spectral novelty function
+    Array<float> noveltyFunction = calculateNoveltyFunction();
+    
+    // Subtract local average
+    noveltyFunctionSubtractAverage(noveltyFunction);
+    
+    // Normalize novelty function
+    float max = *std::max_element(noveltyFunction.getRawDataPointer(),
+                                  noveltyFunction.getRawDataPointer()
+                                  + numFFTWindows - 1);
+    
+    for (int w = 0; w < numFFTWindows - 1; w++)
+    {
+        noveltyFunction.getReference(w) /= max;
+    }
+    
+    // Padding novelty function to apply a centered windowing function at position t = 0
+    int numTempogramWindows;
+    Array<Array<float>> spectralTempogram = calculateTempogram(noveltyFunction, numTempogramWindows);
+    
+    // Calculate histogram of optimal local tempo
+    Array<int> tempoEstimationsHistogram = calculateTempoHistogram(numTempogramWindows, spectralTempogram);
+    
+    // Find the most prominent tempo in the histogram
+    int bestTempoIndex = (int) std::distance(tempoEstimationsHistogram.getRawDataPointer(),
+                                   std::max_element(tempoEstimationsHistogram.getRawDataPointer()
+                                                    + ignoreTopAndBottomTempi,
+                                                    tempoEstimationsHistogram.getRawDataPointer()
+                                                    + numTempi
+                                                    - ignoreTopAndBottomTempi));
     
     int bestTempoEstimation = bestTempoIndex + lowerBPMLimit;
     
     return bestTempoEstimation;
+}
+
+Array<Array<float>> SampleAnalyser::calculateLogSpectrogram(float & coefficientSum)
+{
+    // Apply logarithmic frequency pooling
+    Array<Array<float>> logSpectrogram;
+    int numPitches = 155;
+    int numPitchesPerBand = numPitches / numSpectralBands;
     
-    // return 120;
+    // Loop over all pitch pools
+    for (int p = 0; p < numPitches; p++)
+    {
+        float lowerFrequencyLimit = pitchToFrequency(p - 0.5);
+        float upperFrequencyLimit = pitchToFrequency(p + 0.5);
+        
+        Array<float> localPitchCoefficients;
+        localPitchCoefficients.resize(numFFTWindows);
+        
+        // Loop over all frequency coefficients in the pool
+        float secondsPerWindow = (keyWindowLength * 1.0) / sampleRate;
+        int lowestCoefficientIndexForCurrentPool = (lowerFrequencyLimit * secondsPerWindow) + 1;
+        int highestCoefficientIndexForCurrentPool = jmin<int>((keyWindowLength / 2) + 1,
+                                                              (upperFrequencyLimit * secondsPerWindow) + 1);
+        
+        for (int fc = lowestCoefficientIndexForCurrentPool; fc < highestCoefficientIndexForCurrentPool; fc++)
+        {
+            // For each window, sum up all coefficients in the current pitch pool
+            for (int w = 0; w < numFFTWindows; w++)
+            {
+                float currentCoefficient = mSTFTSpectrum.getReference(w).getReference(fc);
+                localPitchCoefficients.getReference(w) += currentCoefficient;
+                
+                // Calculate spectral distribution
+                mSpectralDistribution[p / numPitchesPerBand] += currentCoefficient;
+                
+                // Calculate spectral spread
+                float currentFrequency = (fc * sampleRate) * 1.0 / keyWindowLength;
+                float meanError = currentFrequency - spectralCentroid;
+                spectralSpread += (meanError * meanError) * currentCoefficient;
+                coefficientSum += currentCoefficient;
+            }
+        }
+        
+        logSpectrogram.add(localPitchCoefficients);
+        
+        // Don't go higher than the frequency limit
+        if (highestCoefficientIndexForCurrentPool == keyWindowLength / 2 + 1)
+        {
+            break;
+        }
+    }
+    
+    // Calculate spectral spread
+    spectralSpread /= coefficientSum;
+    spectralSpread /= spectralCentroid;
+    spectralSpread = sqrt(spectralSpread);
+    
+    return logSpectrogram;
+}
+
+void SampleAnalyser::calculateChromaDistribution(Array<Array<float>> &logSpectrogram) {
+    std::memset(mChromaDistribution, 0, sizeof(mChromaDistribution));
+    chromaFlux = 0.0;
+    
+    for (int c = 0; c < numChroma; c++)
+    {
+        // Loop over all octaves
+        for (int p = 0; p < logSpectrogram.size(); p++)
+        {
+            if (p % numChroma == c)
+            {
+                for (int w = 0; w < numFFTWindows; w++)
+                {
+                    float currentCoefficient = logSpectrogram.getReference(p).getReference(w);
+                    mChromaDistribution[c] += currentCoefficient;
+                    
+                    if (w >= 1)
+                    {
+                        float previousCoefficient = logSpectrogram.getReference(p).getReference(w - 1);
+                        chromaFlux += abs(currentCoefficient - previousCoefficient);
+                    }
+                }
+            }
+        }
+    }
+    
+    chromaFlux = (chromaFlux / numFFTWindows) / logSpectrogram.size();
+    
+    // Normalize chroma distribution
+    float maxChroma = *std::max_element(mChromaDistribution,
+                                        mChromaDistribution
+                                        + numChroma);
+    
+    for (int b = 0; b < numSpectralBands; b++)
+    {
+        mChromaDistribution[b] /= maxChroma;
+    }
+}
+
+Array<float> SampleAnalyser::calculateKeyChromaCorrelations(float & averageCorrelation, int & numKeys)
+{
+    Array<float> keyChromaCorrelations;
+    keyChromaCorrelations.resize(numKeys);
+    
+    averageCorrelation = 0.0;
+    
+    for (int k = 0; k < numKeys; k++)
+    {
+        Array<int> const & keyPattern = KEY_PATTERNS.getReference(k);
+        
+        for (int c = 0; c < numChroma; c++)
+        {
+            if (keyPattern.contains(c))
+            {
+                keyChromaCorrelations.getReference(k) += mChromaDistribution[c];
+            }
+        }
+        
+        averageCorrelation += keyChromaCorrelations[k];
+    }
+    
+    return keyChromaCorrelations;
 }
 
 String SampleAnalyser::analyseSampleKey()
 {
     // Calculate STFT spectrum
-    calculateSTFTSpectrum(keyBufferLength, keyFFTHopLength);
+    calculateSTFTSpectrum(keyFFTOrder, keyWindowLength, keyFFTHopLength, keyCompressionFactor);
+    std::memset(mSpectralDistribution, 0, sizeof(mSpectralDistribution));
     
     // Calculate logarithmic spectrogram
-    Array<Array<float>> logSpectrum;
+    spectralSpread = 0.0;
+    float coefficientSum = 0.0;
+    Array<Array<float>> logSpectrogram = calculateLogSpectrogram(coefficientSum);
     
-    // Apply logarithmic frequency pooling
-    // Loop over all pitch pools
-    int numPitches = 128;
+    // Normalize spectral distribution
+    float maxSpectral = *std::max_element(mSpectralDistribution,
+                                          mSpectralDistribution
+                                          + numSpectralBands);
+    float summedBands = 0.0;
     
-    for (int p = 0; p < numPitches; p++)
+    for (int b = 0; b < numSpectralBands; b++)
     {
-        Array<float> localPitchCoefficients;
-        localPitchCoefficients.resize(numFFTWindows);
-        float lowerFrequencyLimit = pitchToFrequency(p - 0.5);
-        float upperFrequencyLimit = pitchToFrequency(p + 0.5);
-        
-        // Loop over all frequency coefficients in the spectrum
-        for (int fc = 0; fc < keyBufferLength / 2 + 1; fc++)
-        {
-            float currentFrequency = fc * sampleRate / keyBufferLength;
-            
-            if (lowerFrequencyLimit <= currentFrequency && currentFrequency <= upperFrequencyLimit)
-            {
-                // Sum up all coefficients in the current pitch pool for each window
-                for (int w = 0; w < numFFTWindows; w++)
-                {
-                    localPitchCoefficients.getReference(w) += mSTFTSpectrum.getReference(w).getReference(fc);
-                }
-            }
-        }
-        
-        logSpectrum.add(localPitchCoefficients);
+        mSpectralDistribution[b] /= maxSpectral;
+        summedBands += mSpectralDistribution[b];
     }
     
-    Array<Array<float>> chromagram;
+    // Calculate spectral roll off band index
+    float energyPercentage = 0.0;
+    int b = 0;
     
-    // Calculate chromagram
-    for (int c = 0; c < numChroma; c++)
+    while (energyPercentage < 0.9 * summedBands)
     {
-        Array<float> localChromaCoefficients;
-        localChromaCoefficients.resize(numFFTWindows);
-        
-        // Loop over all octaves (skip the 8 topmost pitches for efficiency)
-        for (int o = 0; o < 10; o++)
-        {
-            for (int w = 0; w < numFFTWindows; w++)
-            {
-                localChromaCoefficients.getReference(w) += logSpectrum.getReference(c + (12 * o)).getReference(w);
-            }
-        }
-        
-        chromagram.add(localChromaCoefficients);
+        energyPercentage += mSpectralDistribution[b];
+        b++;
     }
     
-    // Calculate histogram of most optimal local chroma
-    int chromaEstimationsHistogram[numChroma];
-    memset(chromaEstimationsHistogram, 0, sizeof(chromaEstimationsHistogram));
+    spectralRollOffBandIndex = b - 1;
     
-    for (int w = 0; w < numFFTWindows; w++)
+    // Calculate chroma distribution
+    calculateChromaDistribution(logSpectrogram);
+    
+    // Correlate the key patterns and the chroma distribution
+    int numKeys = KEY_PATTERNS.size();
+    float averageCorrelation;
+    Array<float> keyHistogramCorrelations = calculateKeyChromaCorrelations(averageCorrelation, numKeys);
+    
+    // Find key with the highest histogram correlation
+    averageCorrelation /= numKeys;
+    int optimalKeyIndex = 12;
+    float* maxCorrelation = std::max_element(keyHistogramCorrelations.getRawDataPointer(),
+                                             keyHistogramCorrelations.getRawDataPointer() + numKeys);
+    
+    if (*maxCorrelation > keyHistogramCorrelationThresholdFactor * averageCorrelation)
     {
-        // Pick optimal chroma estimation for each position of the chromagram
-        int optimalChromaIndex = 0;
-        float optimalChromaEstimation = 0.0;
-        
-        for (int c = 0; c < numChroma; c++)
-        {
-            float currentChromaEstimation = chromagram.getReference(c).getReference(w);
-            
-            if (currentChromaEstimation > optimalChromaEstimation)
-            {
-                optimalChromaEstimation = currentChromaEstimation;
-                optimalChromaIndex = c;
-            }
-        }
-        
-        // Assemble histogram of all chroma estimations
-        chromaEstimationsHistogram[optimalChromaIndex] += 1;
+        optimalKeyIndex = (int) std::distance(keyHistogramCorrelations.getRawDataPointer(), maxCorrelation);
     }
     
-    // Find the most prominent chroma in the chroma
-    int bestChromaIndex = 0;
-    int bestChromaBinHeight = 0;
+    String optimalKeyName = KEY_INDEX_TO_KEY_NAME[optimalKeyIndex];
     
-    for (int c = 0; c < numChroma; c++)
-    {
-        float currentEstimation = chromaEstimationsHistogram[c];
-        
-        if (currentEstimation > bestChromaBinHeight)
-        {
-            bestChromaIndex = c;
-            bestChromaBinHeight = currentEstimation;
-        }
-    }
-    
-    return CHROMA_INDEX_TO_KEY[bestChromaIndex];
+    return optimalKeyName;
 }
 
-float SampleAnalyser::pitchToFrequency(float pitchIndex)
+float SampleAnalyser::pitchToFrequency(float pitchIndex, int referenceIndex, float referenceFrequency)
 {
-    return pow(2, (pitchIndex - 69) / numChroma) * 440;
+    return pow(2, (pitchIndex - referenceIndex) / numChroma) * referenceFrequency;
 }
