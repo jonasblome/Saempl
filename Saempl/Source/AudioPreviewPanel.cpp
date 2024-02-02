@@ -114,7 +114,7 @@ void AudioPreviewPanel::setPanelComponents()
     
     // Add position marker
     mAudioPositionMarker = std::make_unique<DrawableRectangle>();
-    mAudioPositionMarker->setFill(style->COLOUR_GREENISH_WHITE);
+    mAudioPositionMarker->setFill(style->COLOUR_ACCENT_MEDIUM);
     addAndMakeVisible(*mAudioPositionMarker);
 }
 

@@ -61,9 +61,12 @@ void SampleAnalyser::analyseSample(SampleItem& inSampleItem, File const & inFile
         
         inSampleItem.setTempo(tempo);
         featureVector.at(5) = tempo;
+        DBG("Tempo: " +  std::to_string(tempo));
         
         // Set sample key
-        inSampleItem.setKey(analyseSampleKey());
+        String key = analyseSampleKey();
+        inSampleItem.setKey(key);
+        DBG("Key: " +  key);
         
         // Set spectral distribution coefficients
         for (int b = 0; b < numSpectralBands; b++)
@@ -73,6 +76,7 @@ void SampleAnalyser::analyseSample(SampleItem& inSampleItem, File const & inFile
         
         // Set spectral centroid
         featureVector.at(22) = spectralCentroid;
+        DBG("Centroid: " +  std::to_string(spectralCentroid) + " Hz");
         
         // Set spectral spread
         featureVector.at(23) = spectralSpread;

@@ -14,9 +14,7 @@
 #include "BlomeHelpers.h"
 
 /**
- Compares \SampleItem objects given a certain property and a sorting direction.
- 
- @see BlomeTableViewBase
+ Compares SampleItem objects given a certain property and a sorting direction.
  */
 class SampleItemComparator
 {

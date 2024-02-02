@@ -210,6 +210,10 @@
             file="Source/SampleItemComparator.cpp"/>
       <FILE id="yTJLPC" name="SampleItemComparator.h" compile="0" resource="0"
             file="Source/SampleItemComparator.h"/>
+      <FILE id="oRlRXJ" name="SampleItemGridSorter.cpp" compile="1" resource="0"
+            file="Source/SampleItemGridSorter.cpp"/>
+      <FILE id="lhx9MY" name="SampleItemGridSorter.h" compile="0" resource="0"
+            file="Source/SampleItemGridSorter.h"/>
     </GROUP>
     <GROUP id="{DC34CDD6-63E9-961B-46AF-F2C74C695602}" name="Source">
       <FILE id="tiuyaQ" name="PluginProcessor.cpp" compile="1" resource="0"
