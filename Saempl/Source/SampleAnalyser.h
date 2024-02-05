@@ -59,7 +59,7 @@ private:
     static const int keyFFTHopLength = keyWindowLength / 2;
     static const int loudnessBufferSize = 8192;
     static const int numChroma = 12;
-    static const int numSpectralBands = 16;
+    static const int numSpectralBands = 32;
     float mSpectralDistribution[numSpectralBands];
     float mChromaDistribution[numChroma];
     // Change to only count local tempo optima that are above the local average

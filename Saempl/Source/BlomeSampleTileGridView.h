@@ -13,6 +13,7 @@
 #include "BlomeStyleDefinitions.h"
 #include "SampleLibrary.h"
 #include "BlomeSampleItemTileView.h"
+#include "SampleItemGridSorter.h"
 
 class BlomeSampleTileGridView
 :
@@ -31,6 +32,7 @@ private:
     SampleItemPanel& sampleItemPanel;
     OwnedArray<BlomeSampleItemTileView> mSampleItemTiles;
     StringArray mAddedSampleFilePaths;
+    SampleItemGridSorter mGridSorter;
     
     void paint(Graphics& g) override;
     void changeListenerCallback(ChangeBroadcaster* source) override;

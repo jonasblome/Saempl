@@ -88,6 +88,10 @@ void BlomeSampleTileGridView::setupGrid()
     OwnedArray<SampleItem> & sampleItems = sampleLibrary.getSampleItems(FILTERED_SAMPLES);
     
     // Sort sample item tiles with Fast Linear Assignment Sorting (FLAS)
+    if (sampleItems.size() > 0)
+    {
+        mGridSorter.applySorting(sampleItems, optimalWidth, optimalHeight);
+    }
     
     // Refill tile collection
     mSampleItemTiles.clear();

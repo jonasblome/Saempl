@@ -25,27 +25,27 @@ SampleAnalyser::~SampleAnalyser()
 
 void SampleAnalyser::analyseSample(SampleItem& inSampleItem, File const & inFile, bool forceAnalysis)
 {
-    std::vector<float> featureVector = std::vector<float>(39);
+    std::vector<float> featureVector = std::vector<float>(numSpectralBands + numChroma + 11);
     
     // Load audio file
-    DBG(inSampleItem.getTitle());
+    // DBG(inSampleItem.getTitle());
     loadAudioFileSource(inFile);
     
     // Set sample length
     float length = totalNumSamples * 1.0 / sampleRate;
     inSampleItem.setLength(length);
-    featureVector.at(0) = length;
+    featureVector[0] = length;
     
     // Set sample loudness and loudness range
     analyseSampleLoudness();
     inSampleItem.setLoudnessDecibel(decibel);
     inSampleItem.setLoudnessLUFS(integratedLUFS);
-    featureVector.at(1) = integratedLUFS;
-    featureVector.at(2) = lufsRangeStart;
-    featureVector.at(3) = lufsRangeEnd;
+    featureVector[1] = integratedLUFS;
+    featureVector[2] = lufsRangeStart;
+    featureVector[3] = lufsRangeEnd;
     
     // Set zero crossing rate
-    featureVector.at(4) = zeroCrossingRate;
+    featureVector[4] = zeroCrossingRate;
     
     // Maximum length for initial analysis is 1 minute
     if (length <= 60 || forceAnalysis)
@@ -60,40 +60,40 @@ void SampleAnalyser::analyseSample(SampleItem& inSampleItem, File const & inFile
         }
         
         inSampleItem.setTempo(tempo);
-        featureVector.at(5) = tempo;
-        DBG("Tempo: " +  std::to_string(tempo));
+        featureVector[5] = tempo;
+        // DBG("Tempo: " +  std::to_string(tempo));
         
         // Set sample key
         String key = analyseSampleKey();
         inSampleItem.setKey(key);
-        DBG("Key: " +  key);
+        // DBG("Key: " +  key);
+        
+        // Set spectral centroid
+        featureVector[6] = spectralCentroid;
+        // DBG("Centroid: " +  std::to_string(spectralCentroid) + " Hz");
+        
+        // Set spectral spread
+        featureVector[7] = spectralSpread;
+        
+        // Set spectral roll off
+        featureVector[8] = spectralRollOffBandIndex;
+        
+        // Set spectral flux
+        featureVector[9] = spectralFlux;
+        
+        // Set chroma flux
+        featureVector[10] = chromaFlux;
         
         // Set spectral distribution coefficients
         for (int b = 0; b < numSpectralBands; b++)
         {
-            featureVector.at(6 + b) = mSpectralDistribution[b];
+            featureVector[11 + b] = mSpectralDistribution[b];
         }
-        
-        // Set spectral centroid
-        featureVector.at(22) = spectralCentroid;
-        DBG("Centroid: " +  std::to_string(spectralCentroid) + " Hz");
-        
-        // Set spectral spread
-        featureVector.at(23) = spectralSpread;
-        
-        // Set spectral roll off
-        featureVector.at(24) = spectralRollOffBandIndex;
-        
-        // Set spectral flux
-        featureVector.at(25) = spectralFlux;
-        
-        // Set chroma flux
-        featureVector.at(26) = chromaFlux;
         
         // Set chroma distribution coefficients
         for (int c = 0; c < numChroma; c++)
         {
-            featureVector.at(27 + c) = mChromaDistribution[c];
+            featureVector[11 + numSpectralBands + c] = mChromaDistribution[c];
         }
     }
     
