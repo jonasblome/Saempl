@@ -97,6 +97,8 @@ struct BlomeStyling
     
     
     // Fonts
+    Font const FONT_EXTRA_SMALL_BOLD = Font("Helvetica Neue", 8.00f, Font::bold);
+    
     Font const FONT_SMALL = Font("Helvetica Neue", 12.00f, Font::plain);
     Font const FONT_SMALL_BOLD = Font("Helvetica Neue", 12.00f, Font::bold);
     Font const FONT_SMALL_BOLD_ACCENTUATED = Font("Helvetica Neue", 13.00f, Font::bold);

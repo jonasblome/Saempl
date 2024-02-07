@@ -32,7 +32,7 @@ void BlomeFileFilterRuleViewKey::setComponents()
     mCompareValueEditor = std::make_unique<TextEditor>("CompareValueEditor");
     mCompareValueEditor->setFont(style->FONT_SMALL_BOLD);
     mCompareValueEditor->setJustification(Justification::centredLeft);
-    mCompareValueEditor->setText(getFilterRule().getCompareValue());
+    mCompareValueEditor->setText(std::to_string(getFilterRule().getCompareValue()));
     mCompareValueEditor->addListener(this);
     addAndMakeVisible(*mCompareValueEditor);
 }
@@ -69,7 +69,7 @@ void BlomeFileFilterRuleViewKey::textEditorFocusLost(TextEditor& textEditor)
 {
     // Lose focus, set compare value and refresh library
     mCompareValueEditor->giveAwayKeyboardFocus();
-    getFilterRule().setCompareValue(textEditor.getText());
+    getFilterRule().setCompareValue(textEditor.getText().getIntValue());
     sampleLibrary.refresh();
 }
 

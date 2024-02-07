@@ -11,7 +11,9 @@
 
 SampleItem::SampleItem()
 {
-    mKey = "Not analysed; Reanalyse to get key";
+    mTitle = "";
+    mKey = NO_KEY_INDEX;
+    mFeatureVector = std::vector<float>(NUM_CHROMA + NUM_SPECTRAL_BANDS + NUM_FEATURES);
 }
 
 SampleItem::~SampleItem()
@@ -79,12 +81,12 @@ void SampleItem::setTempo(int inTempo)
     mTempo = inTempo;
 }
 
-String SampleItem::getKey() const
+int SampleItem::getKey() const
 {
     return mKey;
 }
 
-void SampleItem::setKey(String inKey)
+void SampleItem::setKey(int inKey)
 {
     mKey = inKey;
 }

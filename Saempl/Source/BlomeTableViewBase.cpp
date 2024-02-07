@@ -120,7 +120,7 @@ String BlomeTableViewBase::getCellText(SampleItem* inSampleItem, String columnNa
     }
     else if (columnName == PROPERTY_NAMES[5])
     {
-        return inSampleItem->getKey();
+        return KEY_INDEX_TO_KEY_NAME[inSampleItem->getKey()];
     }
     else
     {
@@ -149,10 +149,7 @@ void BlomeTableViewBase::loadSelectedRowIntoAudioPlayer(int rowNumber)
 {
     File inFile = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(rowNumber)->getFilePath();
     
-    if (!sampleItemPanel.tryShowAudioResource(inFile))
-    {
-        showFileDeletedWarning();
-    }
+    sampleItemPanel.tryShowAudioResource(inFile);
 }
 
 void BlomeTableViewBase::cellDoubleClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent)

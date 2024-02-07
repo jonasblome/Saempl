@@ -69,7 +69,7 @@ void BlomeFileFilterRuleViewLoudnessLUFS::textEditorFocusLost(TextEditor& textEd
 {
     // Lose focus, set compare value and refresh library
     mCompareValueEditor->giveAwayKeyboardFocus();
-    getFilterRule().setCompareValue(textEditor.getText().getIntValue());
+    getFilterRule().setCompareValue(textEditor.getText().getFloatValue());
     sampleLibrary.refresh();
 }
 

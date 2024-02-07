@@ -111,10 +111,7 @@ void SampleLibraryPanel::fileClicked(File const & file, MouseEvent const & mouse
 
 void SampleLibraryPanel::fileDoubleClicked(File const & inFile)
 {
-    if (!inFile.isDirectory() && !sampleItemPanel.tryShowAudioResource(inFile))
-    {
-        showFileDeletedWarning();
-    }
+    sampleItemPanel.tryShowAudioResource(inFile);
 }
 
 void SampleLibraryPanel::browserRootChanged(File const&)

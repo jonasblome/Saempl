@@ -25,7 +25,7 @@ SampleAnalyser::~SampleAnalyser()
 
 void SampleAnalyser::analyseSample(SampleItem& inSampleItem, File const & inFile, bool forceAnalysis)
 {
-    std::vector<float> featureVector = std::vector<float>(numSpectralBands + numChroma + 11);
+    std::vector<float> featureVector = std::vector<float>(NUM_SPECTRAL_BANDS + NUM_CHROMA + NUM_FEATURES);
     
     // Load audio file
     // DBG(inSampleItem.getTitle());
@@ -34,15 +34,15 @@ void SampleAnalyser::analyseSample(SampleItem& inSampleItem, File const & inFile
     // Set sample length
     float length = totalNumSamples * 1.0 / sampleRate;
     inSampleItem.setLength(length);
-    featureVector[0] = length;
+    featureVector[0] = length / 100;
     
     // Set sample loudness and loudness range
     analyseSampleLoudness();
     inSampleItem.setLoudnessDecibel(decibel);
     inSampleItem.setLoudnessLUFS(integratedLUFS);
-    featureVector[1] = integratedLUFS;
-    featureVector[2] = lufsRangeStart;
-    featureVector[3] = lufsRangeEnd;
+    featureVector[1] = integratedLUFS / (-100);
+    featureVector[2] = lufsRangeStart / (-100);
+    featureVector[3] = lufsRangeEnd / (-100);
     
     // Set zero crossing rate
     featureVector[4] = zeroCrossingRate;
@@ -51,49 +51,40 @@ void SampleAnalyser::analyseSample(SampleItem& inSampleItem, File const & inFile
     if (length <= 60 || forceAnalysis)
     {
         // Set sample tempo
-        float tempo = 0.0;
-        
-        // Only analyse samples that are longer than 4 beats of the lower bpm limit
-        if (length >= 60.0 / upperBPMLimit * 4)
-        {
-            tempo = analyseSampleTempo();
-        }
-        
+        float tempo = analyseSampleTempo();
         inSampleItem.setTempo(tempo);
-        featureVector[5] = tempo;
-        // DBG("Tempo: " +  std::to_string(tempo));
+        featureVector[5] = (tempo - lowerBPMLimit) / (upperBPMLimit - lowerBPMLimit);
         
         // Set sample key
-        String key = analyseSampleKey();
+        int key = analyseSampleKey();
         inSampleItem.setKey(key);
-        // DBG("Key: " +  key);
+        featureVector[6] = key * 1.0 / 12;
         
         // Set spectral centroid
-        featureVector[6] = spectralCentroid;
-        // DBG("Centroid: " +  std::to_string(spectralCentroid) + " Hz");
+        featureVector[7] = spectralCentroid / 20000;
         
         // Set spectral spread
-        featureVector[7] = spectralSpread;
+        featureVector[8] = spectralSpread / 100;
         
         // Set spectral roll off
-        featureVector[8] = spectralRollOffBandIndex;
+        featureVector[9] = spectralRollOffBandIndex * 1.0 / NUM_SPECTRAL_BANDS;
         
         // Set spectral flux
-        featureVector[9] = spectralFlux;
+        featureVector[10] = spectralFlux / 10;
         
         // Set chroma flux
-        featureVector[10] = chromaFlux;
+        featureVector[11] = chromaFlux / 1000;
         
         // Set spectral distribution coefficients
-        for (int b = 0; b < numSpectralBands; b++)
+        for (int b = 0; b < NUM_SPECTRAL_BANDS; b++)
         {
-            featureVector[11 + b] = mSpectralDistribution[b];
+            featureVector[NUM_FEATURES + b] = mSpectralDistribution[b];
         }
         
         // Set chroma distribution coefficients
-        for (int c = 0; c < numChroma; c++)
+        for (int c = 0; c < NUM_CHROMA; c++)
         {
-            featureVector[11 + numSpectralBands + c] = mChromaDistribution[c];
+            featureVector[NUM_FEATURES + NUM_SPECTRAL_BANDS + c] = mChromaDistribution[c];
         }
     }
     
@@ -229,13 +220,13 @@ Array<float> SampleAnalyser::calculateNoveltyFunction()
             float currentCoefficient = mSTFTSpectrum.getReference(w).getReference(fc);
             float previousCoefficient = mSTFTSpectrum.getReference(w - 1).getReference(fc);
             float localDerivative = currentCoefficient - previousCoefficient;
+            coefficientSum += currentCoefficient;
             
             // Calculate spectral flux
             spectralFlux += abs(localDerivative);
             
             // Calculate spectral centroid
             spectralCentroid += fc * currentCoefficient;
-            coefficientSum += currentCoefficient;
             
             // Apply half-wave rectification and accumulate bin values for each window
             localNovelty += jmax<float>(localDerivative, 0);
@@ -245,7 +236,7 @@ Array<float> SampleAnalyser::calculateNoveltyFunction()
     }
     
     // Calculate spectral flux
-    spectralFlux = (spectralFlux / numFFTWindows) / numCoefficients;
+    spectralFlux = spectralFlux / coefficientSum;
     
     // Calculate spectral centroid
     spectralCentroid = spectralCentroid / coefficientSum;
@@ -373,6 +364,11 @@ int SampleAnalyser::analyseSampleTempo()
     // Calculate STFT spectrum
     calculateSTFTSpectrum(tempoFFTOrder, tempoWindowLength, tempoFFTHopLength, tempoCompressionFactor);
     
+    if (mSTFTSpectrum.size() < 2)
+    {
+        return 0.0;
+    }
+    
     // Calculate spectral novelty function
     Array<float> noveltyFunction = calculateNoveltyFunction();
     
@@ -409,12 +405,12 @@ int SampleAnalyser::analyseSampleTempo()
     return bestTempoEstimation;
 }
 
-Array<Array<float>> SampleAnalyser::calculateLogSpectrogram(float & coefficientSum)
+Array<Array<float>> SampleAnalyser::calculateLogSpectrogram(float& coefficientSum)
 {
     // Apply logarithmic frequency pooling
     Array<Array<float>> logSpectrogram;
     int numPitches = 155;
-    int numPitchesPerBand = numPitches / numSpectralBands;
+    int numPitchesPerBand = numPitches / NUM_SPECTRAL_BANDS;
     
     // Loop over all pitch pools
     for (int p = 0; p < numPitches; p++)
@@ -471,24 +467,18 @@ void SampleAnalyser::calculateChromaDistribution(Array<Array<float>> &logSpectro
     std::memset(mChromaDistribution, 0, sizeof(mChromaDistribution));
     chromaFlux = 0.0;
     
-    for (int c = 0; c < numChroma; c++)
+    // Loop over all pitches
+    for (int p = 0; p < logSpectrogram.size(); p++)
     {
-        // Loop over all octaves
-        for (int p = 0; p < logSpectrogram.size(); p++)
+        for (int w = 0; w < numFFTWindows; w++)
         {
-            if (p % numChroma == c)
+            float currentCoefficient = logSpectrogram.getReference(p).getReference(w);
+            mChromaDistribution[p % NUM_CHROMA] += currentCoefficient;
+            
+            if (w >= 1)
             {
-                for (int w = 0; w < numFFTWindows; w++)
-                {
-                    float currentCoefficient = logSpectrogram.getReference(p).getReference(w);
-                    mChromaDistribution[c] += currentCoefficient;
-                    
-                    if (w >= 1)
-                    {
-                        float previousCoefficient = logSpectrogram.getReference(p).getReference(w - 1);
-                        chromaFlux += abs(currentCoefficient - previousCoefficient);
-                    }
-                }
+                float previousCoefficient = logSpectrogram.getReference(p).getReference(w - 1);
+                chromaFlux += abs(currentCoefficient - previousCoefficient);
             }
         }
     }
@@ -498,11 +488,11 @@ void SampleAnalyser::calculateChromaDistribution(Array<Array<float>> &logSpectro
     // Normalize chroma distribution
     float maxChroma = *std::max_element(mChromaDistribution,
                                         mChromaDistribution
-                                        + numChroma);
+                                        + NUM_CHROMA);
     
-    for (int b = 0; b < numSpectralBands; b++)
+    for (int c = 0; c < NUM_CHROMA; c++)
     {
-        mChromaDistribution[b] /= maxChroma;
+        mChromaDistribution[c] /= maxChroma;
     }
 }
 
@@ -517,7 +507,7 @@ Array<float> SampleAnalyser::calculateKeyChromaCorrelations(float & averageCorre
     {
         Array<int> const & keyPattern = KEY_PATTERNS.getReference(k);
         
-        for (int c = 0; c < numChroma; c++)
+        for (int c = 0; c < NUM_CHROMA; c++)
         {
             if (keyPattern.contains(c))
             {
@@ -531,7 +521,7 @@ Array<float> SampleAnalyser::calculateKeyChromaCorrelations(float & averageCorre
     return keyChromaCorrelations;
 }
 
-String SampleAnalyser::analyseSampleKey()
+int SampleAnalyser::analyseSampleKey()
 {
     // Calculate STFT spectrum
     calculateSTFTSpectrum(keyFFTOrder, keyWindowLength, keyFFTHopLength, keyCompressionFactor);
@@ -545,10 +535,10 @@ String SampleAnalyser::analyseSampleKey()
     // Normalize spectral distribution
     float maxSpectral = *std::max_element(mSpectralDistribution,
                                           mSpectralDistribution
-                                          + numSpectralBands);
+                                          + NUM_SPECTRAL_BANDS);
     float summedBands = 0.0;
     
-    for (int b = 0; b < numSpectralBands; b++)
+    for (int b = 0; b < NUM_SPECTRAL_BANDS; b++)
     {
         mSpectralDistribution[b] /= maxSpectral;
         summedBands += mSpectralDistribution[b];
@@ -576,7 +566,7 @@ String SampleAnalyser::analyseSampleKey()
     
     // Find key with the highest histogram correlation
     averageCorrelation /= numKeys;
-    int optimalKeyIndex = 12;
+    int optimalKeyIndex = NO_KEY_INDEX;
     float* maxCorrelation = std::max_element(keyHistogramCorrelations.getRawDataPointer(),
                                              keyHistogramCorrelations.getRawDataPointer() + numKeys);
     
@@ -585,12 +575,10 @@ String SampleAnalyser::analyseSampleKey()
         optimalKeyIndex = (int) std::distance(keyHistogramCorrelations.getRawDataPointer(), maxCorrelation);
     }
     
-    String optimalKeyName = KEY_INDEX_TO_KEY_NAME[optimalKeyIndex];
-    
-    return optimalKeyName;
+    return optimalKeyIndex;
 }
 
 float SampleAnalyser::pitchToFrequency(float pitchIndex, int referenceIndex, float referenceFrequency)
 {
-    return pow(2, (pitchIndex - referenceIndex) / numChroma) * referenceFrequency;
+    return pow(2, (pitchIndex - referenceIndex) / NUM_CHROMA) * referenceFrequency;
 }

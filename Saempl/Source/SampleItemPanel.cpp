@@ -153,6 +153,13 @@ bool SampleItemPanel::tryShowAudioResource(File inFile)
         sampleLibrary.refresh();
     }
     
+    AlertWindow::showAsync(MessageBoxOptions()
+                           .withIconType(MessageBoxIconType::NoIcon)
+                           .withTitle("File not available!")
+                           .withMessage("This file has probably been externally deleted and was removed from the list of available samples.")
+                           .withButton("OK"),
+                           nullptr);
+    
     return false;
 }
 

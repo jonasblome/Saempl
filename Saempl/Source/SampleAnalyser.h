@@ -58,10 +58,8 @@ private:
     static const int keyWindowLength = keyFFTSize;
     static const int keyFFTHopLength = keyWindowLength / 2;
     static const int loudnessBufferSize = 8192;
-    static const int numChroma = 12;
-    static const int numSpectralBands = 32;
-    float mSpectralDistribution[numSpectralBands];
-    float mChromaDistribution[numChroma];
+    float mSpectralDistribution[NUM_SPECTRAL_BANDS];
+    float mChromaDistribution[NUM_CHROMA];
     // Change to only count local tempo optima that are above the local average
     constexpr static const float tempoAverageBinHeightThresholdFactor = 1.2;
     // Change to only count a key that has a correlation that is above the average correlation
@@ -175,7 +173,7 @@ private:
      
      @returns the key of the audio file.
      */
-    String analyseSampleKey();
+    int analyseSampleKey();
     /**
      Calculates the corresponding frequency to a pitch index according to the MIDI protocol.
      

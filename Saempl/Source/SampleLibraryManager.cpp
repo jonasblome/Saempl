@@ -73,6 +73,17 @@ void SampleLibraryManager::updateSampleLibraryFile(File& inLibraryDirectory)
         samplePropertyXml->setAttribute("PropertyValue", sampleItem->getKey());
         samplePropertiesXml->prependChildElement(samplePropertyXml);
         
+        // Adding feature vector
+        std::vector<float> featureVector = sampleItem->getFeatureVector();
+        
+        for (int d = 0; d < featureVector.size(); d++)
+        {
+            String childName = "FV" + std::to_string(d);
+            samplePropertyXml = new XmlElement(childName);
+            samplePropertyXml->setAttribute("PropertyValue", featureVector[d]);
+            samplePropertiesXml->prependChildElement(samplePropertyXml);
+        }
+        
         sampleItemXml->prependChildElement(samplePropertiesXml);
         
         sampleItemsXml->prependChildElement(sampleItemXml);
@@ -208,8 +219,21 @@ void SampleLibraryManager::loadSampleLibrary(File& inLibraryDirectory)
                 
                 // Adding key property to item
                 samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[5]);
-                String key = samplePropertyXml->getStringAttribute("PropertyValue");
+                int key = samplePropertyXml->getIntAttribute("PropertyValue");
                 sampleItem->setKey(key);
+                
+                // Adding feature vector to item
+                int numDimensions = NUM_CHROMA + NUM_FEATURES + NUM_SPECTRAL_BANDS;
+                std::vector<float> featureVector(numDimensions);
+                
+                for (int d = 0; d < numDimensions; d++)
+                {
+                    String childName = "FV" + std::to_string(d);
+                    samplePropertyXml = samplePropertiesXml->getChildByName(childName);
+                    featureVector[d] = samplePropertyXml->getDoubleAttribute("PropertyValue");
+                }
+                
+                sampleItem->setFeatureVector(featureVector);
             }
         }
     }

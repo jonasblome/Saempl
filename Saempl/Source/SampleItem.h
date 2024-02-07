@@ -10,6 +10,7 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include "BlomeHelpers.h"
 
 /**
  The class for storing meta information about a sample/audio file.
@@ -82,13 +83,13 @@ public:
     /**
      @returns the sample's key.
      */
-    String getKey() const;
+    int getKey() const;
     /**
      Sets the key of the sample item.
      
      @param inKey the key to set.
      */
-    void setKey(String inKey);
+    void setKey(int inKey);
     /**
      @returns the sample's feature vector.
      */
@@ -107,6 +108,6 @@ private:
     double mLoudnessDecibel;
     double mLoudnessLUFS;
     int mTempo;
-    String mKey;
+    int mKey;
     std::vector<float> mFeatureVector;
 };

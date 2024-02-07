@@ -24,6 +24,9 @@ static StringArray const SUPPORTED_AUDIO_FORMATS = StringArray({ ".mp3", ".wav",
 static String const SUPPORTED_AUDIO_FORMATS_WILDCARD = "*.wav;*.mp3;*.aiff;*.m4a";
 static String const SUPPORTED_AUDIO_FORMATS_EXTENSIONS = ".wav;.mp3;.aiff;.m4a";
 static StringArray const PROPERTY_NAMES = StringArray({ "Title", "Length", "dB", "LUFS", "Tempo", "Key" });
+static int const NUM_CHROMA = 12;
+static int const NUM_SPECTRAL_BANDS = 128;
+static int const NUM_FEATURES = 12;
 
 enum CompareOperators
 {
@@ -54,35 +57,38 @@ static std::map<String, NavigationPanelType> STRING_TO_NAVIGATION_PANEL_TYPE
     { "PANELS_GRID_PANEL", PANELS_GRID_PANEL }
 };
 
+static int const NO_KEY_INDEX = 1000;
+
 static std::map<int, String> KEY_INDEX_TO_KEY_NAME
 {
-    { 0, "C maj/A min" },
+    { 0, "Gb maj/Eb min" },
     { 1, "Db maj/Bb min" },
-    { 2, "D maj/B min" },
+    { 2, "Ab maj/F min" },
     { 3, "Eb maj/C min" },
-    { 4, "E maj/C# min" },
+    { 4, "Bb maj/G min" },
     { 5, "F maj/D min" },
-    { 6, "Gb maj/Eb min" },
+    { 6, "C maj/A min" },
     { 7, "G maj/E min" },
-    { 8, "Ab maj/F min" },
+    { 8, "D maj/B min" },
     { 9, "A maj/F# min" },
-    { 10, "Bb maj/G min" },
+    { 10, "E maj/C# min" },
     { 11, "B maj/G# min" },
-    { 12, "No key detected" },
+    { NO_KEY_INDEX, "No key detected" },
 };
 
-static Array<Array<int>> const KEY_PATTERNS = Array<Array<int>>({
-    Array<int>({ 0, 2, 4, 5, 7, 9, 11 }), // C
-    Array<int>({ 1, 3, 5, 6, 8, 10, 0 }), // Db
-    Array<int>({ 2, 4, 6, 7, 9, 11, 1 }), // D
-    Array<int>({ 3, 5, 7, 8, 10, 0, 2 }), // Eb
-    Array<int>({ 4, 6, 8, 9, 11, 1, 3 }), // E
-    Array<int>({ 5, 7, 9, 10, 0, 2, 4 }), // F
+static Array<Array<int>> const KEY_PATTERNS = Array<Array<int>>
+({
     Array<int>({ 6, 8, 10, 11, 1, 3, 5 }), // Gb
-    Array<int>({ 7, 9, 11, 0, 2, 4, 6 }), // G
+    Array<int>({ 1, 3, 5, 6, 8, 10, 0 }), // Db
     Array<int>({ 8, 10, 0, 1, 3, 5, 7 }), // Ab
-    Array<int>({ 9, 11, 1, 2, 4, 6, 8 }), // A
+    Array<int>({ 3, 5, 7, 8, 10, 0, 2 }), // Eb
     Array<int>({ 10, 0, 2, 3, 5, 7, 9 }), // Bb
+    Array<int>({ 5, 7, 9, 10, 0, 2, 4 }), // F
+    Array<int>({ 0, 2, 4, 5, 7, 9, 11 }), // C
+    Array<int>({ 7, 9, 11, 0, 2, 4, 6 }), // G
+    Array<int>({ 2, 4, 6, 7, 9, 11, 1 }), // D
+    Array<int>({ 9, 11, 1, 2, 4, 6, 8 }), // A
+    Array<int>({ 4, 6, 8, 9, 11, 1, 3 }), // E
     Array<int>({ 11, 1, 3, 4, 6, 8, 10 }), // B
 });
 
@@ -136,17 +142,4 @@ inline void drawDropShadow(Graphics& g,
     DropShadow(style->COLOUR_BLACK_SUPERLIGHT_TRANSPARENT, radius, { offsetX, offsetY }).drawForRectangle(g2, dropShadowArea);
     g.setColour(style->COLOUR_BLACK);
     g.drawImageAt(dropShadowImage, 0, 0);
-}
-
-/**
- Shows a warning message when a file has externally been deleted.
- */
-inline void showFileDeletedWarning()
-{
-    AlertWindow::showAsync(MessageBoxOptions()
-                           .withIconType(MessageBoxIconType::NoIcon)
-                           .withTitle("File not available!")
-                           .withMessage("This file has probably been externally deleted and was removed from the list of available samples.")
-                           .withButton("OK"),
-                           nullptr);
 }

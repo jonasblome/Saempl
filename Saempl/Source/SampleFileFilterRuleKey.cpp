@@ -13,7 +13,7 @@ SampleFileFilterRuleKey::SampleFileFilterRuleKey(String inRulePropertyName)
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = "C maj/A min";
+    mCompareValue = 0;
     mCompareOperator = GREATER_THAN;
 }
 
@@ -24,7 +24,7 @@ SampleFileFilterRuleKey::~SampleFileFilterRuleKey()
 
 bool SampleFileFilterRuleKey::matches(SampleItem const & inSampleItem)
 {
-    String propertyValue = inSampleItem.getKey();
+    int propertyValue = inSampleItem.getKey();
     
     switch (mCompareOperator) {
         case LESS_THAN:
@@ -53,12 +53,12 @@ bool SampleFileFilterRuleKey::matches(SampleItem const & inSampleItem)
     };
 }
 
-String SampleFileFilterRuleKey::getCompareValue()
+int SampleFileFilterRuleKey::getCompareValue()
 {
     return mCompareValue;
 }
 
-void SampleFileFilterRuleKey::setCompareValue(String const & inCompareValue)
+void SampleFileFilterRuleKey::setCompareValue(int const & inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

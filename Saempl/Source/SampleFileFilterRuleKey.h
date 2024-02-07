@@ -30,14 +30,14 @@ public:
     /**
      @returns the compare value of the rule.
      */
-    String getCompareValue();
+    int getCompareValue();
     /**
      Sets the compare value of the rule.
      
      @param inCompareValue the value to set.
      */
-    void setCompareValue(String const & inCompareValue);
+    void setCompareValue(int const & inCompareValue);
     
 private:
-    String mCompareValue;
+    int mCompareValue;
 };
