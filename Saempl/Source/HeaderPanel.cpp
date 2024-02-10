@@ -383,7 +383,7 @@ void HeaderPanel::setToggleFilterButton(int buttonWidth, int x)
         bool filterIsActive = !sampleLibrary.getFileFilter().getIsActive();
         sampleLibrary.getFileFilter().setIsActive(filterIsActive);
         
-        if (sampleLibrary.getFileFilter().getFilterRules().size() > 0)
+        if (sampleLibrary.getFileFilter(    ).getFilterRules().size() > 0)
         {
             sampleLibrary.refresh();
         }

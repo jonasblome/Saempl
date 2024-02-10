@@ -14,7 +14,7 @@ SampleFileFilterRuleKey::SampleFileFilterRuleKey(String inRulePropertyName)
 SampleFileFilterRuleBase(inRulePropertyName)
 {
     mCompareValue = 0;
-    mCompareOperator = GREATER_THAN;
+    mCompareOperator = CONTAINS;
 }
 
 SampleFileFilterRuleKey::~SampleFileFilterRuleKey()

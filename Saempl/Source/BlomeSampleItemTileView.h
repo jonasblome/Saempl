@@ -35,19 +35,9 @@ public:
      */
     bool getIsSelected();
     /**
-     Deletes the files selected in the file tree view.
-     
-     @param deletePermanently whether the file gets deleted permanently or move to the trash.
+     Tries to load the item's file into the audio player.
      */
-    void deleteFile(bool deletePermanently);
-    /**
-     Add all selected files to the sample item palette collection.
-     */
-    void addToPalette();
-    /**
-     Reanalyses the sample.
-     */
-    void reanalyseSample();
+    void loadIntoAudioPlayer();
     
 private:
     SampleItem* sampleItem;
@@ -59,5 +49,4 @@ private:
     
     void paint(Graphics& g) override;
     void mouseDoubleClick (MouseEvent const & event) override;
-    void mouseDrag(MouseEvent const & mouseEvent) override;
 };

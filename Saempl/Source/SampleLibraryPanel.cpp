@@ -167,7 +167,7 @@ bool SampleLibraryPanel::keyPressed(const KeyPress& key)
 {
     if (key.getKeyCode() == KeyPress::returnKey)
     {
-        fileDoubleClicked(mFileTree->getSelectedFile(0));
+        sampleItemPanel.tryShowAudioResource(mFileTree->getSelectedFile(0));
         return true;
     }
     

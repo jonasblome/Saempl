@@ -32,7 +32,16 @@ public:
      Sets the grids' boundaries and performs the layout of the grid's components.
      */
     void performGridLayout(float inZoomFactor);
-    Point<int> selectRandomTile();
+    Point<int> getTileCenter(BlomeSampleItemTileView *randomTile);
+    
+Point<int> selectRandomTile();
+    void loadSelectedTileIntoAudioPlayer();
+    void selectAll();
+    void deselectAll();
+    Point<int> selectLeft();
+    Point<int> selectUp();
+    Point<int> selectRight();
+    Point<int> selectDown();
     
 private:
     SampleLibrary& sampleLibrary;
@@ -41,6 +50,7 @@ private:
     SampleItemPanel& sampleItemPanel;
     OwnedArray<BlomeSampleItemTileView> mSampleItemTiles;
     Array<int> mSelectedSampleTileIndices;
+    OwnedArray<SampleItem> emptySquares;
     StringArray mAddedSampleFilePaths;
     std::unique_ptr<SampleItemGridSorter> mGridSorter;
     bool sampleItemCollectionChanged;
@@ -56,10 +66,12 @@ private:
     void changeListenerCallback(ChangeBroadcaster* source) override;
     void filesDropped(StringArray const & files, int x, int y) override;
     bool isInterestedInFileDrag(StringArray const & files) override;
+    void mouseDrag(MouseEvent const & mouseEvent) override;
     void showPopupMenu();
+    BlomeSampleItemTileView* selectTile(int inTileIndex);
+    void deselectTile(int inTileIndex);
     void mouseUp(MouseEvent const & event) override;
     void deleteFiles(bool deletePermanently);
-    void deselectAll();
     void addToPalette();
     void reanalyseSamples();
 };

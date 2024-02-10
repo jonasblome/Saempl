@@ -69,8 +69,13 @@ void BlomeFileFilterRuleViewLoudnessDecibel::textEditorFocusLost(TextEditor& tex
 {
     // Lose focus, set compare value and refresh library
     mCompareValueEditor->giveAwayKeyboardFocus();
-    getFilterRule().setCompareValue(textEditor.getText().getFloatValue());
-    sampleLibrary.refresh();
+    float newCompareValue = textEditor.getText().getFloatValue();
+    
+    if (newCompareValue != getFilterRule().getCompareValue())
+    {
+        getFilterRule().setCompareValue(newCompareValue);
+        sampleLibrary.refresh();
+    }
 }
 
 SampleFileFilterRuleLoudnessDecibel& BlomeFileFilterRuleViewLoudnessDecibel::getFilterRule()

@@ -114,6 +114,7 @@ void SampleLibraryManager::run()
     int numItemsToProcess = allSampleFiles.size() + allSampleItems.size();
     int numProcessedItems = 0;
     setProgress(0.0);
+    int64 startTime = Time::currentTimeMillis();
     
     // Go through all current sample items,
     // check if corresponding audio file still exists
@@ -133,6 +134,7 @@ void SampleLibraryManager::run()
             allSampleItems.removeObject(sampleItem);
         }
         
+        // Set progress
         numProcessedItems++;
         setProgress(numProcessedItems / (double) numItemsToProcess);
     }
@@ -160,8 +162,27 @@ void SampleLibraryManager::run()
             createSampleItem(sampleFile);
         }
         
+        // Set progress and status message
         numProcessedItems++;
         setProgress(numProcessedItems / (double) numItemsToProcess);
+        String statusMessage = String("\n") + "Est. time remaining: ";
+        int64 msSinceStart = Time::currentTimeMillis() - startTime;
+        int64 estimatedSecondsRemaining = ((msSinceStart / numProcessedItems) * (numItemsToProcess - numProcessedItems)) / 1000;
+        
+        if (estimatedSecondsRemaining < 60)
+        {
+            statusMessage = statusMessage + String::toDecimalStringWithSignificantFigures(estimatedSecondsRemaining, 2) + " second(s)";
+        }
+        else if (estimatedSecondsRemaining < 1800)
+        {
+            statusMessage = statusMessage + String::toDecimalStringWithSignificantFigures(estimatedSecondsRemaining * 1.0 / 60, 2) + " minute(s)";
+        }
+        else
+        {
+            statusMessage = statusMessage + String::toDecimalStringWithSignificantFigures(estimatedSecondsRemaining * 1.0 / 3600, 2) + " hour(s)";
+        }
+        
+        setStatusMessage(statusMessage);
     }
 }
 

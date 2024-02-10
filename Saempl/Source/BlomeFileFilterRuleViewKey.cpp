@@ -69,8 +69,13 @@ void BlomeFileFilterRuleViewKey::textEditorFocusLost(TextEditor& textEditor)
 {
     // Lose focus, set compare value and refresh library
     mCompareValueEditor->giveAwayKeyboardFocus();
-    getFilterRule().setCompareValue(textEditor.getText().getIntValue());
-    sampleLibrary.refresh();
+    int newCompareValue = textEditor.getText().getIntValue();
+    
+    if (newCompareValue != getFilterRule().getCompareValue())
+    {
+        getFilterRule().setCompareValue(newCompareValue);
+        sampleLibrary.refresh();
+    }
 }
 
 SampleFileFilterRuleKey& BlomeFileFilterRuleViewKey::getFilterRule()

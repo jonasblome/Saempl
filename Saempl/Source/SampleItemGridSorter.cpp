@@ -23,10 +23,12 @@ SampleItemGridSorter::~SampleItemGridSorter()
 }
 
 void SampleItemGridSorter::applySorting(int inRows,
-                                        int inColumns)
+                                        int inColumns,
+                                        bool doWrap)
 {
     rows = inRows;
     columns = inColumns;
+    applyWrap = doWrap;
     launchThread();
 }
 
@@ -80,19 +82,32 @@ void SampleItemGridSorter::run()
         int radiusY = jmax<int>(1, jmin<int>(rows / 2, radius));
         
         // Copy feature vectors to grid
-        copyFeatureVectorsToGrid(grid, sampleItems, numDimensions, weights);
+        copyFeatureVectorsToGrid(grid, numDimensions, weights);
         
         // Apply filter
         int filterSizeX = 2 * radiusX + 1;
         int filterSizeY = 2 * radiusY + 1;
         
-        // Apply filter to grid
-        grid = filterHorizontally(grid, rows, columns, numDimensions, filterSizeX);
-        grid = filterVertically(grid, rows, columns, numDimensions, filterSizeY);
-        
-        // Apply filter to weights
-        weights = filterHorizontally(weights, rows, columns, filterSizeX);
-        weights = filterVertically(weights, rows, columns, filterSizeY);
+        if (applyWrap)
+        {
+            // Apply filter to grid
+            grid = filterHorizontallyWrap(grid, rows, columns, numDimensions, filterSizeX);
+            grid = filterVerticallyWrap(grid, rows, columns, numDimensions, filterSizeY);
+            
+            // Apply filter to weights
+            weights = filterHorizontallyWrap(weights, rows, columns, filterSizeX);
+            weights = filterVerticallyWrap(weights, rows, columns, filterSizeY);
+        }
+        else
+        {
+            // Apply filter to grid
+            grid = filterHorizontallyMirror(grid, rows, columns, numDimensions, filterSizeX);
+            grid = filterVerticallyMirror(grid, rows, columns, numDimensions, filterSizeY);
+            
+            // Apply filter to weights
+            weights = filterHorizontallyMirror(weights, rows, columns, filterSizeX);
+            weights = filterVerticallyMirror(weights, rows, columns, filterSizeY);
+        }
         
         // Apply weights to grid vectors
         for (int pos = 0; pos < grid.size(); pos++)
@@ -106,7 +121,7 @@ void SampleItemGridSorter::run()
         }
         
         // Find optimal random swaps
-        checkRandomSwaps(radius, sampleItems, grid, rows, columns);
+        checkRandomSwaps(radius, grid, rows, columns);
         
         // Reduce the filter radius
         rad *= radiusDecay;
@@ -118,14 +133,14 @@ void SampleItemGridSorter::threadComplete(bool userPressedCancel)
     sendChangeMessage();
 }
 
-void SampleItemGridSorter::copyFeatureVectorsToGrid(Array<std::vector<float>>& grid, OwnedArray<SampleItem>& inSampleItems, int numDimensions, Array<float>& weights)
+void SampleItemGridSorter::copyFeatureVectorsToGrid(Array<std::vector<float>>& grid, int numDimensions, Array<float>& weights)
 {
     for (int pos = 0; pos < grid.size(); pos++)
     {
         std::vector<float>& gridCell = grid.getReference(pos);
-        SampleItem* sampleItem = inSampleItems.getUnchecked(pos);
+        SampleItem* sampleItem = sampleItems.getUnchecked(pos);
         
-        if (sampleItem->getTitle() != "")
+        if (sampleItem->getFilePath() != "EMPTYTILE")
         {
             for (int d = 0; d < numDimensions; d++)
             {
@@ -134,7 +149,7 @@ void SampleItemGridSorter::copyFeatureVectorsToGrid(Array<std::vector<float>>& g
             
             weights.set(pos, weightTile);
         }
-        else
+        else // Hole
         {
             for (int d = 0; d < numDimensions; d++)
             {
@@ -146,11 +161,11 @@ void SampleItemGridSorter::copyFeatureVectorsToGrid(Array<std::vector<float>>& g
     }
 }
 
-Array<std::vector<float>> SampleItemGridSorter::filterHorizontally(Array<std::vector<float>>& inGrid, 
-                                                                   int rows,
-                                                                   int columns,
-                                                                   int numDimensions,
-                                                                   int filterSize)
+Array<std::vector<float>> SampleItemGridSorter::filterHorizontallyWrap(Array<std::vector<float>>& inGrid,
+                                                                       int rows,
+                                                                       int columns,
+                                                                       int numDimensions,
+                                                                       int filterSize)
 {
     if (columns == 1)
     {
@@ -217,7 +232,11 @@ Array<std::vector<float>> SampleItemGridSorter::filterHorizontally(Array<std::ve
     return output;
 }
 
-Array<std::vector<float>> SampleItemGridSorter::filterVertically(Array<std::vector<float>>& inGrid, int rows, int columns, int numDimensions, int filterSize)
+Array<std::vector<float>> SampleItemGridSorter::filterVerticallyWrap(Array<std::vector<float>>& inGrid,
+                                                                     int rows,
+                                                                     int columns,
+                                                                     int numDimensions,
+                                                                     int filterSize)
 {
     if (rows == 1)
     {
@@ -282,7 +301,10 @@ Array<std::vector<float>> SampleItemGridSorter::filterVertically(Array<std::vect
     return output;
 }
 
-Array<float> SampleItemGridSorter::filterHorizontally(Array<float>& inWeights, int rows, int columns, int filterSize)
+Array<float> SampleItemGridSorter::filterHorizontallyWrap(Array<float>& inWeights,
+                                                          int rows,
+                                                          int columns,
+                                                          int filterSize)
 {
     if (columns == 1)
     {
@@ -336,7 +358,10 @@ Array<float> SampleItemGridSorter::filterHorizontally(Array<float>& inWeights, i
     return output;
 }
 
-Array<float> SampleItemGridSorter::filterVertically(Array<float>& inWeights, int rows, int columns, int filterSize)
+Array<float> SampleItemGridSorter::filterVerticallyWrap(Array<float>& inWeights,
+                                                        int rows,
+                                                        int columns,
+                                                        int filterSize)
 {
     if (rows == 1)
     {
@@ -388,7 +413,253 @@ Array<float> SampleItemGridSorter::filterVertically(Array<float>& inWeights, int
     return output;
 }
 
-void SampleItemGridSorter::checkRandomSwaps(int radius, OwnedArray<SampleItem>& inSampleItems, Array<std::vector<float>>& grid, int rows, int columns)
+Array<std::vector<float>> SampleItemGridSorter::filterHorizontallyMirror(Array<std::vector<float>>& inGrid,
+                                                                         int rows,
+                                                                         int columns,
+                                                                         int numDimensions,
+                                                                         int filterSize)
+{
+    if (columns == 1)
+    {
+        return inGrid;
+    }
+    
+    Array<std::vector<float>> output;
+    output.resize(rows * columns);
+    int borderExtension = filterSize / 2;
+    Array<std::vector<float>> extendedRow;
+    extendedRow.resize(columns + 2 * borderExtension);
+    
+    // Filter the rows
+    for (int row = 0; row < rows; row++)
+    {
+        int actualRowIndex = row * columns;
+        
+        // Copy the current row
+        for (int col = 0; col < columns; col++)
+        {
+            extendedRow.set(col + borderExtension, inGrid.getReference(actualRowIndex + col));
+        }
+        
+        // Extend the row with mirrored values
+        for (int e = 0; e < borderExtension; e++)
+        {
+            extendedRow.set(borderExtension - 1 - e, extendedRow.getReference(borderExtension + e + 1));
+            extendedRow.set(columns + borderExtension + e, extendedRow.getReference(columns + borderExtension - 2 - e));
+        }
+        
+        std::vector<float> tmp = std::vector<float>(numDimensions);
+        
+        // Filter the first element
+        for (int fp = 0; fp < filterSize; fp++)
+        {
+            for (int d = 0; d < numDimensions; d++)
+            {
+                tmp[d] += extendedRow.getReference(fp)[d];
+            }
+        }
+        
+        output.set(actualRowIndex, std::vector<float>(numDimensions));
+        
+        for (int d = 0; d < numDimensions; d++)
+        {
+            output.getReference(actualRowIndex)[d] = tmp[d] / filterSize;
+        }
+        
+        // Filter the rest of the row
+        for (int col = 1; col < columns; col++)
+        {
+            output.set(actualRowIndex + col, std::vector<float>(numDimensions));
+            int left = col - 1;
+            int right = left + filterSize;
+            
+            for (int d = 0; d < numDimensions; d++)
+            {
+                tmp[d] += extendedRow.getReference(right)[d] - extendedRow.getReference(left)[d];
+                output.getReference(actualRowIndex + col)[d] = tmp[d] / filterSize;
+            }
+        }
+    }
+    
+    return output;
+}
+
+Array<std::vector<float>> SampleItemGridSorter::filterVerticallyMirror(Array<std::vector<float>>& inGrid,
+                                                                       int rows,
+                                                                       int columns,
+                                                                       int numDimensions,
+                                                                       int filterSize)
+{
+    if (rows == 1)
+    {
+        return inGrid;
+    }
+    
+    Array<std::vector<float>> output;
+    output.resize(rows * columns);
+    int borderExtension = filterSize / 2;
+    Array<std::vector<float>> extendedColumn;
+    extendedColumn.resize(rows + 2 * borderExtension);
+    
+    // Filter the columns
+    for (int col = 0; col < columns; col++)
+    {
+        // Copy the current column
+        for (int row = 0; row < rows; row++)
+        {
+            extendedColumn.set(row + borderExtension, inGrid.getReference(col + row * columns));
+        }
+        
+        // Extend the column with mirrored values
+        for (int e = 0; e < borderExtension; e++)
+        {
+            extendedColumn.set(borderExtension - 1 - e, extendedColumn.getReference(borderExtension + e + 1));
+            extendedColumn.set(rows + borderExtension + e, extendedColumn.getReference(borderExtension + rows - 2 - e));
+        }
+        
+        std::vector<float> tmp = std::vector<float>(numDimensions);
+        
+        // Filter the first element
+        for (int fp = 0; fp < filterSize; fp++)
+        {
+            for (int d = 0; d < numDimensions; d++)
+            {
+                tmp[d] += extendedColumn.getReference(fp)[d];
+            }
+        }
+        
+        output.set(col, std::vector<float>(numDimensions));
+        
+        for (int d = 0; d < numDimensions; d++)
+        {
+            output.getReference(col)[d] = tmp[d] / filterSize;
+        }
+        
+        // Filter the rest of the column
+        for (int row = 1; row < rows; row++)
+        {
+            output.set(col + row * columns, std::vector<float>(numDimensions));
+            int left = row - 1;
+            int right = left + filterSize;
+            
+            for (int d = 0; d < numDimensions; d++)
+            {
+                tmp[d] += extendedColumn.getReference(right)[d] - extendedColumn.getReference(left)[d];
+                output.getReference(col + row * columns)[d] = tmp[d] / filterSize;
+            }
+        }
+    }
+    
+    return output;
+}
+
+Array<float> SampleItemGridSorter::filterHorizontallyMirror(Array<float>& inWeights, int rows, int columns, int filterSize)
+{
+    if (columns == 1)
+    {
+        return inWeights;
+    }
+    
+    Array<float> output;
+    output.resize(rows * columns);
+    int borderExtension = filterSize / 2;
+    Array<float> extendedRow;
+    extendedRow.resize(columns + 2 * borderExtension);
+    
+    // Filter the rows
+    for (int row = 0; row < rows; row++)
+    {
+        int actualRowIndex = row * columns;
+        
+        // Copy the current row
+        for (int col = 0; col < columns; col++)
+        {
+            extendedRow.set(col + borderExtension, inWeights.getReference(actualRowIndex + col));
+        }
+        
+        // Extend the row with mirrored values
+        for (int e = 0; e < borderExtension; e++)
+        {
+            extendedRow.set(borderExtension - 1 - e, extendedRow.getReference(borderExtension + e + 1));
+            extendedRow.set(columns + borderExtension + e, extendedRow.getReference(columns + borderExtension - 2 - e));
+        }
+        
+        float tmp = 0;
+        
+        // Filter the first element
+        for (int fp = 0; fp < filterSize; fp++)
+        {
+            tmp += extendedRow.getReference(fp);
+        }
+        
+        output.set(actualRowIndex, tmp / filterSize);
+        
+        // Filter the rest of the row
+        for (int col = 1; col < columns; col++)
+        {
+            int left = col - 1;
+            int right = left + filterSize;
+            tmp += extendedRow.getReference(right) - extendedRow.getReference(left);
+            output.set(actualRowIndex + col, tmp / filterSize);
+        }
+    }
+    
+    return output;
+}
+
+Array<float> SampleItemGridSorter::filterVerticallyMirror(Array<float>& inWeights, int rows, int columns, int filterSize)
+{
+    if (rows == 1)
+    {
+        return inWeights;
+    }
+    
+    Array<float> output;
+    output.resize(rows * columns);
+    int borderExtension = filterSize / 2;
+    Array<float> extendedColumn;
+    extendedColumn.resize(rows + 2 * borderExtension);
+    
+    // Filter the columns
+    for (int col = 0; col < columns; col++)
+    {
+        // Copy the current column
+        for (int row = 0; row < rows; row++)
+        {
+            extendedColumn.set(row + borderExtension, inWeights.getReference(col + row * columns));
+        }
+        
+        // Extend the current column with wrapped values
+        for (int e = 0; e < borderExtension; e++)
+        {
+            extendedColumn.set(borderExtension - 1 - e, extendedColumn.getReference(rows + borderExtension - e - 1));
+            extendedColumn.set(rows + borderExtension + e, extendedColumn.getReference(borderExtension + e));
+        }
+        
+        float tmp = 0;
+        
+        // Filter the first element
+        for (int fp = 0; fp < filterSize; fp++)
+        {
+            tmp += extendedColumn.getReference(fp);
+        }
+        
+        output.set(col, tmp / filterSize);
+        
+        // Filter the rest of the column
+        for (int row = 1; row < rows; row++)
+        {
+            int left = row - 1;
+            int right = left + filterSize;
+            tmp += extendedColumn.getReference(right) - extendedColumn.getReference(left);
+            output.set(col + row * columns, tmp / filterSize);
+        }
+    }
+    
+    return output;
+}
+
+void SampleItemGridSorter::checkRandomSwaps(int radius, Array<std::vector<float>>& grid, int rows, int columns)
 {
     // Set swap size
     int swapAreaWidth = jmin<int>(2 * radius + 1, columns);
@@ -428,15 +699,31 @@ void SampleItemGridSorter::checkRandomSwaps(int radius, OwnedArray<SampleItem>& 
     
     int numSwapTries = jmax<int>(1, (sampleFactor * rows * columns / swapPositions.size()));
     
-    for (int n = 0; n < numSwapTries; n++)
+    if (applyWrap)
     {
-        int numSwapPositions = findSwapPositionsWrap(swapAreaIndices, 
+        for (int n = 0; n < numSwapTries; n++)
+        {
+            int numSwapPositions = findSwapPositionsWrap(swapAreaIndices,
+                                                         swapPositions,
+                                                         swapAreaWidth,
+                                                         swapAreaHeight,
+                                                         rows,
+                                                         columns);
+            doSwaps(swapPositions, numSwapPositions, grid);
+        }
+    }
+    else
+    {
+        for (int n = 0; n < numSwapTries; n++)
+        {
+            int numSwapPositions = findSwapPositions(swapAreaIndices,
                                                      swapPositions,
                                                      swapAreaWidth,
                                                      swapAreaHeight,
                                                      rows,
                                                      columns);
-        doSwaps(swapPositions, numSwapPositions, inSampleItems, grid);
+            doSwaps(swapPositions, numSwapPositions, grid);
+        }
     }
 }
 
@@ -450,7 +737,6 @@ int SampleItemGridSorter::findSwapPositionsWrap(Array<int>& swapAreaIndices, Arr
     
     std::uniform_int_distribution<> distribution2(0, rows * columns);
     int randomPosition = distribution2(generator);
-    
     int numSwapPositions = 0;
     for (int j = startIndex; j < swapAreaIndices.size() && numSwapPositions < swapPositions.size(); j++)
     {
@@ -466,9 +752,50 @@ int SampleItemGridSorter::findSwapPositionsWrap(Array<int>& swapAreaIndices, Arr
     return swapPositions.size();
 }
 
+int SampleItemGridSorter::findSwapPositions(Array<int>& swapAreaIndices, Array<int>& swapPositions, int swapAreaWidth, int swapAreaHeight, int rows, int columns)
+{
+    std::random_device random;
+    std::mt19937 generator(random());
+    
+    std::uniform_int_distribution<> distribution1(0, rows * columns);
+    int randomPosition = distribution1(generator);
+    int randomX = randomPosition % columns;
+    int randomY = randomPosition / columns;
+    
+    int xStart = jmax<int>(0, randomX - swapAreaWidth / 2);
+    int yStart = jmax<int>(0, randomY - swapAreaHeight / 2);
+    
+    if (xStart + swapAreaWidth > columns)
+    {
+        xStart = columns - swapAreaWidth;
+    }
+    
+    if (yStart + swapAreaHeight > rows)
+    {
+        yStart = rows - swapAreaHeight;
+    }
+    
+    std::uniform_int_distribution<> distribution2(0, swapAreaIndices.size() - swapPositions.size());
+    int startIndex = (swapAreaIndices.size() - swapPositions.size() > 0) ? distribution2(generator) : 0;
+    int numSwapPositions = 0;
+    for (int j = startIndex; j < swapAreaIndices.size() && numSwapPositions < swapPositions.size(); j++)
+    {
+        // Get wrapped position of random element to swap
+        int dx = swapAreaIndices.getReference(j) % columns;
+        int dy = swapAreaIndices.getReference(j) / columns;
+        
+        int x = (xStart + dx) % columns;
+        int y = (yStart + dy) % rows;
+        int pos = y * columns + x;
+        
+        swapPositions.set(numSwapPositions++, pos);
+    }
+    
+    return swapPositions.size();
+}
+
 void SampleItemGridSorter::doSwaps(Array<int>& swapPositions,
                                    int numSwapPositions,
-                                   OwnedArray<SampleItem>& inSampleItems,
                                    Array<std::vector<float>>& grid)
 {
     int numValid = 0;
@@ -476,11 +803,11 @@ void SampleItemGridSorter::doSwaps(Array<int>& swapPositions,
     for (int s = 0; s < numSwapPositions; s++)
     {
         int swapPosition = swapPositions.getReference(s);
-        SampleItem* swappedElement = inSampleItems.getUnchecked(swapPosition);
+        SampleItem* swappedElement = sampleItems.getUnchecked(swapPosition);
         swappedElements.set(s, swappedElement);
         
         // Handle holes
-        if (swappedElement->getTitle() != "")
+        if (swappedElement->getFilePath() != "EMPTYTILE")
         {
             featureVectors.set(s, swappedElement->getFeatureVector());
             numValid++;
@@ -501,8 +828,9 @@ void SampleItemGridSorter::doSwaps(Array<int>& swapPositions,
         
         for (int s = 0; s < numSwapPositions; s++)
         {
-            inSampleItems.set(swapPositions.getReference(optimalPermutation.getReference(s)),
-                              swappedElements.getUnchecked(s), false);
+            sampleItems.set(swapPositions.getReference(optimalPermutation.getReference(s)),
+                              swappedElements.getUnchecked(s),
+                              false);
         }
     }
 }
@@ -560,7 +888,7 @@ float SampleItemGridSorter::calculateDistance(std::vector<float> vector1, std::v
                 dist = 1 - dist;
             }
         }
-            
+        
         distance += dist * dist;
     }
     

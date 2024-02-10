@@ -37,6 +37,7 @@ void BlomeSampleTileGridView::sortGrid()
     
     // Retrieve sample items
     OwnedArray<SampleItem>& sampleItems = sampleLibrary.getSampleItems(FILTERED_SAMPLES);
+    mSelectedSampleTileIndices.clear();
     
     // Calculate optimal rectangle side lengths to minimise empty tiles,
     // while still trying to approximate a square grid
@@ -74,16 +75,21 @@ void BlomeSampleTileGridView::sortGrid()
     }
     
     // Add empty squares to sample items
-    Array<SampleItem*> emptySquares;
+    emptySquares.clear();
+    
     for (int e = 0; e < optimalNumEmptySquares; e++)
     {
-        emptySquares.add(sampleItems.add(new SampleItem()));
+        sampleItems.add(emptySquares.add(new SampleItem()));
     }
     
     // Sort sample item tiles with Fast Linear Assignment Sorting (FLAS)
     if (sampleItems.size() > 3)
     {
-        mGridSorter->applySorting(optimalHeight, optimalWidth);
+        mGridSorter->applySorting(optimalHeight, optimalWidth, false);
+    }
+    else
+    {
+        setupGrid();
     }
     
     sampleItemCollectionChanged = false;
@@ -98,7 +104,7 @@ void BlomeSampleTileGridView::performGridLayout(float inZoomFactor)
         return;
     }
     
-    int minTileWidth = 35;
+    int minTileWidth = 75;
     int maxTileWidth = 140;
     int tileWidth = minTileWidth + currentZoomFactor * (maxTileWidth - minTileWidth);
     
@@ -112,16 +118,93 @@ void BlomeSampleTileGridView::performGridLayout(float inZoomFactor)
                                                   optimalHeight * tileWidth));
 }
 
+Point<int> BlomeSampleTileGridView::getTileCenter(BlomeSampleItemTileView *randomTile)
+{
+    Point<int> center = randomTile->getPosition();
+    int halfTildWidth = randomTile->getWidth() / 2;
+    center.addXY(halfTildWidth, halfTildWidth);
+    
+    return center;
+}
+
 Point<int> BlomeSampleTileGridView::selectRandomTile()
 {
     int numTiles = mSampleItemTiles.size();
     int randomTileIndex = Random::getSystemRandom().nextInt(numTiles);
     deselectAll();
     BlomeSampleItemTileView* randomTile = mSampleItemTiles.getUnchecked(randomTileIndex);
-    mSelectedSampleTileIndices.add(randomTileIndex);
-    randomTile->setSelected(true);
+    selectTile(randomTileIndex);
     
-    return randomTile->getPosition();
+    return getTileCenter(randomTile);
+}
+
+void BlomeSampleTileGridView::loadSelectedTileIntoAudioPlayer()
+{
+    if (mSelectedSampleTileIndices.isEmpty())
+    {
+        return;
+    }
+    
+    mSampleItemTiles.getUnchecked(mSelectedSampleTileIndices.getUnchecked(0))->loadIntoAudioPlayer();
+}
+
+void BlomeSampleTileGridView::selectAll()
+{
+    mSelectedSampleTileIndices.clear();
+    
+    for (int t = 0; t < mSampleItemTiles.size(); t++)
+    {
+        selectTile(t);
+    }
+    
+    repaint();
+}
+
+void BlomeSampleTileGridView::deselectAll()
+{
+    for (int t : mSelectedSampleTileIndices)
+    {
+        mSampleItemTiles.getUnchecked(t)->setSelected(false);
+    }
+    
+    mSelectedSampleTileIndices.clear();
+    repaint();
+}
+
+Point<int> BlomeSampleTileGridView::selectLeft()
+{
+    int lastSelectedIndex = mSelectedSampleTileIndices.getLast();
+    deselectAll();
+    int newIndex = lastSelectedIndex % optimalWidth == 0 ? lastSelectedIndex : lastSelectedIndex - 1;
+    
+    return getTileCenter(selectTile(newIndex));
+}
+
+Point<int> BlomeSampleTileGridView::selectUp()
+{
+    int lastSelectedIndex = mSelectedSampleTileIndices.getLast();
+    int newIndex = lastSelectedIndex - optimalWidth;
+    deselectAll();
+    
+    return getTileCenter(selectTile(newIndex < 0 ? lastSelectedIndex : newIndex));
+}
+
+Point<int> BlomeSampleTileGridView::selectRight()
+{
+    int lastSelectedIndex = mSelectedSampleTileIndices.getLast();
+    deselectAll();
+    int newIndex = lastSelectedIndex % optimalWidth == optimalWidth - 1 ? lastSelectedIndex : lastSelectedIndex + 1;
+    
+    return getTileCenter(selectTile(newIndex));
+}
+
+Point<int> BlomeSampleTileGridView::selectDown()
+{
+    int lastSelectedIndex = mSelectedSampleTileIndices.getLast();
+    int newIndex = lastSelectedIndex + optimalWidth;
+    deselectAll();
+    
+    return getTileCenter(selectTile(newIndex > mSampleItemTiles.size() ? lastSelectedIndex : newIndex));
 }
 
 void BlomeSampleTileGridView::setupGrid()
@@ -156,9 +239,15 @@ void BlomeSampleTileGridView::setupGrid()
         addAndMakeVisible(mSampleItemTiles.add(new BlomeSampleItemTileView(sample, sampleLibrary, sampleItemPanel)));
     }
     
+    for (SampleItem* sample : emptySquares)
+    {
+        sampleItems.removeAndReturn(sampleItems.indexOf(sample));
+    }
+    
     mSampleTileGrid->items.addArray(mSampleItemTiles);
     
     performGridLayout(currentZoomFactor);
+    setVisible(true);
 }
 
 void BlomeSampleTileGridView::paint(Graphics& g)
@@ -170,6 +259,7 @@ void BlomeSampleTileGridView::changeListenerCallback(ChangeBroadcaster* source)
 {
     if (source == &sampleLibrary && isShowing())
     {
+        setVisible(false);
         sampleItemCollectionChanged = true;
         sortGrid();
     }
@@ -198,20 +288,27 @@ bool BlomeSampleTileGridView::isInterestedInFileDrag(StringArray const & files)
     return true;
 }
 
-void BlomeSampleTileGridView::deselectAll()
+BlomeSampleItemTileView* BlomeSampleTileGridView::selectTile(int inTileIndex)
 {
-    for (int t : mSelectedSampleTileIndices)
-    {
-        mSampleItemTiles.getUnchecked(t)->setSelected(false);
-    }
+    mSelectedSampleTileIndices.add(inTileIndex);
+    BlomeSampleItemTileView* tile = mSampleItemTiles.getUnchecked(inTileIndex);
+    tile->setSelected(true);
     
-    mSelectedSampleTileIndices.clear();
+    return tile;
+    
+}
+
+void BlomeSampleTileGridView::deselectTile(int inTileIndex)
+{
+    mSelectedSampleTileIndices.removeAllInstancesOf(inTileIndex);
+    mSampleItemTiles.getUnchecked(inTileIndex)->setSelected(false);
 }
 
 void BlomeSampleTileGridView::mouseUp(MouseEvent const & event)
 {
     Point<int> mousePosition = event.getEventRelativeTo(this).getPosition();
     bool commandIsDown = event.mods.isCommandDown();
+    bool shiftIsDown = event.mods.isShiftDown();
     bool rightMouseIsDown = event.mods.isRightButtonDown();
     
     // Try right click on selected tiles
@@ -230,7 +327,7 @@ void BlomeSampleTileGridView::mouseUp(MouseEvent const & event)
     }
     
     // Deselect all tiles
-    if (!commandIsDown)
+    if (!commandIsDown && !shiftIsDown)
     {
         deselectAll();
     }
@@ -240,28 +337,107 @@ void BlomeSampleTileGridView::mouseUp(MouseEvent const & event)
     {
         BlomeSampleItemTileView* tile = mSampleItemTiles.getUnchecked(t);
         
-        if (tile->getBoundsInParent().contains(mousePosition) && tile->getSampleItemFilePath() != "")
+        if (tile->getBoundsInParent().contains(mousePosition) && tile->getSampleItemFilePath() != "EMPTYTILE")
         {
             if (tile->getIsSelected())
             {
-                mSelectedSampleTileIndices.remove(t);
-                tile->setSelected(false);
+                deselectTile(t);
             }
             else
             {
-                mSelectedSampleTileIndices.add(t);
-                tile->setSelected(true);
+                selectTile(t);
+            }
+        }
+    }
+    
+    bool someSelected = !mSelectedSampleTileIndices.isEmpty();
+    
+    // Select all tiles between the last two selected tiles
+    if (shiftIsDown && someSelected)
+    {
+        int numSelected = mSelectedSampleTileIndices.size();
+        int startIndex = 0; // Default start from top left
+        
+        if (numSelected > 1)
+        {
+            startIndex = mSelectedSampleTileIndices.getReference(numSelected - 2);
+        }
+        
+        int endIndex = mSelectedSampleTileIndices.getReference(numSelected - 1);
+        
+        int xStart = startIndex % optimalWidth;
+        int yStart = startIndex / optimalWidth;
+        int xEnd = endIndex % optimalWidth;
+        int yEnd = endIndex / optimalWidth;
+        
+        if (xStart > xEnd)
+        {
+            int temp = xStart;
+            xStart = xEnd;
+            xEnd = temp;
+        }
+        
+        if (yStart > yEnd)
+        {
+            int temp = yStart;
+            yStart = yEnd;
+            yEnd = temp;
+        }
+        
+        for (int x = xStart; x <= xEnd; x++)
+        {
+            for (int y = yStart; y <= yEnd; y++)
+            {
+                int newSelectedIndex = y * optimalWidth + x;
+                BlomeSampleItemTileView* tile = mSampleItemTiles.getUnchecked(newSelectedIndex);
+                
+                if (tile->getSampleItemFilePath() != "EMPTYTILE")
+                {
+                    selectTile(newSelectedIndex);
+                }
             }
         }
     }
     
     // Show options pop up menu
-    if (rightMouseIsDown && !mSelectedSampleTileIndices.isEmpty())
+    if (rightMouseIsDown && someSelected)
     {
         showPopupMenu();
     }
     
     repaint();
+}
+
+void BlomeSampleTileGridView::mouseDrag(MouseEvent const & mouseEvent)
+{
+    // If the drag was at least 50ms after the mouse was pressed
+    if (mouseEvent.getLengthOfMousePress() > 100)
+    {
+        Point<int> mousePosition = mouseEvent.getEventRelativeTo(this).position.toInt();
+        
+        // Check if any of the selected tiles was dragged
+        for (int s : mSelectedSampleTileIndices)
+        {
+            BlomeSampleItemTileView* tile = mSampleItemTiles.getUnchecked(s);
+            Rectangle<int> tileBounds = tile->getBoundsInParent();
+            
+            if (tileBounds.contains(mousePosition))
+            {
+                StringArray selectedFilePaths;
+                
+                // Add all selected rows to external drag
+                for (int r : mSelectedSampleTileIndices)
+                {
+                    selectedFilePaths.add(mSampleItemTiles.getUnchecked(r)->getSampleItemFilePath());
+                }
+                
+                DragAndDropContainer* dragContainer = DragAndDropContainer::findParentDragContainerFor(this);
+                dragContainer->performExternalDragDropOfFiles(selectedFilePaths, false, this);
+                
+                return;
+            }
+        }
+    }
 }
 
 void BlomeSampleTileGridView::showPopupMenu()

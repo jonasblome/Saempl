@@ -111,8 +111,13 @@ void BlomeFileFilterRuleViewBase::resized()
 void BlomeFileFilterRuleViewBase::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
 {
     // Set rule to chosen compare operator
-    filterRule.setCompareOperator(static_cast<CompareOperators>(comboBoxThatHasChanged->getSelectedItemIndex()));
-    sampleLibrary.refresh();
+    CompareOperators newOperator = static_cast<CompareOperators>(comboBoxThatHasChanged->getSelectedItemIndex());
+    
+    if (filterRule.getCompareOperator() != newOperator)
+    {
+        filterRule.setCompareOperator(newOperator);
+        sampleLibrary.refresh();
+    }
 }
 
 SampleFileFilterRuleBase& BlomeFileFilterRuleViewBase::getFilterRule()

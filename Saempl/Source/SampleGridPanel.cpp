@@ -17,6 +17,7 @@ sampleItemPanel(inSampleItemPanel)
 {
     setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH, style->SAMPLE_NAVIGATION_PANEL_HEIGHT);
     setPanelComponents();
+    setWantsKeyboardFocus(true);
 }
 
 SampleGridPanel::~SampleGridPanel()
@@ -24,9 +25,16 @@ SampleGridPanel::~SampleGridPanel()
     
 }
 
+void SampleGridPanel::centerPositionInGridViewport(Point<int>& newPosition)
+{
+    newPosition.addXY(-mGridViewport->getWidth() / 2, -mGridViewport->getHeight() / 2);
+    mGridViewport->setViewPosition(newPosition);
+}
+
 void SampleGridPanel::selectRandomSample()
 {
-    mGridViewport->setViewPosition(mSampleTileGrid->selectRandomTile());
+    Point<int > newPosition = mSampleTileGrid->selectRandomTile();
+    centerPositionInGridViewport(newPosition);
 }
 
 void SampleGridPanel::paint(Graphics& g)
@@ -80,7 +88,7 @@ void SampleGridPanel::setPanelComponents()
                            sliderWidth,
                            style->PANEL_TITLE_HEIGHT * 0.5);
     mZoomSlider->setRange(0, 1, 0);
-    mZoomSlider->setValue(0.43);
+    mZoomSlider->setValue(0.0);
     mZoomSlider->onValueChange = [this] { mSampleTileGrid->performGridLayout(mZoomSlider->getValue()); };
     addAndMakeVisible(*mZoomSlider);
     
@@ -91,6 +99,7 @@ void SampleGridPanel::setPanelComponents()
                              style->PANEL_TITLE_HEIGHT * 1.5 + style->PANEL_MARGIN * 0.75,
                              getWidth() - style->PANEL_MARGIN * 1.75,
                              getHeight() - style->PANEL_TITLE_HEIGHT * 1.5 - style->PANEL_MARGIN * 1.5);
+    mGridViewport->setWantsKeyboardFocus(false);
     addAndMakeVisible(*mGridViewport);
 }
 
@@ -111,4 +120,51 @@ void SampleGridPanel::visibilityChanged()
     {
         mSampleTileGrid->sortGrid();
     }
+}
+
+bool SampleGridPanel::keyPressed(const KeyPress& key)
+{
+    int keyCode = key.getKeyCode();
+    
+    if (keyCode == KeyPress::returnKey)
+    {
+        mSampleTileGrid->loadSelectedTileIntoAudioPlayer();
+        return true;
+    }
+    else if (keyCode == KeyPress::escapeKey)
+    {
+        mSampleTileGrid->deselectAll();
+        return true;
+    }
+    else if (key.getModifiers().isCommandDown() && keyCode == 65)
+    {
+        mSampleTileGrid->selectAll();
+        return true;
+    }
+    else if (keyCode == KeyPress::leftKey)
+    {
+        Point<int > newPosition = mSampleTileGrid->selectLeft();
+        centerPositionInGridViewport(newPosition);
+        return true;
+    }
+    else if (keyCode == KeyPress::upKey)
+    {
+        Point<int > newPosition = mSampleTileGrid->selectUp();
+        centerPositionInGridViewport(newPosition);
+        return true;
+    }
+    else if (keyCode == KeyPress::rightKey)
+    {
+        Point<int > newPosition = mSampleTileGrid->selectRight();
+        centerPositionInGridViewport(newPosition);
+        return true;
+    }
+    else if (keyCode == KeyPress::downKey)
+    {
+        Point<int > newPosition = mSampleTileGrid->selectDown();
+        centerPositionInGridViewport(newPosition);
+        return true;
+    }
+    
+    return false;
 }

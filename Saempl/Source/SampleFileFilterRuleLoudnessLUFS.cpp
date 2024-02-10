@@ -13,7 +13,7 @@ SampleFileFilterRuleLoudnessLUFS::SampleFileFilterRuleLoudnessLUFS(String inRule
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = 0.0;
+    mCompareValue = -300.0;
     mCompareOperator = GREATER_THAN;
 }
 

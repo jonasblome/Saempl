@@ -107,11 +107,10 @@ bool MainPanel::keyPressed(KeyPress const & key)
     if (key.isKeyCode(KeyPress::spaceKey))
     {
         mCenterPanel->playCurrentAudio();
+        return true;
     }
     else
     {
         return false;
     }
-    
-    return true;
 }

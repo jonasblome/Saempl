@@ -29,7 +29,9 @@ public:
      */
     SampleGridPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~SampleGridPanel();
-    void selectRandomSample();
+    void centerPositionInGridViewport(Point<int> &newPosition);
+    
+void selectRandomSample();
 
 private:
     SampleLibrary& sampleLibrary;
@@ -43,4 +45,5 @@ private:
     void setPanelComponents() override;
     void resizePanelComponents() override;
     void visibilityChanged() override;
+    bool keyPressed(const KeyPress& key) override;
 };

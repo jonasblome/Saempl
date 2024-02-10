@@ -31,11 +31,6 @@ String BlomeSampleItemTileView::getSampleItemFilePath()
 
 void BlomeSampleItemTileView::setSelected(bool inIsSelected)
 {
-    if (sampleItem->getTitle() == "")
-    {
-        return;
-    }
-    
     isSelected = inIsSelected;
 }
 
@@ -44,12 +39,20 @@ bool BlomeSampleItemTileView::getIsSelected()
     return isSelected;
 }
 
+void BlomeSampleItemTileView::loadIntoAudioPlayer()
+{
+    if (sampleItem->getTitle() != "EMPTYTILE")
+    {
+        File inFile = sampleItem->getFilePath();
+        
+        sampleItemPanel.tryShowAudioResource(inFile);
+    }
+}
+
 void BlomeSampleItemTileView::paint(Graphics& g)
 {
-    String title = sampleItem->getTitle();
-    
     // Don't draw an empty tile
-    if (title == "")
+    if (sampleItem->getFilePath() == "EMPTYTILE")
     {
         return;
     }
@@ -69,6 +72,7 @@ void BlomeSampleItemTileView::paint(Graphics& g)
     }
     
     // Draw sample text
+    String title = sampleItem->getTitle();
     g.setFont(style->FONT_SMALL_BOLD);
     g.setColour(style->COLOUR_ACCENT_DARK);
     
@@ -110,27 +114,5 @@ void BlomeSampleItemTileView::paint(Graphics& g)
 
 void BlomeSampleItemTileView::mouseDoubleClick(const MouseEvent& event)
 {
-    File inFile = sampleItem->getFilePath();
-    
-    if (sampleItem->getTitle() != "")
-    {
-        sampleItemPanel.tryShowAudioResource(inFile);
-    }
-}
-
-void BlomeSampleItemTileView::mouseDrag(MouseEvent const & mouseEvent)
-{
-    // If the drag was at least 50ms after the mouse was pressed
-    if (mouseEvent.getLengthOfMousePress() > 100)
-    {
-        Point<int> mousePosition = mouseEvent.getEventRelativeTo(this).position.toInt();
-        
-        if (getLocalBounds().contains(mousePosition))
-        {
-            StringArray selectedFilePaths;
-            selectedFilePaths.add(sampleItem->getFilePath());
-            DragAndDropContainer* dragContainer = DragAndDropContainer::findParentDragContainerFor(this);
-            dragContainer->performExternalDragDropOfFiles(selectedFilePaths, false, this);
-        }
-    }
+    loadIntoAudioPlayer();
 }
