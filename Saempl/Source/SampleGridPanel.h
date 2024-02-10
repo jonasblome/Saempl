@@ -29,15 +29,18 @@ public:
      */
     SampleGridPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~SampleGridPanel();
-    
+    void selectRandomSample();
+
 private:
     SampleLibrary& sampleLibrary;
     SampleItemPanel& sampleItemPanel;
     BlomeStyling::Ptr style;
     std::unique_ptr<BlomeSampleTileGridView> mSampleTileGrid;
     std::unique_ptr<Viewport> mGridViewport;
+    std::unique_ptr<Slider> mZoomSlider;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;
     void resizePanelComponents() override;
+    void visibilityChanged() override;
 };

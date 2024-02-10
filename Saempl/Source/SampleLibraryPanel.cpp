@@ -128,27 +128,39 @@ void SampleLibraryPanel::changeListenerCallback(ChangeBroadcaster* source)
 void SampleLibraryPanel::deleteFiles(bool deletePermanently = false)
 {
     // Delete all selected files
+    StringArray filePaths;
+    
     for (int f = mFileTree->getNumSelectedItems() - 1; f >= 0 ; f--)
     {
-        sampleLibrary.removeSampleItem(mFileTree->getSelectedFile(f).getFullPathName(), deletePermanently);
+        filePaths.add(mFileTree->getSelectedFile(f).getFullPathName());
     }
+    
+    sampleLibrary.removeSampleItems(filePaths, deletePermanently);
 }
 
 void SampleLibraryPanel::addToPalette()
 {
+    StringArray filePaths;
+    
     for (int f = mFileTree->getNumSelectedItems() - 1; f >= 0 ; f--)
     {
-        sampleLibrary.addAllToPalette(mFileTree->getSelectedFile(f).getFullPathName());
+        filePaths.add(mFileTree->getSelectedFile(f).getFullPathName());
     }
+    
+    sampleLibrary.addAllToPalette(filePaths);
 }
 
 void SampleLibraryPanel::reanalyseSamples()
 {
     // Reanalyse all selected files
+    StringArray filePaths;
+    
     for (int f = mFileTree->getNumSelectedItems() - 1; f >= 0 ; f--)
     {
-        sampleLibrary.reanalyseSampleItem(mFileTree->getSelectedFile(f).getFullPathName());
+        filePaths.add(mFileTree->getSelectedFile(f).getFullPathName());
     }
+    
+    sampleLibrary.reanalyseSampleItems(filePaths);
 }
 
 bool SampleLibraryPanel::keyPressed(const KeyPress& key)

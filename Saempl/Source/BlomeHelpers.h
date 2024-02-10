@@ -25,7 +25,7 @@ static String const SUPPORTED_AUDIO_FORMATS_WILDCARD = "*.wav;*.mp3;*.aiff;*.m4a
 static String const SUPPORTED_AUDIO_FORMATS_EXTENSIONS = ".wav;.mp3;.aiff;.m4a";
 static StringArray const PROPERTY_NAMES = StringArray({ "Title", "Length", "dB", "LUFS", "Tempo", "Key" });
 static int const NUM_CHROMA = 12;
-static int const NUM_SPECTRAL_BANDS = 128;
+static int const NUM_SPECTRAL_BANDS = 32;
 static int const NUM_FEATURES = 12;
 
 enum CompareOperators
@@ -73,7 +73,7 @@ static std::map<int, String> KEY_INDEX_TO_KEY_NAME
     { 9, "A maj/F# min" },
     { 10, "E maj/C# min" },
     { 11, "B maj/G# min" },
-    { NO_KEY_INDEX, "No key detected" },
+    { NO_KEY_INDEX, "No key" },
 };
 
 static Array<Array<int>> const KEY_PATTERNS = Array<Array<int>>

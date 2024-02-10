@@ -9,7 +9,10 @@
 
 #include "SampleItemGridSorter.h"
 
-SampleItemGridSorter::SampleItemGridSorter()
+SampleItemGridSorter::SampleItemGridSorter(OwnedArray<SampleItem>& inSampleItems)
+:
+ThreadWithProgressWindow("Sorting sample grid", true, true, 10000, "Stop sorting", nullptr),
+sampleItems(inSampleItems)
 {
     
 }
@@ -19,17 +22,24 @@ SampleItemGridSorter::~SampleItemGridSorter()
     
 }
 
-void SampleItemGridSorter::applySorting(OwnedArray<SampleItem>& inSampleItems,
-                                        int rows,
-                                        int columns)
+void SampleItemGridSorter::applySorting(int inRows,
+                                        int inColumns)
 {
+    rows = inRows;
+    columns = inColumns;
+    launchThread();
+}
+
+void SampleItemGridSorter::run()
+{
+    setProgress(0.0);
     int gridSize = columns * rows;
-    int numDimensions = (int) inSampleItems.getFirst()->getFeatureVector().size();
+    int numDimensions = (int) sampleItems.getFirst()->getFeatureVector().size();
     
     // Assign input vectors to random grid positions
     unsigned seed = (unsigned) std::chrono::system_clock::now().time_since_epoch().count();
-    std::shuffle(inSampleItems.getRawDataPointer(),
-                 inSampleItems.getRawDataPointer() + inSampleItems.size(),
+    std::shuffle(sampleItems.getRawDataPointer(),
+                 sampleItems.getRawDataPointer() + sampleItems.size(),
                  std::default_random_engine(seed));
     
     // Initialise arrays
@@ -45,7 +55,7 @@ void SampleItemGridSorter::applySorting(OwnedArray<SampleItem>& inSampleItems,
     swapPositions.resize(numSwapPositions);
     for (int s = 0; s < numSwapPositions; s++)
     {
-        swappedElements.add(inSampleItems.getUnchecked(s));
+        swappedElements.add(sampleItems.getUnchecked(s));
     }
     featureVectors.resize(numSwapPositions);
     gridFeatureVectors.resize(numSwapPositions);
@@ -53,15 +63,24 @@ void SampleItemGridSorter::applySorting(OwnedArray<SampleItem>& inSampleItems,
     distanceMatrix.resize(numSwapPositions);
     
     float rad = jmax<int>(columns, rows) * initialRadiusFactor;
+    int numRadiusReductions = log(1 / rad) / log(radiusDecay);
+    int i = 0;
     
     while (rad >= endRadius)
     {
+        if (threadShouldExit())
+        {
+            break;
+        }
+        
+        setProgress(i++ * 1.0 / numRadiusReductions);
+        
         int radius = jmax<int>(1, std::round(rad));
         int radiusX = jmax<int>(1, jmin<int>(columns / 2, radius));
         int radiusY = jmax<int>(1, jmin<int>(rows / 2, radius));
         
         // Copy feature vectors to grid
-        copyFeatureVectorsToGrid(grid, inSampleItems, numDimensions, weights);
+        copyFeatureVectorsToGrid(grid, sampleItems, numDimensions, weights);
         
         // Apply filter
         int filterSizeX = 2 * radiusX + 1;
@@ -87,11 +106,16 @@ void SampleItemGridSorter::applySorting(OwnedArray<SampleItem>& inSampleItems,
         }
         
         // Find optimal random swaps
-        checkRandomSwaps(radius, inSampleItems, grid, rows, columns);
+        checkRandomSwaps(radius, sampleItems, grid, rows, columns);
         
         // Reduce the filter radius
         rad *= radiusDecay;
     }
+}
+
+void SampleItemGridSorter::threadComplete(bool userPressedCancel)
+{
+    sendChangeMessage();
 }
 
 void SampleItemGridSorter::copyFeatureVectorsToGrid(Array<std::vector<float>>& grid, OwnedArray<SampleItem>& inSampleItems, int numDimensions, Array<float>& weights)
@@ -402,11 +426,16 @@ void SampleItemGridSorter::checkRandomSwaps(int radius, OwnedArray<SampleItem>& 
                  swapAreaIndices.getRawDataPointer() + swapAreaIndices.size(),
                  std::default_random_engine(seed));
     
-    int numSwapTries = (int) jmax<int>(1, (sampleFactor * rows * columns / swapPositions.size()));
+    int numSwapTries = jmax<int>(1, (sampleFactor * rows * columns / swapPositions.size()));
     
     for (int n = 0; n < numSwapTries; n++)
     {
-        int numSwapPositions = findSwapPositionsWrap(swapAreaIndices, swapPositions, swapAreaWidth, swapAreaHeight, rows, columns);
+        int numSwapPositions = findSwapPositionsWrap(swapAreaIndices, 
+                                                     swapPositions,
+                                                     swapAreaWidth,
+                                                     swapAreaHeight,
+                                                     rows,
+                                                     columns);
         doSwaps(swapPositions, numSwapPositions, inSampleItems, grid);
     }
 }
@@ -438,7 +467,8 @@ int SampleItemGridSorter::findSwapPositionsWrap(Array<int>& swapAreaIndices, Arr
 }
 
 void SampleItemGridSorter::doSwaps(Array<int>& swapPositions,
-                                   int numSwapPositions, OwnedArray<SampleItem>& inSampleItems,
+                                   int numSwapPositions,
+                                   OwnedArray<SampleItem>& inSampleItems,
                                    Array<std::vector<float>>& grid)
 {
     int numValid = 0;
@@ -466,7 +496,7 @@ void SampleItemGridSorter::doSwaps(Array<int>& swapPositions,
     
     if (numValid > 0)
     {
-        Array<Array<int>> distanceMatrix = calcDistLutL2Int(featureVectors, gridFeatureVectors, numSwapPositions);
+        Array<Array<int>> distanceMatrix = calculateNormalisedDistanceMatrix(featureVectors, gridFeatureVectors, numSwapPositions);
         Array<int> optimalPermutation = computeAssignment(distanceMatrix, numSwapPositions);
         
         for (int s = 0; s < numSwapPositions; s++)
@@ -477,7 +507,7 @@ void SampleItemGridSorter::doSwaps(Array<int>& swapPositions,
     }
 }
 
-Array<Array<int>> SampleItemGridSorter::calcDistLutL2Int(Array<std::vector<float>>& inFeatureVectors, Array<std::vector<float>>& inGridVectors, int size)
+Array<Array<int>> SampleItemGridSorter::calculateNormalisedDistanceMatrix(Array<std::vector<float>>& inFeatureVectors, Array<std::vector<float>>& inGridVectors, int size)
 {
     // Find maximum distance in the swapping area
     float maxDistance = 0;
@@ -520,7 +550,7 @@ float SampleItemGridSorter::calculateDistance(std::vector<float> vector1, std::v
     {
         float dist = vector1[d] - vector2[d];
         
-        // Wrap around the dimension for key
+        // Wrap it around for the dimension that represents the key
         if (d == 6)
         {
             dist = abs(dist);

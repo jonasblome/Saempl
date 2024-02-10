@@ -64,23 +64,30 @@ void BlomeTableViewNavigation::filesDropped(StringArray const & files, int x, in
 void BlomeTableViewNavigation::deleteFiles(bool deletePermanently = false)
 {
     // Delete all selected files
+    StringArray filePaths;
+    
     for (int r = getNumSelectedRows() - 1; r >= 0; r--)
     {
-        sampleLibrary.removeSampleItem(sampleLibrary
-                                       .getSampleItems(mSampleItemCollectionType)
-                                       .getUnchecked(getSelectedRow(r))->getFilePath(),
-                                       deletePermanently);
+        filePaths.add(sampleLibrary
+                      .getSampleItems(mSampleItemCollectionType)
+                      .getUnchecked(getSelectedRow(r))->getFilePath());
     }
+    
+    sampleLibrary.removeSampleItems(filePaths, deletePermanently);
 }
 
 void BlomeTableViewNavigation::addToPalette()
 {
+    StringArray filePaths;
+    
     for (int r = getNumSelectedRows() - 1; r >= 0; r--)
     {
-        sampleLibrary.addAllToPalette(sampleLibrary
-                                      .getSampleItems(mSampleItemCollectionType)
-                                      .getUnchecked(getSelectedRow(r))->getFilePath());
+        filePaths.add(sampleLibrary
+                      .getSampleItems(mSampleItemCollectionType)
+                      .getUnchecked(getSelectedRow(r))->getFilePath());
     }
+    
+    sampleLibrary.addAllToPalette(filePaths);
 }
 
 void BlomeTableViewNavigation::changeListenerCallback(ChangeBroadcaster *source)

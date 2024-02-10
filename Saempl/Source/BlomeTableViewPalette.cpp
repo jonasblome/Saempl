@@ -49,19 +49,20 @@ void BlomeTableViewPalette::cellClicked(int rowNumber, int columnId, MouseEvent 
 void BlomeTableViewPalette::filesDropped(StringArray const & files, int x, int y)
 {
     // Adding all the dropped files to the library and palette
-    for (int f = 0; f < files.size(); f++)
-    {
-        sampleLibrary.addAllToPalette(files[f]);
-    }
+    sampleLibrary.addAllToPalette(files);
 }
 
 void BlomeTableViewPalette::removeSampleItemFromPalette()
 {
     // Delete all selected items from palette
+    Array<SampleItem*> sampleItems;
+    
     for (int r = getNumSelectedRows() - 1; r >= 0; r--)
     {
-        sampleLibrary.removeFromPalette(*sampleLibrary
-                                        .getSampleItems(mSampleItemCollectionType)
-                                        .getUnchecked(getSelectedRow(r)));
+        sampleItems.add(sampleLibrary
+                        .getSampleItems(mSampleItemCollectionType)
+                        .getUnchecked(getSelectedRow(r)));
     }
+    
+    sampleLibrary.removeAllFromPalette(sampleItems);
 }

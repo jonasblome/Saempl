@@ -11,13 +11,13 @@
 
 SampleLibrary::SampleLibrary()
 {
-    // Create thread for scanning the sample library directory
-    mDirectoryScannerThread = std::make_unique<TimeSliceThread>("DirectoryReaderThread");
-    mDirectoryScannerThread->startThread(Thread::Priority::normal);
-    
     // Initialize library manager
     mSampleLibraryManager = std::make_unique<SampleLibraryManager>(mAllSampleItems, mPaletteSampleItems);
     mSampleLibraryManager->addChangeListener(this);
+    
+    // Create thread for scanning the sample library directory
+    mDirectoryScannerThread = std::make_unique<TimeSliceThread>("DirectoryReaderThread");
+    mDirectoryScannerThread->startThread(Thread::Priority::normal);
     
     // Set file filter
     mFileFilter = std::make_unique<SampleFileFilter>("AudioFormatsFilter", mFilteredSampleItems);
@@ -40,109 +40,60 @@ SampleLibrary::~SampleLibrary()
     mDirectoryScannerThread->stopThread(10000);
 }
 
-SampleItem* SampleLibrary::addToSampleItems(File const & inFile)
+void SampleLibrary::addAllToSampleItems(StringArray const & inFilePaths)
 {
-    // Add file to current directory and create SampleItem
-    String fileName = inFile.getFileName();
-    File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
-    inFile.copyFileTo(newFile);
-    return mSampleLibraryManager->createSampleItem(newFile);
-}
-
-void SampleLibrary::addAllToSampleItems(File const & inFile)
-{
-    String fileName = inFile.getFileName();
-    File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
-    
-    // Don't add files if they already exist in the current library
-    if (mSampleLibraryManager->fileHasBeenAdded(inFile.getFullPathName()))
+    for (String path : inFilePaths)
     {
-        return;
-    }
-    else if (mSampleLibraryManager->fileHasBeenAdded(newFile.getFullPathName()))
-    {
-        return;
-    }
-    
-    // Check directory recursively for audio files and subdirectories
-    if (inFile.isDirectory())
-    {
-        mDirectoryPathToAddFilesTo = newFile.getFullPathName();
-        bool newDirectoryWasCreated = newFile.createDirectory();
-        
-        if (newDirectoryWasCreated)
-        {
-            for (DirectoryEntry entry : RangedDirectoryIterator(inFile, false, "*", File::findFilesAndDirectories))
-            {
-                addAllToSampleItems(entry.getFile());
-            }
-        }
-        
-        mDirectoryPathToAddFilesTo = newFile.getParentDirectory().getFullPathName();
-    }
-    else if (isSupportedAudioFileFormat(newFile.getFileExtension()))
-    {
-        addToSampleItems(inFile);
-        refresh();
-    }
-}
-
-void SampleLibrary::addToPalette(const File & inFile)
-{
-    SampleItem* itemToAdd = mSampleLibraryManager->getSampleItemWithFilePath(inFile.getFullPathName());
-    
-    // Create item if it doesn't yet exist
-    if (itemToAdd == nullptr)
-    {
-        itemToAdd = addToSampleItems(inFile);
-        refresh();
-    }
-    
-    // Check if item is already in palette
-    if (!mPaletteSampleItems.contains(itemToAdd))
-    {
-        mPaletteSampleItems.add(itemToAdd);
-    }
-}
-
-void SampleLibrary::addAllToPalette(File const & inFile)
-{
-    if (inFile.isDirectory())
-    {
-        Array<File> sampleFiles = inFile.findChildFiles(File::findFiles, true, SUPPORTED_AUDIO_FORMATS_WILDCARD);
-        
-        for (File sampleFile : sampleFiles)
-        {
-            addToPalette(sampleFile);
-        }
-    }
-    else if (isSupportedAudioFileFormat(inFile.getFileExtension()))
-    {
-        addToPalette(inFile);
-    }
-}
-
-void SampleLibrary::removeSampleItem(String const & inFilePath, bool deletePermanently = false)
-{
-    File fileToDelete = File(inFilePath);
-    
-    // Delete sample item
-    SampleItem* itemToDelete = mSampleLibraryManager->getSampleItemWithFilePath(fileToDelete.getFullPathName());
-    removeFromPalette(*itemToDelete);
-    mAllSampleItems.removeObject(itemToDelete);
-    
-    // Delete audio file
-    if (fileToDelete.exists())
-    {
-        deletePermanently ? fileToDelete.deleteRecursively() : fileToDelete.moveToTrash();
+        addFileToSampleItems(path);
     }
     
     refresh();
 }
 
-void SampleLibrary::removeFromPalette(SampleItem& inSampleItem)
+void SampleLibrary::removeSampleItems(StringArray const & inFilePaths, bool deletePermanently)
 {
-    mPaletteSampleItems.removeObject(&inSampleItem, false);
+    for (String path : inFilePaths)
+    {
+        removeSampleItem(path, deletePermanently);
+    }
+    
+    refresh();
+}
+
+void SampleLibrary::addAllToPalette(StringArray const & inFilePaths)
+{
+    bool newItemCreated = false;
+    
+    for (String path : inFilePaths)
+    {
+        if (addFileToPalette(path))
+        {
+            newItemCreated = true;
+        }
+    }
+    
+    if (newItemCreated)
+    {
+        refresh();
+    }
+}
+
+void SampleLibrary::removeAllFromPalette(Array<SampleItem*> inSampleItems)
+{
+    for (SampleItem* sampleItem: inSampleItems)
+    {
+        removeFromPalette(*sampleItem);
+    }
+}
+
+void SampleLibrary::reanalyseSampleItems(StringArray const & inFilePaths)
+{
+    for (String path : inFilePaths)
+    {
+        reanalyseSampleItem(path);
+    }
+    
+    refresh();
 }
 
 DirectoryContentsList& SampleLibrary::getDirectoryList()
@@ -204,35 +155,9 @@ OwnedArray<SampleItem>& SampleLibrary::getSampleItems(SampleItemCollectionScope 
     }
 }
 
-void SampleLibrary::applyFilter()
-{
-    mFilteredSampleItems.clear(false);
-    mFilteredFilePaths.clear();
-    
-    for (SampleItem* sampleItem : mAllSampleItems)
-    {
-        if (mFileFilter->matchesRules(*sampleItem))
-        {
-            mFilteredSampleItems.add(sampleItem);
-            mFilteredFilePaths.add(sampleItem->getFilePath());
-        }
-    }
-    
-    sendSynchronousChangeMessage();
-}
-
 String SampleLibrary::getCurrentLibraryPath()
 {
     return mCurrentLibraryPath;
-}
-
-void SampleLibrary::clearSampleItemCollections()
-{
-    mPaletteSampleItems.clear(false);
-    mFilteredSampleItems.clear(false);
-    mFilteredFilePaths.clear();
-    mAllSampleItems.clear();
-    sendSynchronousChangeMessage();
 }
 
 void SampleLibrary::changeListenerCallback(ChangeBroadcaster* inSource)
@@ -253,15 +178,152 @@ void SampleLibrary::synchWithLibraryDirectory()
     mSampleLibraryManager->synchWithLibraryDirectory();
 }
 
+StringArray& SampleLibrary::getFilteredFilePaths()
+{
+    return mFilteredFilePaths;
+}
+
+void SampleLibrary::clearSampleItemCollections()
+{
+    mPaletteSampleItems.clear(false);
+    mFilteredSampleItems.clear(false);
+    mFilteredFilePaths.clear();
+    mAllSampleItems.clear();
+    sendSynchronousChangeMessage();
+}
+
+void SampleLibrary::applyFilter()
+{
+    mFilteredSampleItems.clear(false);
+    mFilteredFilePaths.clear();
+    
+    for (SampleItem* sampleItem : mAllSampleItems)
+    {
+        if (mFileFilter->matchesRules(*sampleItem))
+        {
+            mFilteredSampleItems.add(sampleItem);
+            mFilteredFilePaths.add(sampleItem->getFilePath());
+        }
+    }
+    
+    sendSynchronousChangeMessage();
+}
+
+void SampleLibrary::addFileToSampleItems(File const & inFile)
+{
+    String fileName = inFile.getFileName();
+    File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
+    
+    // Don't add files if they already exist in the current library
+    if (mSampleLibraryManager->fileHasBeenAdded(inFile.getFullPathName()))
+    {
+        return;
+    }
+    else if (mSampleLibraryManager->fileHasBeenAdded(newFile.getFullPathName()))
+    {
+        return;
+    }
+    
+    // Check directory recursively for audio files and subdirectories
+    if (inFile.isDirectory())
+    {
+        mDirectoryPathToAddFilesTo = newFile.getFullPathName();
+        bool newDirectoryWasCreated = newFile.createDirectory();
+        
+        if (newDirectoryWasCreated)
+        {
+            for (DirectoryEntry entry : RangedDirectoryIterator(inFile, false, "*", File::findFilesAndDirectories))
+            {
+                addFileToSampleItems(entry.getFile());
+            }
+        }
+        
+        mDirectoryPathToAddFilesTo = newFile.getParentDirectory().getFullPathName();
+    }
+    else if (isSupportedAudioFileFormat(newFile.getFileExtension()))
+    {
+        addToSampleItems(inFile);
+    }
+}
+
+SampleItem* SampleLibrary::addToSampleItems(File const & inFile)
+{
+    // Add file to current directory and create SampleItem
+    String fileName = inFile.getFileName();
+    File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
+    inFile.copyFileTo(newFile);
+    return mSampleLibraryManager->createSampleItem(newFile);
+}
+
+bool SampleLibrary::addFileToPalette(File const & inFile)
+{
+    bool newItemCreated = false;
+    
+    if (inFile.isDirectory())
+    {
+        Array<File> sampleFiles = inFile.findChildFiles(File::findFiles, true, SUPPORTED_AUDIO_FORMATS_WILDCARD);
+        
+        for (File sampleFile : sampleFiles)
+        {
+            if (addToPalette(sampleFile))
+            {
+                newItemCreated = true;
+            }
+        }
+    }
+    else if (isSupportedAudioFileFormat(inFile.getFileExtension()))
+    {
+        return addToPalette(inFile);
+    }
+    
+    return newItemCreated;
+}
+
+bool SampleLibrary::addToPalette(const File & inFile)
+{
+    SampleItem* itemToAdd = mSampleLibraryManager->getSampleItemWithFilePath(inFile.getFullPathName());
+    
+    // Create item if it doesn't yet exist
+    if (itemToAdd == nullptr)
+    {
+        itemToAdd = addToSampleItems(inFile);
+        mPaletteSampleItems.add(itemToAdd);
+        return true;
+    }
+    
+    // Check if item is already in palette
+    if (!mPaletteSampleItems.contains(itemToAdd))
+    {
+        mPaletteSampleItems.add(itemToAdd);
+    }
+    
+    return false;
+}
+
+void SampleLibrary::removeSampleItem(String const & inFilePath, bool deletePermanently = false)
+{
+    File fileToDelete = File(inFilePath);
+    
+    // Delete sample item
+    SampleItem* itemToDelete = mSampleLibraryManager->getSampleItemWithFilePath(fileToDelete.getFullPathName());
+    removeFromPalette(*itemToDelete);
+    mAllSampleItems.removeObject(itemToDelete);
+    
+    // Delete audio file
+    if (fileToDelete.exists())
+    {
+        deletePermanently ? fileToDelete.deleteRecursively() : fileToDelete.moveToTrash();
+    }
+}
+
+void SampleLibrary::removeFromPalette(SampleItem& inSampleItem)
+{
+    mPaletteSampleItems.removeObject(&inSampleItem, false);
+}
+
 void SampleLibrary::reanalyseSampleItem(File const & inFile)
 {
     // Delete sample item
     SampleItem* itemToReanalyse = mSampleLibraryManager->getSampleItemWithFilePath(inFile.getFullPathName());
     mSampleLibraryManager->analyseSampleItem(*itemToReanalyse, inFile, true);
-    refresh();
-}
-
-StringArray& SampleLibrary::getFilteredFilePaths()
-{
-    return mFilteredFilePaths;
 }

@@ -32,42 +32,32 @@ public:
     SampleLibrary();
     ~SampleLibrary();
     /**
-     Creates sample item for given file and adds it to the collection.
+     Adds the files and all their children to the sample item collection.
      
-     @param inFile the file to add as a sample item.
-     
-     @returns the newly added sample item.
+     @param inFilePaths the file paths to add to the collection.
      */
-    SampleItem* addToSampleItems(File const & newFile);
+    void addAllToSampleItems(StringArray const & inFilePaths);
     /**
-     Adds the file and all its children to the sample item collection.
+     Removes the given sample items from all collections and deletes it.
      
-     @param inFile the file to add to the collection.
+     @param inFilePaths the files to remove.
+     @param deletePermanently if true, deletes permanently, if false moves file to trash.
      */
-    void addAllToSampleItems(File const & inFile);
+    void removeSampleItems(StringArray const & inFilePaths, bool deletePermanently);
     /**
-     Adds the file as a sample item and appends it to the palette collection.
+     Adds the files and all their children to the palette collection.
      
-     @param inFile the file to add to the palette.
+     @param inFildPaths the files/directories to add to the palette.
      */
-    void addToPalette(const File &inFile);
+    void addAllToPalette(StringArray const & inFilePaths);
     /**
-     Adds the file and all its children to the palette collection.
-     
-     @param inFile the file/directory to add to the palette.
+     Removes the sample items from the palette collection.
      */
-    void addAllToPalette(File const & inFile);
+    void removeAllFromPalette(Array<SampleItem*> inSampleItems);
     /**
-     Removes the sample item from all collections and deletes it.
-     
-     @param inFilePath the file to remove
-     @param deletePermanently if true, deletes permanently, if false moves file to trash
+     Reanalyses the sample and sets the properties to the newly analysed values.
      */
-    void removeSampleItem(String const & inFilePath, bool deletePermanently);
-    /**
-     Removes the sample item from the palette collection.
-     */
-    void removeFromPalette(SampleItem& inSampleItem);
+    void reanalyseSampleItems(StringArray const & inFiles);
     /**
      @returns the directory list object.
      */
@@ -105,10 +95,6 @@ public:
      */
     void synchWithLibraryDirectory();
     /**
-     Reanalyses the sample and sets the properties to the newly analysed values.
-     */
-    void reanalyseSampleItem(File const & inFile);
-    /**
      @returns the array with the file paths of all filtered samples.
      */
     StringArray& getFilteredFilePaths();
@@ -133,4 +119,49 @@ private:
      Applies the filter to all sample items and adds filtered items to mFilteredSampleItems collection.
      */
     void applyFilter();
+    /**
+     Adds the file and all its children to the sample item collection.
+     
+     @param inFile the file to add to the collection.
+     */
+    void addFileToSampleItems(File const & inFile);
+    /**
+     Creates sample item for given file and adds it to the collection.
+     
+     @param inFile the file to add as a sample item.
+     
+     @returns the newly added sample item.
+     */
+    SampleItem* addToSampleItems(File const & newFile);
+    /**
+     Adds the file and all its children to the palette collection.
+     
+     @param inFile the file/directory to add to the palette.
+     
+     @returns whether a new item was created for this file.
+     */
+    bool addFileToPalette(File const & inFile);
+    /**
+     Adds the file as a sample item and appends it to the palette collection.
+     
+     @param inFile the file to add to the palette.
+     
+     @returns whether a new item was created for this file.
+     */
+    bool addToPalette(const File &inFile);
+    /**
+     Removes the sample item from all collections and deletes it.
+     
+     @param inFilePath the file to remove
+     @param deletePermanently if true, deletes permanently, if false moves file to trash
+     */
+    void removeSampleItem(String const & inFilePath, bool deletePermanently);
+    /**
+     Removes the sample item from the palette collection.
+     */
+    void removeFromPalette(SampleItem& inSampleItem);
+    /**
+     Reanalyses the sample and sets the properties to the newly analysed values.
+     */
+    void reanalyseSampleItem(File const & inFile);
 };

@@ -16,29 +16,21 @@
  Sorts the filtered sample items of the library according to the Fast Linear Assignment Sorting onto a 2D grid.
  */
 class SampleItemGridSorter
+:
+public ThreadWithProgressWindow,
+public ChangeBroadcaster
 {
 public:
-    SampleItemGridSorter();
+    SampleItemGridSorter(OwnedArray<SampleItem>& inSampleItems);
     ~SampleItemGridSorter();
     /**
      Applies the sorting algorithm to the given grid of sample items.
      */
-    void applySorting(OwnedArray<SampleItem> & inSampleItems, int rows, int columns);
-    void copyFeatureVectorsToGrid(Array<std::vector<float>>& grid, OwnedArray<SampleItem>& inSampleItems, int numDimensions, Array<float>& weights);
-    Array<std::vector<float>> filterHorizontally(Array<std::vector<float>>& inGrid, int rows, int columns, int numDimensions, int filterSize);
-    Array<std::vector<float>> filterVertically(Array<std::vector<float>>& inGrid, int rows, int columns, int numDimensions, int filterSize);
-    Array<float> filterHorizontally(Array<float>& inWeights, int rows, int columns, int filterSize);
-    Array<float> filterVertically(Array<float>& inWeights, int rows, int columns, int filterSize);
-    void checkRandomSwaps(int radius, OwnedArray<SampleItem>& inSampleItems, Array<std::vector<float>>& grid, int rows, int columns);
-    int findSwapPositionsWrap(Array<int>& swapIndices, Array<int>& swapPositions, int swapAreaWidth, int swapAreaHeight, int rows, int columns);
-    void doSwaps(Array<int>& swapPositions, int numSwapPositions, OwnedArray<SampleItem>& inSampleItems, Array<std::vector<float>>& grid);
-    Array<Array<int>> calcDistLutL2Int(Array<std::vector<float>>& inFeatureVectors, Array<std::vector<float>>& inGridVectors, int size);
-    float calculateDistance(std::vector<float> v1, std::vector<float> v2);
-    Array<int> computeAssignment(Array<Array<int>>& matrix, int numDimensions);
+    void applySorting(int rows, int columns);
 
 private:
     constexpr static const float initialRadiusFactor = 0.5;
-    constexpr static const float radiusDecay = 0.95;
+    constexpr static const float radiusDecay = 0.98;
     constexpr static const float endRadius = 1.0;
     constexpr static const float weightHole = 0.01;
     constexpr static const float weightTile = 1.0;
@@ -51,4 +43,24 @@ private:
     Array<std::vector<float>> gridFeatureVectors;
     Array<Array<int>> distanceMatrixNormalised;
     Array<Array<float>> distanceMatrix;
+    OwnedArray<SampleItem>& sampleItems;
+    int rows;
+    int columns;
+    
+    /**
+     Runs the sorting of the sample items while setting the progress for the progress bar.
+     */
+    void run() override;
+    void threadComplete(bool userPressedCancel) override;
+    void copyFeatureVectorsToGrid(Array<std::vector<float>>& grid, OwnedArray<SampleItem>& inSampleItems, int numDimensions, Array<float>& weights);
+    Array<std::vector<float>> filterHorizontally(Array<std::vector<float>>& inGrid, int rows, int columns, int numDimensions, int filterSize);
+    Array<std::vector<float>> filterVertically(Array<std::vector<float>>& inGrid, int rows, int columns, int numDimensions, int filterSize);
+    Array<float> filterHorizontally(Array<float>& inWeights, int rows, int columns, int filterSize);
+    Array<float> filterVertically(Array<float>& inWeights, int rows, int columns, int filterSize);
+    void checkRandomSwaps(int radius, OwnedArray<SampleItem>& inSampleItems, Array<std::vector<float>>& grid, int rows, int columns);
+    int findSwapPositionsWrap(Array<int>& swapIndices, Array<int>& swapPositions, int swapAreaWidth, int swapAreaHeight, int rows, int columns);
+    void doSwaps(Array<int>& swapPositions, int numSwapPositions, OwnedArray<SampleItem>& inSampleItems, Array<std::vector<float>>& grid);
+    Array<Array<int>> calculateNormalisedDistanceMatrix(Array<std::vector<float>>& inFeatureVectors, Array<std::vector<float>>& inGridVectors, int size);
+    float calculateDistance(std::vector<float> v1, std::vector<float> v2);
+    Array<int> computeAssignment(Array<Array<int>>& matrix, int numDimensions);
 };

@@ -113,7 +113,7 @@ void SampleItemPanel::setPanelComponents()
     
     // Add zoom slider
     mZoomSlider = std::make_unique<Slider>(Slider::LinearVertical, Slider::NoTextBox);
-    mZoomSlider->setBounds(2,
+    mZoomSlider->setBounds(style->PANEL_MARGIN,
                            style->SAMPLE_CONTROL_WIDTH + followTransportButtonHeight,
                            style->SAMPLE_CONTROL_WIDTH,
                            style->SAMPLE_CONTROL_HEIGHT - style->SAMPLE_CONTROL_WIDTH - followTransportButtonHeight);

@@ -218,10 +218,14 @@ void BlomeTableViewBase::sortOrderChanged(int newSortColumnId, bool isForwards)
 void BlomeTableViewBase::reanalyseSamples()
 {
     // Reanalyse all selected files
+    StringArray filePaths;
+    
     for (int r = getNumSelectedRows() - 1; r >= 0; r--)
     {
-        sampleLibrary.reanalyseSampleItem(sampleLibrary
-                                          .getSampleItems(mSampleItemCollectionType)
-                                          .getUnchecked(getSelectedRow(r))->getFilePath());
+        filePaths.add(sampleLibrary
+                      .getSampleItems(mSampleItemCollectionType)
+                      .getUnchecked(getSelectedRow(r))->getFilePath());
     }
+    
+    sampleLibrary.reanalyseSampleItems(filePaths);
 }

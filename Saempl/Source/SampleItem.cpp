@@ -12,6 +12,7 @@
 SampleItem::SampleItem()
 {
     mTitle = "";
+    mFilePath = "";
     mKey = NO_KEY_INDEX;
     mFeatureVector = std::vector<float>(NUM_CHROMA + NUM_SPECTRAL_BANDS + NUM_FEATURES);
 }

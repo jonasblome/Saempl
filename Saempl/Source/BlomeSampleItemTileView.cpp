@@ -16,6 +16,7 @@ sampleLibrary(inSampleLibrary),
 sampleItemPanel(inSampleItemPanel)
 {
     sampleItemFilePath = sampleItem->getFilePath();
+    isSelected = false;
 }
 
 BlomeSampleItemTileView::~BlomeSampleItemTileView()
@@ -23,35 +24,87 @@ BlomeSampleItemTileView::~BlomeSampleItemTileView()
     
 }
 
-void BlomeSampleItemTileView::paint(Graphics& g)
+String BlomeSampleItemTileView::getSampleItemFilePath()
 {
-    Rectangle<float> outline = getLocalBounds().toFloat().reduced(0.5);
-    
-    // Draw outline
-    if (sampleItem->getTitle() != "")
+    return sampleItemFilePath;
+}
+
+void BlomeSampleItemTileView::setSelected(bool inIsSelected)
+{
+    if (sampleItem->getTitle() == "")
     {
-        g.setColour(style->COLOUR_ACCENT_DARK);
-        g.drawRoundedRectangle(outline, style->CORNER_SIZE_MEDIUM, 1.0);
+        return;
     }
     
-    // Draw sample title
+    isSelected = inIsSelected;
+}
+
+bool BlomeSampleItemTileView::getIsSelected()
+{
+    return isSelected;
+}
+
+void BlomeSampleItemTileView::paint(Graphics& g)
+{
+    String title = sampleItem->getTitle();
+    
+    // Don't draw an empty tile
+    if (title == "")
+    {
+        return;
+    }
+    
+    Rectangle<float> bounds = getLocalBounds().toFloat().reduced(0.5);
+    
+    // Draw background
+    if (isSelected)
+    {
+        g.setColour(style->COLOUR_ACCENT_LIGHT);
+        g.fillRoundedRectangle(bounds, style->CORNER_SIZE_MEDIUM);
+    }
+    else
+    {
+        g.setColour(style->COLOUR_ACCENT_DARK);
+        g.drawRoundedRectangle(bounds, style->CORNER_SIZE_MEDIUM, 1.0);
+    }
+    
+    // Draw sample text
     g.setFont(style->FONT_SMALL_BOLD);
     g.setColour(style->COLOUR_ACCENT_DARK);
-    g.drawFittedText(sampleItem->getTitle()
-                     /*+ "\n" + "Length: " + std::to_string(sampleItem->getFeatureVector()[0])
-                      + "\n" + "LUFS: " + std::to_string(sampleItem->getFeatureVector()[1])
-                      + "\n" + "Start: " + std::to_string(sampleItem->getFeatureVector()[2])
-                      + "\n" + "End: " + std::to_string(sampleItem->getFeatureVector()[3])
-                      + "\n" + "ZCR: " + std::to_string(sampleItem->getFeatureVector()[4])
-                      + "\n" + "Tempo: " + std::to_string(sampleItem->getFeatureVector()[5])
-                      + "\n" + "Key: " + std::to_string(sampleItem->getFeatureVector()[6])
-                      + "\n" + "Centroid: " + std::to_string(sampleItem->getFeatureVector()[7])
-                      + "\n" + "Spread: " + std::to_string(sampleItem->getFeatureVector()[8])
-                      + "\n" + "Rolloff: " + std::to_string(sampleItem->getFeatureVector()[9])
-                      + "\n" + "Spec.flux: " + std::to_string(sampleItem->getFeatureVector()[10])
-                      + "\n" + "Chrom.flux: " + std::to_string(sampleItem->getFeatureVector()[11])*/,
-                     outline.reduced(style->PANEL_MARGIN).toNearestInt(),
-                     Justification::centred,
+    
+    int maxTitleLength = 30;
+    if (title.length() > maxTitleLength)
+    {
+        title = title.substring(0, maxTitleLength - 3) + "...";
+    }
+    
+    g.drawFittedText(title,
+                     bounds.reduced(style->PANEL_MARGIN).toNearestInt(),
+                     Justification::topLeft,
+                     5);
+    
+    // Make text dependent on tile size
+    String other = "";
+    int currentWidth = getWidth();
+    
+    if (currentWidth > 90)
+    {
+        other = other + "\n\n" + " - Key: " + KEY_INDEX_TO_KEY_NAME[sampleItem->getKey()];
+    }
+    if (currentWidth > 105)
+    {
+        other = other + "\n" + " - Tempo: " + std::to_string(sampleItem->getTempo());
+    }
+    if (currentWidth > 130)
+    {
+        other = other + "\n" + " - Length: " + std::to_string(sampleItem->getLength());
+        other = other + "\n" + " - LUFS: " + std::to_string(sampleItem->getLoudnessLUFS());
+        other = other + "\n" + " - dB: " + std::to_string(sampleItem->getLoudnessDecibel());
+    }
+    
+    g.drawFittedText(other,
+                     bounds.reduced(style->PANEL_MARGIN).removeFromBottom(getHeight() - 65).toNearestInt(),
+                     Justification::topLeft,
                      5);
 }
 
@@ -63,11 +116,6 @@ void BlomeSampleItemTileView::mouseDoubleClick(const MouseEvent& event)
     {
         sampleItemPanel.tryShowAudioResource(inFile);
     }
-}
-
-String BlomeSampleItemTileView::getSampleItemFilePath()
-{
-    return sampleItemFilePath;
 }
 
 void BlomeSampleItemTileView::mouseDrag(MouseEvent const & mouseEvent)
@@ -85,33 +133,4 @@ void BlomeSampleItemTileView::mouseDrag(MouseEvent const & mouseEvent)
             dragContainer->performExternalDragDropOfFiles(selectedFilePaths, false, this);
         }
     }
-}
-
-void BlomeSampleItemTileView::mouseUp(MouseEvent const & mouseEvent)
-{
-    // Show options pop up menu
-    if (sampleItem->getTitle() != "" && mouseEvent.mods.isRightButtonDown())
-    {
-        PopupMenu popupMenu;
-        popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
-        popupMenu.addItem("Add Sample(s) to Favorites", [this] { addToPalette(); });
-        popupMenu.addItem("Re-analyse Sample(s)", [this] { reanalyseSamples(); });
-        popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
-        popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
-    }
-}
-
-void BlomeSampleItemTileView::deleteFiles(bool deletePermanently = false)
-{
-    sampleLibrary.removeSampleItem(sampleItem->getFilePath(), deletePermanently);
-}
-
-void BlomeSampleItemTileView::addToPalette()
-{
-    sampleLibrary.addAllToPalette(sampleItem->getFilePath());
-}
-
-void BlomeSampleItemTileView::reanalyseSamples()
-{
-    sampleLibrary.reanalyseSampleItem(sampleItem->getFilePath());
 }

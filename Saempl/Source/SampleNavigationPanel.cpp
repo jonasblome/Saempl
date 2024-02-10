@@ -102,5 +102,25 @@ void SampleNavigationPanel::setActiveNavigationPanel(NavigationPanelType& inPane
 
 void SampleNavigationPanel::selectRandomSample()
 {
-    mSampleTablePanel->selectRandomSample();
+    switch(currentProcessor.getActiveNavigationPanel())
+    {
+        case PANELS_LIBRARY_PANEL:
+        {
+            mSampleTablePanel->selectRandomSample();
+            break;
+        }
+        case PANELS_TABLE_PANEL:
+        {
+            mSampleTablePanel->selectRandomSample();
+            break;
+        }
+        case PANELS_GRID_PANEL:
+        {
+            mSampleGridPanel->selectRandomSample();
+            break;
+        }
+        default:
+            jassertfalse;
+            break;
+    }
 }

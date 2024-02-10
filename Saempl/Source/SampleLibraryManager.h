@@ -40,11 +40,6 @@ public:
      */
     void synchWithLibraryDirectory();
     /**
-     Runs the loading of a library while setting the progress for the progress bar.
-     */
-    void run() override;
-    void threadComplete(bool userPressedCancel) override;
-    /**
      Loads meta-information of analysis file as sample items collection.
      
      @param inLibraryDirectory the library directory file.
@@ -134,4 +129,9 @@ private:
      @param inFile the file to store the XmlElement in.
      */
     void writeXmlToFile(XmlElement& inXml, File& inFile);
+    /**
+     Runs the loading of a library while setting the progress for the progress bar.
+     */
+    void run() override;
+    void threadComplete(bool userPressedCancel) override;
 };

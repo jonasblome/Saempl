@@ -11,7 +11,7 @@
 
 SampleLibraryManager::SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems, OwnedArray<SampleItem>& inPaletteSampleItems)
 :
-ThreadWithProgressWindow("Synching sample library", true, false, 10000, "", nullptr),
+ThreadWithProgressWindow("Synching sample library", true, true, 10000, "Stop loading", nullptr),
 allSampleItems(inAllSampleItems),
 paletteSampleItems(inPaletteSampleItems)
 {
@@ -121,6 +121,11 @@ void SampleLibraryManager::run()
     // from all items and palette collection
     for (SampleItem* sampleItem : allSampleItems)
     {
+        if (threadShouldExit())
+        {
+            break;
+        }
+        
         if (!File(sampleItem->getFilePath()).exists())
         {
             addedFilePaths.removeString(sampleItem->getFilePath());
@@ -145,6 +150,11 @@ void SampleLibraryManager::run()
     
     for (File const & sampleFile : allSampleFiles)
     {
+        if (threadShouldExit())
+        {
+            break;
+        }
+        
         if (isLoadingNewLibrary || !addedFilePaths.contains(sampleFile.getFullPathName()))
         {
             createSampleItem(sampleFile);

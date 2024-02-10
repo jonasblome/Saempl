@@ -382,7 +382,12 @@ void HeaderPanel::setToggleFilterButton(int buttonWidth, int x)
     {
         bool filterIsActive = !sampleLibrary.getFileFilter().getIsActive();
         sampleLibrary.getFileFilter().setIsActive(filterIsActive);
-        sampleLibrary.refresh();
+        
+        if (sampleLibrary.getFileFilter().getFilterRules().size() > 0)
+        {
+            sampleLibrary.refresh();
+        }
+        
         mChangeFilterButton->setImages(false,
                                        true,
                                        true,
@@ -443,7 +448,11 @@ void HeaderPanel::setRandomSampleButton(int buttonWidth, int x)
     mRandomSampleButton->setTooltip("Opens the table view and selects a random sample");
     mRandomSampleButton->onClick = [this]
     {
-        mToggleSampleTablePanelButton->triggerClick();
+        if (currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL)
+        {
+            mToggleSampleTablePanelButton->triggerClick();
+        }
+        
         centerPanel.selectRandomSample();
     };
     addAndMakeVisible(*mRandomSampleButton);
