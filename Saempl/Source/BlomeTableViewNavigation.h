@@ -30,6 +30,10 @@ public:
      */
     BlomeTableViewNavigation(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~BlomeTableViewNavigation();
+    /**
+     Resorts the table with the currently chosen column and direction.
+     */
+    void resortTable();
     
 private:
     void cellClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent) override;

@@ -13,7 +13,7 @@ SampleFileFilterRuleTempo::SampleFileFilterRuleTempo(String inRulePropertyName)
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = 0.0;
+    mCompareValue = -1;
     mCompareOperator = GREATER_THAN;
 }
 
@@ -61,4 +61,9 @@ int SampleFileFilterRuleTempo::getCompareValue()
 void SampleFileFilterRuleTempo::setCompareValue(int const & inCompareValue)
 {
     mCompareValue = inCompareValue;
+}
+
+bool SampleFileFilterRuleTempo::canHaveEffect()
+{
+    return isActive && (mCompareOperator != GREATER_THAN || mCompareValue != -1);
 }

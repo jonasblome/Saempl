@@ -61,3 +61,8 @@ void SampleFileFilterRuleTitle::setCompareValue(String const & inCompareValue)
 {
     mCompareValue = inCompareValue;
 }
+
+bool SampleFileFilterRuleTitle::canHaveEffect()
+{
+    return isActive && (mCompareOperator != CONTAINS || mCompareValue != "");
+}

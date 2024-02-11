@@ -94,6 +94,11 @@ void BlomeTableViewNavigation::changeListenerCallback(ChangeBroadcaster *source)
 {
     if (source == &sampleLibrary)
     {
-        getHeader().reSortTable();
+        resortTable();
     }
+}
+
+void BlomeTableViewNavigation::resortTable()
+{
+    getHeader().reSortTable();
 }

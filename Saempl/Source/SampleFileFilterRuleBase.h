@@ -54,6 +54,7 @@ public:
      @returns whether the rule is active.
      */
     bool getIsActive();
+    virtual bool canHaveEffect() = 0;
     /**
      Sets if the rule is active.
      

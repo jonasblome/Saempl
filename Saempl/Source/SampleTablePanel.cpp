@@ -91,3 +91,11 @@ void SampleTablePanel::selectRandomSample()
     int randomSampleIndex = Random::getSystemRandom().nextInt(numSamples);
     mSampleTable->selectRow(randomSampleIndex);
 }
+
+void SampleTablePanel::visibilityChanged()
+{
+    if (isVisible())
+    {
+        mSampleTable->resortTable();
+    }
+}

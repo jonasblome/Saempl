@@ -62,3 +62,8 @@ void SampleFileFilterRuleLength::setCompareValue(double const & inCompareValue)
 {
     mCompareValue = inCompareValue;
 }
+
+bool SampleFileFilterRuleLength::canHaveEffect()
+{
+    return isActive && (mCompareOperator != GREATER_THAN || mCompareValue != 0.0);
+}

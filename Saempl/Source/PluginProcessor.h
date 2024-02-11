@@ -14,7 +14,9 @@
 //==============================================================================
 /**
  */
-class SaemplAudioProcessor  : public juce::AudioProcessor
+class SaemplAudioProcessor
+:
+public juce::AudioProcessor
 #if JucePlugin_Enable_ARA
 , public juce::AudioProcessorARAExtension
 #endif
@@ -81,6 +83,14 @@ public:
      */
     void setSortingColumnTitle(String inColumnTitle);
     /**
+     @returns the path of the last opened library directory.
+     */
+    String getLastOpenedLibrary();
+    /**
+     Sets the path of the last opened library directory.
+     */
+    void setLastOpenedLibrary(String inLastOpenedLibraryPath);
+    /**
      @returns the current sorting direction of the sample item table.
      */
     bool getSortingDirection();
@@ -100,6 +110,36 @@ public:
      @param inPanelIsVisible whether the panel is visible or not.
      */
     void setSampleItemIsVisible(bool inPanelIsVisible);
+    /**
+     Sets the follow playhead toggle of the sample preview panel.
+     
+     @param inPanelIsVisible whether the panel is visible or not.
+     */
+    void setFollowAudioPlayhead(bool inFollowAudioPlayhead);
+    /**
+     @returns the current toggle state of the sample preview panel's follow playhead.
+     */
+    bool getFollowAudioPlayhead();
+    /**
+     Sets the filter toggle state.
+     
+     @param inPanelIsVisible whether the panel is visible or not.
+     */
+    void setFilterIsActive(bool inFilterIsActivated);
+    /**
+     @returns the current toggle state of the sample filter.
+     */
+    bool getFilterIsActivated();
+    /**
+     @returns the current zoom factor of the sample grid panel.
+     */
+    float getSampleGridZoomFactor();
+    /**
+     Sets the current zoom factor of the sample grid panel.
+     
+     @param inZoomFactor the zoom factor of the grid panel's zoom slider.
+     */
+    void setSampleGridZoomFactor(float inZoomFactor);
     
 private:
     //==============================================================================
@@ -108,6 +148,10 @@ private:
     std::unique_ptr<SampleLibrary> mSampleLibrary;
     NavigationPanelType mActiveNavigationPanelType;
     String mSortingColumnTitle;
+    String mLastOpenedLibrary;
     bool mSortingDirection;
     bool mSampleItemPanelIsVisible;
+    bool mFollowAudioPlayhead;
+    bool mFilterIsActivated;
+    float mSampleGridZoomFactor;
 };

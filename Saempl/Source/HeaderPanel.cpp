@@ -279,7 +279,7 @@ void HeaderPanel::setToggleSampleGridPanelButton(int buttonWidth, int x)
                                             style->PANEL_MARGIN,
                                             buttonWidth,
                                             buttonWidth);
-    mToggleSampleGridPanelButton->setTooltip("Table View - Show a table with all samples in your library");
+    mToggleSampleGridPanelButton->setTooltip("Grid View - Show a grid with all samples clustered by similarity");
     mToggleSampleGridPanelButton->onClick = [this]
     {
         if (currentProcessor.getActiveNavigationPanel() != PANELS_GRID_PANEL)
@@ -329,13 +329,18 @@ void HeaderPanel::setToggleSampleGridPanelButton(int buttonWidth, int x)
     addAndMakeVisible(*mToggleSampleGridPanelButton);
 }
 
-void HeaderPanel::setChangeFilterButton(int buttonWidth, int x) {
+void HeaderPanel::setChangeFilterButton(int buttonWidth, int x)
+{
+    bool initialFilterIsActive = currentProcessor.getFilterIsActivated();
     mChangeFilterButton = std::make_unique<BlomeImageButton>("Filter", false);
     mChangeFilterButton->setImages(false,
                                    true,
-                                   false,
-                                   ImageCache::getFromMemory(BinaryData::filter_alt_FILL0_wght400_GRAD0_opsz24_png,
-                                                             BinaryData::filter_alt_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                   true,
+                                   initialFilterIsActive
+                                   ? ImageCache::getFromMemory(BinaryData::filter_alt_FILL0_wght400_GRAD0_opsz24_png,
+                                                               BinaryData::filter_alt_FILL0_wght400_GRAD0_opsz24_pngSize)
+                                   : ImageCache::getFromMemory(BinaryData::filter_alt_off_FILL0_wght400_GRAD0_opsz24_png,
+                                                               BinaryData::filter_alt_off_FILL0_wght400_GRAD0_opsz24_pngSize),
                                    style->BUTTON_IS_DEFAULT_ALPHA,
                                    style->COLOUR_HEADER_BUTTONS,
                                    Image(),
@@ -359,19 +364,24 @@ void HeaderPanel::setChangeFilterButton(int buttonWidth, int x) {
 
 void HeaderPanel::setToggleFilterButton(int buttonWidth, int x)
 {
+    bool initialFilterIsActive = currentProcessor.getFilterIsActivated();
     mToggleFilterButton = std::make_unique<BlomeImageButton>("ToggleFilterButton", false);
     mToggleFilterButton->setImages(false,
                                    true,
                                    true,
                                    ImageCache::getFromMemory(BinaryData::power_settings_new_FILL0_wght400_GRAD0_opsz24_png,
                                                              BinaryData::power_settings_new_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                   style->BUTTON_IS_DEFAULT_ALPHA,
+                                   initialFilterIsActive
+                                   ? style->BUTTON_IS_DEFAULT_ALPHA
+                                   : style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
                                    style->COLOUR_HEADER_BUTTONS,
                                    Image(),
-                                   style->BUTTON_IS_OVER_ALPHA,
+                                   initialFilterIsActive
+                                   ? style->BUTTON_IS_OVER_ALPHA
+                                   : style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
                                    style->COLOUR_HEADER_BUTTONS,
                                    Image(),
-                                   style->BUTTON_IS_DOWN_ALPHA,
+                                   initialFilterIsActive ? style->BUTTON_IS_DOWN_ALPHA : style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
                                    style->COLOUR_HEADER_BUTTONS);
     mToggleFilterButton->setBounds(x,
                                    style->PANEL_MARGIN,
@@ -381,9 +391,10 @@ void HeaderPanel::setToggleFilterButton(int buttonWidth, int x)
     mToggleFilterButton->onClick = [this]
     {
         bool filterIsActive = !sampleLibrary.getFileFilter().getIsActive();
+        currentProcessor.setFilterIsActive(filterIsActive);
         sampleLibrary.getFileFilter().setIsActive(filterIsActive);
         
-        if (sampleLibrary.getFileFilter(    ).getFilterRules().size() > 0)
+        if (sampleLibrary.getFileFilter().canHaveEffect())
         {
             sampleLibrary.refresh();
         }
@@ -423,6 +434,8 @@ void HeaderPanel::setToggleFilterButton(int buttonWidth, int x)
                                        style->COLOUR_HEADER_BUTTONS);
     };
     addAndMakeVisible(*mToggleFilterButton);
+    
+    sampleLibrary.getFileFilter().setIsActive(initialFilterIsActive);
 }
 
 void HeaderPanel::setRandomSampleButton(int buttonWidth, int x)

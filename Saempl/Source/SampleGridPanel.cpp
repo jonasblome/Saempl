@@ -79,6 +79,13 @@ void SampleGridPanel::paint(Graphics& g)
 void SampleGridPanel::setPanelComponents()
 {
     mSampleTileGrid = std::make_unique<BlomeSampleTileGridView>(sampleLibrary, sampleItemPanel);
+    mSampleTileGrid->setZoomFactor(currentProcessor.getSampleGridZoomFactor());
+    
+    if (sampleLibrary.getLibraryWasLoaded())
+    {
+        mSampleTileGrid->setReadyForSorting();
+        mSampleTileGrid->sortGrid();
+    }
     
     // Add zoom slider
     int sliderWidth = 150;
@@ -88,8 +95,14 @@ void SampleGridPanel::setPanelComponents()
                            sliderWidth,
                            style->PANEL_TITLE_HEIGHT * 0.5);
     mZoomSlider->setRange(0, 1, 0);
-    mZoomSlider->setValue(0.0);
-    mZoomSlider->onValueChange = [this] { mSampleTileGrid->performGridLayout(mZoomSlider->getValue()); };
+    mZoomSlider->setValue(currentProcessor.getSampleGridZoomFactor(), NotificationType::dontSendNotification);
+    mZoomSlider->onValueChange = [this]
+    {
+        float newZoomFactor = mZoomSlider->getValue();
+        currentProcessor.setSampleGridZoomFactor(newZoomFactor);
+        mSampleTileGrid->setZoomFactor(newZoomFactor);
+        mSampleTileGrid->performGridLayout();
+    };
     addAndMakeVisible(*mZoomSlider);
     
     // Add grid viewport

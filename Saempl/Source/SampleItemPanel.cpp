@@ -67,18 +67,25 @@ void SampleItemPanel::setPanelComponents()
     
     // Add follow transport button
     mFollowTransportButton = std::make_unique<BlomeImageButton>("Follow Transport", true);
+    bool initialFollows = currentProcessor.getFollowAudioPlayhead();
     mFollowTransportButton->setImages(false,
                                       true,
                                       true,
                                       ImageCache::getFromMemory(BinaryData::trending_flat_FILL0_wght400_GRAD0_opsz24_png,
                                                                 BinaryData::trending_flat_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                      style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                      initialFollows
+                                      ? style->BUTTON_IS_DEFAULT_ALPHA
+                                      : style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
                                       style->COLOUR_SYMBOL_BUTTON,
                                       Image(),
-                                      style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                      initialFollows ?
+                                      style->BUTTON_IS_OVER_ALPHA
+                                      : style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
                                       style->COLOUR_SYMBOL_BUTTON,
                                       Image(),
-                                      style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                      initialFollows ?
+                                      style->BUTTON_IS_DOWN_ALPHA
+                                      : style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
                                       style->COLOUR_SYMBOL_BUTTON);
     mFollowTransportButton->setBounds(style->PANEL_MARGIN,
                                       style->SAMPLE_CONTROL_WIDTH + style->PANEL_MARGIN * 0.75,
@@ -88,6 +95,7 @@ void SampleItemPanel::setPanelComponents()
     mFollowTransportButton->onClick = [this]
     {
         bool follows = !mAudioPreviewPanel->getFollowsTransport();
+        currentProcessor.setFollowAudioPlayhead(follows);
         mAudioPreviewPanel->setFollowsTransport(follows);
         mFollowTransportButton->setImages(false,
                                           true,
@@ -125,8 +133,9 @@ void SampleItemPanel::setPanelComponents()
     // Add audio thumbnail component
     mAudioPreviewPanel = std::make_unique<AudioPreviewPanel>(currentProcessor, *mZoomSlider, *mAudioPlayer);
     mAudioPreviewPanel->setTopLeftPosition(style->PANEL_MARGIN / 2.0 + style->SAMPLE_CONTROL_WIDTH, style->PANEL_MARGIN / 2.0);
-    addAndMakeVisible(mAudioPreviewPanel.get());
     mAudioPreviewPanel->addChangeListener(this);
+    mAudioPreviewPanel->setFollowsTransport(currentProcessor.getFollowAudioPlayhead());
+    addAndMakeVisible(mAudioPreviewPanel.get());
 }
 
 void SampleItemPanel::changeListenerCallback(ChangeBroadcaster* source)

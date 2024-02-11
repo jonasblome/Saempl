@@ -33,7 +33,7 @@ struct BlomeStyling
     
     // Panel dimensions
     int const MAIN_PANEL_WIDTH = 900;
-    int const MAIN_PANEL_HEIGHT = 600;
+    int const MAIN_PANEL_HEIGHT = 750;
     
     int const HEADER_PANEL_WIDTH = MAIN_PANEL_WIDTH;
     int const HEADER_PANEL_HEIGHT = 50;
@@ -53,7 +53,7 @@ struct BlomeStyling
     int const SAMPLE_PALETTE_PANEL_HEIGHT = CENTER_PANEL_HEIGHT;
     
     int const SAMPLE_NAVIGATION_PANEL_WIDTH = CENTER_PANEL_WIDTH - SAMPLE_PALETTE_PANEL_WIDTH;
-    int const SAMPLE_NAVIGATION_PANEL_HEIGHT = 350;
+    int const SAMPLE_NAVIGATION_PANEL_HEIGHT = 520;
     
     int const SAMPLE_ITEM_PANEL_WIDTH = SAMPLE_NAVIGATION_PANEL_WIDTH;
     int const SAMPLE_ITEM_PANEL_HEIGHT = CENTER_PANEL_HEIGHT - SAMPLE_NAVIGATION_PANEL_HEIGHT - BUTTON_SIZE_SMALL - PANEL_MARGIN;
@@ -84,7 +84,7 @@ struct BlomeStyling
     Colour const COLOUR_ACCENT_LIGHT = Colour(220, 91, 99); // 207, 191, 163 // 21, 149, 178 // 190, 215, 238 // 142, 158, 90
     Colour const COLOUR_ACCENT_LIGHT_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_LIGHT).withAlpha(0.99f);
     
-    Colour const COLOUR_ACCENT_MEDIUM = Colour(49, 77, 92); // 71, 24, 19 // 18, 44, 55 // 15, 71, 82 // 80, 97, 74
+    Colour const COLOUR_ACCENT_MEDIUM = Colour(54, 80, 98); // 71, 24, 19 // 18, 44, 55 // 15, 71, 82 // 80, 97, 74
     Colour const COLOUR_ACCENT_MEDIUM_MEDIUM_TRANSPARENT = Colour(COLOUR_ACCENT_MEDIUM).withAlpha(0.78f);
     Colour const COLOUR_ACCENT_MEDIUM_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_MEDIUM).withAlpha(0.99f);
     

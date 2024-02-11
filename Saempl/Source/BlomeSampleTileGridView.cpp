@@ -95,10 +95,8 @@ void BlomeSampleTileGridView::sortGrid()
     sampleItemCollectionChanged = false;
 }
 
-void BlomeSampleTileGridView::performGridLayout(float inZoomFactor)
+void BlomeSampleTileGridView::performGridLayout()
 {
-    currentZoomFactor = inZoomFactor;
-    
     if (mSampleItemTiles.isEmpty())
     {
         return;
@@ -116,6 +114,11 @@ void BlomeSampleTileGridView::performGridLayout(float inZoomFactor)
                                                   0,
                                                   optimalWidth * tileWidth,
                                                   optimalHeight * tileWidth));
+}
+
+void BlomeSampleTileGridView::setZoomFactor(float inZoomFactor)
+{
+    currentZoomFactor = inZoomFactor;
 }
 
 Point<int> BlomeSampleTileGridView::getTileCenter(BlomeSampleItemTileView *randomTile)
@@ -204,13 +207,27 @@ Point<int> BlomeSampleTileGridView::selectDown()
     int newIndex = lastSelectedIndex + optimalWidth;
     deselectAll();
     
-    return getTileCenter(selectTile(newIndex > mSampleItemTiles.size() ? lastSelectedIndex : newIndex));
+    return getTileCenter(selectTile(newIndex >= mSampleItemTiles.size() ? lastSelectedIndex : newIndex));
+}
+
+void BlomeSampleTileGridView::setReadyForSorting()
+{
+    sampleItemCollectionChanged = true;
 }
 
 void BlomeSampleTileGridView::setupGrid()
 {
     // Setup tile grid
+    mSampleItemTiles.clear();
+    OwnedArray<SampleItem>& sampleItems = sampleLibrary.getSampleItems(FILTERED_SAMPLES);
     mSampleTileGrid = std::make_unique<Grid>();
+    setVisible(true);
+    
+    if (sampleItems.size() == 0)
+    {
+        return;
+    }
+    
     mSampleTileGrid->setGap(Grid::Px(style->PANEL_MARGIN * 0.5f));
     mSampleTileGrid->autoFlow = Grid::AutoFlow::row;
     using Track = Grid::TrackInfo;
@@ -231,23 +248,21 @@ void BlomeSampleTileGridView::setupGrid()
         mSampleTileGrid->templateColumns.add(Track(1_fr));
     }
     
-    mSampleItemTiles.clear();
-    
-    OwnedArray<SampleItem>& sampleItems = sampleLibrary.getSampleItems(FILTERED_SAMPLES);
+    // Setup tiles
     for (SampleItem* sample : sampleItems)
     {
         addAndMakeVisible(mSampleItemTiles.add(new BlomeSampleItemTileView(sample, sampleLibrary, sampleItemPanel)));
     }
     
+    // Remove empty sample items from collection
+    // but keep them for the tile views
     for (SampleItem* sample : emptySquares)
     {
         sampleItems.removeAndReturn(sampleItems.indexOf(sample));
     }
     
     mSampleTileGrid->items.addArray(mSampleItemTiles);
-    
-    performGridLayout(currentZoomFactor);
-    setVisible(true);
+    performGridLayout();
 }
 
 void BlomeSampleTileGridView::paint(Graphics& g)
@@ -260,12 +275,12 @@ void BlomeSampleTileGridView::changeListenerCallback(ChangeBroadcaster* source)
     if (source == &sampleLibrary && isShowing())
     {
         setVisible(false);
-        sampleItemCollectionChanged = true;
+        setReadyForSorting();
         sortGrid();
     }
     else if (source == &sampleLibrary && !isShowing())
     {
-        sampleItemCollectionChanged = true;
+        setReadyForSorting();
     }
     else if (source == &*mGridSorter)
     {

@@ -46,8 +46,13 @@ void BlomeFileFilterRuleViewBase::setComponents()
     mActivateRuleButton->setTooltip("Activate/deactivate this filter rule");
     mActivateRuleButton->onClick = [this]
     {
+        bool couldHaveEffect = filterRule.canHaveEffect();
         filterRule.setIsActive(mActivateRuleButton->getToggleState());
-        sampleLibrary.refresh();
+        
+        if (filterRule.canHaveEffect() || couldHaveEffect)
+        {
+            sampleLibrary.refresh();
+        }
     };
     addAndMakeVisible(*mActivateRuleButton);
     
@@ -112,10 +117,11 @@ void BlomeFileFilterRuleViewBase::comboBoxChanged(ComboBox* comboBoxThatHasChang
 {
     // Set rule to chosen compare operator
     CompareOperators newOperator = static_cast<CompareOperators>(comboBoxThatHasChanged->getSelectedItemIndex());
+    CompareOperators oldOperator = filterRule.getCompareOperator();
+    filterRule.setCompareOperator(newOperator);
     
-    if (filterRule.getCompareOperator() != newOperator)
+    if (newOperator != oldOperator && filterRule.canHaveEffect())
     {
-        filterRule.setCompareOperator(newOperator);
         sampleLibrary.refresh();
     }
 }

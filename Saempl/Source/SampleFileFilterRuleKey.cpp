@@ -62,3 +62,8 @@ void SampleFileFilterRuleKey::setCompareValue(int const & inCompareValue)
 {
     mCompareValue = inCompareValue;
 }
+
+bool SampleFileFilterRuleKey::canHaveEffect()
+{
+    return isActive;
+}

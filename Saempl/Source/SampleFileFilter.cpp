@@ -50,7 +50,7 @@ bool SampleFileFilter::matchesRules(SampleItem& inSampleItem)
     // Check if all active rules apply
     for (SampleFileFilterRuleBase* rule : mFilterRules)
     {
-        if (rule->getIsActive() && !rule->matches(inSampleItem))
+        if (rule->canHaveEffect() && !rule->matches(inSampleItem))
         {
             return false;
         }
@@ -61,7 +61,8 @@ bool SampleFileFilter::matchesRules(SampleItem& inSampleItem)
 
 SampleFileFilterRuleBase* SampleFileFilter::addFilterRule(SampleFileFilterRuleBase* inFilterRule)
 {
-    return mFilterRules.add(inFilterRule);
+    mFilterRules.add(inFilterRule);
+    return inFilterRule;
 }
 
 OwnedArray<SampleFileFilterRuleBase>& SampleFileFilter::getFilterRules()
@@ -77,4 +78,17 @@ bool SampleFileFilter::getIsActive()
 void SampleFileFilter::setIsActive(bool inIsActive)
 {
     isActive = inIsActive;
+}
+
+bool SampleFileFilter::canHaveEffect()
+{
+    for (SampleFileFilterRuleBase* rule : mFilterRules)
+    {
+        if (rule->canHaveEffect())
+        {
+            return true;
+        }
+    }
+    
+    return false;
 }

@@ -98,6 +98,10 @@ public:
      @returns the array with the file paths of all filtered samples.
      */
     StringArray& getFilteredFilePaths();
+    /**
+     @returns whether the library manager has finished loading the library.
+     */
+    bool getLibraryWasLoaded();
     
 private:
     std::unique_ptr<TimeSliceThread> mDirectoryScannerThread;
@@ -110,6 +114,7 @@ private:
     OwnedArray<SampleItem> mPaletteSampleItems;
     String mDirectoryPathToAddFilesTo;
     std::unique_ptr<SampleLibraryManager> mSampleLibraryManager;
+    bool mLibraryWasLoaded;
     
     /**
      Deletes SampleItem objects in all collections (all, filtered, palette).

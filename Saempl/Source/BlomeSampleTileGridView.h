@@ -31,10 +31,10 @@ public:
     /**
      Sets the grids' boundaries and performs the layout of the grid's components.
      */
-    void performGridLayout(float inZoomFactor);
+    void performGridLayout();
+    void setZoomFactor(float inZoomFactor);
     Point<int> getTileCenter(BlomeSampleItemTileView *randomTile);
-    
-Point<int> selectRandomTile();
+    Point<int> selectRandomTile();
     void loadSelectedTileIntoAudioPlayer();
     void selectAll();
     void deselectAll();
@@ -42,6 +42,7 @@ Point<int> selectRandomTile();
     Point<int> selectUp();
     Point<int> selectRight();
     Point<int> selectDown();
+    void setReadyForSorting();
     
 private:
     SampleLibrary& sampleLibrary;

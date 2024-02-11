@@ -37,7 +37,8 @@ public:
      @param inCompareValue the value to set.
      */
     void setCompareValue(int const & inCompareValue);
+    bool canHaveEffect() override;
     
 private:
-    double mCompareValue;
+    int mCompareValue;
 };

@@ -57,6 +57,22 @@ static std::map<String, NavigationPanelType> STRING_TO_NAVIGATION_PANEL_TYPE
     { "PANELS_GRID_PANEL", PANELS_GRID_PANEL }
 };
 
+static std::map<CompareOperators, String> COMPARE_OPERATOR_TO_STRING
+{
+    { CompareOperators::CONTAINS, "CONTAINS" },
+    { CompareOperators::EQUAL_TO, "EQUAL_TO" },
+    { CompareOperators::GREATER_THAN, "GREATER_THAN" },
+    { CompareOperators::LESS_THAN, "LESS_THAN" },
+};
+
+static std::map<String, CompareOperators> STRING_TO_COMPARE_OPERATORS
+{
+    { "CONTAINS", CompareOperators::CONTAINS },
+    { "EQUAL_TO", CompareOperators::EQUAL_TO },
+    { "GREATER_THAN", CompareOperators::GREATER_THAN },
+    { "LESS_THAN", CompareOperators::LESS_THAN },
+};
+
 static int const NO_KEY_INDEX = 1000;
 
 static std::map<int, String> KEY_INDEX_TO_KEY_NAME

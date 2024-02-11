@@ -13,7 +13,7 @@ SampleFileFilterRuleLoudnessDecibel::SampleFileFilterRuleLoudnessDecibel(String 
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = -60.0;
+    mCompareValue = -300.0;
     mCompareOperator = GREATER_THAN;
 }
 
@@ -61,4 +61,9 @@ double SampleFileFilterRuleLoudnessDecibel::getCompareValue()
 void SampleFileFilterRuleLoudnessDecibel::setCompareValue(double const & inCompareValue)
 {
     mCompareValue = inCompareValue;
+}
+
+bool SampleFileFilterRuleLoudnessDecibel::canHaveEffect()
+{
+    return isActive && (mCompareOperator != GREATER_THAN || mCompareValue != -300);
 }

@@ -11,6 +11,8 @@
 
 SampleLibrary::SampleLibrary()
 {
+    mLibraryWasLoaded = false;
+    
     // Initialize library manager
     mSampleLibraryManager = std::make_unique<SampleLibraryManager>(mAllSampleItems, mPaletteSampleItems);
     mSampleLibraryManager->addChangeListener(this);
@@ -131,6 +133,7 @@ void SampleLibrary::setDirectory(String inDirectoryPath)
     }
     
     // Load new library
+    mLibraryWasLoaded = false;
     clearSampleItemCollections();
     mSampleLibraryManager->loadSampleLibrary(currentLibraryDirectory);
     mDirectoryContentsList->setDirectory(File(mCurrentLibraryPath), true, true);
@@ -169,6 +172,7 @@ void SampleLibrary::changeListenerCallback(ChangeBroadcaster* inSource)
     }
     else if (inSource == mSampleLibraryManager.get())
     {
+        mLibraryWasLoaded = true;
         refresh();
     }
 }
@@ -326,4 +330,9 @@ void SampleLibrary::reanalyseSampleItem(File const & inFile)
     // Delete sample item
     SampleItem* itemToReanalyse = mSampleLibraryManager->getSampleItemWithFilePath(inFile.getFullPathName());
     mSampleLibraryManager->analyseSampleItem(*itemToReanalyse, inFile, true);
+}
+
+bool SampleLibrary::getLibraryWasLoaded()
+{
+    return mLibraryWasLoaded;
 }

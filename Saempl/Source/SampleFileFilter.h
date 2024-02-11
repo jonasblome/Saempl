@@ -60,7 +60,8 @@ public:
      @param inIsActive true for to active, false for to inactive.
      */
     void setIsActive(bool inIsActive);
-    
+    bool canHaveEffect();
+
 private:
     OwnedArray<SampleFileFilterRuleBase> mFilterRules;
     OwnedArray<SampleItem>& filteredSampleItems;

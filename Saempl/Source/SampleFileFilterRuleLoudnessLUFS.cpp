@@ -62,3 +62,8 @@ void SampleFileFilterRuleLoudnessLUFS::setCompareValue(double const & inCompareV
 {
     mCompareValue = inCompareValue;
 }
+
+bool SampleFileFilterRuleLoudnessLUFS::canHaveEffect()
+{
+    return isActive && (mCompareOperator != GREATER_THAN || mCompareValue != -300);
+}

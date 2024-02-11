@@ -37,6 +37,7 @@ public:
      @param inCompareValue the value to set.
      */
     void setCompareValue(String const & inCompareValue);
+    bool canHaveEffect() override;
     
 private:
     String mCompareValue;

@@ -27,6 +27,8 @@ SaemplAudioProcessor::SaemplAudioProcessor()
     mSortingColumnTitle = "Title";
     mSortingDirection = true;
     mSampleItemPanelIsVisible = true;
+    mFollowAudioPlayhead = false;
+    mSampleGridZoomFactor = 0.0;
 }
 
 SaemplAudioProcessor::~SaemplAudioProcessor()
@@ -190,8 +192,69 @@ void SaemplAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
     stateInfoBody->setAttribute("SortingColumnTitle", mSortingColumnTitle);
     stateInfoBody->setAttribute("SortingDirection", mSortingDirection);
     stateInfoBody->setAttribute("SampleItemPanelIsVisible", mSampleItemPanelIsVisible);
+    stateInfoBody->setAttribute("FollowAudioPlayhead", mFollowAudioPlayhead);
+    stateInfoBody->setAttribute("SampleGridZoomFactor", mSampleGridZoomFactor);
+    stateInfoBody->setAttribute("LastOpenedLibrary", mLastOpenedLibrary);
+    
+    // Storing filter rules
+    XmlElement* stateInfoFilter = new XmlElement("Blome_StateInfoFilter");
+    stateInfoFilter->setAttribute("FilterIsActivated", mFilterIsActivated);
+    
+    int i = 0;
+    for (SampleFileFilterRuleBase* rule : mSampleLibrary->getFileFilter().getFilterRules())
+    {
+        String stateRuleName = "Blome_StateInfoFilterRule" + std::to_string(i++);
+        XmlElement* stateInfoFilterRule = new XmlElement(stateRuleName);
+        
+        // Storing rule parameters
+        stateInfoFilterRule->setAttribute("PropertyName", rule->getRulePropertyName());
+        stateInfoFilterRule->setAttribute("RuleIsActive", rule->canHaveEffect());
+        stateInfoFilterRule->setAttribute("CompareOperator", COMPARE_OPERATOR_TO_STRING[rule->getCompareOperator()]);
+        
+        switch(PROPERTY_NAMES.indexOf(rule->getRulePropertyName()))
+        {
+            case 0:
+            {
+                stateInfoFilterRule->setAttribute("CompareValue", dynamic_cast<SampleFileFilterRuleTitle*>(rule)->getCompareValue());
+                break;
+            }
+            case 1:
+            {
+                stateInfoFilterRule->setAttribute("CompareValue", dynamic_cast<SampleFileFilterRuleLength*>(rule)->getCompareValue());
+                break;
+            }
+            case 2:
+            {
+                stateInfoFilterRule->setAttribute("CompareValue", dynamic_cast<SampleFileFilterRuleLoudnessDecibel*>(rule)->getCompareValue());
+                break;
+            }
+            case 3:
+            {
+                stateInfoFilterRule->setAttribute("CompareValue", dynamic_cast<SampleFileFilterRuleLoudnessLUFS*>(rule)->getCompareValue());
+                break;
+            }
+            case 4:
+            {
+                stateInfoFilterRule->setAttribute("CompareValue", dynamic_cast<SampleFileFilterRuleTempo*>(rule)->getCompareValue());
+                break;
+            }
+            case 5:
+            {
+                stateInfoFilterRule->setAttribute("CompareValue", dynamic_cast<SampleFileFilterRuleKey*>(rule)->getCompareValue());
+                break;
+            }
+            default:
+            {
+                jassertfalse;
+                break;
+            }
+        }
+        
+        stateInfoFilter->addChildElement(stateInfoFilterRule);
+    }
     
     stateInfo.addChildElement(stateInfoBody);
+    stateInfo.addChildElement(stateInfoFilter);
     copyXmlToBinary(stateInfo, destData);
 }
 
@@ -204,12 +267,83 @@ void SaemplAudioProcessor::setStateInformation (const void* data, int sizeInByte
     
     if (xmlStatePtr)
     {
-        for (auto* child: xmlStatePtr->getChildIterator())
+        XmlElement* stateInfoBody = xmlStatePtr->getChildByName("Blome_StateInfoBody");
+        
+        if (stateInfoBody)
         {
-            mActiveNavigationPanelType = STRING_TO_NAVIGATION_PANEL_TYPE[child->getStringAttribute("ActiveNavigationPanel")];
-            mSortingColumnTitle = child->getStringAttribute("SortingColumnTitle");
-            mSortingDirection = child->getBoolAttribute("SortingDirection");
-            mSampleItemPanelIsVisible = child->getBoolAttribute("SampleItemPanelIsVisible");
+            mActiveNavigationPanelType = STRING_TO_NAVIGATION_PANEL_TYPE[stateInfoBody->getStringAttribute("ActiveNavigationPanel")];
+            mSortingColumnTitle = stateInfoBody->getStringAttribute("SortingColumnTitle");
+            mSortingDirection = stateInfoBody->getBoolAttribute("SortingDirection");
+            mSampleItemPanelIsVisible = stateInfoBody->getBoolAttribute("SampleItemPanelIsVisible");
+            mFollowAudioPlayhead = stateInfoBody->getBoolAttribute("FollowAudioPlayhead");
+            mSampleGridZoomFactor = stateInfoBody->getDoubleAttribute("SampleGridZoomFactor");
+            mLastOpenedLibrary = stateInfoBody->getStringAttribute("LastOpenedLibrary");
+        }
+        
+        XmlElement* stateInfoFilter = xmlStatePtr->getChildByName("Blome_StateInfoFilter");
+        
+        if (stateInfoFilter)
+        {
+            mFilterIsActivated = stateInfoFilter->getBoolAttribute("FilterIsActivated");
+            
+            for (auto* filterRule: stateInfoFilter->getChildIterator())
+            {
+                SampleFileFilterRuleBase* newRule;
+                String propertyName = filterRule->getStringAttribute("PropertyName");
+                
+                switch (PROPERTY_NAMES.indexOf(propertyName))
+                {
+                    case 0:
+                    {
+                        newRule = mSampleLibrary->getFileFilter().addFilterRule(new SampleFileFilterRuleTitle(propertyName));
+                        dynamic_cast<SampleFileFilterRuleTitle*>(newRule)->setCompareValue(filterRule->getStringAttribute("CompareValue"));
+                        break;
+                    }
+                    case 1:
+                    {
+                        newRule = mSampleLibrary->getFileFilter().addFilterRule(new SampleFileFilterRuleLength(propertyName));
+                        dynamic_cast<SampleFileFilterRuleLength*>(newRule)->setCompareValue(filterRule->getDoubleAttribute("CompareValue"));
+                        break;
+                    }
+                    case 2:
+                    {
+                        newRule = mSampleLibrary->getFileFilter().addFilterRule(new SampleFileFilterRuleLoudnessDecibel(propertyName));
+                        dynamic_cast<SampleFileFilterRuleLoudnessDecibel*>(newRule)->setCompareValue(filterRule->getDoubleAttribute("CompareValue"));
+                        break;
+                    }
+                    case 3:
+                    {
+                        newRule = mSampleLibrary->getFileFilter().addFilterRule(new SampleFileFilterRuleLoudnessLUFS(propertyName));
+                        dynamic_cast<SampleFileFilterRuleLoudnessLUFS*>(newRule)->setCompareValue(filterRule->getDoubleAttribute("CompareValue"));
+                        break;
+                    }
+                    case 4:
+                    {
+                        newRule = mSampleLibrary->getFileFilter().addFilterRule(new SampleFileFilterRuleTempo(propertyName));
+                        dynamic_cast<SampleFileFilterRuleTempo*>(newRule)->setCompareValue(filterRule->getIntAttribute("CompareValue"));
+                        break;
+                    }
+                    case 5:
+                    {
+                        newRule = mSampleLibrary->getFileFilter().addFilterRule(new SampleFileFilterRuleKey(propertyName));
+                        dynamic_cast<SampleFileFilterRuleKey*>(newRule)->setCompareValue(filterRule->getIntAttribute("CompareValue"));
+                        break;
+                    }
+                    default:
+                    {
+                        jassertfalse;
+                        break;
+                    }
+                }
+                
+                newRule->setIsActive(filterRule->getBoolAttribute("RuleIsActive"));
+                newRule->setCompareOperator(STRING_TO_COMPARE_OPERATORS[filterRule->getStringAttribute("CompareOperator")]);
+            }
+            
+            if (mSampleLibrary->getFileFilter().canHaveEffect())
+            {
+                mSampleLibrary->refresh();
+            }
         }
     }
     else
@@ -251,6 +385,16 @@ void SaemplAudioProcessor::setSortingColumnTitle(String inColumnTitle)
     mSortingColumnTitle = inColumnTitle;
 }
 
+String SaemplAudioProcessor::getLastOpenedLibrary()
+{
+    return mLastOpenedLibrary;
+}
+
+void SaemplAudioProcessor::setLastOpenedLibrary(String inLastOpenedLibraryPath)
+{
+    mLastOpenedLibrary = inLastOpenedLibraryPath;
+}
+
 bool SaemplAudioProcessor::getSortingDirection()
 {
     return mSortingDirection;
@@ -269,4 +413,34 @@ bool SaemplAudioProcessor::getSampleItemPanelIsVisible()
 void SaemplAudioProcessor::setSampleItemIsVisible(bool inPanelIsVisible)
 {
     mSampleItemPanelIsVisible = inPanelIsVisible;
+}
+
+bool SaemplAudioProcessor::getFollowAudioPlayhead()
+{
+    return mFollowAudioPlayhead;
+}
+
+void SaemplAudioProcessor::setFollowAudioPlayhead(bool inFollowAudioPlayhead)
+{
+    mFollowAudioPlayhead = inFollowAudioPlayhead;
+}
+
+bool SaemplAudioProcessor::getFilterIsActivated()
+{
+    return mFilterIsActivated;
+}
+
+void SaemplAudioProcessor::setFilterIsActive(bool inFilterIsActivated)
+{
+    mFilterIsActivated = inFilterIsActivated;
+}
+
+float SaemplAudioProcessor::getSampleGridZoomFactor()
+{
+    return mSampleGridZoomFactor;
+}
+
+void SaemplAudioProcessor::setSampleGridZoomFactor(float inZoomFactor)
+{
+    mSampleGridZoomFactor = inZoomFactor;
 }

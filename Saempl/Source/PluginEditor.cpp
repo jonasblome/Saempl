@@ -11,7 +11,9 @@
 
 //==============================================================================
 SaemplAudioProcessorEditor::SaemplAudioProcessorEditor (SaemplAudioProcessor& inProcessor)
-: AudioProcessorEditor(&inProcessor), audioProcessor(inProcessor)
+:
+AudioProcessorEditor(&inProcessor),
+audioProcessor(inProcessor)
 {
     // Set styling of plugin UI
     mLookAndFeel = std::make_unique<BlomeLookAndFeel>(inProcessor.getSampleLibrary());
