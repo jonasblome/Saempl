@@ -132,10 +132,11 @@ void SampleItemPanel::setPanelComponents()
     
     // Add audio thumbnail component
     mAudioPreviewPanel = std::make_unique<AudioPreviewPanel>(currentProcessor, *mZoomSlider, *mAudioPlayer);
-    mAudioPreviewPanel->setTopLeftPosition(style->PANEL_MARGIN / 2.0 + style->SAMPLE_CONTROL_WIDTH, style->PANEL_MARGIN / 2.0);
     mAudioPreviewPanel->addChangeListener(this);
     mAudioPreviewPanel->setFollowsTransport(currentProcessor.getFollowAudioPlayhead());
     addAndMakeVisible(mAudioPreviewPanel.get());
+    
+    resizePanelComponents();
 }
 
 void SampleItemPanel::changeListenerCallback(ChangeBroadcaster* source)
@@ -175,4 +176,15 @@ bool SampleItemPanel::tryShowAudioResource(File inFile)
 void SampleItemPanel::startOrStopPlayback()
 {
     mAudioPreviewPanel->startOrStop();
+}
+
+void SampleItemPanel::resizePanelComponents()
+{
+    if (mAudioPreviewPanel != nullptr)
+    {
+        mAudioPreviewPanel->setBounds(style->PANEL_MARGIN + style->SAMPLE_CONTROL_WIDTH,
+                                      style->PANEL_MARGIN * 0.5,
+                                      getWidth() - style->SAMPLE_CONTROL_WIDTH - style->PANEL_MARGIN * 1.75,
+                                      getHeight());
+    }
 }

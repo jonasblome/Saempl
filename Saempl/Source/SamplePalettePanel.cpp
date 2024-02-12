@@ -69,9 +69,18 @@ void SamplePalettePanel::setPanelComponents()
 {
     // Set sample table component
     mSampleTable = std::make_unique<BlomeTableViewPalette>(currentProcessor, sampleItemPanel);
-    mSampleTable->setBounds(style->PANEL_MARGIN * 0.75,
-                            style->PANEL_TITLE_HEIGHT + style->PANEL_MARGIN * 0.25,
-                            getWidth() - style->PANEL_MARGIN * 1.75,
-                            getHeight() - style->PANEL_TITLE_HEIGHT - style->PANEL_MARGIN * 1.25);
     addAndMakeVisible(*mSampleTable);
+    
+    resizePanelComponents();
+}
+
+void SamplePalettePanel::resizePanelComponents()
+{
+    if (mSampleTable != nullptr)
+    {
+        mSampleTable->setBounds(style->PANEL_MARGIN * 0.75,
+                                style->PANEL_TITLE_HEIGHT + style->PANEL_MARGIN * 0.25,
+                                getWidth() - style->PANEL_MARGIN * 1.75,
+                                getHeight() - style->PANEL_TITLE_HEIGHT - style->PANEL_MARGIN * 1.25);
+    }
 }

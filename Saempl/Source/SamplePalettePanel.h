@@ -37,4 +37,5 @@ private:
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;
+    void resizePanelComponents() override;
 };

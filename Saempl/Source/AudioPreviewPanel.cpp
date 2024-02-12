@@ -39,9 +39,7 @@ void AudioPreviewPanel::paint(Graphics& g)
     g.setColour(style->COLOUR_ACCENT_DARK);
     g.fillRoundedRectangle(getLocalBounds()
                            .toFloat()
-                           .withTrimmedLeft(style->PANEL_MARGIN * 0.5)
                            .withTrimmedTop(style->PANEL_MARGIN * 0.25)
-                           .withTrimmedRight(style->PANEL_MARGIN * 1.25)
                            .withTrimmedBottom(style->PANEL_MARGIN),
                            style->CORNER_SIZE_MEDIUM);
     drawDropShadow(g,
@@ -52,6 +50,7 @@ void AudioPreviewPanel::paint(Graphics& g)
                    style);
     
     // Draw audio preview
+    previewArea = previewArea.withTrimmedBottom(mAudioPreviewScrollbar->getHeight() + 4 + style->PANEL_MARGIN);
     g.setColour(style->COLOUR_ACCENT_LIGHT);
     
     if (mAudioPreview->getTotalLength() > 0.0)
@@ -67,10 +66,6 @@ void AudioPreviewPanel::paint(Graphics& g)
                          2);
         
         // Draw audio preview
-        previewArea = previewArea
-            .withTrimmedLeft(style->PANEL_MARGIN * 0.5)
-            .withTrimmedRight(style->PANEL_MARGIN * 1.25)
-            .withTrimmedBottom(mAudioPreviewScrollbar->getHeight() + 4 + style->PANEL_MARGIN);
         mAudioPreview->drawChannels(g,
                                     previewArea,
                                     visibleRange.getStart(),
@@ -100,13 +95,6 @@ void AudioPreviewPanel::setPanelComponents()
 {
     // Add scrollbar for audio thumbnail
     mAudioPreviewScrollbar = std::make_unique<ScrollBar>(false);
-    mAudioPreviewScrollbar->setBounds(getLocalBounds()
-                                      .withTrimmedLeft(style->PANEL_MARGIN * 0.5)
-                                      .withTrimmedTop(style->PANEL_MARGIN * 0.25)
-                                      .withTrimmedRight(style->PANEL_MARGIN * 1.25)
-                                      .withTrimmedBottom(style->PANEL_MARGIN)
-                                      .removeFromBottom(11)
-                                      .reduced(2));
     mAudioPreviewScrollbar->setRangeLimits(visibleRange);
     mAudioPreviewScrollbar->setAutoHide(false);
     mAudioPreviewScrollbar->addListener(this);
@@ -116,6 +104,8 @@ void AudioPreviewPanel::setPanelComponents()
     mAudioPositionMarker = std::make_unique<DrawableRectangle>();
     mAudioPositionMarker->setFill(style->COLOUR_ACCENT_MEDIUM);
     addAndMakeVisible(*mAudioPositionMarker);
+    
+    resizePanelComponents();
 }
 
 void AudioPreviewPanel::setURL(URL const & url)
@@ -323,4 +313,16 @@ void AudioPreviewPanel::emptyAudioResource()
     Range<double> newRange;
     setRange(newRange);
     mAudioPreviewScrollbar->setRangeLimits(newRange);
+}
+
+void AudioPreviewPanel::resizePanelComponents()
+{
+    if (mAudioPreviewScrollbar != nullptr)
+    {
+        mAudioPreviewScrollbar->setBounds(getLocalBounds()
+                                          .withTrimmedTop(style->PANEL_MARGIN * 0.25)
+                                          .withTrimmedBottom(style->PANEL_MARGIN)
+                                          .removeFromBottom(11)
+                                          .reduced(2));
+    }
 }

@@ -102,6 +102,7 @@ public:
      @returns whether the library manager has finished loading the library.
      */
     bool getLibraryWasLoaded();
+    void setRestoredPalettePaths(StringArray inRestoredPalettePaths);
     
 private:
     std::unique_ptr<TimeSliceThread> mDirectoryScannerThread;
@@ -111,6 +112,7 @@ private:
     OwnedArray<SampleItem> mAllSampleItems;
     OwnedArray<SampleItem> mFilteredSampleItems;
     StringArray mFilteredFilePaths;
+    StringArray mRestoredPalettePaths;
     OwnedArray<SampleItem> mPaletteSampleItems;
     String mDirectoryPathToAddFilesTo;
     std::unique_ptr<SampleLibraryManager> mSampleLibraryManager;

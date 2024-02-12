@@ -148,7 +148,7 @@ public:
         
         if (isHighlighted || isTicked)
         {
-            g.setColour(isHighlighted ? style->COLOUR_BLACK_LIGHT_TRANSPARENT : style->COLOUR_ACCENT_DARK);
+            g.setColour(isHighlighted ? style->COLOUR_BLACK_SUPERLIGHT_TRANSPARENT : style->COLOUR_BLACK_LIGHT_TRANSPARENT);
             g.fillRoundedRectangle(r.reduced(1).toFloat(), style->CORNER_SIZE_MEDIUM);
         }
         
@@ -161,7 +161,7 @@ public:
         g.drawFittedText(text, r, Justification::left, 1);
     }
     
-    void drawComboBox (Graphics& g,
+    void drawComboBox(Graphics& g,
                        int width,
                        int height,
                        bool isButtonDown,
@@ -171,12 +171,12 @@ public:
                        int buttonH,
                        ComboBox& box) override
     {
-        Rectangle<int> const boxBounds (0, 0, width, height);
+        Rectangle<int> const boxBounds(0, 0, width, height);
         
         g.setColour(style->COLOUR_ACCENT_DARK);
         g.fillRoundedRectangle(boxBounds.toFloat(), style->CORNER_SIZE_MEDIUM);
         
-        Rectangle<int> arrow (width - 30, 0, 20, height);
+        Rectangle<int> arrow(width - 30, 0, 20, height);
         
         Path path;
         
@@ -685,6 +685,30 @@ public:
             g.setFont(style->FONT_SMALL_BOLD);
             
             g.drawText(textToShow, 0, 0, width, height, Justification::centred, false);
+        }
+    }
+    
+    void drawCornerResizer(Graphics& g, int w, int h, bool isMouseOver, bool isMouseDragging) override
+    {
+        auto lineThickness = jmin((float) w, (float) h) * 0.075f;
+        
+        for (float i = 0.0f; i < 1.0f; i += 0.3f)
+        {
+            g.setColour(style->COLOUR_ACCENT_LIGHT);
+            
+            g.drawLine((float) w * i,
+                       (float) h + 1.0f,
+                       (float) w + 1.0f,
+                       (float) h * i,
+                       lineThickness);
+            
+            g.setColour(style->COLOUR_ACCENT_LIGHT_MEDIUM_TRANSPARENT);
+            
+            g.drawLine((float) w * i + lineThickness,
+                       (float) h + 1.0f,
+                       (float) w + 1.0f,
+                       (float) h * i + lineThickness,
+                       lineThickness);
         }
     }
     

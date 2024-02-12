@@ -32,21 +32,19 @@ void SampleNavigationPanel::setPanelComponents()
 {
     // Add library panel
     mSampleLibraryPanel = std::make_unique<SampleLibraryPanel>(currentProcessor, sampleItemPanel);
-    mSampleLibraryPanel->setTopLeftPosition(0, 0);
     addChildComponent(*mSampleLibraryPanel);
     
     // Add sample table panel
     mSampleTablePanel = std::make_unique<SampleTablePanel>(currentProcessor, sampleItemPanel);
-    mSampleTablePanel->setTopLeftPosition(0, 0);
     addChildComponent(*mSampleTablePanel);
     
     // Add sample table panel
     mSampleGridPanel = std::make_unique<SampleGridPanel>(currentProcessor, sampleItemPanel);
-    mSampleGridPanel->setTopLeftPosition(0, 0);
     addChildComponent(*mSampleGridPanel);
     
     // Set active panel
     setActiveNavigationPanel(currentProcessor.getActiveNavigationPanel());
+    resizePanelComponents();
 }
 
 void SampleNavigationPanel::resizePanelComponents()

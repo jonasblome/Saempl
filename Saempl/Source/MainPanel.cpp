@@ -14,7 +14,6 @@ MainPanel::MainPanel(SaemplAudioProcessor& inProcessor)
 PanelBase(inProcessor)
 {
     // Set panel size
-    setSize(style->MAIN_PANEL_WIDTH, style->MAIN_PANEL_HEIGHT);
     setPanelComponents();
 }
 
@@ -93,13 +92,13 @@ void MainPanel::setPanelComponents()
 {
     // Add center panel
     mCenterPanel = std::make_unique<CenterPanel>(currentProcessor);
-    mCenterPanel->setTopLeftPosition(0, style->HEADER_PANEL_HEIGHT);
     addAndMakeVisible(*mCenterPanel);
     
     // Add header panel
     mHeaderPanel = std::make_unique<HeaderPanel>(currentProcessor, *mCenterPanel);
-    mHeaderPanel->setTopLeftPosition(0, 0);
     addAndMakeVisible(*mHeaderPanel);
+    
+    resizePanelComponents();
 }
 
 bool MainPanel::keyPressed(KeyPress const & key)
@@ -112,5 +111,18 @@ bool MainPanel::keyPressed(KeyPress const & key)
     else
     {
         return false;
+    }
+}
+
+void MainPanel::resizePanelComponents()
+{
+    if (mCenterPanel != nullptr)
+    {
+        mCenterPanel->setBounds(0, style->HEADER_PANEL_HEIGHT, getWidth(), getHeight() - style->HEADER_PANEL_HEIGHT);
+    }
+    
+    if (mHeaderPanel != nullptr)
+    {
+        mHeaderPanel->setBounds(0, 0, getWidth(), style->HEADER_PANEL_HEIGHT);
     }
 }

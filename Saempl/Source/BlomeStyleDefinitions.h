@@ -82,9 +82,10 @@ struct BlomeStyling
     Colour const COLOUR_TRANSPARENT = Colour(0, 0, 0).withAlpha(0.0f);
     
     Colour const COLOUR_ACCENT_LIGHT = Colour(220, 91, 99); // 207, 191, 163 // 21, 149, 178 // 190, 215, 238 // 142, 158, 90
+    Colour const COLOUR_ACCENT_LIGHT_MEDIUM_TRANSPARENT = Colour(COLOUR_ACCENT_LIGHT).withAlpha(0.78f);
     Colour const COLOUR_ACCENT_LIGHT_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_LIGHT).withAlpha(0.99f);
     
-    Colour const COLOUR_ACCENT_MEDIUM = Colour(54, 80, 98); // 71, 24, 19 // 18, 44, 55 // 15, 71, 82 // 80, 97, 74
+    Colour const COLOUR_ACCENT_MEDIUM = Colour(62, 88, 106); // 71, 24, 19 // 18, 44, 55 // 15, 71, 82 // 80, 97, 74
     Colour const COLOUR_ACCENT_MEDIUM_MEDIUM_TRANSPARENT = Colour(COLOUR_ACCENT_MEDIUM).withAlpha(0.78f);
     Colour const COLOUR_ACCENT_MEDIUM_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_MEDIUM).withAlpha(0.99f);
     

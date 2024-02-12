@@ -145,4 +145,5 @@ private:
      Updates the x position of the playback cursor.
      */
     void updateCursorPosition();
+    void resizePanelComponents() override;
 };

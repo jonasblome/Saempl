@@ -24,20 +24,14 @@ SampleLibrary::SampleLibrary()
     // Set file filter
     mFileFilter = std::make_unique<SampleFileFilter>("AudioFormatsFilter", mFilteredSampleItems);
     mDirectoryContentsList = std::make_unique<DirectoryContentsList>(&*mFileFilter, *mDirectoryScannerThread);
-    
-    // Set directory
     mDirectoryContentsList->addChangeListener(this);
-    String lastOpenedDirectory = mSampleLibraryManager->getLastOpenedDirectory();
-    setDirectory(lastOpenedDirectory);
 }
 
 SampleLibrary::~SampleLibrary()
 {
-    mSampleLibraryManager->storeLastOpenedDirectory(mCurrentLibraryPath);
     mSampleLibraryManager->removeChangeListener(this);
     mDirectoryContentsList->removeChangeListener(this);
-    File currentLibrary(mCurrentLibraryPath);
-    mSampleLibraryManager->updateSampleLibraryFile(currentLibrary);
+    mSampleLibraryManager->updateSampleLibraryFile();
     clearSampleItemCollections();
     mDirectoryScannerThread->stopThread(10000);
 }
@@ -116,16 +110,14 @@ void SampleLibrary::refresh()
 
 void SampleLibrary::setDirectory(String inDirectoryPath)
 {
-    File currentLibraryDirectory(mCurrentLibraryPath);
-    
     // If a library is currently loaded, store it
     if (mCurrentLibraryPath != "")
     {
-        mSampleLibraryManager->updateSampleLibraryFile(currentLibraryDirectory);
+        mSampleLibraryManager->updateSampleLibraryFile();
     }
     
     mCurrentLibraryPath = inDirectoryPath;
-    currentLibraryDirectory = File(mCurrentLibraryPath);
+    File currentLibraryDirectory = File(mCurrentLibraryPath);
     
     if (!currentLibraryDirectory.exists())
     {
@@ -136,7 +128,7 @@ void SampleLibrary::setDirectory(String inDirectoryPath)
     mLibraryWasLoaded = false;
     clearSampleItemCollections();
     mSampleLibraryManager->loadSampleLibrary(currentLibraryDirectory);
-    mDirectoryContentsList->setDirectory(File(mCurrentLibraryPath), true, true);
+    mDirectoryContentsList->setDirectory(currentLibraryDirectory, true, true);
 }
 
 OwnedArray<SampleItem>& SampleLibrary::getSampleItems(SampleItemCollectionScope inCollectionScope)
@@ -172,6 +164,26 @@ void SampleLibrary::changeListenerCallback(ChangeBroadcaster* inSource)
     }
     else if (inSource == mSampleLibraryManager.get())
     {
+        // Store library state in case of crash/fatal error
+        mSampleLibraryManager->updateSampleLibraryFile();
+        
+        // Restore sample palette state
+        if (mRestoredPalettePaths.size() > 0)
+        {
+            for (String path : mRestoredPalettePaths)
+            {
+                File paletteItem = File(path);
+                
+                if (paletteItem.exists())
+                {
+                    addToPalette(paletteItem);
+                }
+            }
+        }
+        
+        mRestoredPalettePaths.clear();
+        
+        // Refresh library
         mLibraryWasLoaded = true;
         refresh();
     }
@@ -335,4 +347,9 @@ void SampleLibrary::reanalyseSampleItem(File const & inFile)
 bool SampleLibrary::getLibraryWasLoaded()
 {
     return mLibraryWasLoaded;
+}
+
+void SampleLibrary::setRestoredPalettePaths(StringArray inRestoredPalettePaths)
+{
+    mRestoredPalettePaths = inRestoredPalettePaths;
 }

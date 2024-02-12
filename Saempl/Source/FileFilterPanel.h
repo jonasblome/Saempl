@@ -64,7 +64,6 @@ private:
     void setAddFilterRuleButton();
     
     void setNewRuleTypeChooser();
-    
-void setPanelComponents() override;
+    void setPanelComponents() override;
     void buttonClicked(Button* button) override;
 };

@@ -33,9 +33,6 @@ public:
      */
     SampleLibraryPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~SampleLibraryPanel();
-    void paint(Graphics& g) override;
-    void setPanelComponents() override;
-    void resizePanelComponents() override;
     
 private:
     SampleLibrary& sampleLibrary;
@@ -63,4 +60,7 @@ private:
      Reanalyses all selected samples.
      */
     void reanalyseSamples();
+    void paint(Graphics& g) override;
+    void setPanelComponents() override;
+    void resizePanelComponents() override;
 };

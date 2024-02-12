@@ -24,17 +24,33 @@ SampleLibraryManager::~SampleLibraryManager()
     
 }
 
-void SampleLibraryManager::updateSampleLibraryFile(File& inLibraryDirectory)
+void SampleLibraryManager::updateSampleLibraryFile()
 {
-    // Create sample library file as xml and store path to library
-    XmlElement sampleLibraryXml("SampleLibrary");
-    sampleLibraryXml.setAttribute("LibraryPath", inLibraryDirectory.getFullPathName());
-    
-    // Adding sample items xml to sample library xml
-    XmlElement* sampleItemsXml = new XmlElement("SampleItems");
+    std::map<String, XmlElement> sampleLibraryXmls;
     
     for (SampleItem* sampleItem : allSampleItems)
     {
+        File itemParentDirectory = File(sampleItem->getFilePath()).getParentDirectory();
+        String itemParentDirectoryPath = itemParentDirectory.getFullPathName();
+        XmlElement sampleLibraryXml = XmlElement("SampleLibrary");
+        XmlElement* sampleItemsXml;
+        
+        if (sampleLibraryXmls.find(itemParentDirectoryPath) == sampleLibraryXmls.end())
+        {
+            // Create sample library file as xml and store path to library
+            sampleLibraryXml.setAttribute("LibraryPath", itemParentDirectoryPath);
+            sampleLibraryXml.setAttribute("CurrentVersion", currentVersion);
+            
+            // Adding sample items xml to sample library xml
+            sampleItemsXml = new XmlElement("SampleItems");
+            sampleLibraryXml.prependChildElement(sampleItemsXml);
+        }
+        else
+        {
+            sampleLibraryXml = sampleLibraryXmls.at(itemParentDirectoryPath);
+            sampleItemsXml = sampleLibraryXml.getChildByName("SampleItems");
+        }
+        
         XmlElement* sampleItemXml = new XmlElement("SampleItem");
         
         // Adding file path xml to sample item xml
@@ -85,18 +101,28 @@ void SampleLibraryManager::updateSampleLibraryFile(File& inLibraryDirectory)
         }
         
         sampleItemXml->prependChildElement(samplePropertiesXml);
-        
         sampleItemsXml->prependChildElement(sampleItemXml);
+        
+        if (sampleLibraryXmls.find(itemParentDirectoryPath) == sampleLibraryXmls.end())
+        {
+            sampleLibraryXmls.insert(std::pair<String, XmlElement>(itemParentDirectoryPath, sampleLibraryXml));
+        }
+        else
+        {
+            sampleLibraryXmls.erase(itemParentDirectoryPath);
+            sampleLibraryXmls.insert(std::pair<String, XmlElement>(itemParentDirectoryPath, sampleLibraryXml));
+        }
     }
     
-    sampleLibraryXml.prependChildElement(sampleItemsXml);
-    
     // Write sample library xml to external file
-    File sampleLibraryFile = File(mLibraryFilesDirectoryPath
-                                  + DIRECTORY_SEPARATOR
-                                  + inLibraryDirectory.getFileNameWithoutExtension()
-                                  + SAMPLE_LIBRARY_FILE_EXTENSION);
-    writeXmlToFile(sampleLibraryXml, sampleLibraryFile);
+    for (auto sampleLibraryXml : sampleLibraryXmls)
+    {
+        File sampleLibraryFile = File(mLibraryFilesDirectoryPath
+                                      + DIRECTORY_SEPARATOR
+                                      + File(sampleLibraryXml.first).getFileNameWithoutExtension()
+                                      + SAMPLE_LIBRARY_FILE_EXTENSION);
+        writeXmlToFile(sampleLibraryXml.second, sampleLibraryFile);
+    }
 }
 
 void SampleLibraryManager::synchWithLibraryDirectory()
@@ -191,13 +217,32 @@ void SampleLibraryManager::threadComplete(bool userPressedCancel)
     sendChangeMessage();
 }
 
-void SampleLibraryManager::loadSampleLibrary(File& inLibraryDirectory)
+void SampleLibraryManager::loadSampleLibrary(File const & inLibraryDirectory)
 {
-    libraryDirectory = inLibraryDirectory;
     addedFilePaths.clear();
+    libraryDirectory = inLibraryDirectory;
+    loadSampleLibraryFile(inLibraryDirectory);
+    
+    if (libraryHasOldVersion)
+    {
+        AlertWindow::showAsync(MessageBoxOptions()
+                               .withIconType(MessageBoxIconType::NoIcon)
+                               .withTitle("Sample analysis updated!")
+                               .withMessage("We have updated our sample analysis. Unfortunately this means that all samples in this library  that were last used in an older version have to be reanalysed. But the analysis is now better, so don't be sad.")
+                               .withButton("OK"),
+                               nullptr);
+        
+        libraryHasOldVersion = false;
+    }
+    
+    synchWithLibraryDirectory();
+}
+
+void SampleLibraryManager::loadSampleLibraryFile(File const & inLibraryDirectory)
+{
     File libraryFile = File(mLibraryFilesDirectoryPath
                             + DIRECTORY_SEPARATOR
-                            + libraryDirectory.getFileNameWithoutExtension()
+                            + inLibraryDirectory.getFileNameWithoutExtension()
                             + SAMPLE_LIBRARY_FILE_EXTENSION);
     
     // Check if sample library file exists
@@ -209,6 +254,19 @@ void SampleLibraryManager::loadSampleLibrary(File& inLibraryDirectory)
         
         if (libraryXmlPointer)
         {
+            // Check for version compatibility
+            if (libraryXmlPointer->getIntAttribute("CurrentVersion") != currentVersion)
+            {
+                libraryHasOldVersion = true;
+                
+                for (File subDirectory : inLibraryDirectory.findChildFiles(File::findDirectories, false))
+                {
+                    loadSampleLibraryFile(subDirectory);
+                }
+                
+                return;
+            }
+            
             XmlElement* sampleItemsXml = libraryXmlPointer->getChildByName("SampleItems");
             
             // Go over all sample items
@@ -269,38 +327,10 @@ void SampleLibraryManager::loadSampleLibrary(File& inLibraryDirectory)
         }
     }
     
-    synchWithLibraryDirectory();
-}
-
-String SampleLibraryManager::getLastOpenedDirectory()
-{
-    String lastOpenedDirectoryPath = mDefaultLibraryDirectoryPath;
-    
-    File saemplDataFile = File(mSaemplDataFilePath);
-    
-    if (!saemplDataFile.exists())
+    for (File subDirectory : inLibraryDirectory.findChildFiles(File::findDirectories, false))
     {
-        return lastOpenedDirectoryPath;
+        loadSampleLibraryFile(subDirectory);
     }
-    
-    // Get data from library file
-    XmlElement saemplDataXml = loadFileAsXml(saemplDataFile);
-    XmlElement* saemplDataXmlPointer = &saemplDataXml;
-    
-    if (saemplDataXmlPointer)
-    {
-        lastOpenedDirectoryPath = saemplDataXml.getStringAttribute("LastOpenedDirectory");
-    }
-    
-    return lastOpenedDirectoryPath;
-}
-
-void SampleLibraryManager::storeLastOpenedDirectory(String& inDirectoryPath)
-{
-    File saemplDataFile = File(mSaemplDataFilePath);
-    XmlElement saemplDataXml = XmlElement("SaemplData");
-    saemplDataXml.setAttribute("LastOpenedDirectory", inDirectoryPath);
-    writeXmlToFile(saemplDataXml, saemplDataFile);
 }
 
 XmlElement SampleLibraryManager::loadFileAsXml(File& inFile)

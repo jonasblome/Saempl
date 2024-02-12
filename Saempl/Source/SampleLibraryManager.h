@@ -29,33 +29,21 @@ public:
     ~SampleLibraryManager();
     /**
      Adds meta-information of all sample items to an analysis file and updates their information if needed.
-     
-     @param inLibraryDirectory the library directory file.
-     @param inSampleItems the collection of sample items from the library.
      */
-    void updateSampleLibraryFile(File& inLibraryDirectory);
+    void updateSampleLibraryFile();
     /**
      Deletes all sample items where the files have been externally deleted
      and adds sample items for each new detected file.
      */
     void synchWithLibraryDirectory();
+    void loadSampleLibrary(File const & inLibraryDirectory);
     /**
      Loads meta-information of analysis file as sample items collection.
      
      @param inLibraryDirectory the library directory file.
      @param inSampleItems the collection of sample items from the library.
      */
-    void loadSampleLibrary(File& inLibraryDirectory);
-    /**
-     @returns the path of the last opened sample library directory or the default library directory.
-     */
-    String getLastOpenedDirectory();
-    /**
-     Writes the given path into the plugin data directory as the last used library directory path.
-     
-     @param inDirectoryPath the directory to set as last used.
-     */
-    void storeLastOpenedDirectory(String& inDirectoryPath);
+    void loadSampleLibraryFile(File const & inLibraryDirectory);
     /**
      Creates a sample item for the given file and sets its properties.
      
@@ -92,14 +80,6 @@ private:
     std::unique_ptr<SampleAnalyser> mSampleAnalyser;
     StringArray addedFilePaths;
     InterProcessLock mFileLock{"fileLock"};
-    String mDefaultLibraryDirectoryPath =
-    (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
-    + DIRECTORY_SEPARATOR
-    + "Plugins"
-    + DIRECTORY_SEPARATOR
-    + "Saempl"
-    + DIRECTORY_SEPARATOR
-    + "DefaultSampleLibrary";
     String mLibraryFilesDirectoryPath =
     (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
     + DIRECTORY_SEPARATOR
@@ -117,6 +97,8 @@ private:
     + DIRECTORY_SEPARATOR
     + "SaemplPluginData"
     + SAEMPL_DATA_FILE_EXTENSION;
+    int currentVersion = 0;
+    bool libraryHasOldVersion = false;
     
     /**
      Loads the given file as an XmlElement and returns a pointer to it.

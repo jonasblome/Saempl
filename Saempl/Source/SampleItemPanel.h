@@ -57,4 +57,5 @@ private:
     void paint(Graphics& g) override;
     void setPanelComponents() override;
     void changeListenerCallback (ChangeBroadcaster* source) override;
+    void resizePanelComponents() override;
 };

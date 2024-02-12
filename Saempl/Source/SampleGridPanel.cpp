@@ -68,9 +68,9 @@ void SampleGridPanel::paint(Graphics& g)
     g.setFont(style->FONT_MEDIUM_SMALL_BOLD);
     g.setColour(style->COLOUR_PANEL_TITLE_FONT);
     g.drawFittedText("Grid View - " + sampleLibrary.getCurrentLibraryPath(),
+                     style->PANEL_MARGIN * 1.5,
                      0,
-                     0,
-                     getWidth(),
+                     getWidth() - style->PANEL_MARGIN * 3,
                      style->PANEL_TITLE_HEIGHT,
                      Justification::centred,
                      1);
@@ -108,12 +108,10 @@ void SampleGridPanel::setPanelComponents()
     // Add grid viewport
     mGridViewport = std::make_unique<Viewport>();
     mGridViewport->setViewedComponent(&*mSampleTileGrid, false);
-    mGridViewport->setBounds(style->PANEL_MARGIN,
-                             style->PANEL_TITLE_HEIGHT * 1.5 + style->PANEL_MARGIN * 0.75,
-                             getWidth() - style->PANEL_MARGIN * 1.75,
-                             getHeight() - style->PANEL_TITLE_HEIGHT * 1.5 - style->PANEL_MARGIN * 1.5);
     mGridViewport->setWantsKeyboardFocus(false);
     addAndMakeVisible(*mGridViewport);
+    
+    resizePanelComponents();
 }
 
 void SampleGridPanel::resizePanelComponents()

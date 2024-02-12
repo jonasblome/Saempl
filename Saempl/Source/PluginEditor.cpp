@@ -21,14 +21,17 @@ audioProcessor(inProcessor)
     
     // Set plugin window size
     setSize(style->MAIN_PANEL_WIDTH, style->MAIN_PANEL_HEIGHT);
+    setResizeLimits(600, 500, 1600, 1000);
+    setResizable(true, true);
     
     // Set main panel into plugin window
     mMainPanel = std::make_unique<MainPanel>(inProcessor);
+    mMainPanel->setBounds(0, 0, style->MAIN_PANEL_WIDTH, style->MAIN_PANEL_HEIGHT);
     addAndMakeVisible(*mMainPanel);
     
     // Add noise overlay
-    // mNoiseOverlayPanel = std::make_unique<NoiseOverlayPanel>();
-    // addAndMakeVisible(*mNoiseOverlayPanel);
+//    mNoiseOverlayPanel = std::make_unique<NoiseOverlayPanel>();
+//    addAndMakeVisible(*mNoiseOverlayPanel);
 }
 
 SaemplAudioProcessorEditor::~SaemplAudioProcessorEditor()
@@ -46,4 +49,8 @@ void SaemplAudioProcessorEditor::paint(juce::Graphics& g)
 void SaemplAudioProcessorEditor::resized()
 {
     // Setup layout of plugin components
+    if (mMainPanel != nullptr)
+    {
+        mMainPanel->setBounds(0, 0, getWidth(), getHeight());
+    }
 }

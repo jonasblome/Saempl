@@ -23,6 +23,7 @@ SaemplAudioProcessor::SaemplAudioProcessor()
 #endif
 {
     mSampleLibrary = std::make_unique<SampleLibrary>();
+    mLastOpenedLibraryPath = "";
     mActiveNavigationPanelType = PANELS_LIBRARY_PANEL;
     mSortingColumnTitle = "Title";
     mSortingDirection = true;
@@ -194,7 +195,7 @@ void SaemplAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
     stateInfoBody->setAttribute("SampleItemPanelIsVisible", mSampleItemPanelIsVisible);
     stateInfoBody->setAttribute("FollowAudioPlayhead", mFollowAudioPlayhead);
     stateInfoBody->setAttribute("SampleGridZoomFactor", mSampleGridZoomFactor);
-    stateInfoBody->setAttribute("LastOpenedLibrary", mLastOpenedLibrary);
+    stateInfoBody->setAttribute("LastOpenedLibraryPath", mLastOpenedLibraryPath);
     
     // Storing filter rules
     XmlElement* stateInfoFilter = new XmlElement("Blome_StateInfoFilter");
@@ -250,11 +251,22 @@ void SaemplAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
             }
         }
         
-        stateInfoFilter->addChildElement(stateInfoFilterRule);
+        stateInfoFilter->prependChildElement(stateInfoFilterRule);
     }
     
-    stateInfo.addChildElement(stateInfoBody);
-    stateInfo.addChildElement(stateInfoFilter);
+    // Storing favorite samples
+    XmlElement* stateInfoSamplePalette = new XmlElement("Blome_StateInfoSamplePalette");
+    
+    for (SampleItem* sample : mSampleLibrary->getSampleItems(PALETTE_SAMPLES))
+    {
+        XmlElement* stateInfoPaletteItem = new XmlElement("PaletteItem");
+        stateInfoPaletteItem->setAttribute("FilePath", sample->getFilePath());
+        stateInfoSamplePalette->prependChildElement(stateInfoPaletteItem);
+    }
+    
+    stateInfo.prependChildElement(stateInfoBody);
+    stateInfo.prependChildElement(stateInfoFilter);
+    stateInfo.prependChildElement(stateInfoSamplePalette);
     copyXmlToBinary(stateInfo, destData);
 }
 
@@ -267,6 +279,7 @@ void SaemplAudioProcessor::setStateInformation (const void* data, int sizeInByte
     
     if (xmlStatePtr)
     {
+        // Restore general state properties
         XmlElement* stateInfoBody = xmlStatePtr->getChildByName("Blome_StateInfoBody");
         
         if (stateInfoBody)
@@ -277,9 +290,17 @@ void SaemplAudioProcessor::setStateInformation (const void* data, int sizeInByte
             mSampleItemPanelIsVisible = stateInfoBody->getBoolAttribute("SampleItemPanelIsVisible");
             mFollowAudioPlayhead = stateInfoBody->getBoolAttribute("FollowAudioPlayhead");
             mSampleGridZoomFactor = stateInfoBody->getDoubleAttribute("SampleGridZoomFactor");
-            mLastOpenedLibrary = stateInfoBody->getStringAttribute("LastOpenedLibrary");
+            mLastOpenedLibraryPath = stateInfoBody->getStringAttribute("LastOpenedLibraryPath");
         }
         
+        if (mLastOpenedLibraryPath == "")
+        {
+            mLastOpenedLibraryPath = mDefaultLibraryDirectoryPath;
+        }
+        
+        mSampleLibrary->setDirectory(mLastOpenedLibraryPath);
+        
+        // Restore filter state properties
         XmlElement* stateInfoFilter = xmlStatePtr->getChildByName("Blome_StateInfoFilter");
         
         if (stateInfoFilter)
@@ -344,6 +365,20 @@ void SaemplAudioProcessor::setStateInformation (const void* data, int sizeInByte
             {
                 mSampleLibrary->refresh();
             }
+            
+            // Restoring favorite samples
+            XmlElement* stateInfoSamplePalette = xmlStatePtr->getChildByName("Blome_StateInfoSamplePalette");
+            StringArray restoredPalettePaths;
+            
+            if (stateInfoSamplePalette)
+            {
+                for (auto* sample : stateInfoSamplePalette->getChildIterator())
+                {
+                    restoredPalettePaths.add(sample->getStringAttribute("FilePath"));
+                }
+            }
+            
+            mSampleLibrary->setRestoredPalettePaths(restoredPalettePaths);
         }
     }
     else
@@ -385,14 +420,9 @@ void SaemplAudioProcessor::setSortingColumnTitle(String inColumnTitle)
     mSortingColumnTitle = inColumnTitle;
 }
 
-String SaemplAudioProcessor::getLastOpenedLibrary()
+void SaemplAudioProcessor::setLastOpenedLibraryPath(String inLastOpenedLibraryPath)
 {
-    return mLastOpenedLibrary;
-}
-
-void SaemplAudioProcessor::setLastOpenedLibrary(String inLastOpenedLibraryPath)
-{
-    mLastOpenedLibrary = inLastOpenedLibraryPath;
+    mLastOpenedLibraryPath = inLastOpenedLibraryPath;
 }
 
 bool SaemplAudioProcessor::getSortingDirection()

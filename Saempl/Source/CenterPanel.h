@@ -59,4 +59,5 @@ private:
      Toggles the sample item's visibility on/off and rescales the navigation panels.
      */
     void setSampleItemPanelVisibility(bool newIsVisible);
+    void resizePanelComponents() override;
 };

@@ -15,8 +15,7 @@ PanelBase(inProcessor),
 sampleLibrary(currentProcessor.getSampleLibrary()),
 sampleItemPanel(inSampleItemPanel)
 {
-    setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH,
-            style->SAMPLE_NAVIGATION_PANEL_HEIGHT);
+    setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH, style->SAMPLE_NAVIGATION_PANEL_HEIGHT);
     setPanelComponents();
 }
 
@@ -56,9 +55,9 @@ void SampleTablePanel::paint(Graphics& g)
     g.setFont(style->FONT_MEDIUM_SMALL_BOLD);
     g.setColour(style->COLOUR_PANEL_TITLE_FONT);
     g.drawFittedText("Table View - " + sampleLibrary.getCurrentLibraryPath(),
+                     style->PANEL_MARGIN * 1.5,
                      0,
-                     0,
-                     getWidth(),
+                     getWidth() - style->PANEL_MARGIN * 3,
                      style->PANEL_TITLE_HEIGHT,
                      Justification::centred,
                      1);
@@ -70,8 +69,9 @@ void SampleTablePanel::setPanelComponents()
 {
     // Set sample table component
     mSampleTable = std::make_unique<BlomeTableViewNavigation>(currentProcessor, sampleItemPanel);
-    resizePanelComponents();
     addAndMakeVisible(*mSampleTable);
+    
+    resizePanelComponents();
 }
 
 void SampleTablePanel::resizePanelComponents()

@@ -43,7 +43,7 @@ void HeaderPanel::paint(Graphics& g)
     g.setColour(style->COLOUR_ACCENT_DARK);
     g.setFont(style->FONT_MEDIUM_BOLD);
     g.drawFittedText("Blome Audio",
-                     style->HEADER_PANEL_WIDTH - logoWidth - 20 - style->PANEL_MARGIN,
+                     getWidth() - logoWidth - 20 - style->PANEL_MARGIN,
                      style->PANEL_MARGIN / 2.0,
                      logoWidth,
                      getHeight() - style->PANEL_MARGIN,
@@ -80,22 +80,22 @@ void HeaderPanel::setChooseLibraryDirectoryButton(int buttonWidth, int x)
 {
     mChooseLibraryDirectoryButton = std::make_unique<BlomeImageButton>("Choose Dir.", false);
     mChooseLibraryDirectoryButton->setImages(false,
-                                          true,
-                                          true,
-                                          ImageCache::getFromMemory(BinaryData::folder_open_FILL0_wght400_GRAD0_opsz24_png,
-                                                                    BinaryData::folder_open_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                          style->BUTTON_IS_DEFAULT_ALPHA,
-                                          style->COLOUR_HEADER_BUTTONS,
-                                          Image(),
-                                          style->BUTTON_IS_OVER_ALPHA,
-                                          style->COLOUR_HEADER_BUTTONS,
-                                          Image(),
-                                          style->BUTTON_IS_DOWN_ALPHA,
-                                          style->COLOUR_HEADER_BUTTONS);
+                                             true,
+                                             true,
+                                             ImageCache::getFromMemory(BinaryData::folder_open_FILL0_wght400_GRAD0_opsz24_png,
+                                                                       BinaryData::folder_open_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                             style->BUTTON_IS_DEFAULT_ALPHA,
+                                             style->COLOUR_HEADER_BUTTONS,
+                                             Image(),
+                                             style->BUTTON_IS_OVER_ALPHA,
+                                             style->COLOUR_HEADER_BUTTONS,
+                                             Image(),
+                                             style->BUTTON_IS_DOWN_ALPHA,
+                                             style->COLOUR_HEADER_BUTTONS);
     mChooseLibraryDirectoryButton->setBounds(x,
-                                          style->PANEL_MARGIN,
-                                          buttonWidth,
-                                          buttonWidth);
+                                             style->PANEL_MARGIN,
+                                             buttonWidth,
+                                             buttonWidth);
     mChooseLibraryDirectoryButton->setTooltip("Choose a new directory as your current sample library");
     mChooseLibraryDirectoryButton->onClick = [this] { showLibraryChooser(); };
     addAndMakeVisible(*mChooseLibraryDirectoryButton);
@@ -525,6 +525,7 @@ void HeaderPanel::showLibraryChooser()
         if (name != "")
         {
             sampleLibrary.setDirectory(name);
+            currentProcessor.setLastOpenedLibraryPath(name);
             
             // Show success popup message
             AlertWindow::showAsync(MessageBoxOptions()

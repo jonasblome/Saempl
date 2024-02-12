@@ -38,4 +38,5 @@ private:
     void paint(Graphics& g) override;
     void setPanelComponents() override;
     bool keyPressed(KeyPress const & key) override;
+    void resizePanelComponents() override;
 };

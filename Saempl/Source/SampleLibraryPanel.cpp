@@ -58,9 +58,9 @@ void SampleLibraryPanel::paint(Graphics& g)
     g.setFont(style->FONT_MEDIUM_SMALL_BOLD);
     g.setColour(style->COLOUR_PANEL_TITLE_FONT);
     g.drawFittedText("Folder View - " + sampleLibrary.getCurrentLibraryPath(),
+                     style->PANEL_MARGIN * 1.5,
                      0,
-                     0,
-                     getWidth(),
+                     getWidth() - style->PANEL_MARGIN * 3,
                      style->PANEL_TITLE_HEIGHT,
                      Justification::centred,
                      1);
@@ -74,9 +74,10 @@ void SampleLibraryPanel::setPanelComponents()
     mFileTree->setColour(FileTreeComponent::backgroundColourId, style->COLOUR_TRANSPARENT);
     mFileTree->setMultiSelectEnabled(true);
     mFileTree->addListener(this);
-    resizePanelComponents();
-    addAndMakeVisible(*mFileTree);
     sampleLibrary.getDirectoryList().addChangeListener(&*mFileTree);
+    addAndMakeVisible(*mFileTree);
+    
+    resizePanelComponents();
 }
 
 void SampleLibraryPanel::resizePanelComponents()

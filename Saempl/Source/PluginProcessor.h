@@ -85,11 +85,11 @@ public:
     /**
      @returns the path of the last opened library directory.
      */
-    String getLastOpenedLibrary();
+    String getLastOpenedLibraryPath();
     /**
      Sets the path of the last opened library directory.
      */
-    void setLastOpenedLibrary(String inLastOpenedLibraryPath);
+    void setLastOpenedLibraryPath(String inLastOpenedLibraryPath);
     /**
      @returns the current sorting direction of the sample item table.
      */
@@ -147,8 +147,16 @@ private:
     
     std::unique_ptr<SampleLibrary> mSampleLibrary;
     NavigationPanelType mActiveNavigationPanelType;
+    String mDefaultLibraryDirectoryPath =
+    (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
+    + DIRECTORY_SEPARATOR
+    + "Plugins"
+    + DIRECTORY_SEPARATOR
+    + "Saempl"
+    + DIRECTORY_SEPARATOR
+    + "DefaultSampleLibrary";
     String mSortingColumnTitle;
-    String mLastOpenedLibrary;
+    String mLastOpenedLibraryPath;
     bool mSortingDirection;
     bool mSampleItemPanelIsVisible;
     bool mFollowAudioPlayhead;
