@@ -280,6 +280,7 @@ void BlomeSampleTileGridView::changeListenerCallback(ChangeBroadcaster* source)
     }
     else if (source == &sampleLibrary && !isShowing())
     {
+        setVisible(false);
         setReadyForSorting();
     }
     else if (source == &*mGridSorter)
@@ -292,10 +293,7 @@ void BlomeSampleTileGridView::changeListenerCallback(ChangeBroadcaster* source)
 void BlomeSampleTileGridView::filesDropped(StringArray const & files, int x, int y)
 {
     // Adding all the dropped files to the database
-    for (int f = 0; f < files.size(); f++)
-    {
-        sampleLibrary.addAllToSampleItems(files[f]);
-    }
+    sampleLibrary.addAllToSampleItems(files);
 }
 
 bool BlomeSampleTileGridView::isInterestedInFileDrag(StringArray const & files)

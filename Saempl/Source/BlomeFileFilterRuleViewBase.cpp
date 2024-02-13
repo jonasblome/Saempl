@@ -46,10 +46,10 @@ void BlomeFileFilterRuleViewBase::setComponents()
     mActivateRuleButton->setTooltip("Activate/deactivate this filter rule");
     mActivateRuleButton->onClick = [this]
     {
-        bool couldHaveEffect = filterRule.canHaveEffect();
+        bool couldHaveEffect = sampleLibrary.getFileFilter().canHaveEffect();
         filterRule.setIsActive(mActivateRuleButton->getToggleState());
         
-        if (filterRule.canHaveEffect() || couldHaveEffect)
+        if (sampleLibrary.getFileFilter().canHaveEffect() || couldHaveEffect)
         {
             sampleLibrary.refresh();
         }
@@ -120,7 +120,7 @@ void BlomeFileFilterRuleViewBase::comboBoxChanged(ComboBox* comboBoxThatHasChang
     CompareOperators oldOperator = filterRule.getCompareOperator();
     filterRule.setCompareOperator(newOperator);
     
-    if (newOperator != oldOperator && filterRule.canHaveEffect())
+    if (newOperator != oldOperator && sampleLibrary.getFileFilter().canHaveEffect())
     {
         sampleLibrary.refresh();
     }

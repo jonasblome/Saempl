@@ -84,7 +84,11 @@ void SampleGridPanel::setPanelComponents()
     if (sampleLibrary.getLibraryWasLoaded())
     {
         mSampleTileGrid->setReadyForSorting();
-        mSampleTileGrid->sortGrid();
+        
+        if (isShowing())
+        {
+            mSampleTileGrid->sortGrid();
+        }
     }
     
     // Add zoom slider

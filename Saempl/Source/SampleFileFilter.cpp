@@ -82,6 +82,11 @@ void SampleFileFilter::setIsActive(bool inIsActive)
 
 bool SampleFileFilter::canHaveEffect()
 {
+    if (!isActive)
+    {
+        return false;
+    }
+    
     for (SampleFileFilterRuleBase* rule : mFilterRules)
     {
         if (rule->canHaveEffect())

@@ -73,7 +73,7 @@ void BlomeFileFilterRuleViewLength::textEditorFocusLost(TextEditor& textEditor)
     float oldCompareValue = getFilterRule().getCompareValue();
     getFilterRule().setCompareValue(newCompareValue);
     
-    if (newCompareValue != oldCompareValue && getFilterRule().canHaveEffect())
+    if (newCompareValue != oldCompareValue && sampleLibrary.getFileFilter().canHaveEffect())
     {
         sampleLibrary.refresh();
     }

@@ -177,7 +177,7 @@ void FileFilterPanel::addFilterRuleView()
             + style->PANEL_MARGIN / 2.0);
     repaint();
     
-    if (newRule->canHaveEffect())
+    if (libraryFileFilter.canHaveEffect())
     {
         sampleLibrary.refresh();
     }
@@ -258,12 +258,13 @@ void FileFilterPanel::buttonClicked(Button* button)
     // Delete rule and its view if its delete button was clicked
     if (BlomeFileFilterRuleViewBase* ruleView = dynamic_cast<BlomeFileFilterRuleViewBase*>(button->getParentComponent()))
     {
-        bool ruleWasActive = ruleView->getFilterRule().canHaveEffect();
+        bool ruleCouldHaveEffect = ruleView->getFilterRule().canHaveEffect();
+        bool filterCouldHaveEffect = libraryFileFilter.canHaveEffect();
         ruleView->removeDeleteButtonListener(this);
         removeFilterRule(ruleView->getFilterRule());
         mFilterRuleViews.removeObject(ruleView);
         
-        if (ruleWasActive)
+        if (ruleCouldHaveEffect && filterCouldHaveEffect)
         {
             sampleLibrary.refresh();
         }

@@ -390,11 +390,12 @@ void HeaderPanel::setToggleFilterButton(int buttonWidth, int x)
     mToggleFilterButton->setTooltip("Activate/deactivate filter");
     mToggleFilterButton->onClick = [this]
     {
+        bool couldHaveEffect = sampleLibrary.getFileFilter().canHaveEffect();
         bool filterIsActive = !sampleLibrary.getFileFilter().getIsActive();
         currentProcessor.setFilterIsActive(filterIsActive);
         sampleLibrary.getFileFilter().setIsActive(filterIsActive);
         
-        if (sampleLibrary.getFileFilter().canHaveEffect())
+        if (sampleLibrary.getFileFilter().canHaveEffect() || couldHaveEffect)
         {
             sampleLibrary.refresh();
         }

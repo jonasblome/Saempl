@@ -26,10 +26,7 @@ BlomeFileTreeView::~BlomeFileTreeView()
 void BlomeFileTreeView::filesDropped(StringArray const & files, int x, int y)
 {
     // Adding all the dropped files to the database
-    for(int f = 0; f < files.size(); f++)
-    {
-        sampleLibrary.addAllToSampleItems(files[f]);
-    }
+    sampleLibrary.addAllToSampleItems(files);
 }
 
 bool BlomeFileTreeView::isInterestedInFileDrag(StringArray const & files)

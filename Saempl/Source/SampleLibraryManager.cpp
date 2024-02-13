@@ -146,6 +146,8 @@ void SampleLibraryManager::run()
     // check if corresponding audio file still exists
     // and if not, delete sample item
     // from all items and palette collection
+    Array<SampleItem*> itemsToDelete;
+    
     for (SampleItem* sampleItem : allSampleItems)
     {
         if (threadShouldExit())
@@ -155,15 +157,22 @@ void SampleLibraryManager::run()
         
         if (!File(sampleItem->getFilePath()).exists())
         {
-            addedFilePaths.removeString(sampleItem->getFilePath());
-            paletteSampleItems.removeObject(sampleItem, false);
-            allSampleItems.removeObject(sampleItem);
+            itemsToDelete.add(sampleItem);
         }
         
         // Set progress
         numProcessedItems++;
         setProgress(numProcessedItems / (double) numItemsToProcess);
     }
+    
+    for (SampleItem* sampleItem : itemsToDelete)
+    {
+        addedFilePaths.removeString(sampleItem->getFilePath());
+        paletteSampleItems.removeObject(sampleItem, false);
+        allSampleItems.removeObject(sampleItem, false);
+    }
+    
+    itemsToDelete.clear();
     
     // All files have already been loaded
     if (addedFilePaths.size() == allSampleFiles.size())

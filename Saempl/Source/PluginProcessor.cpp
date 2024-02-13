@@ -29,6 +29,7 @@ SaemplAudioProcessor::SaemplAudioProcessor()
     mSortingDirection = true;
     mSampleItemPanelIsVisible = true;
     mFollowAudioPlayhead = false;
+    mFilterIsActivated = true;
     mSampleGridZoomFactor = 0.0;
 }
 
@@ -270,7 +271,7 @@ void SaemplAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
     copyXmlToBinary(stateInfo, destData);
 }
 
-void SaemplAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void SaemplAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
@@ -306,6 +307,7 @@ void SaemplAudioProcessor::setStateInformation (const void* data, int sizeInByte
         if (stateInfoFilter)
         {
             mFilterIsActivated = stateInfoFilter->getBoolAttribute("FilterIsActivated");
+            bool couldHaveEffect = mSampleLibrary->getFileFilter().canHaveEffect();
             
             for (auto* filterRule: stateInfoFilter->getChildIterator())
             {
@@ -365,17 +367,18 @@ void SaemplAudioProcessor::setStateInformation (const void* data, int sizeInByte
             {
                 mSampleLibrary->refresh();
             }
-            
-            // Restoring favorite samples
-            XmlElement* stateInfoSamplePalette = xmlStatePtr->getChildByName("Blome_StateInfoSamplePalette");
+        }
+        
+        // Restoring favorite samples
+        XmlElement* stateInfoSamplePalette = xmlStatePtr->getChildByName("Blome_StateInfoSamplePalette");
+        
+        if (stateInfoSamplePalette)
+        {
             StringArray restoredPalettePaths;
             
-            if (stateInfoSamplePalette)
+            for (auto* sample : stateInfoSamplePalette->getChildIterator())
             {
-                for (auto* sample : stateInfoSamplePalette->getChildIterator())
-                {
-                    restoredPalettePaths.add(sample->getStringAttribute("FilePath"));
-                }
+                restoredPalettePaths.add(sample->getStringAttribute("FilePath"));
             }
             
             mSampleLibrary->setRestoredPalettePaths(restoredPalettePaths);

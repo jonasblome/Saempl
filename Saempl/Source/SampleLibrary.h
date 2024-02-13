@@ -130,8 +130,9 @@ private:
      Adds the file and all its children to the sample item collection.
      
      @param inFile the file to add to the collection.
+     @returns whether any sample was added to the library.
      */
-    void addFileToSampleItems(File const & inFile);
+    bool addFileToSampleItems(File const & inFile);
     /**
      Creates sample item for given file and adds it to the collection.
      

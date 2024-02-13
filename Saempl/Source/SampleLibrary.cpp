@@ -38,12 +38,20 @@ SampleLibrary::~SampleLibrary()
 
 void SampleLibrary::addAllToSampleItems(StringArray const & inFilePaths)
 {
+    bool anySampleWasAdded = false;
+    
     for (String path : inFilePaths)
     {
-        addFileToSampleItems(path);
+        if (addFileToSampleItems(path))
+        {
+            anySampleWasAdded = true;
+        }
     }
     
-    refresh();
+    if (anySampleWasAdded)
+    {
+        refresh();
+    }
 }
 
 void SampleLibrary::removeSampleItems(StringArray const & inFilePaths, bool deletePermanently)
@@ -225,7 +233,7 @@ void SampleLibrary::applyFilter()
     sendSynchronousChangeMessage();
 }
 
-void SampleLibrary::addFileToSampleItems(File const & inFile)
+bool SampleLibrary::addFileToSampleItems(File const & inFile)
 {
     String fileName = inFile.getFileName();
     File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
@@ -233,11 +241,11 @@ void SampleLibrary::addFileToSampleItems(File const & inFile)
     // Don't add files if they already exist in the current library
     if (mSampleLibraryManager->fileHasBeenAdded(inFile.getFullPathName()))
     {
-        return;
+        return false;
     }
     else if (mSampleLibraryManager->fileHasBeenAdded(newFile.getFullPathName()))
     {
-        return;
+        return false;
     }
     
     // Check directory recursively for audio files and subdirectories
@@ -245,21 +253,29 @@ void SampleLibrary::addFileToSampleItems(File const & inFile)
     {
         mDirectoryPathToAddFilesTo = newFile.getFullPathName();
         bool newDirectoryWasCreated = newFile.createDirectory();
+        bool anySampleWasAdded = false;
         
         if (newDirectoryWasCreated)
         {
             for (DirectoryEntry entry : RangedDirectoryIterator(inFile, false, "*", File::findFilesAndDirectories))
             {
-                addFileToSampleItems(entry.getFile());
+                if (addFileToSampleItems(entry.getFile()))
+                {
+                    anySampleWasAdded = true;
+                }
             }
         }
         
         mDirectoryPathToAddFilesTo = newFile.getParentDirectory().getFullPathName();
+        return anySampleWasAdded;
     }
     else if (isSupportedAudioFileFormat(newFile.getFileExtension()))
     {
         addToSampleItems(inFile);
+        return true;
     }
+    
+    return false;
 }
 
 SampleItem* SampleLibrary::addToSampleItems(File const & inFile)
@@ -340,8 +356,20 @@ void SampleLibrary::removeFromPalette(SampleItem& inSampleItem)
 void SampleLibrary::reanalyseSampleItem(File const & inFile)
 {
     // Delete sample item
-    SampleItem* itemToReanalyse = mSampleLibraryManager->getSampleItemWithFilePath(inFile.getFullPathName());
-    mSampleLibraryManager->analyseSampleItem(*itemToReanalyse, inFile, true);
+    if (inFile.isDirectory())
+    {
+        Array<File> sampleFiles = inFile.findChildFiles(File::findFiles, true, SUPPORTED_AUDIO_FORMATS_WILDCARD);
+        
+        for (File sampleFile : sampleFiles)
+        {
+            reanalyseSampleItem(sampleFile);
+        }
+    }
+    else
+    {
+        SampleItem* itemToReanalyse = mSampleLibraryManager->getSampleItemWithFilePath(inFile.getFullPathName());
+        mSampleLibraryManager->analyseSampleItem(*itemToReanalyse, inFile, true);
+    }
 }
 
 bool SampleLibrary::getLibraryWasLoaded()
