@@ -38,7 +38,7 @@ void BlomeTableViewPalette::cellClicked(int rowNumber, int columnId, MouseEvent 
     {
         PopupMenu popupMenu;
         popupMenu.addItem("Remove Sample(s) from Palette", [this] { removeSampleItemFromPalette(); } );
-        popupMenu.addItem("Re-analyse Sample(s)", [this] { reanalyseSamples(); });
+        popupMenu.addItem("(Re-)analyse Sample(s)", [this] { reanalyseSamples(); });
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
     }
 }

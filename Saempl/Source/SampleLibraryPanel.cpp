@@ -57,7 +57,9 @@ void SampleLibraryPanel::paint(Graphics& g)
                            style->CORNER_SIZE_MEDIUM);
     g.setFont(style->FONT_MEDIUM_SMALL_BOLD);
     g.setColour(style->COLOUR_PANEL_TITLE_FONT);
-    g.drawFittedText("Folder View - " + sampleLibrary.getCurrentLibraryPath(),
+    g.drawFittedText("Folder View - "
+                     + sampleLibrary.getCurrentLibraryPath()
+                     + " - " + std::to_string(sampleLibrary.getSampleItems(ALL_SAMPLES).size()) + " Samples",
                      style->PANEL_MARGIN * 1.5,
                      0,
                      getWidth() - style->PANEL_MARGIN * 3,
@@ -104,7 +106,7 @@ void SampleLibraryPanel::fileClicked(File const & file, MouseEvent const & mouse
         PopupMenu popupMenu;
         popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
         popupMenu.addItem("Add Sample(s) to Favorites", [this] { addToPalette(); });
-        popupMenu.addItem("Re-analyse Sample(s)", [this] { reanalyseSamples(); });
+        popupMenu.addItem("(Re-)analyse Sample(s)", [this] { reanalyseSamples(); });
         popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
     }

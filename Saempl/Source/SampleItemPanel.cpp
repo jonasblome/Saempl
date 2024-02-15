@@ -127,7 +127,8 @@ void SampleItemPanel::setPanelComponents()
                            style->SAMPLE_CONTROL_HEIGHT - style->SAMPLE_CONTROL_WIDTH - followTransportButtonHeight);
     mZoomSlider->setRange(0, 1, 0);
     mZoomSlider->onValueChange = [this] { mAudioPreviewPanel->setZoomFactor(mZoomSlider->getValue()); };
-    mZoomSlider->setSkewFactor(2);
+    mZoomSlider->setSkewFactor(1.3);
+    mZoomSlider->setTooltip("Zooms into the waveform of the current sample");
     addAndMakeVisible(*mZoomSlider);
     
     // Add audio thumbnail component

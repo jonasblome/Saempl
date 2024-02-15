@@ -227,6 +227,7 @@ void FileFilterPanel::setNewRuleTypeChooser() {
     mNewRuleTypeChooser->addItem("New loudness(dB) rule", 3);
     mNewRuleTypeChooser->addItem("New loudness(LUFS) rule", 4);
     mNewRuleTypeChooser->addItem("New tempo rule", 5);
+    mNewRuleTypeChooser->addItem("New key rule", 6);
     mNewRuleTypeChooser->setTextWhenNothingSelected("Choose new rule type");
     addAndMakeVisible(*mNewRuleTypeChooser);
 }

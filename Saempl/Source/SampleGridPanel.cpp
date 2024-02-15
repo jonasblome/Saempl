@@ -67,7 +67,9 @@ void SampleGridPanel::paint(Graphics& g)
                            style->CORNER_SIZE_MEDIUM);
     g.setFont(style->FONT_MEDIUM_SMALL_BOLD);
     g.setColour(style->COLOUR_PANEL_TITLE_FONT);
-    g.drawFittedText("Grid View - " + sampleLibrary.getCurrentLibraryPath(),
+    g.drawFittedText("Grid View - "
+                     + sampleLibrary.getCurrentLibraryPath()
+                     + " - " + std::to_string(sampleLibrary.getSampleItems(ALL_SAMPLES).size()) + " Samples",
                      style->PANEL_MARGIN * 1.5,
                      0,
                      getWidth() - style->PANEL_MARGIN * 3,
@@ -102,11 +104,22 @@ void SampleGridPanel::setPanelComponents()
     mZoomSlider->setValue(currentProcessor.getSampleGridZoomFactor(), NotificationType::dontSendNotification);
     mZoomSlider->onValueChange = [this]
     {
+        float tileMinMaxRelation = mSampleTileGrid->getTileMinMaxRelation();
+        float oldZoomFactor = currentProcessor.getSampleGridZoomFactor();
         float newZoomFactor = mZoomSlider->getValue();
         currentProcessor.setSampleGridZoomFactor(newZoomFactor);
         mSampleTileGrid->setZoomFactor(newZoomFactor);
+        Point<int> previousViewPosition = mGridViewport->getViewPosition();
+        previousViewPosition.addXY(+mGridViewport->getWidth() / 2, +mGridViewport->getHeight() / 2);
         mSampleTileGrid->performGridLayout();
+        float zoomRatio = (1 + (newZoomFactor * (tileMinMaxRelation - 1)))
+        / (1 + (oldZoomFactor * (tileMinMaxRelation - 1)));
+        previousViewPosition.setXY(previousViewPosition.getX() * zoomRatio,
+                                   previousViewPosition.getY() * zoomRatio);
+        previousViewPosition.addXY(-mGridViewport->getWidth() / 2, -mGridViewport->getHeight() / 2);
+        mGridViewport->setViewPosition(previousViewPosition);
     };
+    mZoomSlider->setTooltip("Scales the size of the grid tiles");
     addAndMakeVisible(*mZoomSlider);
     
     // Add grid viewport

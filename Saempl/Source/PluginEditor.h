@@ -11,7 +11,6 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "MainPanel.h"
-#include "NoiseOverlayPanel.h"
 #include "BlomeLookAndFeel.h"
 
 //==============================================================================
@@ -34,7 +33,6 @@ private:
     // access the processor object that created it.
     SaemplAudioProcessor& audioProcessor;
     std::unique_ptr<MainPanel> mMainPanel;
-    std::unique_ptr<NoiseOverlayPanel> mNoiseOverlayPanel;
     std::unique_ptr<BlomeLookAndFeel> mLookAndFeel;
     SharedResourcePointer<TooltipWindow> tooltipWindow;
     BlomeStyling::Ptr style;

@@ -30,15 +30,15 @@ public:
     /**
      @returns the compare value of the rule.
      */
-    int getCompareValue();
+    String getCompareValue();
     /**
      Sets the compare value of the rule.
      
      @param inCompareValue the value to set.
      */
-    void setCompareValue(int const & inCompareValue);
+    void setCompareValue(String const & inCompareValue);
     bool canHaveEffect() override;
     
 private:
-    int mCompareValue;
+    String mCompareValue;
 };

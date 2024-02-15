@@ -32,9 +32,12 @@ void BlomeFileFilterRuleViewKey::setComponents()
     mCompareValueEditor = std::make_unique<TextEditor>("CompareValueEditor");
     mCompareValueEditor->setFont(style->FONT_SMALL_BOLD);
     mCompareValueEditor->setJustification(Justification::centredLeft);
-    mCompareValueEditor->setText(std::to_string(getFilterRule().getCompareValue()));
+    mCompareValueEditor->setText(getFilterRule().getCompareValue());
     mCompareValueEditor->addListener(this);
     addAndMakeVisible(*mCompareValueEditor);
+    
+    mCompareOperatorChooser->addItem("is equal to", 1);
+    mCompareOperatorChooser->setSelectedItemIndex(0);
 }
 
 void BlomeFileFilterRuleViewKey::resized()
@@ -69,8 +72,8 @@ void BlomeFileFilterRuleViewKey::textEditorFocusLost(TextEditor& textEditor)
 {
     // Lose focus, set compare value and refresh library
     mCompareValueEditor->giveAwayKeyboardFocus();
-    int newCompareValue = textEditor.getText().getIntValue();
-    int oldCompareValue = getFilterRule().getCompareValue();
+    String newCompareValue = textEditor.getText();
+    String oldCompareValue = getFilterRule().getCompareValue();
     getFilterRule().setCompareValue(newCompareValue);
     
     if (newCompareValue != oldCompareValue && sampleLibrary.getFileFilter().canHaveEffect())
@@ -82,4 +85,17 @@ void BlomeFileFilterRuleViewKey::textEditorFocusLost(TextEditor& textEditor)
 SampleFileFilterRuleKey& BlomeFileFilterRuleViewKey::getFilterRule()
 {
     return *dynamic_cast<SampleFileFilterRuleKey*>(&filterRule);
+}
+
+void BlomeFileFilterRuleViewKey::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
+{
+    // Set rule to chosen compare operator
+    CompareOperators newOperator = static_cast<CompareOperators>(comboBoxThatHasChanged->getSelectedItemIndex() + 1);
+    CompareOperators oldOperator = filterRule.getCompareOperator();
+    filterRule.setCompareOperator(newOperator);
+    
+    if (newOperator != oldOperator && sampleLibrary.getFileFilter().canHaveEffect())
+    {
+        sampleLibrary.refresh();
+    }
 }

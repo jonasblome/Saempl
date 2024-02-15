@@ -73,7 +73,8 @@ static std::map<String, CompareOperators> STRING_TO_COMPARE_OPERATORS
     { "LESS_THAN", CompareOperators::LESS_THAN },
 };
 
-static int const NO_KEY_INDEX = 1000;
+static int const NO_KEY_INDEX = 100;
+static int const SAMPLE_TOO_LONG_INDEX = 200;
 
 static std::map<int, String> KEY_INDEX_TO_KEY_NAME
 {
@@ -89,7 +90,8 @@ static std::map<int, String> KEY_INDEX_TO_KEY_NAME
     { 9, "A maj/F# min" },
     { 10, "E maj/C# min" },
     { 11, "B maj/G# min" },
-    { NO_KEY_INDEX, "No key" },
+    { NO_KEY_INDEX, "No key detected" },
+    { SAMPLE_TOO_LONG_INDEX, "Too long, analyse separately!" },
 };
 
 static Array<Array<int>> const KEY_PATTERNS = Array<Array<int>>

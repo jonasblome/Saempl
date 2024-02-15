@@ -28,10 +28,6 @@ audioProcessor(inProcessor)
     mMainPanel = std::make_unique<MainPanel>(inProcessor);
     mMainPanel->setBounds(0, 0, style->MAIN_PANEL_WIDTH, style->MAIN_PANEL_HEIGHT);
     addAndMakeVisible(*mMainPanel);
-    
-    // Add noise overlay
-//    mNoiseOverlayPanel = std::make_unique<NoiseOverlayPanel>();
-//    addAndMakeVisible(*mNoiseOverlayPanel);
 }
 
 SaemplAudioProcessorEditor::~SaemplAudioProcessorEditor()

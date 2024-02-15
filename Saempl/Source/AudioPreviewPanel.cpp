@@ -207,7 +207,7 @@ void AudioPreviewPanel::mouseWheelMove(MouseEvent const &, MouseWheelDetails con
         
         if (wheel.deltaY != 0.0f)
         {
-            mZoomSlider.setValue(mZoomSlider.getValue() - wheel.deltaY * 0.04);
+            mZoomSlider.setValue(mZoomSlider.getValue() - wheel.deltaY * 0.06);
         }
         
         repaint();

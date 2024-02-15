@@ -23,23 +23,22 @@ SampleAnalyser::~SampleAnalyser()
     
 }
 
-void SampleAnalyser::analyseSample(SampleItem& inSampleItem, File const & inFile, bool forceAnalysis)
+void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
 {
     std::vector<float> featureVector = std::vector<float>(NUM_SPECTRAL_BANDS + NUM_CHROMA + NUM_FEATURES);
     
     // Load audio file
-    // DBG(inSampleItem.getTitle());
-    loadAudioFileSource(inFile);
+    loadAudioFileSource(inSampleItem->getFilePath());
     
     // Set sample length
     float length = totalNumSamples * 1.0 / sampleRate;
-    inSampleItem.setLength(length);
+    inSampleItem->setLength(length);
     featureVector[0] = length / 100;
     
     // Set sample loudness and loudness range
     analyseSampleLoudness();
-    inSampleItem.setLoudnessDecibel(decibel);
-    inSampleItem.setLoudnessLUFS(integratedLUFS);
+    inSampleItem->setLoudnessDecibel(decibel);
+    inSampleItem->setLoudnessLUFS(integratedLUFS);
     featureVector[1] = integratedLUFS / (-100);
     featureVector[2] = lufsRangeStart / (-100);
     featureVector[3] = lufsRangeEnd / (-100);
@@ -52,12 +51,12 @@ void SampleAnalyser::analyseSample(SampleItem& inSampleItem, File const & inFile
     {
         // Set sample tempo
         float tempo = analyseSampleTempo();
-        inSampleItem.setTempo(tempo);
+        inSampleItem->setTempo(tempo);
         featureVector[5] = (tempo - lowerBPMLimit) / (upperBPMLimit - lowerBPMLimit);
         
         // Set sample key
         int key = analyseSampleKey();
-        inSampleItem.setKey(key);
+        inSampleItem->setKey(key);
         featureVector[6] = key * 1.0 / 12;
         
         // Set spectral centroid
@@ -87,9 +86,14 @@ void SampleAnalyser::analyseSample(SampleItem& inSampleItem, File const & inFile
             featureVector[NUM_FEATURES + NUM_SPECTRAL_BANDS + c] = mChromaDistribution[c];
         }
     }
+    else
+    {
+        inSampleItem->setKey(SAMPLE_TOO_LONG_INDEX);
+        featureVector[6] = inSampleItem->getKey() * 1.0 / 12;
+    }
     
     // Set sample item's feature vector
-    inSampleItem.setFeatureVector(featureVector);
+    inSampleItem->setFeatureVector(featureVector);
 }
 
 void SampleAnalyser::loadAudioFileSource(File const & inFile)

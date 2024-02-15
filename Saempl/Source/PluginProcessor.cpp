@@ -307,7 +307,6 @@ void SaemplAudioProcessor::setStateInformation(const void* data, int sizeInBytes
         if (stateInfoFilter)
         {
             mFilterIsActivated = stateInfoFilter->getBoolAttribute("FilterIsActivated");
-            bool couldHaveEffect = mSampleLibrary->getFileFilter().canHaveEffect();
             
             for (auto* filterRule: stateInfoFilter->getChildIterator())
             {
@@ -349,7 +348,7 @@ void SaemplAudioProcessor::setStateInformation(const void* data, int sizeInBytes
                     case 5:
                     {
                         newRule = mSampleLibrary->getFileFilter().addFilterRule(new SampleFileFilterRuleKey(propertyName));
-                        dynamic_cast<SampleFileFilterRuleKey*>(newRule)->setCompareValue(filterRule->getIntAttribute("CompareValue"));
+                        dynamic_cast<SampleFileFilterRuleKey*>(newRule)->setCompareValue(filterRule->getStringAttribute("CompareValue"));
                         break;
                     }
                     default:

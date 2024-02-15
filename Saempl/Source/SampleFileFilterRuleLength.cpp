@@ -26,7 +26,8 @@ bool SampleFileFilterRuleLength::matches(SampleItem const & inSampleItem)
 {
     int propertyValue = inSampleItem.getLength();
     
-    switch (mCompareOperator) {
+    switch (mCompareOperator)
+    {
         case LESS_THAN:
         {
             return propertyValue < mCompareValue;

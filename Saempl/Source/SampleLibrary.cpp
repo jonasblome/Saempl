@@ -12,9 +12,10 @@
 SampleLibrary::SampleLibrary()
 {
     mLibraryWasLoaded = false;
+    mLibraryWasAltered = false;
     
     // Initialize library manager
-    mSampleLibraryManager = std::make_unique<SampleLibraryManager>(mAllSampleItems, mPaletteSampleItems);
+    mSampleLibraryManager = std::make_unique<SampleLibraryManager>(mAllSampleItems, mPaletteSampleItems, mDeletedSampleItems, mAddedSampleItems, mAlteredSampleItems);
     mSampleLibraryManager->addChangeListener(this);
     
     // Create thread for scanning the sample library directory
@@ -31,7 +32,12 @@ SampleLibrary::~SampleLibrary()
 {
     mSampleLibraryManager->removeChangeListener(this);
     mDirectoryContentsList->removeChangeListener(this);
-    mSampleLibraryManager->updateSampleLibraryFile();
+    
+    if (mLibraryWasAltered)
+    {
+        mSampleLibraryManager->updateSampleLibraryFile();
+    }
+    
     clearSampleItemCollections();
     mDirectoryScannerThread->stopThread(10000);
 }
@@ -119,7 +125,7 @@ void SampleLibrary::refresh()
 void SampleLibrary::setDirectory(String inDirectoryPath)
 {
     // If a library is currently loaded, store it
-    if (mCurrentLibraryPath != "")
+    if (mCurrentLibraryPath != "" && mLibraryWasAltered)
     {
         mSampleLibraryManager->updateSampleLibraryFile();
     }
@@ -134,6 +140,7 @@ void SampleLibrary::setDirectory(String inDirectoryPath)
     
     // Load new library
     mLibraryWasLoaded = false;
+    mLibraryWasAltered = false;
     clearSampleItemCollections();
     mSampleLibraryManager->loadSampleLibrary(currentLibraryDirectory);
     mDirectoryContentsList->setDirectory(currentLibraryDirectory, true, true);
@@ -172,9 +179,6 @@ void SampleLibrary::changeListenerCallback(ChangeBroadcaster* inSource)
     }
     else if (inSource == mSampleLibraryManager.get())
     {
-        // Store library state in case of crash/fatal error
-        mSampleLibraryManager->updateSampleLibraryFile();
-        
         // Restore sample palette state
         if (mRestoredPalettePaths.size() > 0)
         {
@@ -239,11 +243,11 @@ bool SampleLibrary::addFileToSampleItems(File const & inFile)
     File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
     
     // Don't add files if they already exist in the current library
-    if (mSampleLibraryManager->fileHasBeenAdded(inFile.getFullPathName()))
+    if (mSampleLibraryManager->fileHasBeenAdded(inFile.getFullPathName().convertToPrecomposedUnicode()))
     {
         return false;
     }
-    else if (mSampleLibraryManager->fileHasBeenAdded(newFile.getFullPathName()))
+    else if (mSampleLibraryManager->fileHasBeenAdded(newFile.getFullPathName().convertToPrecomposedUnicode()))
     {
         return false;
     }
@@ -284,7 +288,11 @@ SampleItem* SampleLibrary::addToSampleItems(File const & inFile)
     String fileName = inFile.getFileName();
     File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
     inFile.copyFileTo(newFile);
-    return mSampleLibraryManager->createSampleItem(newFile);
+    mLibraryWasAltered = true;
+    SampleItem* addedItem = mSampleLibraryManager->createSampleItem(newFile);
+    mAddedSampleItems.add(addedItem);
+    
+    return addedItem;
 }
 
 bool SampleLibrary::addFileToPalette(File const & inFile)
@@ -338,14 +346,17 @@ void SampleLibrary::removeSampleItem(String const & inFilePath, bool deletePerma
     
     // Delete sample item
     SampleItem* itemToDelete = mSampleLibraryManager->getSampleItemWithFilePath(fileToDelete.getFullPathName());
+    mDeletedSampleItems.add(itemToDelete);
     removeFromPalette(*itemToDelete);
-    mAllSampleItems.removeObject(itemToDelete);
+    mAllSampleItems.removeObject(itemToDelete, false);
     
     // Delete audio file
     if (fileToDelete.exists())
     {
         deletePermanently ? fileToDelete.deleteRecursively() : fileToDelete.moveToTrash();
     }
+    
+    mLibraryWasAltered = true;
 }
 
 void SampleLibrary::removeFromPalette(SampleItem& inSampleItem)
@@ -368,7 +379,9 @@ void SampleLibrary::reanalyseSampleItem(File const & inFile)
     else
     {
         SampleItem* itemToReanalyse = mSampleLibraryManager->getSampleItemWithFilePath(inFile.getFullPathName());
-        mSampleLibraryManager->analyseSampleItem(*itemToReanalyse, inFile, true);
+        mSampleLibraryManager->analyseSampleItem(itemToReanalyse, inFile, true);
+        mAlteredSampleItems.add(itemToReanalyse);
+        mLibraryWasAltered = true;
     }
 }
 

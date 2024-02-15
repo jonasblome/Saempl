@@ -459,7 +459,7 @@ void HeaderPanel::setRandomSampleButton(int buttonWidth, int x)
                                    style->PANEL_MARGIN,
                                    buttonWidth,
                                    buttonWidth);
-    mRandomSampleButton->setTooltip("Opens the table view and selects a random sample");
+    mRandomSampleButton->setTooltip("Selects a random sample in the table or grid view");
     mRandomSampleButton->onClick = [this]
     {
         if (currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL)

@@ -26,10 +26,11 @@ bool SampleFileFilterRuleTitle::matches(SampleItem const & inSampleItem)
 {
     String propertyValue = inSampleItem.getTitle();
     
-    switch (mCompareOperator) {
+    switch (mCompareOperator)
+    {
         case LESS_THAN:
         {
-            return propertyValue > mCompareValue;
+            return false;
             break;
         }
         case EQUAL_TO:
@@ -39,7 +40,7 @@ bool SampleFileFilterRuleTitle::matches(SampleItem const & inSampleItem)
         }
         case GREATER_THAN:
         {
-            return propertyValue < mCompareValue;
+            return false;
             break;
         }
         case CONTAINS:

@@ -46,7 +46,7 @@ void BlomeTableViewNavigation::cellClicked(int rowNumber, int columnId, MouseEve
         PopupMenu popupMenu;
         popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
         popupMenu.addItem("Add Sample(s) to Favorites", [this] { addToPalette(); });
-        popupMenu.addItem("Re-analyse Sample(s)", [this] { reanalyseSamples(); });
+        popupMenu.addItem("(Re-)analyse Sample(s)", [this] { reanalyseSamples(); });
         popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
     }

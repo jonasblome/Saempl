@@ -102,18 +102,20 @@ void BlomeSampleTileGridView::performGridLayout()
         return;
     }
     
-    int minTileWidth = 75;
-    int maxTileWidth = 140;
     int tileWidth = minTileWidth + currentZoomFactor * (maxTileWidth - minTileWidth);
+    float minMargin = style->PANEL_MARGIN * 0.5f;
+    float maxMargin = minMargin * getTileMinMaxRelation();
+    float margin = minMargin + currentZoomFactor * (maxMargin - minMargin);
     
     setBounds(0,
               0,
-              (optimalWidth * tileWidth) + (style->PANEL_MARGIN * 0.5),
-              (optimalHeight * tileWidth) + (style->PANEL_MARGIN * 0.5));
+              (optimalWidth * (tileWidth + margin)) + margin,
+              (optimalHeight * (tileWidth + margin)) + margin);
+    mSampleTileGrid->setGap(Grid::Px(margin));
     mSampleTileGrid->performLayout(Rectangle<int>(0,
                                                   0,
-                                                  optimalWidth * tileWidth,
-                                                  optimalHeight * tileWidth));
+                                                  optimalWidth * (tileWidth + margin),
+                                                  optimalHeight * (tileWidth + margin)));
 }
 
 void BlomeSampleTileGridView::setZoomFactor(float inZoomFactor)
@@ -228,7 +230,6 @@ void BlomeSampleTileGridView::setupGrid()
         return;
     }
     
-    mSampleTileGrid->setGap(Grid::Px(style->PANEL_MARGIN * 0.5f));
     mSampleTileGrid->autoFlow = Grid::AutoFlow::row;
     using Track = Grid::TrackInfo;
     mSampleTileGrid->autoRows = Track(1_fr);
@@ -458,7 +459,7 @@ void BlomeSampleTileGridView::showPopupMenu()
     PopupMenu popupMenu;
     popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
     popupMenu.addItem("Add Sample(s) to Favorites", [this] { addToPalette(); });
-    popupMenu.addItem("Re-analyse Sample(s)", [this] { reanalyseSamples(); });
+    popupMenu.addItem("(Re-)analyse Sample(s)", [this] { reanalyseSamples(); });
     popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
     popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
 }
@@ -497,4 +498,9 @@ void BlomeSampleTileGridView::reanalyseSamples()
     }
     
     sampleLibrary.reanalyseSampleItems(filePaths);
+}
+
+float BlomeSampleTileGridView::getTileMinMaxRelation()
+{
+    return maxTileWidth * 1.0 / minTileWidth;
 }

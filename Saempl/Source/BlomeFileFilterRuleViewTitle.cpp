@@ -35,6 +35,10 @@ void BlomeFileFilterRuleViewTitle::setComponents()
     mCompareValueEditor->setText(getFilterRule().getCompareValue());
     mCompareValueEditor->addListener(this);
     addAndMakeVisible(*mCompareValueEditor);
+    
+    mCompareOperatorChooser->addItem("is equal to", 1);
+    mCompareOperatorChooser->addItem("contains", 2);
+    mCompareOperatorChooser->setSelectedItemIndex(1);
 }
 
 void BlomeFileFilterRuleViewTitle::resized()
@@ -82,4 +86,17 @@ void BlomeFileFilterRuleViewTitle::textEditorFocusLost(TextEditor& textEditor)
 SampleFileFilterRuleTitle& BlomeFileFilterRuleViewTitle::getFilterRule()
 {
     return *dynamic_cast<SampleFileFilterRuleTitle*>(&filterRule);
+}
+
+void BlomeFileFilterRuleViewTitle::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
+{
+    // Set rule to chosen compare operator
+    CompareOperators newOperator = static_cast<CompareOperators>(comboBoxThatHasChanged->getSelectedItemIndex() == 0 ? 1 : 3);
+    CompareOperators oldOperator = filterRule.getCompareOperator();
+    filterRule.setCompareOperator(newOperator);
+    
+    if (newOperator != oldOperator && sampleLibrary.getFileFilter().canHaveEffect())
+    {
+        sampleLibrary.refresh();
+    }
 }

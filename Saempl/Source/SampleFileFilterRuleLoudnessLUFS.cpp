@@ -26,7 +26,8 @@ bool SampleFileFilterRuleLoudnessLUFS::matches(SampleItem const & inSampleItem)
 {
     int propertyValue = inSampleItem.getLoudnessLUFS();
     
-    switch (mCompareOperator) {
+    switch (mCompareOperator)
+    {
         case LESS_THAN:
         {
             return propertyValue < mCompareValue;

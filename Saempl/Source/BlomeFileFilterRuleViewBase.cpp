@@ -58,11 +58,6 @@ void BlomeFileFilterRuleViewBase::setComponents()
     
     // Add combo box for compare operator
     mCompareOperatorChooser = std::make_unique<ComboBox>("CompareOperatorChooser");
-    mCompareOperatorChooser->addItem("is less than", 1);
-    mCompareOperatorChooser->addItem("is equal to", 2);
-    mCompareOperatorChooser->addItem("is greater than", 3);
-    mCompareOperatorChooser->addItem("contains", 4);
-    mCompareOperatorChooser->setSelectedItemIndex(getFilterRule().getCompareOperator());
     mCompareOperatorChooser->addListener(this);
     addAndMakeVisible(*mCompareOperatorChooser);
     
@@ -111,19 +106,6 @@ void BlomeFileFilterRuleViewBase::resized()
                                  0,
                                  getHeight(),
                                  getHeight());
-}
-
-void BlomeFileFilterRuleViewBase::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
-{
-    // Set rule to chosen compare operator
-    CompareOperators newOperator = static_cast<CompareOperators>(comboBoxThatHasChanged->getSelectedItemIndex());
-    CompareOperators oldOperator = filterRule.getCompareOperator();
-    filterRule.setCompareOperator(newOperator);
-    
-    if (newOperator != oldOperator && sampleLibrary.getFileFilter().canHaveEffect())
-    {
-        sampleLibrary.refresh();
-    }
 }
 
 SampleFileFilterRuleBase& BlomeFileFilterRuleViewBase::getFilterRule()

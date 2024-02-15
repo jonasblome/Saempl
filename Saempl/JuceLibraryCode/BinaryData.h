@@ -38,9 +38,6 @@ namespace BinaryData
     extern const char*   folder_open_FILL0_wght400_GRAD0_opsz24_png;
     const int            folder_open_FILL0_wght400_GRAD0_opsz24_pngSize = 301;
 
-    extern const char*   noisetexture1050x800_png;
-    const int            noisetexture1050x800_pngSize = 2896745;
-
     extern const char*   segment_FILL0_wght400_GRAD0_opsz24_png;
     const int            segment_FILL0_wght400_GRAD0_opsz24_pngSize = 147;
 
@@ -51,7 +48,7 @@ namespace BinaryData
     const int            table_rows_FILL0_wght400_GRAD0_opsz24_pngSize = 187;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 14;
+    const int namedResourceListSize = 13;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

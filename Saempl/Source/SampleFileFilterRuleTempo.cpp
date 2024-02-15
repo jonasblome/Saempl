@@ -26,7 +26,8 @@ bool SampleFileFilterRuleTempo::matches(SampleItem const & inSampleItem)
 {
     int propertyValue = inSampleItem.getTempo();
     
-    switch (mCompareOperator) {
+    switch (mCompareOperator)
+    {
         case LESS_THAN:
         {
             return propertyValue < mCompareValue;

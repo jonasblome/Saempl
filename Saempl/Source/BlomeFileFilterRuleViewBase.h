@@ -64,5 +64,4 @@ protected:
     virtual void setComponents();
     void paint(Graphics& g) override;
     void resized() override;
-    void comboBoxChanged(ComboBox* comboBoxThatHasChanged) override;
 };

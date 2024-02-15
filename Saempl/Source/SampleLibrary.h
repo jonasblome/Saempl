@@ -111,12 +111,16 @@ private:
     std::unique_ptr<DirectoryContentsList> mDirectoryContentsList;
     OwnedArray<SampleItem> mAllSampleItems;
     OwnedArray<SampleItem> mFilteredSampleItems;
+    OwnedArray<SampleItem> mPaletteSampleItems;
+    OwnedArray<SampleItem> mDeletedSampleItems;
+    OwnedArray<SampleItem> mAddedSampleItems;
+    OwnedArray<SampleItem> mAlteredSampleItems;
     StringArray mFilteredFilePaths;
     StringArray mRestoredPalettePaths;
-    OwnedArray<SampleItem> mPaletteSampleItems;
     String mDirectoryPathToAddFilesTo;
     std::unique_ptr<SampleLibraryManager> mSampleLibraryManager;
     bool mLibraryWasLoaded;
+    bool mLibraryWasAltered;
     
     /**
      Deletes SampleItem objects in all collections (all, filtered, palette).

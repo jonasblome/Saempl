@@ -29,7 +29,7 @@ public:
      @param inFile the file belonging to the sample item.
      @param forceAnalysis forces analysis even for files longer than one minute.
      */
-    void analyseSample(SampleItem& inSampleItem, File const & inFile, bool forceAnalysis);
+    void analyseSample(SampleItem* inSampleItem, bool forceAnalysis);
     
 private:
     std::unique_ptr<AudioFormatReaderSource> mCurrentAudioFileSource;

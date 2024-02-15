@@ -43,6 +43,7 @@ public:
     Point<int> selectRight();
     Point<int> selectDown();
     void setReadyForSorting();
+    float getTileMinMaxRelation();
     
 private:
     SampleLibrary& sampleLibrary;
@@ -58,6 +59,8 @@ private:
     int optimalWidth;
     int optimalHeight;
     float currentZoomFactor;
+    int minTileWidth = 75;
+    int maxTileWidth = 140;
     
     /**
      Creates tile components for each sample item and adds them to a square grid.

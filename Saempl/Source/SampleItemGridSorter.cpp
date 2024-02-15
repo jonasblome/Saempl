@@ -11,7 +11,7 @@
 
 SampleItemGridSorter::SampleItemGridSorter(OwnedArray<SampleItem>& inSampleItems)
 :
-ThreadWithProgressWindow("Sorting sample grid", true, true, 10000, "Stop sorting", nullptr),
+ThreadWithProgressWindow("Improving sample grid sorting quality", true, true, 10000, "Stop improving", nullptr),
 sampleItems(inSampleItems)
 {
     

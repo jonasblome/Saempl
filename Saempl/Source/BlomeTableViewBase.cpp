@@ -116,7 +116,7 @@ String BlomeTableViewBase::getCellText(SampleItem* inSampleItem, String columnNa
     }
     else if (columnName == PROPERTY_NAMES[4])
     {
-        return std::to_string(inSampleItem->getTempo());
+        return inSampleItem->getTempo() == 0 ? "Too long, analyse separately!" : std::to_string(inSampleItem->getTempo());
     }
     else if (columnName == PROPERTY_NAMES[5])
     {

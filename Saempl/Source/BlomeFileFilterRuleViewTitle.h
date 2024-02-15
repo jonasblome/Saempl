@@ -46,4 +46,5 @@ private:
     void textEditorReturnKeyPressed(TextEditor&) override;
     void textEditorEscapeKeyPressed(TextEditor&) override;
     void textEditorFocusLost(TextEditor&) override;
+    void comboBoxChanged(ComboBox* comboBoxThatHasChanged) override;
 };

@@ -35,6 +35,11 @@ void BlomeFileFilterRuleViewTempo::setComponents()
     mCompareValueEditor->setText(std::to_string(getFilterRule().getCompareValue()));
     mCompareValueEditor->addListener(this);
     addAndMakeVisible(*mCompareValueEditor);
+    
+    mCompareOperatorChooser->setSelectedItemIndex(getFilterRule().getCompareOperator());
+    mCompareOperatorChooser->addItem("is less than", 1);
+    mCompareOperatorChooser->addItem("is equal to", 2);
+    mCompareOperatorChooser->addItem("is greater than", 3);
 }
 
 void BlomeFileFilterRuleViewTempo::resized()
@@ -82,4 +87,17 @@ void BlomeFileFilterRuleViewTempo::textEditorFocusLost(TextEditor& textEditor)
 SampleFileFilterRuleTempo& BlomeFileFilterRuleViewTempo::getFilterRule()
 {
     return *dynamic_cast<SampleFileFilterRuleTempo*>(&filterRule);
+}
+
+void BlomeFileFilterRuleViewTempo::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
+{
+    // Set rule to chosen compare operator
+    CompareOperators newOperator = static_cast<CompareOperators>(comboBoxThatHasChanged->getSelectedItemIndex());
+    CompareOperators oldOperator = filterRule.getCompareOperator();
+    filterRule.setCompareOperator(newOperator);
+    
+    if (newOperator != oldOperator && sampleLibrary.getFileFilter().canHaveEffect())
+    {
+        sampleLibrary.refresh();
+    }
 }

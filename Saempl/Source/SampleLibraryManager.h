@@ -12,7 +12,7 @@
 #include "JuceHeader.h"
 #include "SampleItem.h"
 #include "BlomeHelpers.h"
-#include "SampleAnalyser.h"
+#include "SampleManagerThread.h"
 
 /**
  Handles updating and creating of directory meta-analysis files.
@@ -22,11 +22,13 @@
 class SampleLibraryManager
 :
 public ThreadWithProgressWindow,
-public ChangeBroadcaster
+public ChangeBroadcaster,
+public ThreadPool
 {
 public:
-    SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems, OwnedArray<SampleItem>& inPaletteSampleItems);
+    SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems, OwnedArray<SampleItem>& inPaletteSampleItems, OwnedArray<SampleItem>& inDeletedSampleItems, OwnedArray<SampleItem>& inAddedSampleItems, OwnedArray<SampleItem>& inAlteredSampleItems);
     ~SampleLibraryManager();
+    void writeSampleItemToXml(SampleItem *sampleItem, XmlElement *sampleItemXml);
     /**
      Adds meta-information of all sample items to an analysis file and updates their information if needed.
      */
@@ -71,13 +73,15 @@ public:
      @param inFile the sample file to analyse.
      @param forceAnalysis forces analysis even for files longer than one minute.
      */
-    void analyseSampleItem(SampleItem& inSampleItem, File const & inFile, bool forceAnalysis);
+    void analyseSampleItem(SampleItem* inSampleItem, File const & inFile, bool forceAnalysis);
     
 private:
     File libraryDirectory;
     OwnedArray<SampleItem>& allSampleItems;
     OwnedArray<SampleItem>& paletteSampleItems;
-    std::unique_ptr<SampleAnalyser> mSampleAnalyser;
+    OwnedArray<SampleItem>& deletedSampleItems;
+    OwnedArray<SampleItem>& addedSampleItems;
+    OwnedArray<SampleItem>& alteredSampleItems;
     StringArray addedFilePaths;
     InterProcessLock mFileLock{"fileLock"};
     String mLibraryFilesDirectoryPath =
@@ -99,6 +103,7 @@ private:
     + SAEMPL_DATA_FILE_EXTENSION;
     int currentVersion = 0;
     bool libraryHasOldVersion = false;
+    int numProcessedItems;
     
     /**
      Loads the given file as an XmlElement and returns a pointer to it.
@@ -111,9 +116,12 @@ private:
      @param inFile the file to store the XmlElement in.
      */
     void writeXmlToFile(XmlElement& inXml, File& inFile);
-    /**
+    void setProgressAndStatus(int numItemsToProcess, int64 startTime);
+    
+/**
      Runs the loading of a library while setting the progress for the progress bar.
      */
     void run() override;
     void threadComplete(bool userPressedCancel) override;
+    String encodeForXml(String inString);
 };

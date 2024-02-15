@@ -13,8 +13,8 @@ SampleFileFilterRuleKey::SampleFileFilterRuleKey(String inRulePropertyName)
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = 0;
-    mCompareOperator = CONTAINS;
+    mCompareValue = "No key detected";
+    mCompareOperator = EQUAL_TO;
 }
 
 SampleFileFilterRuleKey::~SampleFileFilterRuleKey()
@@ -24,12 +24,13 @@ SampleFileFilterRuleKey::~SampleFileFilterRuleKey()
 
 bool SampleFileFilterRuleKey::matches(SampleItem const & inSampleItem)
 {
-    int propertyValue = inSampleItem.getKey();
+    String propertyValue = KEY_INDEX_TO_KEY_NAME[inSampleItem.getKey()];
     
-    switch (mCompareOperator) {
+    switch (mCompareOperator)
+    {
         case LESS_THAN:
         {
-            return propertyValue < mCompareValue;
+            return false;
             break;
         }
         case EQUAL_TO:
@@ -39,7 +40,7 @@ bool SampleFileFilterRuleKey::matches(SampleItem const & inSampleItem)
         }
         case GREATER_THAN:
         {
-            return propertyValue > mCompareValue;
+            return false;
             break;
         }
         case CONTAINS:
@@ -53,12 +54,12 @@ bool SampleFileFilterRuleKey::matches(SampleItem const & inSampleItem)
     };
 }
 
-int SampleFileFilterRuleKey::getCompareValue()
+String SampleFileFilterRuleKey::getCompareValue()
 {
     return mCompareValue;
 }
 
-void SampleFileFilterRuleKey::setCompareValue(int const & inCompareValue)
+void SampleFileFilterRuleKey::setCompareValue(String const & inCompareValue)
 {
     mCompareValue = inCompareValue;
 }
