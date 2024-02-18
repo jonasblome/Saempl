@@ -9,7 +9,11 @@
 
 #include "SampleLibraryManager.h"
 
-SampleLibraryManager::SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems, OwnedArray<SampleItem>& inPaletteSampleItems, OwnedArray<SampleItem>& inDeletedSampleItems, OwnedArray<SampleItem>& inAddedSampleItems, OwnedArray<SampleItem>& inAlteredSampleItems)
+SampleLibraryManager::SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems, 
+                                           OwnedArray<SampleItem>& inPaletteSampleItems,
+                                           OwnedArray<SampleItem>& inDeletedSampleItems,
+                                           OwnedArray<SampleItem>& inAddedSampleItems,
+                                           OwnedArray<SampleItem>& inAlteredSampleItems)
 :
 ThreadWithProgressWindow("Synching sample library", true, true, 100000, "Stop loading", nullptr),
 ThreadPool(SystemStats::getNumCpus()),
@@ -80,6 +84,23 @@ void SampleLibraryManager::writeSampleItemToXml(SampleItem *sampleItem, XmlEleme
 
 void SampleLibraryManager::updateSampleLibraryFile()
 {
+    for (int i = 0; i < addedFilePaths.size() - 1; ++i)
+    {
+        String s = addedFilePaths.getReference(i);
+
+        for (int nextIndex = i + 1;;)
+        {
+            nextIndex = addedFilePaths.indexOf(s, false, nextIndex);
+
+            if (nextIndex < 0)
+                break;
+
+            deletedSampleItems.add(getSampleItemWithFilePath(s));
+            addedFilePaths.remove(nextIndex);
+            jassertfalse;
+        }
+    }
+    
     int numItemsToUpdate = deletedSampleItems.size() + addedSampleItems.size() + alteredSampleItems.size();
     int numUpdatedItems = 0;
     
@@ -132,7 +153,8 @@ void SampleLibraryManager::updateSampleLibraryFile()
         {
             if (File(sampleItem->getFilePath()).getParentDirectory() == libraryPath)
             {
-                sampleItemsXml->removeChildElement(sampleItemsXml->getChildByName(encodeForXml(sampleItem->getFilePath())), true);
+                sampleItemsXml->removeChildElement(sampleItemsXml->getChildByName(encodeForXml(sampleItem->getFilePath())),
+                                                   true);
                 numUpdatedItems++;
             }
         }
@@ -229,6 +251,8 @@ void SampleLibraryManager::run()
         addedFilePaths.removeString(sampleItem->getFilePath());
         paletteSampleItems.removeObject(sampleItem, false);
         allSampleItems.removeObject(sampleItem, false);
+        addedSampleItems.removeObject(sampleItem, false);
+        alteredSampleItems.removeObject(sampleItem, false);
     }
     
     // All files have already been loaded
@@ -241,7 +265,7 @@ void SampleLibraryManager::run()
     // Go through all files in directory and add sample items
     // for all that are not yet loaded into the library
     bool isLoadingNewLibrary = allSampleItems.size() == 0;
-    int numItemsToProcess = allSampleFiles.size() - allSampleItems.size();
+    int numItemsToProcess = jmax<int>(0, allSampleFiles.size() - allSampleItems.size());
     numProcessedItems = 0;
     
     for (File const & sampleFile : allSampleFiles)
@@ -260,6 +284,7 @@ void SampleLibraryManager::run()
         setProgressAndStatus(numItemsToProcess, startTime);
     }
     
+    // Wait for all jobs to finish
     while (getNumJobs() != 0)
     {
         if (threadShouldExit())
@@ -269,7 +294,7 @@ void SampleLibraryManager::run()
             
             while (getNumJobs() != 0)
             {
-                // Wait for current analysis jobs to finish
+                // Wait for currently running jobs to finish
             }
             
             break;
@@ -316,6 +341,68 @@ void SampleLibraryManager::loadSampleLibrary(File const & inLibraryDirectory)
     synchWithLibraryDirectory();
 }
 
+void SampleLibraryManager::createSampleItemFromXml(const XmlElement * sampleItemXml)
+{
+    String filePath = sampleItemXml->getStringAttribute("FilePath").convertToPrecomposedUnicode();
+    
+//    if (fileHasBeenAdded(filePath))
+//    {
+//        // WHy??!?
+//        DBG(filePath);
+//        return;
+//    }
+    
+    SampleItem* sampleItem = allSampleItems.add(new SampleItem());
+    sampleItem->setFilePath(filePath);
+    addedFilePaths.add(filePath);
+    
+    // Adding properties to item
+    XmlElement* samplePropertiesXml = sampleItemXml->getChildByName("SampleProperties");
+    
+    // Adding title property to item
+    XmlElement* samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[0]);
+    String title = samplePropertyXml->getStringAttribute("PropertyValue");
+    sampleItem->setTitle(title);
+    
+    // Adding length property to item
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[1]);
+    double length = samplePropertyXml->getDoubleAttribute("PropertyValue");
+    sampleItem->setLength(length);
+    
+    // Adding decibel property to item
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[2]);
+    double loudnessDecibel = samplePropertyXml->getDoubleAttribute("PropertyValue");
+    sampleItem->setLoudnessDecibel(loudnessDecibel);
+    
+    // Adding LUFS property to item
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[3]);
+    double loudnessLUFS = samplePropertyXml->getDoubleAttribute("PropertyValue");
+    sampleItem->setLoudnessLUFS(loudnessLUFS);
+    
+    // Adding tempo property to item
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[4]);
+    int tempo = samplePropertyXml->getIntAttribute("PropertyValue");
+    sampleItem->setTempo(tempo);
+    
+    // Adding key property to item
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[5]);
+    int key = samplePropertyXml->getIntAttribute("PropertyValue");
+    sampleItem->setKey(key);
+    
+    // Adding feature vector to item
+    int numDimensions = NUM_CHROMA + NUM_FEATURES + NUM_SPECTRAL_BANDS;
+    std::vector<float> featureVector(numDimensions);
+    
+    for (int d = 0; d < numDimensions; d++)
+    {
+        String childName = "FV" + std::to_string(d);
+        samplePropertyXml = samplePropertiesXml->getChildByName(childName);
+        featureVector[d] = samplePropertyXml->getDoubleAttribute("PropertyValue");
+    }
+    
+    sampleItem->setFeatureVector(featureVector);
+}
+
 void SampleLibraryManager::loadSampleLibraryFile(File const & inLibraryDirectory)
 {
     File libraryFile = File(mLibraryFilesDirectoryPath
@@ -351,56 +438,7 @@ void SampleLibraryManager::loadSampleLibraryFile(File const & inLibraryDirectory
             for (XmlElement const * sampleItemXml : sampleItemsXml->getChildIterator())
             {
                 // Create new sample item
-                SampleItem* sampleItem = allSampleItems.add(new SampleItem());
-                String filePath = sampleItemXml->getStringAttribute("FilePath").convertToPrecomposedUnicode();
-                sampleItem->setFilePath(filePath);
-                addedFilePaths.add(filePath);
-                
-                // Adding properties to item
-                XmlElement* samplePropertiesXml = sampleItemXml->getChildByName("SampleProperties");
-                
-                // Adding title property to item
-                XmlElement* samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[0]);
-                String title = samplePropertyXml->getStringAttribute("PropertyValue");
-                sampleItem->setTitle(title);
-                
-                // Adding length property to item
-                samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[1]);
-                double length = samplePropertyXml->getDoubleAttribute("PropertyValue");
-                sampleItem->setLength(length);
-                
-                // Adding decibel property to item
-                samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[2]);
-                double loudnessDecibel = samplePropertyXml->getDoubleAttribute("PropertyValue");
-                sampleItem->setLoudnessDecibel(loudnessDecibel);
-                
-                // Adding LUFS property to item
-                samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[3]);
-                double loudnessLUFS = samplePropertyXml->getDoubleAttribute("PropertyValue");
-                sampleItem->setLoudnessLUFS(loudnessLUFS);
-                
-                // Adding tempo property to item
-                samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[4]);
-                int tempo = samplePropertyXml->getIntAttribute("PropertyValue");
-                sampleItem->setTempo(tempo);
-                
-                // Adding key property to item
-                samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[5]);
-                int key = samplePropertyXml->getIntAttribute("PropertyValue");
-                sampleItem->setKey(key);
-                
-                // Adding feature vector to item
-                int numDimensions = NUM_CHROMA + NUM_FEATURES + NUM_SPECTRAL_BANDS;
-                std::vector<float> featureVector(numDimensions);
-                
-                for (int d = 0; d < numDimensions; d++)
-                {
-                    String childName = "FV" + std::to_string(d);
-                    samplePropertyXml = samplePropertiesXml->getChildByName(childName);
-                    featureVector[d] = samplePropertyXml->getDoubleAttribute("PropertyValue");
-                }
-                
-                sampleItem->setFeatureVector(featureVector);
+                createSampleItemFromXml(sampleItemXml);
             }
         }
     }
@@ -413,7 +451,7 @@ void SampleLibraryManager::loadSampleLibraryFile(File const & inLibraryDirectory
 
 XmlElement SampleLibraryManager::loadFileAsXml(File& inFile)
 {
-    const InterProcessLock::ScopedLockType scopedLock(mFileLock);
+    InterProcessLock::ScopedLockType const scopedLock(mFileLock);
     
     MemoryBlock fileData;
     inFile.loadFileAsData(fileData);
@@ -424,7 +462,7 @@ XmlElement SampleLibraryManager::loadFileAsXml(File& inFile)
 
 void SampleLibraryManager::writeXmlToFile(XmlElement& inXml, File& inFile)
 {
-    const InterProcessLock::ScopedLockType scopedLock(mFileLock);
+    InterProcessLock::ScopedLockType const scopedLock(mFileLock);
     
     MemoryBlock destinationData;
     AudioPluginInstance::copyXmlToBinary(inXml, destinationData);
@@ -462,43 +500,60 @@ bool SampleLibraryManager::fileHasBeenAdded(String const & inFilePath)
 
 void SampleLibraryManager::analyseSampleItem(SampleItem* inSampleItem, File const & inFile, bool forceAnalysis)
 {
-    addJob(new SampleManagerThread(allSampleItems, addedSampleItems, addedFilePaths, inFile, inSampleItem, forceAnalysis, numProcessedItems), true);
+    addJob(new SampleManagerThread(allSampleItems, 
+                                   addedSampleItems, 
+                                   addedFilePaths,
+                                   inFile,
+                                   inSampleItem,
+                                   forceAnalysis,
+                                   numProcessedItems),
+           true);
 }
 
 String SampleLibraryManager::encodeForXml(String inString)
 {
     inString = String("_" + inString);
-    inString = inString.replaceCharacters("äàáâæãåāöôòóõœøōüûùúūßśšçćčéèêëėîïíīìñńÿΛ", "aaaaaaaaoooooooouuuuusssccceeeeeiiiiinny_");
+    inString = inString.replaceCharacters("äàáâæãåāöôòóõœøōüûùúūßśšçćčéèêëėîïíīìñńÿΛ°§´`",
+                                          "aaaaaaaaoooooooouuuuusssccceeeeeiiiiinny_____");
     std::string data = inString.toStdString();
     std::string buffer;
     buffer.reserve(data.size());
+    
     for(size_t pos = 0; pos != data.size(); ++pos)
     {
         switch(data[pos]) {
-            case '&':  buffer.append("_");       break;
-            case '\"': buffer.append("_");      break;
-            case '\'': buffer.append("_");      break;
-            case '<':  buffer.append("_");        break;
-            case '>':  buffer.append("_");        break;
-            case '/':  buffer.append("_");        break;
-            case ' ':  buffer.append("_");        break;
-            case ',':  buffer.append("_");        break;
-            case ')':  buffer.append("_");        break;
-            case '(':  buffer.append("_");        break;
-            case '#':  buffer.append("_");        break;
-            case '[':  buffer.append("_");        break;
-            case ']':  buffer.append("_");        break;
-            case '{':  buffer.append("_");        break;
-            case '}':  buffer.append("_");        break;
-            case '@':  buffer.append("_");        break;
-            case '+':  buffer.append("_");        break;
-            case '!':  buffer.append("_");        break;
-            case '?':  buffer.append("_");        break;
-            case '^':  buffer.append("_");        break;
-            case '$':  buffer.append("_");        break;
+            case '&':  buffer.append("_"); break;
+            case '\"': buffer.append("_"); break;
+            case '\'': buffer.append("_"); break;
+            case '/':  buffer.append("_"); break;
+            case ' ':  buffer.append("_"); break;
+            case '.':  buffer.append("_"); break;
+            case ',':  buffer.append("_"); break;
+            case '#':  buffer.append("_"); break;
+            case ')':  buffer.append("_"); break;
+            case '(':  buffer.append("_"); break;
+            case '[':  buffer.append("_"); break;
+            case ']':  buffer.append("_"); break;
+            case '{':  buffer.append("_"); break;
+            case '}':  buffer.append("_"); break;
+            case '<':  buffer.append("_"); break;
+            case '>':  buffer.append("_"); break;
+            case '@':  buffer.append("_"); break;
+            case '+':  buffer.append("_"); break;
+            case '*':  buffer.append("_"); break;
+            case '~':  buffer.append("_"); break;
+            case '%':  buffer.append("_"); break;
+            case '!':  buffer.append("_"); break;
+            case '?':  buffer.append("_"); break;
+            case '^':  buffer.append("_"); break;
+            case '$':  buffer.append("_"); break;
+            case '=':  buffer.append("_"); break;
+            case ':':  buffer.append("_"); break;
+            case ';':  buffer.append("_"); break;
             default:   buffer.append(&data[pos], 1); break;
         }
     }
+    
     data.swap(buffer);
     
     return String(data);

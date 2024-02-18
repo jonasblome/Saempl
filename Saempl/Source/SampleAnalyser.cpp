@@ -398,11 +398,11 @@ int SampleAnalyser::analyseSampleTempo()
     
     // Find the most prominent tempo in the histogram
     int bestTempoIndex = (int) std::distance(tempoEstimationsHistogram.getRawDataPointer(),
-                                   std::max_element(tempoEstimationsHistogram.getRawDataPointer()
-                                                    + ignoreTopAndBottomTempi,
-                                                    tempoEstimationsHistogram.getRawDataPointer()
-                                                    + numTempi
-                                                    - ignoreTopAndBottomTempi));
+                                             std::max_element(tempoEstimationsHistogram.getRawDataPointer()
+                                                              + ignoreTopAndBottomTempi,
+                                                              tempoEstimationsHistogram.getRawDataPointer()
+                                                              + numTempi
+                                                              - ignoreTopAndBottomTempi));
     
     int bestTempoEstimation = bestTempoIndex + lowerBPMLimit;
     

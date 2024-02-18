@@ -162,14 +162,14 @@ public:
     }
     
     void drawComboBox(Graphics& g,
-                       int width,
-                       int height,
-                       bool isButtonDown,
-                       int buttonX,
-                       int buttonY,
-                       int buttonW,
-                       int buttonH,
-                       ComboBox& box) override
+                      int width,
+                      int height,
+                      bool isButtonDown,
+                      int buttonX,
+                      int buttonY,
+                      int buttonW,
+                      int buttonH,
+                      ComboBox& box) override
     {
         Rectangle<int> const boxBounds(0, 0, width, height);
         
@@ -615,7 +615,7 @@ public:
         g.drawRoundedRectangle(bounds.toFloat().reduced(0.5f, 0.5f), cornerSize, 1.0f);
         
         // Draw text
-        const int maxToolTipWidth = 400;
+        int const maxToolTipWidth = 400;
         
         AttributedString tooltipText;
         tooltipText.setJustification(Justification::centred);

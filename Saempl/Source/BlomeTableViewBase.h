@@ -31,7 +31,7 @@ public:
     /**
      Constructor for the table view base on the SampleLibrary.
      
-     @param inSampleLibrary the sample library of the current plugin instance.
+     @param inProcessor the processor object of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
     BlomeTableViewBase(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);

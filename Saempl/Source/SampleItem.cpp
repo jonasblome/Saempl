@@ -11,8 +11,8 @@
 
 SampleItem::SampleItem()
 {
-    mTitle = "EMPTYTILE";
-    mFilePath = "EMPTYTILE";
+    mTitle = EMPTY_TILE_PATH;
+    mFilePath = EMPTY_TILE_PATH;
     mKey = NO_KEY_INDEX;
     mTempo = 0;
     mFeatureVector = std::vector<float>(NUM_CHROMA + NUM_SPECTRAL_BANDS + NUM_FEATURES);

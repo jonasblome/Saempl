@@ -9,7 +9,7 @@
 
 #include "BlomeImageButton.h"
 
-BlomeImageButton::BlomeImageButton(const String& name, bool inHasBackground)
+BlomeImageButton::BlomeImageButton(String const & name, bool inHasBackground)
 :
 ImageButton(name),
 hasBackground(inHasBackground)
@@ -29,7 +29,6 @@ void BlomeImageButton::paintButton(Graphics& g, bool isOver, bool isDown)
         // Draw button background
         g.setColour(style->COLOUR_ACCENT_DARK);
         g.fillRoundedRectangle(getLocalBounds().toFloat(), style->CORNER_SIZE_MEDIUM);
-        // drawDropShadow(g, Rectangle<int>(0, 0, 1, 1), getWidth() * 0.5, getHeight() * 0.5, getWidth() * 0.5, style);
     }
     
     ImageButton::paintButton(g, isOver, isDown);

@@ -15,6 +15,7 @@ PanelBase(inProcessor)
 {
     // Set panel size
     setPanelComponents();
+    setWantsKeyboardFocus(true);
 }
 
 MainPanel::~MainPanel()
@@ -53,8 +54,8 @@ void MainPanel::paint(Graphics &g)
                                   style->SAMPLE_NAVIGATION_PANEL_WIDTH,
                                   style->SAMPLE_NAVIGATION_PANEL_HEIGHT
                                   + (currentProcessor.getSampleItemPanelIsVisible()
-                                  ? 0
-                                  : style->SAMPLE_ITEM_PANEL_HEIGHT)),
+                                     ? 0
+                                     : style->SAMPLE_ITEM_PANEL_HEIGHT)),
                    0,
                    0,
                    80,
@@ -103,15 +104,14 @@ void MainPanel::setPanelComponents()
 
 bool MainPanel::keyPressed(KeyPress const & key)
 {
-    if (key.isKeyCode(KeyPress::spaceKey))
+    bool pressWasHandled = false;
+    
+    if (mCenterPanel->keyPressed(key) || mHeaderPanel->keyPressed(key))
     {
-        mCenterPanel->playCurrentAudio();
-        return true;
+        pressWasHandled = true;
     }
-    else
-    {
-        return false;
-    }
+    
+    return pressWasHandled;
 }
 
 void MainPanel::resizePanelComponents()

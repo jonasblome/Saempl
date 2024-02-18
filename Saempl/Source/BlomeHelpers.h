@@ -20,12 +20,13 @@ static String const DIRECTORY_SEPARATOR = "/";
 
 static String const SAMPLE_LIBRARY_FILE_EXTENSION = ".bslf";
 static String const SAEMPL_DATA_FILE_EXTENSION = ".saempl";
+static String const EMPTY_TILE_PATH = "EMPTYTILE";
 static StringArray const SUPPORTED_AUDIO_FORMATS = StringArray({ ".mp3", ".wav", ".aiff", ".m4a" });
 static String const SUPPORTED_AUDIO_FORMATS_WILDCARD = "*.wav;*.mp3;*.aiff;*.m4a";
 static String const SUPPORTED_AUDIO_FORMATS_EXTENSIONS = ".wav;.mp3;.aiff;.m4a";
 static StringArray const PROPERTY_NAMES = StringArray({ "Title", "Length", "dB", "LUFS", "Tempo", "Key" });
 static int const NUM_CHROMA = 12;
-static int const NUM_SPECTRAL_BANDS = 32;
+static int const NUM_SPECTRAL_BANDS = 12;
 static int const NUM_FEATURES = 12;
 
 enum CompareOperators

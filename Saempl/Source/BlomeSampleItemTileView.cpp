@@ -9,19 +9,85 @@
 
 #include "BlomeSampleItemTileView.h"
 
-BlomeSampleItemTileView::BlomeSampleItemTileView(SampleItem* inSampleItem, SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel)
+void BlomeSampleItemTileView::setPlayButton() {
+    mStartStopButton = std::make_unique<BlomeImageButton>("Play/Stop", false);
+    mStartStopButton->setImages(false,
+                                true,
+                                true,
+                                ImageCache::getFromMemory(BinaryData::play_pause_FILL0_wght400_GRAD0_opsz24_png,
+                                                          BinaryData::play_pause_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                style->BUTTON_IS_DEFAULT_ALPHA,
+                                style->COLOUR_HEADER_BUTTONS,
+                                Image(),
+                                style->BUTTON_IS_OVER_ALPHA,
+                                style->COLOUR_HEADER_BUTTONS,
+                                Image(),
+                                style->BUTTON_IS_DOWN_ALPHA,
+                                style->COLOUR_HEADER_BUTTONS);
+    mStartStopButton->setTooltip("Start (K) or stop (L) playback of the selected sample");
+    mStartStopButton->setWantsKeyboardFocus(false);
+    mStartStopButton->onClick = [this]
+    {
+        startPlayback();
+    };
+    addAndMakeVisible(*mStartStopButton);
+}
+
+BlomeSampleItemTileView::BlomeSampleItemTileView(SampleItem* inSampleItem, 
+                                                 SampleLibrary& inSampleLibrary, 
+                                                 SampleItemPanel& inSampleItemPanel,
+                                                 AudioPlayer& inAudioPlayer)
 :
 sampleItem(inSampleItem),
 sampleLibrary(inSampleLibrary),
-sampleItemPanel(inSampleItemPanel)
+sampleItemPanel(inSampleItemPanel),
+audioPlayer(inAudioPlayer)
 {
     sampleItemFilePath = sampleItem->getFilePath();
     isSelected = false;
+    
+    if (sampleItemFilePath == EMPTY_TILE_PATH)
+    {
+        return;
+    }
+    
+    // Add play button component
+    setPlayButton();
 }
 
 BlomeSampleItemTileView::~BlomeSampleItemTileView()
 {
     
+}
+
+void BlomeSampleItemTileView::startPlayback()
+{
+    if (sampleItemFilePath == EMPTY_TILE_PATH)
+    {
+        return;
+    }
+    
+    File sampleFile = File(sampleItemFilePath);
+    
+    // Load file into source
+    if (sampleFile.exists() && !sampleFile.isDirectory() && isSupportedAudioFileFormat(sampleFile.getFileExtension()))
+    {
+        audioPlayer.loadURLIntoTransport(URL(sampleFile));
+        audioPlayer.setTransportSourcePosition(0.0);
+        audioPlayer.start();
+    }
+    
+    if (!sampleFile.exists())
+    {
+        audioPlayer.emptyTransport();
+        sampleLibrary.refresh();
+        AlertWindow::showAsync(MessageBoxOptions()
+                               .withIconType(MessageBoxIconType::NoIcon)
+                               .withTitle("File not available!")
+                               .withMessage("This file has probably been externally deleted and was removed from the list of available samples.")
+                               .withButton("OK"),
+                               nullptr);
+    }
 }
 
 String BlomeSampleItemTileView::getSampleItemFilePath()
@@ -41,7 +107,7 @@ bool BlomeSampleItemTileView::getIsSelected()
 
 void BlomeSampleItemTileView::loadIntoAudioPlayer()
 {
-    if (sampleItem->getTitle() != "EMPTYTILE")
+    if (sampleItemFilePath != EMPTY_TILE_PATH)
     {
         File inFile = sampleItem->getFilePath();
         
@@ -52,7 +118,7 @@ void BlomeSampleItemTileView::loadIntoAudioPlayer()
 void BlomeSampleItemTileView::paint(Graphics& g)
 {
     // Don't draw an empty tile
-    if (sampleItem->getFilePath() == "EMPTYTILE")
+    if (sampleItemFilePath == EMPTY_TILE_PATH)
     {
         return;
     }
@@ -76,7 +142,7 @@ void BlomeSampleItemTileView::paint(Graphics& g)
     g.setFont(style->FONT_SMALL_BOLD);
     g.setColour(style->COLOUR_ACCENT_DARK);
     
-    int maxTitleLength = 30;
+    int maxTitleLength = 25;
     if (title.length() > maxTitleLength)
     {
         title = title.substring(0, maxTitleLength - 3) + "...";
@@ -91,28 +157,38 @@ void BlomeSampleItemTileView::paint(Graphics& g)
     String other = "";
     int currentWidth = getWidth();
     
-    if (currentWidth > 90)
+    if (currentWidth > 95)
     {
         other = other + "\n\n" + " - Key: " + KEY_INDEX_TO_KEY_NAME[sampleItem->getKey()];
     }
-    if (currentWidth > 105)
+    if (currentWidth > 115)
     {
         other = other + "\n" + " - Tempo: " + std::to_string(sampleItem->getTempo());
     }
-    if (currentWidth > 130)
+    if (currentWidth > 135)
     {
-        other = other + "\n" + " - Length: " + std::to_string(sampleItem->getLength());
-        other = other + "\n" + " - LUFS: " + std::to_string(sampleItem->getLoudnessLUFS());
-        other = other + "\n" + " - dB: " + std::to_string(sampleItem->getLoudnessDecibel());
+        other = other + "\n" + " - Length: " + String::toDecimalStringWithSignificantFigures(sampleItem->getLength(), 2);
+        other = other + "\n" + " - LUFS: " + String::toDecimalStringWithSignificantFigures(sampleItem->getLoudnessLUFS(), 2);
+        other = other + "\n" + " - dB: " + String::toDecimalStringWithSignificantFigures(sampleItem->getLoudnessDecibel(), 2);
     }
     
     g.drawFittedText(other,
-                     bounds.reduced(style->PANEL_MARGIN).removeFromBottom(getHeight() - 65).toNearestInt(),
+                     bounds.reduced(style->PANEL_MARGIN).removeFromBottom(getHeight() - 65).removeFromTop(getHeight() - 65 - style->BUTTON_SIZE_MEDIUM - style->PANEL_MARGIN).toNearestInt(),
                      Justification::topLeft,
                      5);
 }
 
-void BlomeSampleItemTileView::mouseDoubleClick(const MouseEvent& event)
+void BlomeSampleItemTileView::mouseDoubleClick(MouseEvent const & event)
 {
     loadIntoAudioPlayer();
+}
+
+void BlomeSampleItemTileView::resized()
+{
+    if (mStartStopButton != nullptr)
+    {
+        Rectangle<float> buttonBounds = getLocalBounds().toFloat().reduced(style->PANEL_MARGIN * 0.5);
+        buttonBounds = buttonBounds.removeFromBottom(style->BUTTON_SIZE_MEDIUM).removeFromRight(style->BUTTON_SIZE_MEDIUM);
+        mStartStopButton->setBounds(buttonBounds.toNearestInt());
+    }
 }

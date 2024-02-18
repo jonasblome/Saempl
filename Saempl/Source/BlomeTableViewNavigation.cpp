@@ -38,7 +38,7 @@ BlomeTableViewNavigation::~BlomeTableViewNavigation()
     sampleLibrary.removeChangeListener(this);
 }
 
-void BlomeTableViewNavigation::cellClicked(int rowNumber, int columnId, MouseEvent const &mouseEvent)
+void BlomeTableViewNavigation::cellClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent)
 {
     // Show delete options pop up menu
     if (mouseEvent.mods.isRightButtonDown())

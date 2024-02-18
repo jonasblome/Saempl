@@ -1,11 +1,11 @@
 /*
-  ==============================================================================
-
-    BlomeFileFilterRuleViewKey.h
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeFileFilterRuleViewKey.h
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -15,7 +15,7 @@
 /**
  The view class for SampleFileFilterRuleKey.
  
- Holds a juce::TextEditor to change the SampleFileFilterRuleKey::mCompareValue.
+ Holds a TextEditor to change the compare value.
  */
 class BlomeFileFilterRuleViewKey
 :
@@ -32,7 +32,7 @@ public:
     BlomeFileFilterRuleViewKey(SampleFileFilterRuleKey& inFilterRule, SampleLibrary& inSampleLibrary);
     ~BlomeFileFilterRuleViewKey();
     /**
-     @returns the SampleFileFilterRuleBase linked to the view.
+     @returns the rule linked to the view.
      */
     SampleFileFilterRuleKey& getFilterRule();
     

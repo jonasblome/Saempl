@@ -1,11 +1,11 @@
 /*
-  ==============================================================================
-
-    BlomeSampleItemTileView.h
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeSampleItemTileView.h
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -13,12 +13,18 @@
 #include "SampleItem.h"
 #include "SampleItemPanel.h"
 
+/**
+ The view class for tiles on the grid that each represent a sample item.
+ */
 class BlomeSampleItemTileView
 :
 public Component
 {
 public:
-    BlomeSampleItemTileView(SampleItem* inSampleItem, SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
+    BlomeSampleItemTileView(SampleItem* inSampleItem, 
+                            SampleLibrary& inSampleLibrary,
+                            SampleItemPanel& inSampleItemPanel,
+                            AudioPlayer& inAudioPlayer);
     ~BlomeSampleItemTileView();
     /**
      @returns the title of the sample item linked to the view.
@@ -38,15 +44,23 @@ public:
      Tries to load the item's file into the audio player.
      */
     void loadIntoAudioPlayer();
+    /**
+     Loads the sample into the grid's audio player and starts playback.
+     */
+    void startPlayback();
     
 private:
     SampleItem* sampleItem;
     SampleLibrary& sampleLibrary;
     SampleItemPanel& sampleItemPanel;
+    AudioPlayer& audioPlayer;
+    std::unique_ptr<BlomeImageButton> mStartStopButton;
     BlomeStyling::Ptr style;
     String sampleItemFilePath;
     bool isSelected;
     
     void paint(Graphics& g) override;
     void mouseDoubleClick (MouseEvent const & event) override;
+    void resized() override;
+    void setPlayButton();
 };

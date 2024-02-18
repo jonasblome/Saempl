@@ -1,11 +1,11 @@
 /*
-  ==============================================================================
-
-    BlomeFileFilterRuleViewLoudnessLUFS.h
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeFileFilterRuleViewLoudnessLUFS.h
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -15,7 +15,7 @@
 /**
  The view class for SampleFileFilterRuleLoudnessLUFS.
  
- Holds a juce::TextEditor to change the SampleFileFilterRuleLoudnessLUFS::mCompareValue.
+ Holds a TextEditor to change the compare value.
  */
 class BlomeFileFilterRuleViewLoudnessLUFS
 :
@@ -32,7 +32,7 @@ public:
     BlomeFileFilterRuleViewLoudnessLUFS(SampleFileFilterRuleLoudnessLUFS& inFilterRule, SampleLibrary& inSampleLibrary);
     ~BlomeFileFilterRuleViewLoudnessLUFS();
     /**
-     @returns the SampleFileFilterRuleBase linked to the view.
+     @returns the rule linked to the view.
      */
     SampleFileFilterRuleLoudnessLUFS& getFilterRule();
     

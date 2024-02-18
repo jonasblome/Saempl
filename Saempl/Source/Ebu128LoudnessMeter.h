@@ -70,7 +70,7 @@ public:
     ~Ebu128LoudnessMeter();
     
     // --------- AudioProcessor methods ---------
-    // const String getName ();
+    // String const getName ();
     
     /**
      @param sampleRate
@@ -190,14 +190,14 @@ private:
      a value -nan. To avoid this, the return value of this methods will be
      set to minimalReturnValue.
      */
-    static const float minimalReturnValue;
+    static float const minimalReturnValue;
     
     /** A gated window needs to be bigger than this value to
      contribute to the calculation of the relative threshold.
      
      absoluteThreshold = Gamma_a = -70 LUFS.
      */
-    static const double absoluteThreshold;
+    static double const absoluteThreshold;
     
     int numberOfBlocksToCalculateRelativeThreshold;
     double sumOfAllBlocksToCalculateRelativeThreshold;
@@ -215,7 +215,7 @@ private:
      point after the measurement has started, this could have been set
      to the absoluteThreshold = -70 LUFS.
      */
-    static const double lowestBlockLoudnessToConsider;
+    static double const lowestBlockLoudnessToConsider;
     
     /** Storage for the loudnesses of all 400ms blocks since the last reset.
      

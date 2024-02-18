@@ -15,7 +15,7 @@
 /**
  The class for storing meta information about a sample/audio file.
  
- Holds information on the file path, the title, length and more in the future.
+ Holds information on the file path, the title, length and more...
  */
 class SampleItem
 {

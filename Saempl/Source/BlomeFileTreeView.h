@@ -13,7 +13,7 @@
 #include "SampleLibrary.h"
 
 /**
- The view class for displaying the SampleLibrary directory file tree.
+ The view class for displaying the sample library directory file tree.
  
  Can handle drag and drop of files onto and from it.
  */

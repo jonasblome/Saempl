@@ -15,6 +15,7 @@ PanelBase(inProcessor)
 {
     setSize(style->CENTER_PANEL_WIDTH, style->CENTER_PANEL_HEIGHT);
     setPanelComponents();
+    setWantsKeyboardFocus(true);
 }
 
 CenterPanel::~CenterPanel()
@@ -53,7 +54,7 @@ void CenterPanel::setPanelComponents()
     
     // Add toggle panel button
     mToggleSampleItemPanelButton = std::make_unique<ToggleButton>("ToggleSampleItemPanel");
-    mToggleSampleItemPanelButton->setTooltip("Toggle visibility of the audio player");
+    mToggleSampleItemPanelButton->setTooltip("Toggle visibility of the audio player (T)");
     mToggleSampleItemPanelButton->onClick = [this] { setSampleItemPanelVisibility(mToggleSampleItemPanelButton->getToggleState()); };
     mToggleSampleItemPanelButton->setToggleState(currentProcessor.getSampleItemPanelIsVisible(), NotificationType::dontSendNotification);
     addAndMakeVisible(*mToggleSampleItemPanelButton);
@@ -135,4 +136,22 @@ void CenterPanel::resizePanelComponents()
                                                 style->BUTTON_SIZE_SMALL - style->PANEL_MARGIN,
                                                 style->BUTTON_SIZE_SMALL - style->PANEL_MARGIN);
     }
+}
+
+bool CenterPanel::keyPressed(KeyPress const & key)
+{
+    int keyCode = key.getKeyCode();
+    
+    if (key.isKeyCode(KeyPress::spaceKey))
+    {
+        playCurrentAudio();
+        return true;
+    }
+    else if (keyCode == 84) // T
+    {
+        mToggleSampleItemPanelButton->triggerClick();
+        return true;
+    }
+    
+    return false;
 }

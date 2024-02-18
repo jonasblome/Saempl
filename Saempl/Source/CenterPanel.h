@@ -41,10 +41,7 @@ public:
      Selects a random sample in the table view.
      */
     void selectRandomSample();
-    /**
-     Starts the playback of the currently loaded audio resource.
-     */
-    void playCurrentAudio();
+    bool keyPressed(KeyPress const & key) override;
     
 private:
     std::unique_ptr<SampleNavigationPanel> mSampleNavigationPanel;
@@ -57,7 +54,13 @@ private:
     void setPanelComponents() override;
     /**
      Toggles the sample item's visibility on/off and rescales the navigation panels.
+     
+     @param inShouldBeVisible whether the panel should be visible or not.
      */
-    void setSampleItemPanelVisibility(bool newIsVisible);
+    void setSampleItemPanelVisibility(bool inShouldBeVisible);
     void resizePanelComponents() override;
+    /**
+     Starts the playback of the currently loaded audio resource.
+     */
+    void playCurrentAudio();
 };

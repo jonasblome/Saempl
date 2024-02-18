@@ -21,7 +21,7 @@
 /**
  Holds the BlomeFileFilterRuleViewBase components.
  
- Has dropdown and button to add new filter rules of different types.
+ Has a dropdown menu and button to add new filter rules of different types.
  */
 class FileFilterPanel
 :
@@ -58,10 +58,11 @@ private:
     void addFilterRuleView();
     /**
      Removes a rule from the SampleFileFilter and its respective view.
+     
+     @param inFilterRule the filter rule to remove.
      */
     void removeFilterRule(SampleFileFilterRuleBase const & inFilterRule);
     void setAddFilterRuleButton();
-    
     void setNewRuleTypeChooser();
     void setPanelComponents() override;
     void buttonClicked(Button* button) override;

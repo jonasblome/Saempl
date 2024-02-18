@@ -1,11 +1,11 @@
 /*
-  ==============================================================================
-
-    BlomeFileFilterRuleViewTempo.h
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeFileFilterRuleViewTempo.h
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -15,7 +15,7 @@
 /**
  The view class for SampleFileFilterRuleTempo.
  
- Holds a juce::TextEditor to change the SampleFileFilterRuleTempo::mCompareValue.
+ Holds a TextEditor to change the compare value.
  */
 class BlomeFileFilterRuleViewTempo
 :
@@ -32,7 +32,7 @@ public:
     BlomeFileFilterRuleViewTempo(SampleFileFilterRuleTempo& inFilterRule, SampleLibrary& inSampleLibrary);
     ~BlomeFileFilterRuleViewTempo();
     /**
-     @returns the SampleFileFilterRuleBase linked to the view.
+     @returns the rule linked to the view.
      */
     SampleFileFilterRuleTempo& getFilterRule();
     

@@ -1,11 +1,11 @@
 /*
-  ==============================================================================
-
-    BlomeFileFilterRuleViewLoudnessDecibel.cpp
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ BlomeFileFilterRuleViewLoudnessDecibel.cpp
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #include "BlomeFileFilterRuleViewLoudnessDecibel.h"
 

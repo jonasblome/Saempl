@@ -16,9 +16,14 @@ sampleItemPanel(inSampleItemPanel)
 {
     sampleLibrary.addChangeListener(this);
     sampleItemCollectionChanged = false;
+    addMouseListener(this, true);
+    
+    // Add grid sorter
     mGridSorter = std::make_unique<SampleItemGridSorter>(sampleLibrary.getSampleItems(FILTERED_SAMPLES));
     mGridSorter->addChangeListener(this);
-    addMouseListener(this, true);
+    
+    // Add audio player component
+    mAudioPlayer = std::make_unique<AudioPlayer>();
 }
 
 BlomeSampleTileGridView::~BlomeSampleTileGridView()
@@ -106,16 +111,15 @@ void BlomeSampleTileGridView::performGridLayout()
     float minMargin = style->PANEL_MARGIN * 0.5f;
     float maxMargin = minMargin * getTileMinMaxRelation();
     float margin = minMargin + currentZoomFactor * (maxMargin - minMargin);
-    
+    mSampleTileGrid->setGap(Grid::Px(margin));
     setBounds(0,
               0,
-              (optimalWidth * (tileWidth + margin)) + margin,
-              (optimalHeight * (tileWidth + margin)) + margin);
-    mSampleTileGrid->setGap(Grid::Px(margin));
+              optimalWidth * tileWidth,
+              optimalHeight * tileWidth);
     mSampleTileGrid->performLayout(Rectangle<int>(0,
                                                   0,
-                                                  optimalWidth * (tileWidth + margin),
-                                                  optimalHeight * (tileWidth + margin)));
+                                                  optimalWidth * tileWidth,
+                                                  optimalHeight * tileWidth));
 }
 
 void BlomeSampleTileGridView::setZoomFactor(float inZoomFactor)
@@ -252,7 +256,7 @@ void BlomeSampleTileGridView::setupGrid()
     // Setup tiles
     for (SampleItem* sample : sampleItems)
     {
-        addAndMakeVisible(mSampleItemTiles.add(new BlomeSampleItemTileView(sample, sampleLibrary, sampleItemPanel)));
+        addAndMakeVisible(mSampleItemTiles.add(new BlomeSampleItemTileView(sample, sampleLibrary, sampleItemPanel, *mAudioPlayer)));
     }
     
     // Remove empty sample items from collection
@@ -351,7 +355,7 @@ void BlomeSampleTileGridView::mouseUp(MouseEvent const & event)
     {
         BlomeSampleItemTileView* tile = mSampleItemTiles.getUnchecked(t);
         
-        if (tile->getBoundsInParent().contains(mousePosition) && tile->getSampleItemFilePath() != "EMPTYTILE")
+        if (tile->getBoundsInParent().contains(mousePosition) && tile->getSampleItemFilePath() != EMPTY_TILE_PATH)
         {
             if (tile->getIsSelected())
             {
@@ -375,9 +379,12 @@ void BlomeSampleTileGridView::mouseUp(MouseEvent const & event)
         if (numSelected > 1)
         {
             startIndex = mSelectedSampleTileIndices.getReference(numSelected - 2);
+            mSelectedSampleTileIndices.remove(numSelected - 2);
+            numSelected--;
         }
         
         int endIndex = mSelectedSampleTileIndices.getReference(numSelected - 1);
+        mSelectedSampleTileIndices.remove(numSelected - 1);
         
         int xStart = startIndex % optimalWidth;
         int yStart = startIndex / optimalWidth;
@@ -405,7 +412,7 @@ void BlomeSampleTileGridView::mouseUp(MouseEvent const & event)
                 int newSelectedIndex = y * optimalWidth + x;
                 BlomeSampleItemTileView* tile = mSampleItemTiles.getUnchecked(newSelectedIndex);
                 
-                if (tile->getSampleItemFilePath() != "EMPTYTILE")
+                if (tile->getSampleItemFilePath() != EMPTY_TILE_PATH)
                 {
                     selectTile(newSelectedIndex);
                 }
@@ -503,4 +510,19 @@ void BlomeSampleTileGridView::reanalyseSamples()
 float BlomeSampleTileGridView::getTileMinMaxRelation()
 {
     return maxTileWidth * 1.0 / minTileWidth;
+}
+
+void BlomeSampleTileGridView::playSelectedSample()
+{
+    if (mSelectedSampleTileIndices.isEmpty())
+    {
+        return;
+    }
+    
+    mSampleItemTiles.getUnchecked(mSelectedSampleTileIndices.getReference(0))->startPlayback();
+}
+
+void BlomeSampleTileGridView::stopSelectedSample()
+{
+    mAudioPlayer->stop();
 }

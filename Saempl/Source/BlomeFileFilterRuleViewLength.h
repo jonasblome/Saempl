@@ -15,7 +15,7 @@
 /**
  The view class for SampleFileFilterRuleLength.
  
- Holds a juce::TextEditor to change the SampleFileFilterRuleLength::mCompareValue.
+ Holds a TextEditor to change the compare value.
  */
 class BlomeFileFilterRuleViewLength
 :
@@ -32,7 +32,7 @@ public:
     BlomeFileFilterRuleViewLength(SampleFileFilterRuleLength& inFilterRule, SampleLibrary& inSampleLibrary);
     ~BlomeFileFilterRuleViewLength();
     /**
-     @returns the SampleFileFilterRuleBase linked to the view.
+     @returns the rule linked to the view.
      */
     SampleFileFilterRuleLength& getFilterRule();
     

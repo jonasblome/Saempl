@@ -87,28 +87,28 @@ void FileFilterPanel::generateRuleView(SampleFileFilterRuleBase *rule)
         {
             newRuleView = mFilterRuleViews
                 .add(std::make_unique<BlomeFileFilterRuleViewLoudnessDecibel>(*dynamic_cast<SampleFileFilterRuleLoudnessDecibel*>(rule),
-                                                                       sampleLibrary));
+                                                                              sampleLibrary));
             break;
         }
         case 3:
         {
             newRuleView = mFilterRuleViews
                 .add(std::make_unique<BlomeFileFilterRuleViewLoudnessLUFS>(*dynamic_cast<SampleFileFilterRuleLoudnessLUFS*>(rule),
-                                                                       sampleLibrary));
+                                                                           sampleLibrary));
             break;
         }
         case 4:
         {
             newRuleView = mFilterRuleViews
                 .add(std::make_unique<BlomeFileFilterRuleViewTempo>(*dynamic_cast<SampleFileFilterRuleTempo*>(rule),
-                                                                       sampleLibrary));
+                                                                    sampleLibrary));
             break;
         }
         case 5:
         {
             newRuleView = mFilterRuleViews
                 .add(std::make_unique<BlomeFileFilterRuleViewKey>(*dynamic_cast<SampleFileFilterRuleKey*>(rule),
-                                                                       sampleLibrary));
+                                                                  sampleLibrary));
             break;
         }
         default:

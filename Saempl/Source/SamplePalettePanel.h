@@ -13,7 +13,7 @@
 #include "BlomeTableViewPalette.h"
 
 /**
- Holds the table for displaying the SampleLibrary::mPaletteSampleItems.
+ Holds the table for displaying the sample palette collection.
  */
 class SamplePalettePanel
 :

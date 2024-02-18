@@ -88,7 +88,6 @@ public:
      @returns the path of the current library directory.
      */
     String getCurrentLibraryPath();
-    void changeListenerCallback(ChangeBroadcaster* inSource) override;
     /**
      Deletes all sample items where the files have been externally deleted
      and adds sample items for each new detected file.
@@ -102,6 +101,9 @@ public:
      @returns whether the library manager has finished loading the library.
      */
     bool getLibraryWasLoaded();
+    /**
+     Sets a collection of restored paths to add to the palette after the library was loaded.
+     */
     void setRestoredPalettePaths(StringArray inRestoredPalettePaths);
     
 private:
@@ -160,7 +162,7 @@ private:
      
      @returns whether a new item was created for this file.
      */
-    bool addToPalette(const File &inFile);
+    bool addToPalette(File const & inFile);
     /**
      Removes the sample item from all collections and deletes it.
      
@@ -176,4 +178,5 @@ private:
      Reanalyses the sample and sets the properties to the newly analysed values.
      */
     void reanalyseSampleItem(File const & inFile);
+    void changeListenerCallback(ChangeBroadcaster* inSource) override;
 };

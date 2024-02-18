@@ -17,6 +17,7 @@ centerPanel(inCenterPanel)
 {
     setSize(style->HEADER_PANEL_WIDTH, style->HEADER_PANEL_HEIGHT);
     setPanelComponents();
+    setWantsKeyboardFocus(true);
 }
 
 HeaderPanel::~HeaderPanel()
@@ -71,7 +72,7 @@ void HeaderPanel::setRefreshLibraryButton(int buttonWidth, int x)
                                      style->PANEL_MARGIN,
                                      buttonWidth,
                                      buttonWidth);
-    mRefreshLibraryButton->setTooltip("Scans for new files and removes externally deleted files");
+    mRefreshLibraryButton->setTooltip("Scans for new files and removes externally deleted files (R)");
     mRefreshLibraryButton->onClick = [this] { sampleLibrary.synchWithLibraryDirectory(); };
     addAndMakeVisible(*mRefreshLibraryButton);
 }
@@ -96,7 +97,7 @@ void HeaderPanel::setChooseLibraryDirectoryButton(int buttonWidth, int x)
                                              style->PANEL_MARGIN,
                                              buttonWidth,
                                              buttonWidth);
-    mChooseLibraryDirectoryButton->setTooltip("Choose a new directory as your current sample library");
+    mChooseLibraryDirectoryButton->setTooltip("Choose a new directory as your current sample library (D)");
     mChooseLibraryDirectoryButton->onClick = [this] { showLibraryChooser(); };
     addAndMakeVisible(*mChooseLibraryDirectoryButton);
 }
@@ -127,7 +128,7 @@ void HeaderPanel::setToggleSampleLibraryPanelButton(int buttonWidth, int x)
                                                style->PANEL_MARGIN,
                                                buttonWidth,
                                                buttonWidth);
-    mToggleSampleLibraryPanelButton->setTooltip("Folder View - Show the folder structure of your library directory");
+    mToggleSampleLibraryPanelButton->setTooltip("Folder View - Show the folder structure of your library directory (1)");
     mToggleSampleLibraryPanelButton->onClick = [this]
     {
         if (currentProcessor.getActiveNavigationPanel() != PANELS_LIBRARY_PANEL)
@@ -203,7 +204,7 @@ void HeaderPanel::setToggleSampleTablePanelButton(int buttonWidth, int x)
                                              style->PANEL_MARGIN,
                                              buttonWidth,
                                              buttonWidth);
-    mToggleSampleTablePanelButton->setTooltip("Table View - Show a table with all samples in your library");
+    mToggleSampleTablePanelButton->setTooltip("Table View - Show a table with all samples in your library (2)");
     mToggleSampleTablePanelButton->onClick = [this]
     {
         if (currentProcessor.getActiveNavigationPanel() != PANELS_TABLE_PANEL)
@@ -279,7 +280,7 @@ void HeaderPanel::setToggleSampleGridPanelButton(int buttonWidth, int x)
                                             style->PANEL_MARGIN,
                                             buttonWidth,
                                             buttonWidth);
-    mToggleSampleGridPanelButton->setTooltip("Grid View - Show a grid with all samples clustered by similarity");
+    mToggleSampleGridPanelButton->setTooltip("Grid View - Show a grid with all samples clustered by similarity (3)");
     mToggleSampleGridPanelButton->onClick = [this]
     {
         if (currentProcessor.getActiveNavigationPanel() != PANELS_GRID_PANEL)
@@ -387,7 +388,7 @@ void HeaderPanel::setToggleFilterButton(int buttonWidth, int x)
                                    style->PANEL_MARGIN,
                                    buttonWidth,
                                    buttonWidth);
-    mToggleFilterButton->setTooltip("Activate/deactivate filter");
+    mToggleFilterButton->setTooltip("Activate/deactivate filter (F)");
     mToggleFilterButton->onClick = [this]
     {
         bool couldHaveEffect = sampleLibrary.getFileFilter().canHaveEffect();
@@ -459,7 +460,7 @@ void HeaderPanel::setRandomSampleButton(int buttonWidth, int x)
                                    style->PANEL_MARGIN,
                                    buttonWidth,
                                    buttonWidth);
-    mRandomSampleButton->setTooltip("Selects a random sample in the table or grid view");
+    mRandomSampleButton->setTooltip("Selects a random sample in the table or grid view (S)");
     mRandomSampleButton->onClick = [this]
     {
         if (currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL)
@@ -527,16 +528,51 @@ void HeaderPanel::showLibraryChooser()
         {
             sampleLibrary.setDirectory(name);
             currentProcessor.setLastOpenedLibraryPath(name);
-            
-            // Show success popup message
-            AlertWindow::showAsync(MessageBoxOptions()
-                                   .withIconType(MessageBoxIconType::NoIcon)
-                                   .withTitle("Sample Library Chooser")
-                                   .withMessage("You picked: " + name)
-                                   .withButton("OK"),
-                                   nullptr);
         }
         
         mFileChooser.reset();
     });
+}
+
+bool HeaderPanel::keyPressed(KeyPress const & key)
+{
+    int keyCode = key.getKeyCode();
+    
+    if (keyCode == 83) // S
+    {
+        mRandomSampleButton->triggerClick();
+        return true;
+    }
+    else if (keyCode == 82) // R
+    {
+        mRefreshLibraryButton->triggerClick();
+        return true;
+    }
+    else if (keyCode == 70) // F
+    {
+        mToggleFilterButton->triggerClick();
+        return true;
+    }
+    else if (keyCode == 68) // D
+    {
+        mChooseLibraryDirectoryButton->triggerClick();
+        return true;
+    }
+    else if (keyCode == 49) // 1
+    {
+        mToggleSampleLibraryPanelButton->triggerClick();
+        return true;
+    }
+    else if (keyCode == 50) // 2
+    {
+        mToggleSampleTablePanelButton->triggerClick();
+        return true;
+    }
+    else if (keyCode == 51) // 3
+    {
+        mToggleSampleGridPanelButton->triggerClick();
+        return true;
+    }
+    
+    return false;
 }

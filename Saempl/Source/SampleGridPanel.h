@@ -1,11 +1,11 @@
 /*
-  ==============================================================================
-
-    SampleGridPanel.h
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ SampleGridPanel.h
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #pragma once
 
@@ -14,7 +14,7 @@
 #include "BlomeSampleTileGridView.h"
 
 /**
- Holds the table for displaying all SampleLibrary::mAllSampleItems.
+ Holds the grid for displaying the library sample item collection.
  */
 class SampleGridPanel
 :
@@ -29,10 +29,11 @@ public:
      */
     SampleGridPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
     ~SampleGridPanel();
-    void centerPositionInGridViewport(Point<int> &newPosition);
+    /**
+     Selects a random sample on the grid.
+     */
+    void selectRandomSample();
     
-void selectRandomSample();
-
 private:
     SampleLibrary& sampleLibrary;
     SampleItemPanel& sampleItemPanel;
@@ -45,5 +46,12 @@ private:
     void setPanelComponents() override;
     void resizePanelComponents() override;
     void visibilityChanged() override;
-    bool keyPressed(const KeyPress& key) override;
+    bool keyPressed(KeyPress const & key) override;
+    void mouseMagnify(MouseEvent const & mouseEvent, float magnifyAmount) override;
+    /**
+     Moves the viewport's center position the given position.
+     
+     @param newPosition the new center position.
+     */
+    void centerPositionInGridViewport(Point<int>& newPosition);
 };

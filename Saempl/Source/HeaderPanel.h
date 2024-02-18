@@ -33,6 +33,7 @@ public:
      */
     HeaderPanel(SaemplAudioProcessor& inProcessor, CenterPanel& inCenterPanel);
     ~HeaderPanel();
+    bool keyPressed(KeyPress const & key) override;
     
 private:
     SampleLibrary& sampleLibrary;

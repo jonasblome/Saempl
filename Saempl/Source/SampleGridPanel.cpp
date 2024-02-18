@@ -104,21 +104,35 @@ void SampleGridPanel::setPanelComponents()
     mZoomSlider->setValue(currentProcessor.getSampleGridZoomFactor(), NotificationType::dontSendNotification);
     mZoomSlider->onValueChange = [this]
     {
+        // Perform zoom while maintaining view position
         float tileMinMaxRelation = mSampleTileGrid->getTileMinMaxRelation();
         float oldZoomFactor = currentProcessor.getSampleGridZoomFactor();
+        
+        // Set new zoom factor
         float newZoomFactor = mZoomSlider->getValue();
         currentProcessor.setSampleGridZoomFactor(newZoomFactor);
         mSampleTileGrid->setZoomFactor(newZoomFactor);
-        Point<int> previousViewPosition = mGridViewport->getViewPosition();
-        previousViewPosition.addXY(+mGridViewport->getWidth() / 2, +mGridViewport->getHeight() / 2);
-        mSampleTileGrid->performGridLayout();
-        float zoomRatio = (1 + (newZoomFactor * (tileMinMaxRelation - 1)))
+        float newOldZoomRatio =
+        (1 + (newZoomFactor * (tileMinMaxRelation - 1)))
         / (1 + (oldZoomFactor * (tileMinMaxRelation - 1)));
-        previousViewPosition.setXY(previousViewPosition.getX() * zoomRatio,
-                                   previousViewPosition.getY() * zoomRatio);
-        previousViewPosition.addXY(-mGridViewport->getWidth() / 2, -mGridViewport->getHeight() / 2);
-        mGridViewport->setViewPosition(previousViewPosition);
+        
+        if (sampleLibrary.getSampleItems(FILTERED_SAMPLES).isEmpty())
+        {
+            return;
+        }
+        
+        // Resize grid
+        Point<float> viewPosition = mGridViewport->getViewPosition().toFloat();
+        viewPosition.addXY(mGridViewport->getWidth() * 1.0 / 2, mGridViewport->getHeight() * 1.0 / 2);
+        viewPosition.setXY(viewPosition.getX() * newOldZoomRatio,
+                           viewPosition.getY() * newOldZoomRatio);
+        mSampleTileGrid->performGridLayout();
+        
+        // Restore center view position
+        viewPosition.addXY(-mGridViewport->getWidth() * 1.0 / 2, -mGridViewport->getHeight() * 1.0 / 2);
+        mGridViewport->setViewPosition(viewPosition.roundToInt());
     };
+    mZoomSlider->setSkewFactor(0.8);
     mZoomSlider->setTooltip("Scales the size of the grid tiles");
     addAndMakeVisible(*mZoomSlider);
     
@@ -150,7 +164,7 @@ void SampleGridPanel::visibilityChanged()
     }
 }
 
-bool SampleGridPanel::keyPressed(const KeyPress& key)
+bool SampleGridPanel::keyPressed(KeyPress const & key)
 {
     int keyCode = key.getKeyCode();
     
@@ -193,6 +207,21 @@ bool SampleGridPanel::keyPressed(const KeyPress& key)
         centerPositionInGridViewport(newPosition);
         return true;
     }
+    else if (key.getKeyCode() == 75) // K
+    {
+        mSampleTileGrid->playSelectedSample();
+        return true;
+    }
+    else if (key.getKeyCode() == 76) // L
+    {
+        mSampleTileGrid->stopSelectedSample();
+        return true;
+    }
     
     return false;
+}
+
+void SampleGridPanel::mouseMagnify(MouseEvent const & mouseEvent, float magnifyAmount)
+{
+    mZoomSlider->setValue(jmax<float>(mZoomSlider->getValue(), 0.01) * magnifyAmount, NotificationType::sendNotification);
 }

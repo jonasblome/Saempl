@@ -39,7 +39,7 @@ public:
      
      @returns whether the loading of the source was successful or not.
      */
-    bool tryShowAudioResource(File inFile);
+    bool tryShowAudioResource(File const & inFile);
     /**
      Starts or stops the playback of the audio preview panel.
      */

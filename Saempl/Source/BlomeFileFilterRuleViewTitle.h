@@ -15,7 +15,7 @@
 /**
  The view class for SampleFileFilterRuleTitle.
  
- Holds a juce::TextEditor to change the SampleFileFilterRuleTitle::mCompareValue.
+ Holds a TextEditor to change the compare value.
  */
 class BlomeFileFilterRuleViewTitle
 :
@@ -32,7 +32,7 @@ public:
     BlomeFileFilterRuleViewTitle(SampleFileFilterRuleTitle& inFilterRule, SampleLibrary& inSampleLibrary);
     ~BlomeFileFilterRuleViewTitle();
     /**
-     @returns the SampleFileFilterRuleBase linked to the view.
+     @returns the rule linked to the view.
      */
     SampleFileFilterRuleTitle& getFilterRule();
     

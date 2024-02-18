@@ -41,34 +41,34 @@ private:
     Array<float> mWindowedFFTData;
     Array<Array<float>> mSTFTSpectrum;
     // Higher values increase temporal resolution of the STFT spectrum
-    static const int tempoFFTOrder = 11;
-    static const int tempoFFTSize = 1 << tempoFFTOrder;
-    static const int tempoWindowLength = tempoFFTSize;
-    static const int tempoFFTHopLength = tempoWindowLength / 2;
+    static int const tempoFFTOrder = 11;
+    static int const tempoFFTSize = 1 << tempoFFTOrder;
+    static int const tempoWindowLength = tempoFFTSize;
+    static int const tempoFFTHopLength = tempoWindowLength / 2;
     // Higher values to decrease temporal resolution in tempogram calculation
-    static const int tempogramHopLength = 1;
+    static int const tempogramHopLength = 1;
     // Higher values require more periodicity to trigger tempo detection
-    static const int tempogramWindowLengthInSeconds = 12;
-    static const int ignoreTopAndBottomTempi = 10;
-    static const int lowerBPMLimit = 70 - ignoreTopAndBottomTempi;
-    static const int upperBPMLimit = 180 + ignoreTopAndBottomTempi;
-    static const int numTempi = upperBPMLimit - lowerBPMLimit;
-    static const int keyFFTOrder = 16;
-    static const int keyFFTSize = 1 << keyFFTOrder;
-    static const int keyWindowLength = keyFFTSize;
-    static const int keyFFTHopLength = keyWindowLength / 2;
-    static const int loudnessBufferSize = 8192;
+    static int const tempogramWindowLengthInSeconds = 12;
+    static int const ignoreTopAndBottomTempi = 10;
+    static int const lowerBPMLimit = 70 - ignoreTopAndBottomTempi;
+    static int const upperBPMLimit = 180 + ignoreTopAndBottomTempi;
+    static int const numTempi = upperBPMLimit - lowerBPMLimit;
+    static int const keyFFTOrder = 15;
+    static int const keyFFTSize = 1 << keyFFTOrder;
+    static int const keyWindowLength = keyFFTSize;
+    static int const keyFFTHopLength = keyWindowLength / 2;
+    static int const loudnessBufferSize = 8192;
     float mSpectralDistribution[NUM_SPECTRAL_BANDS];
     float mChromaDistribution[NUM_CHROMA];
     // Change to only count local tempo optima that are above the local average
-    constexpr static const float tempoAverageBinHeightThresholdFactor = 1.2;
+    constexpr static float const tempoAverageBinHeightThresholdFactor = 1.2;
     // Change to only count a key that has a correlation that is above the average correlation
-    constexpr static const float keyHistogramCorrelationThresholdFactor = 1.03;
+    constexpr static float const keyHistogramCorrelationThresholdFactor = 1.03;
     // Use higher values to enhance quieter elements in a sample's spectrum
-    constexpr static const float tempoCompressionFactor = 0.0;
-    constexpr static const float keyCompressionFactor = 0.0;
+    constexpr static float const tempoCompressionFactor = 0.0;
+    constexpr static float const keyCompressionFactor = 0.0;
     // Higher values remove more of the smallest local novelty peaks
-    constexpr static const float noveltyAveragingWindowLengthInSeconds = 60 * 1.0 / upperBPMLimit;
+    constexpr static float const noveltyAveragingWindowLengthInSeconds = 60 * 1.0 / upperBPMLimit;
     float decibel;
     float integratedLUFS;
     float lufsRangeStart;
@@ -118,7 +118,7 @@ private:
      
      @param noveltyFunction the novelty function to subtract the average from.
      */
-    void noveltyFunctionSubtractAverage(Array<float> & noveltyFunction);
+    void noveltyFunctionSubtractAverage(Array<float>& noveltyFunction);
     /**
      Calculates a tempogram from a given novelty function.
      
@@ -127,7 +127,7 @@ private:
      
      @returns the tempogram as a 2d array.
      */
-    Array<Array<float>> calculateTempogram(Array<float> & noveltyFunction, int & numTempogramWindows);
+    Array<Array<float>> calculateTempogram(Array<float>& noveltyFunction, int& numTempogramWindows);
     /**
      Calculates a tempo histogram with the optimal pitch at each position from a given tempogram.
      
@@ -136,7 +136,7 @@ private:
      
      @returns histogram of optimal tempi in the tempogram.
      */
-    Array<int> calculateTempoHistogram(int numTempogramWindows, Array<Array<float>> & spectralTempogram);
+    Array<int> calculateTempoHistogram(int numTempogramWindows, Array<Array<float>>& spectralTempogram);
     /**
      Analyses the tempo of the given file in bpm.
      
@@ -152,20 +152,20 @@ private:
      
      @returns the log-spectrogram.
      */
-    Array<Array<float>> calculateLogSpectrogram(float & coefficientSum);
+    Array<Array<float>> calculateLogSpectrogram(float& coefficientSum);
     /**
      Calculates the distribution of chroma in the given spectrogram.
      
      @param logSpectrogram the spectrogram to calculate the chroma distribution from.
      */
-    void calculateChromaDistribution(Array<Array<float>> & logSpectrogram);
+    void calculateChromaDistribution(Array<Array<float>>& logSpectrogram);
     /**
      Calculates the correlation between the chroma distribution and the index list for each key.
      
      @param averageCorrelation the output variable for the average key chroma correlation.
      @param numKeys the amount of keys to correlate with.
      */
-    Array<float> calculateKeyChromaCorrelations(float & averageCorrelation, int & numKeys);
+    Array<float> calculateKeyChromaCorrelations(float& averageCorrelation, int& numKeys);
     /**
      Analyses the key of the given file.
      
@@ -181,7 +181,7 @@ private:
      
      @param inPitchIndex the index of the pitch to convert.
      @param referenceIndex the index of the reference pitch.
-     @param referenceFrequency the frequency of the reference pitch.
+     @param referenceFrequency the frequency of the reference pitch in Hertz.
      
      @returns the frequency of that pitch.
      */

@@ -28,7 +28,7 @@ public:
     /**
      The constructor for the sample library panel.
      
-     @param inSampleLibrary the library object of the current plugin instance.
+     @param inProcessor the processor object of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
     SampleLibraryPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);

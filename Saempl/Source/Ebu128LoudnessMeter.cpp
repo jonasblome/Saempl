@@ -44,11 +44,11 @@
 
 // Static member constants
 // -----------------------
-const float Ebu128LoudnessMeter::minimalReturnValue = -300.0f;
-const double Ebu128LoudnessMeter::absoluteThreshold = -70.0;
+float const Ebu128LoudnessMeter::minimalReturnValue = -300.0f;
+double const Ebu128LoudnessMeter::absoluteThreshold = -70.0;
 
 // Specification for the histograms
-const double Ebu128LoudnessMeter::lowestBlockLoudnessToConsider = -100.0; // LUFS
+double const Ebu128LoudnessMeter::lowestBlockLoudnessToConsider = -100.0; // LUFS
 
 
 Ebu128LoudnessMeter::Ebu128LoudnessMeter()
@@ -115,7 +115,7 @@ void Ebu128LoudnessMeter::prepareToPlay(double sampleRate,
     revisedLowFrequencyBCurveFilter.prepareToPlay(sampleRate, numberOfInputChannels);
     
     // Figure out how many bins are needed
-    const int timeOfAccumulationForShortTerm = 3; // Seconds
+    int const timeOfAccumulationForShortTerm = 3; // Seconds
     
     //Needed for the short term loudness measurement
     numberOfBins = expectedRequestRate * timeOfAccumulationForShortTerm;
@@ -171,8 +171,8 @@ void Ebu128LoudnessMeter::processBlock(juce::AudioSampleBuffer const & buffer,
     {
         // Detect if the block is silent
         // -120dB -> approx. 1.0e-12
-        const float silenceThreshold = std::pow (10, 0.1 * -120);
-        const float magnitude = buffer.getMagnitude(0, buffer.getNumSamples());
+        float const silenceThreshold = std::pow (10, 0.1 * -120);
+        float const magnitude = buffer.getMagnitude(0, buffer.getNumSamples());
         
         if (magnitude < silenceThreshold)
         {
@@ -232,7 +232,7 @@ void Ebu128LoudnessMeter::processBlock(juce::AudioSampleBuffer const & buffer,
     decibelSumBlock /= numChannels;
     decibel += decibelSumBlock;
     
-    const int numberOfChannels = bufferForMeasurement.getNumChannels();
+    int const numberOfChannels = bufferForMeasurement.getNumChannels();
     
     // STEP 3: Accumulate the samples and put the sum(s) into the right bin(s)
     // -----------------------------------------------------------------------
@@ -265,7 +265,7 @@ void Ebu128LoudnessMeter::processBlock(juce::AudioSampleBuffer const & buffer,
         {
             // Figure out if the remaining samples in the buffer can all be
             // accumulated to the current bin
-            const int numberOfSamplesLeftInTheBuffer = bufferForMeasurement.getNumSamples()-positionInBuffer;
+            int const numberOfSamplesLeftInTheBuffer = bufferForMeasurement.getNumSamples()-positionInBuffer;
             int numberOfSamplesToPutIntoTheCurrentBin;
             
             if (numberOfSamplesLeftInTheBuffer < numberOfSamplesPerBin - numberOfSamplesInTheCurrentBin )
@@ -439,7 +439,7 @@ void Ebu128LoudnessMeter::processBlock(juce::AudioSampleBuffer const & buffer,
                     }
                     
                     // Calculate the j'th gating block loudness l_j
-                    const double loudnessOfCurrentBlock = -0.691 + 10.*std::log10 (weightedSumOfCurrentBlock);
+                    double const loudnessOfCurrentBlock = -0.691 + 10.*std::log10 (weightedSumOfCurrentBlock);
                     
                     if (loudnessOfCurrentBlock > absoluteThreshold)
                     {
@@ -470,7 +470,7 @@ void Ebu128LoudnessMeter::processBlock(juce::AudioSampleBuffer const & buffer,
                     // which is higher (e.g. 20 times a second)
                     if (histogramOfBlockLoudness.size() > 0)
                     {
-                        const double biggestLoudnessInHistogram = (--histogramOfBlockLoudness.end())->first * 0.1;
+                        double const biggestLoudnessInHistogram = (--histogramOfBlockLoudness.end())->first * 0.1;
                         if (relativeThreshold < biggestLoudnessInHistogram)
                         {
                             int closestBinAboveRelativeThresholdKey = int (relativeThreshold * 10.0);
@@ -486,10 +486,10 @@ void Ebu128LoudnessMeter::processBlock(juce::AudioSampleBuffer const & buffer,
                             
                             for (map<int,int>::iterator currentBin = histogramOfBlockLoudness.find (closestBinAboveRelativeThresholdKey); currentBin != histogramOfBlockLoudness.end(); ++currentBin)
                             {
-                                const int nrOfBlocksInBin = currentBin->second;
+                                int const nrOfBlocksInBin = currentBin->second;
                                 nrOfAllBlocks += nrOfBlocksInBin;
                                 
-                                const double weightedSumOfCurrentBin = pow (10.0, (currentBin->first * 0.1 + 0.691) * 0.1);
+                                double const weightedSumOfCurrentBin = pow (10.0, (currentBin->first * 0.1 + 0.691) * 0.1);
                                 sumForIntegratedLoudness += nrOfBlocksInBin * weightedSumOfCurrentBin;
                             }
                             
@@ -540,7 +540,7 @@ void Ebu128LoudnessMeter::processBlock(juce::AudioSampleBuffer const & buffer,
                         }
                         
                         // Calculate the j'th gating block loudness l_j
-                        const double loudnessOfCurrentBlockLRA = -0.691 + 10.0 * std::log10 (weightedSumOfCurrentBlockLRA);
+                        double const loudnessOfCurrentBlockLRA = -0.691 + 10.0 * std::log10 (weightedSumOfCurrentBlockLRA);
                         
                         if (loudnessOfCurrentBlockLRA > absoluteThreshold)
                         {
@@ -567,7 +567,7 @@ void Ebu128LoudnessMeter::processBlock(juce::AudioSampleBuffer const & buffer,
                         // which is higher (e.g. 20 times a second)
                         if (histogramOfBlockLoudnessLRA.size() > 0)
                         {
-                            const double biggestLoudnessInHistogramLRA = (--histogramOfBlockLoudnessLRA.end())->first * 0.1;
+                            double const biggestLoudnessInHistogramLRA = (--histogramOfBlockLoudnessLRA.end())->first * 0.1;
                             
                             if (relativeThresholdLRA < biggestLoudnessInHistogramLRA)
                             {
@@ -584,7 +584,7 @@ void Ebu128LoudnessMeter::processBlock(juce::AudioSampleBuffer const & buffer,
                                 
                                 for (map<int,int>::iterator currentBinLRA = histogramOfBlockLoudnessLRA.find (closestBinAboveRelativeThresholdKeyLRA); currentBinLRA != histogramOfBlockLoudnessLRA.end(); ++currentBinLRA)
                                 {
-                                    const int nrOfBlocksInBinLRA = currentBinLRA->second;
+                                    int const nrOfBlocksInBinLRA = currentBinLRA->second;
                                     numberOfBlocksLRA += nrOfBlocksInBinLRA;
                                 }
                                 

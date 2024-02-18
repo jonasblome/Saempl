@@ -12,7 +12,7 @@
 #include "JuceHeader.h"
 #include "SampleItem.h"
 #include "BlomeHelpers.h"
-#include "SampleManagerThread.h"
+#include "SampleManagerJob.h"
 
 /**
  Handles updating and creating of directory meta-analysis files.
@@ -26,9 +26,21 @@ public ChangeBroadcaster,
 public ThreadPool
 {
 public:
-    SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems, OwnedArray<SampleItem>& inPaletteSampleItems, OwnedArray<SampleItem>& inDeletedSampleItems, OwnedArray<SampleItem>& inAddedSampleItems, OwnedArray<SampleItem>& inAlteredSampleItems);
+    /**
+     The constructor for the library manager.
+     
+     @params all sample item collections of the sample library.
+     */
+    SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems,
+                         OwnedArray<SampleItem>& inPaletteSampleItems,
+                         OwnedArray<SampleItem>& inDeletedSampleItems,
+                         OwnedArray<SampleItem>& inAddedSampleItems,
+                         OwnedArray<SampleItem>& inAlteredSampleItems);
     ~SampleLibraryManager();
-    void writeSampleItemToXml(SampleItem *sampleItem, XmlElement *sampleItemXml);
+    /**
+     Stores all properties of a sample item object in an xml element.
+     */
+    void writeSampleItemToXml(SampleItem* sampleItem, XmlElement* sampleItemXml);
     /**
      Adds meta-information of all sample items to an analysis file and updates their information if needed.
      */
@@ -38,12 +50,22 @@ public:
      and adds sample items for each new detected file.
      */
     void synchWithLibraryDirectory();
+    /**
+     Loads all library files of the given directory and then synchs with the library.
+     
+     @param inLibraryDirectory the file of the directory to load.
+     */
     void loadSampleLibrary(File const & inLibraryDirectory);
     /**
-     Loads meta-information of analysis file as sample items collection.
+     Creates a sample item from the stored properties in an  xml element.
+     
+     @param sampleItemXml the xml element belonging to the sample item.
+     */
+    void createSampleItemFromXml(XmlElement const * sampleItemXml);
+    /**
+     Loads meta-information of directory and all subdirectories as sample items collection.
      
      @param inLibraryDirectory the library directory file.
-     @param inSampleItems the collection of sample items from the library.
      */
     void loadSampleLibraryFile(File const & inLibraryDirectory);
     /**
@@ -116,12 +138,17 @@ private:
      @param inFile the file to store the XmlElement in.
      */
     void writeXmlToFile(XmlElement& inXml, File& inFile);
+    /**
+     Sets the threads progress bar and status message.
+     */
     void setProgressAndStatus(int numItemsToProcess, int64 startTime);
-    
-/**
+    /**
      Runs the loading of a library while setting the progress for the progress bar.
      */
     void run() override;
     void threadComplete(bool userPressedCancel) override;
+    /**
+     Encodes a string to a format that is suitable for a JUCE XmlElement tag name.
+     */
     String encodeForXml(String inString);
 };

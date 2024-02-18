@@ -60,13 +60,16 @@ public:
      @param inIsActive true for to active, false for to inactive.
      */
     void setIsActive(bool inIsActive);
+    /**
+     @returns whether the filter is active and has any active rules that can have an effect on the sample collection.
+     */
     bool canHaveEffect();
-
+    
 private:
     OwnedArray<SampleFileFilterRuleBase> mFilterRules;
     OwnedArray<SampleItem>& filteredSampleItems;
     bool isActive;
     
-    bool isFileSuitable (const File& file) const override;
-    bool isDirectorySuitable (const File& file) const override;
+    bool isFileSuitable (File const & file) const override;
+    bool isDirectorySuitable (File const & file) const override;
 };

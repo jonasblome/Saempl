@@ -39,7 +39,7 @@ SaemplAudioProcessor::~SaemplAudioProcessor()
 }
 
 //==============================================================================
-const juce::String SaemplAudioProcessor::getName() const
+juce::String const SaemplAudioProcessor::getName() const
 {
     return JucePlugin_Name;
 }
@@ -91,12 +91,12 @@ void SaemplAudioProcessor::setCurrentProgram (int index)
 {
 }
 
-const juce::String SaemplAudioProcessor::getProgramName (int index)
+juce::String const SaemplAudioProcessor::getProgramName (int index)
 {
     return {};
 }
 
-void SaemplAudioProcessor::changeProgramName (int index, const juce::String& newName)
+void SaemplAudioProcessor::changeProgramName (int index, juce::String const & newName)
 {
 }
 
@@ -114,7 +114,7 @@ void SaemplAudioProcessor::releaseResources()
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool SaemplAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool SaemplAudioProcessor::isBusesLayoutSupported (BusesLayout const & layouts) const
 {
 #if JucePlugin_IsMidiEffect
     juce::ignoreUnused (layouts);
@@ -271,7 +271,7 @@ void SaemplAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
     copyXmlToBinary(stateInfo, destData);
 }
 
-void SaemplAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
+void SaemplAudioProcessor::setStateInformation(void const * data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.

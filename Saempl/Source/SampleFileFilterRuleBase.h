@@ -51,9 +51,8 @@ public:
      */
     String getRulePropertyName();
     /**
-     @returns whether the rule is active.
+     @returns whether the rule is active and if it can have any effect on the sample collection filtering.
      */
-    bool getIsActive();
     virtual bool canHaveEffect() = 0;
     /**
      Sets if the rule is active.
@@ -61,6 +60,10 @@ public:
      @param inIsActive whether the rule should be active.
      */
     void setIsActive(bool inIsActive);
+    /**
+     @returns whether the rule is active.
+     */
+    bool getIsActive();
     
 protected:
     CompareOperators mCompareOperator;

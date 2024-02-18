@@ -1,16 +1,21 @@
 /*
-  ==============================================================================
+ ==============================================================================
+ 
+ SampleManagerThread.cpp
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
-    SampleManagerThread.cpp
-    Created: 13 Feb 2024 1:07:43pm
-    Author:  Jonas Blome
+#include "SampleManagerJob.h"
 
-  ==============================================================================
-*/
-
-#include "SampleManagerThread.h"
-
-SampleManagerThread::SampleManagerThread(OwnedArray<SampleItem>& inSampleItems, OwnedArray<SampleItem>& inAddedSampleItems, StringArray& inAddedFilePaths, File const & inFile, SampleItem* inSampleItem, bool forceAnalysis, int& inNumProcessedItems)
+SampleManagerThread::SampleManagerThread(OwnedArray<SampleItem>& inSampleItems, 
+                                         OwnedArray<SampleItem>& inAddedSampleItems,
+                                         StringArray& inAddedFilePaths,
+                                         File const & inFile,
+                                         SampleItem* inSampleItem,
+                                         bool forceAnalysis,
+                                         int& inNumProcessedItems)
 :
 ThreadPoolJob("SampleManagerThread"),
 allSampleItems(inSampleItems),

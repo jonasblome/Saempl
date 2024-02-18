@@ -166,10 +166,10 @@
             file="Source/SampleLibraryManager.cpp"/>
       <FILE id="EA3Snn" name="SampleLibraryManager.h" compile="0" resource="0"
             file="Source/SampleLibraryManager.h"/>
-      <FILE id="Q4MCYu" name="SampleManagerThread.cpp" compile="1" resource="0"
-            file="Source/SampleManagerThread.cpp"/>
-      <FILE id="p3hgRp" name="SampleManagerThread.h" compile="0" resource="0"
-            file="Source/SampleManagerThread.h"/>
+      <FILE id="Q4MCYu" name="SampleManagerJob.cpp" compile="1" resource="0"
+            file="Source/SampleManagerJob.cpp"/>
+      <FILE id="p3hgRp" name="SampleManagerJob.h" compile="0" resource="0"
+            file="Source/SampleManagerJob.h"/>
       <FILE id="JlCuO2" name="SampleFileFilter.cpp" compile="1" resource="0"
             file="Source/SampleFileFilter.cpp"/>
       <FILE id="krBDMF" name="SampleFileFilter.h" compile="0" resource="0"

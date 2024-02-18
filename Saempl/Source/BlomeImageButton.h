@@ -12,12 +12,21 @@
 #include "BlomeStyleDefinitions.h"
 #include "BlomeHelpers.h"
 
+/**
+ An ImageButton derivation that also draws a background if needed.
+ */
 class BlomeImageButton
 :
 public ImageButton
 {
 public:
-    BlomeImageButton(const String& name, bool inHasBackground);
+    /**
+     Creates the image button.
+     
+     @param name the name of the button object.
+     @param inHasBackground whether to draw a background or not.
+     */
+    BlomeImageButton(String const & name, bool inHasBackground);
     ~BlomeImageButton();
     
 private:

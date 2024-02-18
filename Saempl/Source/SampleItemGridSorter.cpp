@@ -140,7 +140,7 @@ void SampleItemGridSorter::copyFeatureVectorsToGrid(Array<std::vector<float>>& g
         std::vector<float>& gridCell = grid.getReference(pos);
         SampleItem* sampleItem = sampleItems.getUnchecked(pos);
         
-        if (sampleItem->getFilePath() != "EMPTYTILE")
+        if (sampleItem->getFilePath() != EMPTY_TILE_PATH)
         {
             for (int d = 0; d < numDimensions; d++)
             {
@@ -807,7 +807,7 @@ void SampleItemGridSorter::doSwaps(Array<int>& swapPositions,
         swappedElements.set(s, swappedElement);
         
         // Handle holes
-        if (swappedElement->getFilePath() != "EMPTYTILE")
+        if (swappedElement->getFilePath() != EMPTY_TILE_PATH)
         {
             featureVectors.set(s, swappedElement->getFeatureVector());
             numValid++;
@@ -829,8 +829,8 @@ void SampleItemGridSorter::doSwaps(Array<int>& swapPositions,
         for (int s = 0; s < numSwapPositions; s++)
         {
             sampleItems.set(swapPositions.getReference(optimalPermutation.getReference(s)),
-                              swappedElements.getUnchecked(s),
-                              false);
+                            swappedElements.getUnchecked(s),
+                            false);
         }
     }
 }

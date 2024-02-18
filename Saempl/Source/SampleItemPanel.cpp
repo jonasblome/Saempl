@@ -37,7 +37,7 @@ void SampleItemPanel::paint(Graphics& g)
 
 void SampleItemPanel::setPanelComponents()
 {
-    // Add sample editor component
+    // Add audio player component
     mAudioPlayer = std::make_unique<AudioPlayer>();
     
     int followTransportButtonHeight = 34;
@@ -61,7 +61,7 @@ void SampleItemPanel::setPanelComponents()
                                 style->PANEL_MARGIN * 0.75,
                                 style->SAMPLE_CONTROL_WIDTH - style->PANEL_MARGIN / 2.0,
                                 style->SAMPLE_CONTROL_WIDTH - style->PANEL_MARGIN / 2.0);
-    mStartStopButton->setTooltip("Start/stop playback");
+    mStartStopButton->setTooltip("Start/stop playback (Space)");
     mStartStopButton->onClick = [this] { mAudioPreviewPanel->startOrStop(); };
     addAndMakeVisible(*mStartStopButton);
     
@@ -149,7 +149,7 @@ void SampleItemPanel::changeListenerCallback(ChangeBroadcaster* source)
     }
 }
 
-bool SampleItemPanel::tryShowAudioResource(File inFile)
+bool SampleItemPanel::tryShowAudioResource(File const & inFile)
 {
     // Load file into source
     if (inFile.exists() && !inFile.isDirectory() && isSupportedAudioFileFormat(inFile.getFileExtension()))

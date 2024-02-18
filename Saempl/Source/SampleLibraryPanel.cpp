@@ -117,7 +117,7 @@ void SampleLibraryPanel::fileDoubleClicked(File const & inFile)
     sampleItemPanel.tryShowAudioResource(inFile);
 }
 
-void SampleLibraryPanel::browserRootChanged(File const&)
+void SampleLibraryPanel::browserRootChanged(File const &)
 {
     // Not used...
 }
@@ -166,7 +166,7 @@ void SampleLibraryPanel::reanalyseSamples()
     sampleLibrary.reanalyseSampleItems(filePaths);
 }
 
-bool SampleLibraryPanel::keyPressed(const KeyPress& key)
+bool SampleLibraryPanel::keyPressed(KeyPress const & key)
 {
     if (key.getKeyCode() == KeyPress::returnKey)
     {

@@ -1,11 +1,11 @@
 /*
-  ==============================================================================
-
-    SampleLibrary.cpp
-    Author:  Jonas Blome
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ SampleLibrary.cpp
+ Author:  Jonas Blome
+ 
+ ==============================================================================
+ */
 
 #include "SampleLibrary.h"
 
@@ -319,7 +319,7 @@ bool SampleLibrary::addFileToPalette(File const & inFile)
     return newItemCreated;
 }
 
-bool SampleLibrary::addToPalette(const File & inFile)
+bool SampleLibrary::addToPalette(File const & inFile)
 {
     SampleItem* itemToAdd = mSampleLibraryManager->getSampleItemWithFilePath(inFile.getFullPathName());
     
