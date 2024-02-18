@@ -21,8 +21,6 @@ sampleItemPanel(inSampleItemPanel)
 
 SampleLibraryPanel::~SampleLibraryPanel()
 {
-    std::unique_ptr<XmlElement> treeOpennessState = mFileTree->getOpennessState(true);
-    treeOpennessState->setTagName("TreeOpennessState");
     mFileTree->removeListener(this);
     sampleLibrary.getDirectoryList().removeChangeListener(&*mFileTree);
 }

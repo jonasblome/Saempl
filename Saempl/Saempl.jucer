@@ -5,7 +5,8 @@
               companyEmail="jonas.blome@gmx.de" pluginManufacturerCode="Blom"
               pluginManufacturer="Blome" pluginDesc="Saempl" pluginName="Saempl"
               pluginCode="Smpl" version="0.1" companyWebsite="https://github.com/jonasblome"
-              pluginFormats="buildAU,buildStandalone,buildVST3" displaySplashScreen="1">
+              pluginFormats="buildAU,buildStandalone,buildVST3" displaySplashScreen="1"
+              pluginCharacteristicsValue="pluginEditorRequiresKeys">
   <MAINGROUP id="Ryuu1q" name="Saempl">
     <GROUP id="{F65A6678-A68F-58F1-A4D6-F2BF2D42BA2E}" name="Assets">
       <FILE id="x5lZ5t" name="grid_view_FILL0_wght400_GRAD0_opsz24.png" compile="0"
