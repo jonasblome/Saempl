@@ -37,7 +37,6 @@ private:
     constexpr static float const sampleFactor = 1.0;
     static int const maxSwapPositions = 9;
     static int const QUANT = 2048;
-    Array<int> swapPositions;
     Array<SampleItem*> swappedElements;
     Array<std::vector<float>> featureVectors;
     Array<std::vector<float>> gridFeatureVectors;
@@ -47,6 +46,8 @@ private:
     int rows;
     int columns;
     bool applyWrap;
+    int numSwapPositions;
+    int swapPositions[];
     
     /**
      Runs the sorting of the sample items while setting the progress for the progress bar.
@@ -79,19 +80,17 @@ private:
     Array<float> filterHorizontallyMirror(Array<float>& inWeights, int rows, int columns, int filterSize);
     Array<float> filterVerticallyMirror(Array<float>& inWeights, int rows, int columns, int filterSize);
     void checkRandomSwaps(int radius, Array<std::vector<float>>& grid, int rows, int columns);
-    int findSwapPositionsWrap(Array<int>& swapIndices, 
-                              Array<int>& swapPositions,
+    int findSwapPositionsWrap(Array<int>& swapIndices,
                               int swapAreaWidth,
                               int swapAreaHeight,
                               int rows,
                               int columns);
-    int findSwapPositions(Array<int>& swapIndices, 
-                          Array<int>& swapPositions,
+    int findSwapPositions(Array<int>& swapIndices,
                           int swapAreaWidth,
                           int swapAreaHeight,
                           int rows,
                           int columns);
-    void doSwaps(Array<int>& swapPositions, int numSwapPositions, Array<std::vector<float>>& grid);
+    void doSwaps(int numSwapPositions, Array<std::vector<float>>& grid);
     Array<Array<int>> calculateNormalisedDistanceMatrix(Array<std::vector<float>>& inFeatureVectors, 
                                                         Array<std::vector<float>>& inGridVectors,
                                                         int size);

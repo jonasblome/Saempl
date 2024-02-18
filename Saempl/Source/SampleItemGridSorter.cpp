@@ -53,8 +53,8 @@ void SampleItemGridSorter::run()
     }
     Array<float> weights;
     weights.resize(gridSize);
-    int numSwapPositions = jmin<int>(maxSwapPositions, columns * rows);
-    swapPositions.resize(numSwapPositions);
+    numSwapPositions = jmin<int>(maxSwapPositions, columns * rows);
+    swapPositions[numSwapPositions] = {0};
     for (int s = 0; s < numSwapPositions; s++)
     {
         swappedElements.add(sampleItems.getUnchecked(s));
@@ -666,7 +666,7 @@ void SampleItemGridSorter::checkRandomSwaps(int radius, Array<std::vector<float>
     int swapAreaHeight = jmin<int>(2 * radius + 1, rows);
     int k = 0;
     
-    while (swapAreaHeight * swapAreaWidth < swapPositions.size())
+    while (swapAreaHeight * swapAreaWidth < numSwapPositions)
     {
         // Alternate the size increase
         if ((k++ & 0x1) == 0)
@@ -697,19 +697,18 @@ void SampleItemGridSorter::checkRandomSwaps(int radius, Array<std::vector<float>
                  swapAreaIndices.getRawDataPointer() + swapAreaIndices.size(),
                  std::default_random_engine(seed));
     
-    int numSwapTries = jmax<int>(1, (sampleFactor * rows * columns / swapPositions.size()));
+    int numSwapTries = jmax<int>(1, (sampleFactor * rows * columns / numSwapPositions));
     
     if (applyWrap)
     {
         for (int n = 0; n < numSwapTries; n++)
         {
             int numSwapPositions = findSwapPositionsWrap(swapAreaIndices,
-                                                         swapPositions,
                                                          swapAreaWidth,
                                                          swapAreaHeight,
                                                          rows,
                                                          columns);
-            doSwaps(swapPositions, numSwapPositions, grid);
+            doSwaps(numSwapPositions, grid);
         }
     }
     else
@@ -717,28 +716,27 @@ void SampleItemGridSorter::checkRandomSwaps(int radius, Array<std::vector<float>
         for (int n = 0; n < numSwapTries; n++)
         {
             int numSwapPositions = findSwapPositions(swapAreaIndices,
-                                                     swapPositions,
                                                      swapAreaWidth,
                                                      swapAreaHeight,
                                                      rows,
                                                      columns);
-            doSwaps(swapPositions, numSwapPositions, grid);
+            doSwaps(numSwapPositions, grid);
         }
     }
 }
 
-int SampleItemGridSorter::findSwapPositionsWrap(Array<int>& swapAreaIndices, Array<int>& swapPositions, int swapAreaWidth, int swapAreaHeight, int rows, int columns)
+int SampleItemGridSorter::findSwapPositionsWrap(Array<int>& swapAreaIndices, int swapAreaWidth, int swapAreaHeight, int rows, int columns)
 {
     std::random_device random;
     std::mt19937 generator(random());
     
-    std::uniform_int_distribution<> distribution1(0, swapAreaIndices.size() - swapPositions.size());
-    int startIndex = (swapAreaIndices.size() - swapPositions.size() > 0) ? distribution1(generator) : 0;
+    std::uniform_int_distribution<> distribution1(0, swapAreaIndices.size() - numSwapPositions);
+    int startIndex = (swapAreaIndices.size() - numSwapPositions > 0) ? distribution1(generator) : 0;
     
     std::uniform_int_distribution<> distribution2(0, rows * columns);
     int randomPosition = distribution2(generator);
-    int numSwapPositions = 0;
-    for (int j = startIndex; j < swapAreaIndices.size() && numSwapPositions < swapPositions.size(); j++)
+    int currentNumSwapPositions = 0;
+    for (int j = startIndex; j < swapAreaIndices.size() && currentNumSwapPositions < numSwapPositions; j++)
     {
         // Get wrapped position of random element to swap
         int d = randomPosition + swapAreaIndices.getReference(j);
@@ -746,13 +744,13 @@ int SampleItemGridSorter::findSwapPositionsWrap(Array<int>& swapAreaIndices, Arr
         int y = (d / columns) % rows;
         int pos = y * columns + x;
         
-        swapPositions.set(numSwapPositions++, pos);
+        swapPositions[currentNumSwapPositions++] = pos;
     }
     
-    return swapPositions.size();
+    return numSwapPositions;
 }
 
-int SampleItemGridSorter::findSwapPositions(Array<int>& swapAreaIndices, Array<int>& swapPositions, int swapAreaWidth, int swapAreaHeight, int rows, int columns)
+int SampleItemGridSorter::findSwapPositions(Array<int>& swapAreaIndices, int swapAreaWidth, int swapAreaHeight, int rows, int columns)
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -775,10 +773,10 @@ int SampleItemGridSorter::findSwapPositions(Array<int>& swapAreaIndices, Array<i
         yStart = rows - swapAreaHeight;
     }
     
-    std::uniform_int_distribution<> distribution2(0, swapAreaIndices.size() - swapPositions.size());
-    int startIndex = (swapAreaIndices.size() - swapPositions.size() > 0) ? distribution2(generator) : 0;
-    int numSwapPositions = 0;
-    for (int j = startIndex; j < swapAreaIndices.size() && numSwapPositions < swapPositions.size(); j++)
+    std::uniform_int_distribution<> distribution2(0, swapAreaIndices.size() - numSwapPositions);
+    int startIndex = (swapAreaIndices.size() - numSwapPositions > 0) ? distribution2(generator) : 0;
+    int currentNumSwapPositions = 0;
+    for (int j = startIndex; j < swapAreaIndices.size() && currentNumSwapPositions < numSwapPositions; j++)
     {
         // Get wrapped position of random element to swap
         int dx = swapAreaIndices.getReference(j) % columns;
@@ -788,21 +786,19 @@ int SampleItemGridSorter::findSwapPositions(Array<int>& swapAreaIndices, Array<i
         int y = (yStart + dy) % rows;
         int pos = y * columns + x;
         
-        swapPositions.set(numSwapPositions++, pos);
+        swapPositions[currentNumSwapPositions++] = pos;
     }
     
-    return swapPositions.size();
+    return numSwapPositions;
 }
 
-void SampleItemGridSorter::doSwaps(Array<int>& swapPositions,
-                                   int numSwapPositions,
-                                   Array<std::vector<float>>& grid)
+void SampleItemGridSorter::doSwaps(int numSwapPositions, Array<std::vector<float>>& grid)
 {
     int numValid = 0;
     
     for (int s = 0; s < numSwapPositions; s++)
     {
-        int swapPosition = swapPositions.getReference(s);
+        int swapPosition = swapPositions[s];
         SampleItem* swappedElement = sampleItems.getUnchecked(swapPosition);
         swappedElements.set(s, swappedElement);
         
@@ -828,7 +824,7 @@ void SampleItemGridSorter::doSwaps(Array<int>& swapPositions,
         
         for (int s = 0; s < numSwapPositions; s++)
         {
-            sampleItems.set(swapPositions.getReference(optimalPermutation.getReference(s)),
+            sampleItems.set(swapPositions[optimalPermutation.getReference(s)],
                             swappedElements.getUnchecked(s),
                             false);
         }
