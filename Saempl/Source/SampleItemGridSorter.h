@@ -30,7 +30,7 @@ public:
     
 private:
     constexpr static float const initialRadiusFactor = 0.5;
-    constexpr static float const radiusDecay = 0.98;
+    constexpr static float const radiusDecay = 0.93;
     constexpr static float const endRadius = 1.0;
     constexpr static float const weightHole = 0.01;
     constexpr static float const weightTile = 1.0;
