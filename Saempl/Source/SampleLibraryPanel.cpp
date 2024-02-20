@@ -57,7 +57,7 @@ void SampleLibraryPanel::paint(Graphics& g)
     g.setColour(style->COLOUR_PANEL_TITLE_FONT);
     g.drawFittedText("Folder View - "
                      + sampleLibrary.getCurrentLibraryPath()
-                     + " - " + std::to_string(sampleLibrary.getSampleItems(ALL_SAMPLES).size()) + " Samples",
+                     + " - " + std::to_string(sampleLibrary.getSampleItems(FILTERED_SAMPLES).size()) + " Samples",
                      style->PANEL_MARGIN * 1.5,
                      0,
                      getWidth() - style->PANEL_MARGIN * 3,

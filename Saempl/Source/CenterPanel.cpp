@@ -15,7 +15,6 @@ PanelBase(inProcessor)
 {
     setSize(style->CENTER_PANEL_WIDTH, style->CENTER_PANEL_HEIGHT);
     setPanelComponents();
-    setWantsKeyboardFocus(true);
 }
 
 CenterPanel::~CenterPanel()

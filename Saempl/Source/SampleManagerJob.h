@@ -12,7 +12,7 @@
 #include "JuceHeader.h"
 #include "SampleAnalyser.h"
 
-class SampleManagerThread
+class SampleManagerJob
 :
 public ThreadPoolJob
 {
@@ -28,14 +28,14 @@ public:
      @param forceAnalysis see sample analyser analysis method.
      @param numProcessedItems a reference to the item counter.
      */
-    SampleManagerThread(OwnedArray<SampleItem>& inSampleItems,
-                        OwnedArray<SampleItem>& inAddedSampleItems,
-                        StringArray& inAddedFilePaths,
-                        File const & inFile,
-                        SampleItem* inSampleItem,
-                        bool forceAnalysis,
-                        int& numProcessedItems);
-    ~SampleManagerThread();
+    SampleManagerJob(OwnedArray<SampleItem>& inSampleItems,
+                     OwnedArray<SampleItem>& inAddedSampleItems,
+                     StringArray& inAddedFilePaths,
+                     File const & inFile,
+                     SampleItem* inSampleItem,
+                     bool forceAnalysis,
+                     int& numProcessedItems);
+    ~SampleManagerJob();
     
 private:
     std::unique_ptr<SampleAnalyser> mSampleAnalyser;

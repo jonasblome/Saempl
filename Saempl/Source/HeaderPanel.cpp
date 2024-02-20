@@ -17,7 +17,6 @@ centerPanel(inCenterPanel)
 {
     setSize(style->HEADER_PANEL_WIDTH, style->HEADER_PANEL_HEIGHT);
     setPanelComponents();
-    setWantsKeyboardFocus(true);
 }
 
 HeaderPanel::~HeaderPanel()

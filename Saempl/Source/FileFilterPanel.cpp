@@ -177,7 +177,7 @@ void FileFilterPanel::addFilterRuleView()
             + style->PANEL_MARGIN / 2.0);
     repaint();
     
-    if (libraryFileFilter.canHaveEffect())
+    if (libraryFileFilter.canHaveEffect() && newRule->canHaveEffect())
     {
         sampleLibrary.refresh();
     }

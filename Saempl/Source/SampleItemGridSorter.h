@@ -30,11 +30,11 @@ public:
     
 private:
     constexpr static float const initialRadiusFactor = 0.5;
-    constexpr static float const radiusDecay = 0.93;
+    constexpr static float const radiusDecay = 0.965;
     constexpr static float const endRadius = 1.0;
     constexpr static float const weightHole = 0.01;
     constexpr static float const weightTile = 1.0;
-    constexpr static float const sampleFactor = 1.0;
+    constexpr static float const sampleFactor = 4.0;
     static int const maxSwapPositions = 9;
     static int const QUANT = 2048;
     Array<int> swapPositions;

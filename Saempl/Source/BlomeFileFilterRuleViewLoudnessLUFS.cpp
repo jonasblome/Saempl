@@ -32,14 +32,14 @@ void BlomeFileFilterRuleViewLoudnessLUFS::setComponents()
     mCompareValueEditor = std::make_unique<TextEditor>("CompareValueEditor");
     mCompareValueEditor->setFont(style->FONT_SMALL_BOLD);
     mCompareValueEditor->setJustification(Justification::centredLeft);
-    mCompareValueEditor->setText(std::to_string(getFilterRule().getCompareValue()));
+    mCompareValueEditor->setText(String::toDecimalStringWithSignificantFigures(getFilterRule().getCompareValue(), 1));
     mCompareValueEditor->addListener(this);
     addAndMakeVisible(*mCompareValueEditor);
     
-    mCompareOperatorChooser->setSelectedItemIndex(getFilterRule().getCompareOperator());
     mCompareOperatorChooser->addItem("is less than", 1);
     mCompareOperatorChooser->addItem("is equal to", 2);
     mCompareOperatorChooser->addItem("is greater than", 3);
+    mCompareOperatorChooser->setSelectedItemIndex(getFilterRule().getCompareOperator());
 }
 
 void BlomeFileFilterRuleViewLoudnessLUFS::resized()

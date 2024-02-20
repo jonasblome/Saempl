@@ -39,9 +39,9 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
     analyseSampleLoudness();
     inSampleItem->setLoudnessDecibel(decibel);
     inSampleItem->setLoudnessLUFS(integratedLUFS);
-    featureVector[1] = integratedLUFS / (-100);
-    featureVector[2] = lufsRangeStart / (-100);
-    featureVector[3] = lufsRangeEnd / (-100);
+    featureVector[1] = integratedLUFS / (-300);
+    featureVector[2] = lufsRangeStart / (-300);
+    featureVector[3] = lufsRangeEnd / (-300);
     
     // Set zero crossing rate
     featureVector[4] = zeroCrossingRate;

@@ -1,7 +1,7 @@
 /*
  ==============================================================================
  
- SampleManagerThread.cpp
+ SampleManagerJob.cpp
  Author:  Jonas Blome
  
  ==============================================================================
@@ -9,7 +9,7 @@
 
 #include "SampleManagerJob.h"
 
-SampleManagerThread::SampleManagerThread(OwnedArray<SampleItem>& inSampleItems, 
+SampleManagerJob::SampleManagerJob(OwnedArray<SampleItem>& inSampleItems, 
                                          OwnedArray<SampleItem>& inAddedSampleItems,
                                          StringArray& inAddedFilePaths,
                                          File const & inFile,
@@ -30,12 +30,12 @@ numProcessedItems(inNumProcessedItems)
     mSampleAnalyser = std::make_unique<SampleAnalyser>();
 }
 
-SampleManagerThread::~SampleManagerThread()
+SampleManagerJob::~SampleManagerJob()
 {
     
 }
 
-ThreadPoolJob::JobStatus SampleManagerThread::runJob()
+ThreadPoolJob::JobStatus SampleManagerJob::runJob()
 {
     if (sampleItem == nullptr)
     {
