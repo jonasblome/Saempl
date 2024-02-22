@@ -33,15 +33,15 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
     // Set sample length
     float length = totalNumSamples * 1.0 / sampleRate;
     inSampleItem->setLength(length);
-    featureVector[0] = length / 100;
+    featureVector[0] = length / 3;
     
     // Set sample loudness and loudness range
     analyseSampleLoudness();
     inSampleItem->setLoudnessDecibel(decibel);
     inSampleItem->setLoudnessLUFS(integratedLUFS);
-    featureVector[1] = integratedLUFS / (-300);
-    featureVector[2] = lufsRangeStart / (-300);
-    featureVector[3] = lufsRangeEnd / (-300);
+    featureVector[1] = integratedLUFS / (-70);
+    featureVector[2] = lufsRangeStart / (-70);
+    featureVector[3] = lufsRangeEnd / (-70);
     
     // Set zero crossing rate
     featureVector[4] = zeroCrossingRate;
@@ -60,7 +60,7 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
         featureVector[6] = key * 1.0 / 12;
         
         // Set spectral centroid
-        featureVector[7] = spectralCentroid / 20000;
+        featureVector[7] = spectralCentroid / 5000;
         
         // Set spectral spread
         featureVector[8] = spectralSpread / 100;
@@ -69,7 +69,7 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
         featureVector[9] = spectralRollOffBandIndex * 1.0 / NUM_SPECTRAL_BANDS;
         
         // Set spectral flux
-        featureVector[10] = spectralFlux / 10;
+        featureVector[10] = spectralFlux;
         
         // Set chroma flux
         featureVector[11] = chromaFlux / 1000;

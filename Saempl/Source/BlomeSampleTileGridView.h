@@ -13,12 +13,12 @@
 #include "BlomeStyleDefinitions.h"
 #include "SampleLibrary.h"
 #include "BlomeSampleItemTileView.h"
-#include "SampleItemGridSorter.h"
+#include "SampleItemGridClusterer.h"
 
 /**
  The view class for the sample grid.
  
- This handles sorting and arranging the samples as tiles on a grid.
+ This handles clustering and arranging the samples as tiles on a grid.
  */
 class BlomeSampleTileGridView
 :
@@ -30,9 +30,9 @@ public:
     BlomeSampleTileGridView(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
     ~BlomeSampleTileGridView();
     /**
-     Sorts the grid by sample item similarity.
+     Clusters the grid by sample item similarity.
      */
-    void sortGrid();
+    void clusterGrid();
     /**
      Sets the grids' boundaries and performs the layout of the grid's components.
      */
@@ -97,9 +97,9 @@ public:
      */
     Point<int> selectDown();
     /**
-     Marks the grid as ready for sorting if something happened that requires re-sorting.
+     Marks the grid as ready for clustering if something happened that requires re-clustering.
      */
-    void setReadyForSorting();
+    void setReadyForClustering();
     /**
      @returns the ratio between the min. and max. tile size.
      */
@@ -123,7 +123,7 @@ private:
     Array<int> mSelectedSampleTileIndices;
     OwnedArray<SampleItem> emptySquares;
     StringArray mAddedSampleFilePaths;
-    std::unique_ptr<SampleItemGridSorter> mGridSorter;
+    std::unique_ptr<SampleItemGridClusterer> mGridClusterer;
     bool sampleItemCollectionChanged;
     int optimalWidth;
     int optimalHeight;

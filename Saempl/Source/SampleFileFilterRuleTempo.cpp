@@ -66,5 +66,5 @@ void SampleFileFilterRuleTempo::setCompareValue(int const & inCompareValue)
 
 bool SampleFileFilterRuleTempo::canHaveEffect()
 {
-    return isActive && (mCompareOperator != GREATER_THAN || mCompareValue != -1);
+    return isActive && (mCompareOperator != GREATER_THAN || mCompareValue > -1);
 }

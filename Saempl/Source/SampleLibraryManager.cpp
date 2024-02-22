@@ -132,6 +132,8 @@ void SampleLibraryManager::updateSampleLibraryFile()
         {
             libraryPath = libraryFile.getFullPathName();
             sampleLibraryXml = loadFileAsXml(sampleLibraryFile);
+            sampleLibraryXml.removeAttribute("CurrentVersion");
+            sampleLibraryXml.setAttribute("CurrentVersion", currentVersion);
             sampleItemsXml = sampleLibraryXml.getChildByName("SampleItems");
         }
         else
@@ -324,7 +326,38 @@ void SampleLibraryManager::loadSampleLibrary(File const & inLibraryDirectory)
 {
     addedFilePaths.clear();
     libraryDirectory = inLibraryDirectory;
+    
+//    // BPM statistics
+//    numWithinTwoBPM = 0;
+//    numWithinFiveBPM = 0;
+//    numWithinTenBPM = 0;
+//    numFalseBPMDetected = 0;
+//    
+//    // Key statistics
+//    numCorrectKey = 0;
+//    numWithinOneKey = 0;
+//    numWithinThreeKey = 0;
+//    numFalseKeyDetected = 0;
+    
     loadSampleLibraryFile(inLibraryDirectory);
+    
+//    // BPM statistics
+//    int totalCorrectBPMDetections = numWithinTwoBPM + numWithinFiveBPM + numWithinTenBPM;
+//    int totalBPMDetections = totalCorrectBPMDetections + numFalseBPMDetected;
+//    float totalCorrectBPMPercentage = totalCorrectBPMDetections * 1.0 / totalBPMDetections;
+//    float withinTwoPercentage = numWithinTwoBPM * 1.0 / totalBPMDetections;
+//    float withinFivePercentage = numWithinFiveBPM * 1.0 / totalBPMDetections;
+//    float withinTenPercentage = numWithinTenBPM * 1.0 / totalBPMDetections;
+//    float falseBPMDetectionsPercentage = numFalseBPMDetected * 1.0 / totalBPMDetections;
+//    
+//    // Key statistics
+//    int totalCorrectKeyDetections = numCorrectKey + numWithinOneKey + numWithinThreeKey;
+//    int totalKeyDetections = totalCorrectKeyDetections + numFalseKeyDetected;
+//    float totalCorrectKeyPercentage = totalCorrectKeyDetections * 1.0 / totalKeyDetections;
+//    float correctKeyPercentage = numCorrectKey * 1.0 / totalKeyDetections;
+//    float withinOneKeyPercentage = numWithinOneKey * 1.0 / totalKeyDetections;
+//    float withinThreeKeyPercentage = numWithinThreeKey * 1.0 / totalKeyDetections;
+//    float falseKeyDetectionsPercentage = numFalseKeyDetected * 1.0 / totalKeyDetections;
     
     if (libraryHasOldVersion)
     {
@@ -344,14 +377,6 @@ void SampleLibraryManager::loadSampleLibrary(File const & inLibraryDirectory)
 void SampleLibraryManager::createSampleItemFromXml(const XmlElement * sampleItemXml)
 {
     String filePath = sampleItemXml->getStringAttribute("FilePath").convertToPrecomposedUnicode();
-    
-//    if (fileHasBeenAdded(filePath))
-//    {
-//        // WHy??!?
-//        DBG(filePath);
-//        return;
-//    }
-    
     SampleItem* sampleItem = allSampleItems.add(new SampleItem());
     sampleItem->setFilePath(filePath);
     addedFilePaths.add(filePath);
@@ -383,11 +408,13 @@ void SampleLibraryManager::createSampleItemFromXml(const XmlElement * sampleItem
     samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[4]);
     int tempo = samplePropertyXml->getIntAttribute("PropertyValue");
     sampleItem->setTempo(tempo);
+//    evaluateTempoDetection(tempo, title);
     
     // Adding key property to item
     samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[5]);
     int key = samplePropertyXml->getIntAttribute("PropertyValue");
     sampleItem->setKey(key);
+//    evaluateKeyDetection(key, title);
     
     // Adding feature vector to item
     int numDimensions = NUM_CHROMA + NUM_FEATURES + NUM_SPECTRAL_BANDS;
@@ -557,4 +584,503 @@ String SampleLibraryManager::encodeForXml(String inString)
     data.swap(buffer);
     
     return String(data);
+}
+
+void SampleLibraryManager::evaluateTempoDetection(int tempo, const String& title)
+{
+    if (title.containsIgnoreCase("bpm"))
+    {
+        String bpmString = title.upToFirstOccurrenceOf("bpm", false, true);
+        bpmString = encodeForXml(bpmString);
+        
+        if (bpmString.getLastCharacter() == '_')
+        {
+            bpmString = bpmString.substring(0, bpmString.length() - 1);
+        }
+        
+        bpmString = bpmString.fromLastOccurrenceOf("_", false, true);
+        int bpm = bpmString.getIntValue();
+        
+        if ((bpm - 2 <= tempo && tempo <= bpm + 2) || (bpm - 2 <= tempo / 2.0 && tempo / 2.0 <= bpm + 2) || (bpm - 2 <= tempo * 2.0 && tempo * 2.0 <= bpm + 2))
+        {
+            numWithinTwoBPM++;
+        }
+        else if ((bpm - 5 <= tempo && tempo <= bpm + 5) || (bpm - 5 <= tempo / 2.0 && tempo / 2.0 <= bpm + 5) || (bpm - 5 <= tempo * 2.0 && tempo * 2.0 <= bpm + 5))
+        {
+            numWithinFiveBPM++;
+        }
+        else if ((bpm - 10 <= tempo && tempo <= bpm + 10) || (bpm - 10 <= tempo / 2.0 && tempo / 2.0 <= bpm + 10) || (bpm - 10 <= tempo * 2.0 && tempo * 2.0 <= bpm + 10))
+        {
+            numWithinTenBPM++;
+        }
+        else
+        {
+            numFalseBPMDetected++;
+        }
+    }
+}
+
+void SampleLibraryManager::evaluateKeyDetection(int key, const String& title)
+{
+    String keyString = title.removeCharacters(" _-");
+    
+    // Minor keys
+    if (keyString.containsIgnoreCase("ebm") || keyString.containsIgnoreCase("d#m"))
+    {
+        if (key == 0)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 1 || key == 11)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 2 || key == 3 || key == 10 || key == 9)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("bbm") || keyString.containsIgnoreCase("a#m"))
+    {
+        if (key == 1)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 2 || key == 0)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 3 || key == 4 || key == 11 || key == 10)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("fmin"))
+    {
+        if (key == 2)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 3 || key == 1)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 4 || key == 5 || key == 0 || key == 11)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("cmin"))
+    {
+        if (key == 3)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 4 || key == 2)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 5 || key == 6 || key == 1 || key == 0)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("gmin"))
+    {
+        if (key == 4)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 5 || key == 3)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 6 || key == 7 || key == 2 || key == 1)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("dmin"))
+    {
+        if (key == 5)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 6 || key == 4)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 7 || key == 8 || key == 3 || key == 2)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("amin"))
+    {
+        if (key == 6)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 7 || key == 5)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 8 || key == 9 || key == 4 || key == 3)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("emin"))
+    {
+        if (key == 7)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 8 || key == 6)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 9 || key == 10 || key == 5 || key == 4)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("bmin"))
+    {
+        if (key == 8)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 9 || key == 7)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 10 || key == 11 || key == 6 || key == 5)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("f#m") || keyString.containsIgnoreCase("gbm"))
+    {
+        if (key == 9)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 10 || key == 8)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 11 || key == 0 || key == 7 || key == 6)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("c#m") || keyString.containsIgnoreCase("dbm"))
+    {
+        if (key == 10)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 11 || key == 9)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 0 || key == 1 || key == 8 || key == 7)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("g#m") || keyString.containsIgnoreCase("abm"))
+    {
+        if (key == 11)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 0 || key == 10)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 1 || key == 2 || key == 9 || key == 8)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    
+    // Major keys
+    else if (keyString.containsIgnoreCase("gbmaj") || keyString.containsIgnoreCase("f#maj"))
+    {
+        if (key == 0)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 1 || key == 11)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 2 || key == 3 || key == 10 || key == 9)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("dbmaj") || keyString.containsIgnoreCase("c#maj"))
+    {
+        if (key == 1)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 2 || key == 0)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 3 || key == 4 || key == 11 || key == 10)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("abmaj") || keyString.containsIgnoreCase("g#maj"))
+    {
+        if (key == 2)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 3 || key == 1)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 4 || key == 5 || key == 0 || key == 11)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("ebmaj") || keyString.containsIgnoreCase("d#maj"))
+    {
+        if (key == 3)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 4 || key == 2)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 5 || key == 6 || key == 1 || key == 0)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("bbmaj") || keyString.containsIgnoreCase("a#maj"))
+    {
+        if (key == 4)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 5 || key == 3)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 6 || key == 7 || key == 2 || key == 1)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("fmaj"))
+    {
+        if (key == 5)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 6 || key == 4)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 7 || key == 8 || key == 3 || key == 2)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("cmaj"))
+    {
+        if (key == 6)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 7 || key == 5)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 8 || key == 9 || key == 4 || key == 3)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("gmaj"))
+    {
+        if (key == 7)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 8 || key == 6)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 9 || key == 10 || key == 5 || key == 4)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("dmaj"))
+    {
+        if (key == 8)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 9 || key == 7)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 10 || key == 11 || key == 6 || key == 5)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("amaj"))
+    {
+        if (key == 9)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 10 || key == 8)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 11 || key == 0 || key == 7 || key == 6)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("emaj"))
+    {
+        if (key == 10)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 11 || key == 9)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 0 || key == 1 || key == 8 || key == 7)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
+    else if (keyString.containsIgnoreCase("bmaj"))
+    {
+        if (key == 11)
+        {
+            numCorrectKey++;
+        }
+        else if (key == 0 || key == 10)
+        {
+            numWithinOneKey++;
+        }
+        else if (key == 1 || key == 2 || key == 9 || key == 8)
+        {
+            numWithinThreeKey++;
+        }
+        else
+        {
+            numFalseKeyDetected++;
+        }
+    }
 }

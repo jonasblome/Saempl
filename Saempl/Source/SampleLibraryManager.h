@@ -126,6 +126,14 @@ private:
     int currentVersion = 0;
     bool libraryHasOldVersion = false;
     int numProcessedItems;
+    int numWithinTwoBPM;
+    int numWithinFiveBPM;
+    int numWithinTenBPM;
+    int numFalseBPMDetected;
+    int numCorrectKey;
+    int numWithinOneKey;
+    int numWithinThreeKey;
+    int numFalseKeyDetected;
     
     /**
      Loads the given file as an XmlElement and returns a pointer to it.
@@ -149,6 +157,24 @@ private:
     void threadComplete(bool userPressedCancel) override;
     /**
      Encodes a string to a format that is suitable for a JUCE XmlElement tag name.
+     
+     Adapted from a method at:
+     https://stackoverflow.com/questions/5665231/most-efficient-way-to-escape-xml-html-in-c-string
+     by Giovanni Funchal
      */
     String encodeForXml(String inString);
+    /**
+     Evaluates whether the detected tempo matches the actual tempo of the sample.
+     
+     @param tempo the detected tempo of the sample.
+     @param title the sample's title containing the actual tempo.
+     */
+    void evaluateTempoDetection(int tempo, const String& title);
+    /**
+     Evaluates whether the detected key matches the actual key of the sample.
+     
+     @param key the detected key of the sample.
+     @param title the sample's title containing the actual key.
+     */
+    void evaluateKeyDetection(int key, const String& title);
 };

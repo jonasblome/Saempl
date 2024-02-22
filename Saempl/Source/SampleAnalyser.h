@@ -57,7 +57,7 @@ private:
     static int const keyFFTSize = 1 << keyFFTOrder;
     static int const keyWindowLength = keyFFTSize;
     static int const keyFFTHopLength = keyWindowLength / 2;
-    static int const loudnessBufferSize = 8192;
+    static int const loudnessBufferSize = 1024;
     float mSpectralDistribution[NUM_SPECTRAL_BANDS];
     float mChromaDistribution[NUM_CHROMA];
     // Change to only count local tempo optima that are above the local average

@@ -5,12 +5,10 @@
  
  
  By Samuel Gaehwiler from Klangfreund.
+ Adapted by Jonas Blome.
  Used in the klangfreund.com/lufsmeter/
  
  License: MIT
- 
- I'd be happy to hear about your usage of this code!
- -> klangfreund.com/contact/
  
  -------------------------------------------------------------------------------
  
@@ -158,6 +156,9 @@ void Ebu128LoudnessMeter::prepareToPlay(double sampleRate,
     reset();
 }
 
+/**
+ Adapted by Jonas Blome.
+ */
 void Ebu128LoudnessMeter::processBlock(juce::AudioSampleBuffer const & buffer,
                                        int& numZeroCrossings,
                                        float& decibel)

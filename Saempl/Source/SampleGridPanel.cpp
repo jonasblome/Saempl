@@ -85,11 +85,11 @@ void SampleGridPanel::setPanelComponents()
     
     if (sampleLibrary.getLibraryWasLoaded())
     {
-        mSampleTileGrid->setReadyForSorting();
+        mSampleTileGrid->setReadyForClustering();
         
         if (isShowing())
         {
-            mSampleTileGrid->sortGrid();
+            mSampleTileGrid->clusterGrid();
         }
     }
     
@@ -160,7 +160,7 @@ void SampleGridPanel::visibilityChanged()
 {
     if (isVisible())
     {
-        mSampleTileGrid->sortGrid();
+        mSampleTileGrid->clusterGrid();
     }
 }
 

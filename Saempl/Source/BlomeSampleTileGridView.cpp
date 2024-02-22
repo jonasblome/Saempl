@@ -18,9 +18,9 @@ sampleItemPanel(inSampleItemPanel)
     sampleItemCollectionChanged = false;
     addMouseListener(this, true);
     
-    // Add grid sorter
-    mGridSorter = std::make_unique<SampleItemGridSorter>(sampleLibrary.getSampleItems(FILTERED_SAMPLES));
-    mGridSorter->addChangeListener(this);
+    // Add grid clusterer
+    mGridClusterer = std::make_unique<SampleItemGridClusterer>(sampleLibrary.getSampleItems(FILTERED_SAMPLES));
+    mGridClusterer->addChangeListener(this);
     
     // Add audio player component
     mAudioPlayer = std::make_unique<AudioPlayer>();
@@ -29,11 +29,11 @@ sampleItemPanel(inSampleItemPanel)
 BlomeSampleTileGridView::~BlomeSampleTileGridView()
 {
     sampleLibrary.removeChangeListener(this);
-    mGridSorter->removeChangeListener(this);
+    mGridClusterer->removeChangeListener(this);
     removeMouseListener(this);
 }
 
-void BlomeSampleTileGridView::sortGrid()
+void BlomeSampleTileGridView::clusterGrid()
 {
     if (!sampleItemCollectionChanged)
     {
@@ -87,10 +87,10 @@ void BlomeSampleTileGridView::sortGrid()
         sampleItems.add(emptySquares.add(new SampleItem()));
     }
     
-    // Sort sample item tiles with Fast Linear Assignment Sorting (FLAS)
+    // Cluster sample item tiles with Fast Linear Assignment Sorting (FLAS)
     if (sampleItems.size() > 3)
     {
-        mGridSorter->applySorting(optimalHeight, optimalWidth, false);
+        mGridClusterer->applyClustering(optimalHeight, optimalWidth, false);
     }
     else
     {
@@ -216,7 +216,7 @@ Point<int> BlomeSampleTileGridView::selectDown()
     return getTileCenter(selectTile(newIndex >= mSampleItemTiles.size() ? lastSelectedIndex : newIndex));
 }
 
-void BlomeSampleTileGridView::setReadyForSorting()
+void BlomeSampleTileGridView::setReadyForClustering()
 {
     sampleItemCollectionChanged = true;
 }
@@ -280,15 +280,15 @@ void BlomeSampleTileGridView::changeListenerCallback(ChangeBroadcaster* source)
     if (source == &sampleLibrary && isShowing())
     {
         setVisible(false);
-        setReadyForSorting();
-        sortGrid();
+        setReadyForClustering();
+        clusterGrid();
     }
     else if (source == &sampleLibrary && !isShowing())
     {
         setVisible(false);
-        setReadyForSorting();
+        setReadyForClustering();
     }
-    else if (source == &*mGridSorter)
+    else if (source == &*mGridClusterer)
     {
         // Refill tile collection
         setupGrid();
