@@ -14,9 +14,7 @@
 
 #if JUCE_WINDOWS
 static String const DIRECTORY_SEPARATOR = "\\";
-#elif JUCE_MAC
-static String const DIRECTORY_SEPARATOR = "/";
-#elif JUCE_LINUX
+#elif JUCE_MAC || JUCE_LINUX
 static String const DIRECTORY_SEPARATOR = "/";
 #endif
 
