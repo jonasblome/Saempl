@@ -9,11 +9,11 @@
 
 #include "HeaderPanel.h"
 
-HeaderPanel::HeaderPanel(SaemplAudioProcessor& inProcessor, CenterPanel& inCenterPanel)
+HeaderPanel::HeaderPanel(SaemplAudioProcessor& inProcessor, CentrePanel& inCentrePanel)
 :
 PanelBase(inProcessor),
 sampleLibrary(currentProcessor.getSampleLibrary()),
-centerPanel(inCenterPanel)
+centrePanel(inCentrePanel)
 {
     setSize(style->HEADER_PANEL_WIDTH, style->HEADER_PANEL_HEIGHT);
     setPanelComponents();
@@ -132,7 +132,7 @@ void HeaderPanel::setToggleSampleLibraryPanelButton(int buttonWidth, int x)
     {
         if (currentProcessor.getActiveNavigationPanel() != PANELS_LIBRARY_PANEL)
         {
-            centerPanel.setActiveNavigationPanel(PANELS_LIBRARY_PANEL);
+            centrePanel.setActiveNavigationPanel(PANELS_LIBRARY_PANEL);
             mToggleSampleLibraryPanelButton->setImages(false,
                                                        true,
                                                        true,
@@ -208,7 +208,7 @@ void HeaderPanel::setToggleSampleTablePanelButton(int buttonWidth, int x)
     {
         if (currentProcessor.getActiveNavigationPanel() != PANELS_TABLE_PANEL)
         {
-            centerPanel.setActiveNavigationPanel(PANELS_TABLE_PANEL);
+            centrePanel.setActiveNavigationPanel(PANELS_TABLE_PANEL);
             mToggleSampleLibraryPanelButton->setImages(false,
                                                        true,
                                                        true,
@@ -284,7 +284,7 @@ void HeaderPanel::setToggleSampleGridPanelButton(int buttonWidth, int x)
     {
         if (currentProcessor.getActiveNavigationPanel() != PANELS_GRID_PANEL)
         {
-            centerPanel.setActiveNavigationPanel(PANELS_GRID_PANEL);
+            centrePanel.setActiveNavigationPanel(PANELS_GRID_PANEL);
             mToggleSampleLibraryPanelButton->setImages(false,
                                                        true,
                                                        true,
@@ -467,7 +467,7 @@ void HeaderPanel::setRandomSampleButton(int buttonWidth, int x)
             mToggleSampleTablePanelButton->triggerClick();
         }
         
-        centerPanel.selectRandomSample();
+        centrePanel.selectRandomSample();
     };
     addAndMakeVisible(*mRandomSampleButton);
 }

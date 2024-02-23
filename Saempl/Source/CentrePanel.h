@@ -1,7 +1,7 @@
 /*
  ==============================================================================
  
- CenterPanel.h
+ CentrePanel.h
  Author:  Jonas Blome
  
  ==============================================================================
@@ -19,18 +19,18 @@
  
  Includes the sample navigation panels and the SampleItemPanel for audio previewing.
  */
-class CenterPanel
+class CentrePanel
 :
 public PanelBase
 {
 public:
     /**
-     The constructor for the center panel.
+     The constructor for the centre panel.
      
      @param inProcessor the audio processor of the current plugin instance.
      */
-    CenterPanel(SaemplAudioProcessor& inProcessor);
-    ~CenterPanel();
+    CentrePanel(SaemplAudioProcessor& inProcessor);
+    ~CentrePanel();
     /**
      Toggles between showing the library panel, the table panel and the grid panel.
      

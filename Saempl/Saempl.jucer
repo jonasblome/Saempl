@@ -105,8 +105,8 @@
             file="Source/FileFilterPanel.cpp"/>
       <FILE id="PleHun" name="FileFilterPanel.h" compile="0" resource="0"
             file="Source/FileFilterPanel.h"/>
-      <FILE id="ccbkEr" name="CenterPanel.cpp" compile="1" resource="0" file="Source/CenterPanel.cpp"/>
-      <FILE id="YtLVhW" name="CenterPanel.h" compile="0" resource="0" file="Source/CenterPanel.h"/>
+      <FILE id="ccbkEr" name="CentrePanel.cpp" compile="1" resource="0" file="Source/CentrePanel.cpp"/>
+      <FILE id="YtLVhW" name="CentrePanel.h" compile="0" resource="0" file="Source/CentrePanel.h"/>
       <FILE id="Wk9vDR" name="SampleNavigationPanel.cpp" compile="1" resource="0"
             file="Source/SampleNavigationPanel.cpp"/>
       <FILE id="ztCtkY" name="SampleNavigationPanel.h" compile="0" resource="0"

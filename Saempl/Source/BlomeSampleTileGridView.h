@@ -46,7 +46,7 @@ public:
     /**
      Selects a random tile in the grid and returns its position.
      
-     @returns the center point of the selected tile.
+     @returns the centre point of the selected tile.
      */
     Point<int> selectRandomTile();
     /**
@@ -66,7 +66,7 @@ public:
      
      Selects the first tile if none are currently selected.
      
-     @returns the center position of the newly selected tile.
+     @returns the centre position of the newly selected tile.
      */
     Point<int> selectLeft();
     
@@ -75,7 +75,7 @@ public:
      
      Selects the first tile if none are currently selected.
      
-     @returns the center position of the newly selected tile.
+     @returns the centre position of the newly selected tile.
      */
     Point<int> selectUp();
     
@@ -84,7 +84,7 @@ public:
      
      Selects the first tile if none are currently selected.
      
-     @returns the center position of the newly selected tile.
+     @returns the centre position of the newly selected tile.
      */
     Point<int> selectRight();
     
@@ -93,7 +93,7 @@ public:
      
      Selects the first tile if none are currently selected.
      
-     @returns the center position of the newly selected tile.
+     @returns the centre position of the newly selected tile.
      */
     Point<int> selectDown();
     /**
@@ -174,11 +174,11 @@ private:
      */
     void reanalyseSamples();
     /**
-     Returns the center point of a given tile.
+     Returns the centre point of a given tile.
      
      @param inTile a pointer to the tile.
      
-     @returns the point of the tile's center.
+     @returns the point of the tile's centre.
      */
-    Point<int> getTileCenter(BlomeSampleItemTileView* inTile);
+    Point<int> getTileCentre(BlomeSampleItemTileView* inTile);
 };

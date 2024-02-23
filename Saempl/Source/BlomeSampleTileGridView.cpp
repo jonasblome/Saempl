@@ -127,13 +127,13 @@ void BlomeSampleTileGridView::setZoomFactor(float inZoomFactor)
     currentZoomFactor = inZoomFactor;
 }
 
-Point<int> BlomeSampleTileGridView::getTileCenter(BlomeSampleItemTileView *randomTile)
+Point<int> BlomeSampleTileGridView::getTileCentre(BlomeSampleItemTileView *randomTile)
 {
-    Point<int> center = randomTile->getPosition();
+    Point<int> centre = randomTile->getPosition();
     int halfTildWidth = randomTile->getWidth() / 2;
-    center.addXY(halfTildWidth, halfTildWidth);
+    centre.addXY(halfTildWidth, halfTildWidth);
     
-    return center;
+    return centre;
 }
 
 Point<int> BlomeSampleTileGridView::selectRandomTile()
@@ -144,7 +144,7 @@ Point<int> BlomeSampleTileGridView::selectRandomTile()
     BlomeSampleItemTileView* randomTile = mSampleItemTiles.getUnchecked(randomTileIndex);
     selectTile(randomTileIndex);
     
-    return getTileCenter(randomTile);
+    return getTileCentre(randomTile);
 }
 
 void BlomeSampleTileGridView::loadSelectedTileIntoAudioPlayer()
@@ -186,7 +186,7 @@ Point<int> BlomeSampleTileGridView::selectLeft()
     deselectAll();
     int newIndex = lastSelectedIndex % optimalWidth == 0 ? lastSelectedIndex : lastSelectedIndex - 1;
     
-    return getTileCenter(selectTile(newIndex));
+    return getTileCentre(selectTile(newIndex));
 }
 
 Point<int> BlomeSampleTileGridView::selectUp()
@@ -195,7 +195,7 @@ Point<int> BlomeSampleTileGridView::selectUp()
     int newIndex = lastSelectedIndex - optimalWidth;
     deselectAll();
     
-    return getTileCenter(selectTile(newIndex < 0 ? lastSelectedIndex : newIndex));
+    return getTileCentre(selectTile(newIndex < 0 ? lastSelectedIndex : newIndex));
 }
 
 Point<int> BlomeSampleTileGridView::selectRight()
@@ -204,7 +204,7 @@ Point<int> BlomeSampleTileGridView::selectRight()
     deselectAll();
     int newIndex = lastSelectedIndex % optimalWidth == optimalWidth - 1 ? lastSelectedIndex : lastSelectedIndex + 1;
     
-    return getTileCenter(selectTile(newIndex));
+    return getTileCentre(selectTile(newIndex));
 }
 
 Point<int> BlomeSampleTileGridView::selectDown()
@@ -213,7 +213,7 @@ Point<int> BlomeSampleTileGridView::selectDown()
     int newIndex = lastSelectedIndex + optimalWidth;
     deselectAll();
     
-    return getTileCenter(selectTile(newIndex >= mSampleItemTiles.size() ? lastSelectedIndex : newIndex));
+    return getTileCentre(selectTile(newIndex >= mSampleItemTiles.size() ? lastSelectedIndex : newIndex));
 }
 
 void BlomeSampleTileGridView::setReadyForClustering()

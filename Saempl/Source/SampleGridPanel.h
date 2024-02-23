@@ -49,9 +49,9 @@ private:
     bool keyPressed(KeyPress const & key) override;
     void mouseMagnify(MouseEvent const & mouseEvent, float magnifyAmount) override;
     /**
-     Moves the viewport's center position the given position.
+     Moves the viewport's centre position the given position.
      
-     @param newPosition the new center position.
+     @param newPosition the new centre position.
      */
-    void centerPositionInGridViewport(Point<int>& newPosition);
+    void centrePositionInGridViewport(Point<int>& newPosition);
 };

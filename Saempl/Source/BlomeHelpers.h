@@ -16,6 +16,8 @@
 static String const DIRECTORY_SEPARATOR = "\\";
 #elif JUCE_MAC
 static String const DIRECTORY_SEPARATOR = "/";
+#elif JUCE_LINUX
+static String const DIRECTORY_SEPARATOR = "/";
 #endif
 
 static String const SAMPLE_LIBRARY_FILE_EXTENSION = ".bslf";

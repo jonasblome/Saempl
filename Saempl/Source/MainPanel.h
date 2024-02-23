@@ -11,7 +11,7 @@
 
 #include "PanelBase.h"
 #include "HeaderPanel.h"
-#include "CenterPanel.h"
+#include "CentrePanel.h"
 
 /**
  Holds all the panels and components of the plugin editor window.
@@ -32,7 +32,7 @@ public:
     
 private:
     std::unique_ptr<HeaderPanel> mHeaderPanel;
-    std::unique_ptr<CenterPanel> mCenterPanel;
+    std::unique_ptr<CentrePanel> mCentrePanel;
     BlomeStyling::Ptr style;
     
     void paint(Graphics& g) override;

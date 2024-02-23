@@ -25,7 +25,7 @@ SampleGridPanel::~SampleGridPanel()
     
 }
 
-void SampleGridPanel::centerPositionInGridViewport(Point<int>& newPosition)
+void SampleGridPanel::centrePositionInGridViewport(Point<int>& newPosition)
 {
     newPosition.addXY(-mGridViewport->getWidth() / 2, -mGridViewport->getHeight() / 2);
     mGridViewport->setViewPosition(newPosition);
@@ -34,7 +34,7 @@ void SampleGridPanel::centerPositionInGridViewport(Point<int>& newPosition)
 void SampleGridPanel::selectRandomSample()
 {
     Point<int > newPosition = mSampleTileGrid->selectRandomTile();
-    centerPositionInGridViewport(newPosition);
+    centrePositionInGridViewport(newPosition);
 }
 
 void SampleGridPanel::paint(Graphics& g)
@@ -128,7 +128,7 @@ void SampleGridPanel::setPanelComponents()
                            viewPosition.getY() * newOldZoomRatio);
         mSampleTileGrid->performGridLayout();
         
-        // Restore center view position
+        // Restore centre view position
         viewPosition.addXY(-mGridViewport->getWidth() * 1.0 / 2, -mGridViewport->getHeight() * 1.0 / 2);
         mGridViewport->setViewPosition(viewPosition.roundToInt());
     };
@@ -186,25 +186,25 @@ bool SampleGridPanel::keyPressed(KeyPress const & key)
     else if (keyCode == KeyPress::leftKey)
     {
         Point<int > newPosition = mSampleTileGrid->selectLeft();
-        centerPositionInGridViewport(newPosition);
+        centrePositionInGridViewport(newPosition);
         return true;
     }
     else if (keyCode == KeyPress::upKey)
     {
         Point<int > newPosition = mSampleTileGrid->selectUp();
-        centerPositionInGridViewport(newPosition);
+        centrePositionInGridViewport(newPosition);
         return true;
     }
     else if (keyCode == KeyPress::rightKey)
     {
         Point<int > newPosition = mSampleTileGrid->selectRight();
-        centerPositionInGridViewport(newPosition);
+        centrePositionInGridViewport(newPosition);
         return true;
     }
     else if (keyCode == KeyPress::downKey)
     {
         Point<int > newPosition = mSampleTileGrid->selectDown();
-        centerPositionInGridViewport(newPosition);
+        centrePositionInGridViewport(newPosition);
         return true;
     }
     else if (key.getKeyCode() == 75) // K

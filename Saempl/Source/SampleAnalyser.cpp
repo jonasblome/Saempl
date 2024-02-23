@@ -389,7 +389,7 @@ int SampleAnalyser::analyseSampleTempo()
         noveltyFunction.getReference(w) /= max;
     }
     
-    // Padding novelty function to apply a centered windowing function at position t = 0
+    // Padding novelty function to apply a centred windowing function at position t = 0
     int numTempogramWindows;
     Array<Array<float>> spectralTempogram = calculateTempogram(noveltyFunction, numTempogramWindows);
     

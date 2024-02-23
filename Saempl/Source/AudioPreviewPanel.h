@@ -69,7 +69,7 @@ public:
      */
     bool getFollowsTransport();
     /**
-     Sets if the preview should center the playhead and follow the playback.
+     Sets if the preview should centre the playhead and follow the playback.
      
      @param shouldFollow true if it should follow, false if it should stay static.
      */

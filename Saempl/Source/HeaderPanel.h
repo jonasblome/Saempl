@@ -10,7 +10,7 @@
 #pragma once
 
 #include "PanelBase.h"
-#include "CenterPanel.h"
+#include "CentrePanel.h"
 #include "FileFilterPanel.h"
 #include "BlomeImageButton.h"
 
@@ -29,15 +29,15 @@ public:
      The constructor the plugins header panel.
      
      @param inProcessor the audio processor of the current plugin instance.
-     @param inCenterPanel the panel for the central plugin UI content.
+     @param inCentrePanel the panel for the central plugin UI content.
      */
-    HeaderPanel(SaemplAudioProcessor& inProcessor, CenterPanel& inCenterPanel);
+    HeaderPanel(SaemplAudioProcessor& inProcessor, CentrePanel& inCentrePanel);
     ~HeaderPanel();
     bool keyPressed(KeyPress const & key) override;
     
 private:
     SampleLibrary& sampleLibrary;
-    CenterPanel& centerPanel;
+    CentrePanel& centrePanel;
     std::unique_ptr<BlomeImageButton> mRefreshLibraryButton;
     std::unique_ptr<BlomeImageButton> mChooseLibraryDirectoryButton;
     std::unique_ptr<FileChooser> mFileChooser;

@@ -1,28 +1,28 @@
 /*
  ==============================================================================
  
- CenterPanel.cpp
+ CentrePanel.cpp
  Author:  Jonas Blome
  
  ==============================================================================
  */
 
-#include "CenterPanel.h"
+#include "CentrePanel.h"
 
-CenterPanel::CenterPanel(SaemplAudioProcessor& inProcessor)
+CentrePanel::CentrePanel(SaemplAudioProcessor& inProcessor)
 :
 PanelBase(inProcessor)
 {
-    setSize(style->CENTER_PANEL_WIDTH, style->CENTER_PANEL_HEIGHT);
+    setSize(style->CENTRE_PANEL_WIDTH, style->CENTRE_PANEL_HEIGHT);
     setPanelComponents();
 }
 
-CenterPanel::~CenterPanel()
+CentrePanel::~CentrePanel()
 {
     
 }
 
-void CenterPanel::paint(Graphics& g)
+void CentrePanel::paint(Graphics& g)
 {
     // Draw sample item toggle area background
     g.setColour(style->COLOUR_ACCENT_MEDIUM);
@@ -37,7 +37,7 @@ void CenterPanel::paint(Graphics& g)
                            style->CORNER_SIZE_MEDIUM);
 }
 
-void CenterPanel::setPanelComponents()
+void CentrePanel::setPanelComponents()
 {
     // Add panel for sample item view
     mSampleItemPanel = std::make_unique<SampleItemPanel>(currentProcessor);
@@ -63,29 +63,29 @@ void CenterPanel::setPanelComponents()
     resizePanelComponents();
 }
 
-void CenterPanel::setSampleItemPanelVisibility(bool inShouldBeVisible)
+void CentrePanel::setSampleItemPanelVisibility(bool inShouldBeVisible)
 {
     mSampleItemPanel->setVisible(inShouldBeVisible);
     currentProcessor.setSampleItemIsVisible(inShouldBeVisible);
     resizePanelComponents();
 }
 
-void CenterPanel::setActiveNavigationPanel(NavigationPanelType inPanelType)
+void CentrePanel::setActiveNavigationPanel(NavigationPanelType inPanelType)
 {
     mSampleNavigationPanel->setActiveNavigationPanel(inPanelType);
 }
 
-void CenterPanel::selectRandomSample()
+void CentrePanel::selectRandomSample()
 {
     mSampleNavigationPanel->selectRandomSample();
 }
 
-void CenterPanel::playCurrentAudio()
+void CentrePanel::playCurrentAudio()
 {
     mSampleItemPanel->startOrStopPlayback();
 }
 
-void CenterPanel::resizePanelComponents()
+void CentrePanel::resizePanelComponents()
 {
     if (mSampleNavigationPanel != nullptr)
     {
@@ -137,7 +137,7 @@ void CenterPanel::resizePanelComponents()
     }
 }
 
-bool CenterPanel::keyPressed(KeyPress const & key)
+bool CentrePanel::keyPressed(KeyPress const & key)
 {
     int keyCode = key.getKeyCode();
     

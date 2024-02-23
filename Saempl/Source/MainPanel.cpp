@@ -80,7 +80,7 @@ void MainPanel::paint(Graphics &g)
     drawDropShadow(g,
                    Rectangle<int>(0,
                                   style->HEADER_PANEL_HEIGHT
-                                  + style->CENTER_PANEL_HEIGHT - style->BUTTON_SIZE_SMALL,
+                                  + style->CENTRE_PANEL_HEIGHT - style->BUTTON_SIZE_SMALL,
                                   style->SAMPLE_ITEM_PANEL_WIDTH,
                                   style->SAMPLE_ITEM_PANEL_HEIGHT),
                    0,
@@ -91,12 +91,12 @@ void MainPanel::paint(Graphics &g)
 
 void MainPanel::setPanelComponents()
 {
-    // Add center panel
-    mCenterPanel = std::make_unique<CenterPanel>(currentProcessor);
-    addAndMakeVisible(*mCenterPanel);
+    // Add centre panel
+    mCentrePanel = std::make_unique<CentrePanel>(currentProcessor);
+    addAndMakeVisible(*mCentrePanel);
     
     // Add header panel
-    mHeaderPanel = std::make_unique<HeaderPanel>(currentProcessor, *mCenterPanel);
+    mHeaderPanel = std::make_unique<HeaderPanel>(currentProcessor, *mCentrePanel);
     addAndMakeVisible(*mHeaderPanel);
     
     resizePanelComponents();
@@ -106,7 +106,7 @@ bool MainPanel::keyPressed(KeyPress const & key)
 {
     bool pressWasHandled = false;
     
-    if (mCenterPanel->keyPressed(key) || mHeaderPanel->keyPressed(key))
+    if (mCentrePanel->keyPressed(key) || mHeaderPanel->keyPressed(key))
     {
         pressWasHandled = true;
     }
@@ -116,9 +116,9 @@ bool MainPanel::keyPressed(KeyPress const & key)
 
 void MainPanel::resizePanelComponents()
 {
-    if (mCenterPanel != nullptr)
+    if (mCentrePanel != nullptr)
     {
-        mCenterPanel->setBounds(0, style->HEADER_PANEL_HEIGHT, getWidth(), getHeight() - style->HEADER_PANEL_HEIGHT);
+        mCentrePanel->setBounds(0, style->HEADER_PANEL_HEIGHT, getWidth(), getHeight() - style->HEADER_PANEL_HEIGHT);
     }
     
     if (mHeaderPanel != nullptr)
