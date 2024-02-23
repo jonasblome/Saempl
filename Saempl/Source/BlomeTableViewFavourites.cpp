@@ -1,19 +1,19 @@
 /*
  ==============================================================================
  
- BlomeTableViewPalette.cpp
+ BlomeTableViewFavourites.cpp
  Author:  Jonas Blome
  
  ==============================================================================
  */
 
-#include "BlomeTableViewPalette.h"
+#include "BlomeTableViewFavourites.h"
 
-BlomeTableViewPalette::BlomeTableViewPalette(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
+BlomeTableViewFavourites::BlomeTableViewFavourites(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
 :
 BlomeTableViewBase(inProcessor, inSampleItemPanel)
 {
-    mSampleItemCollectionType = PALETTE_SAMPLES;
+    mSampleItemCollectionType = FAVOURITE_SAMPLES;
     
     getHeader().addColumn(PROPERTY_NAMES[0],
                           1,
@@ -26,18 +26,18 @@ BlomeTableViewBase(inProcessor, inSampleItemPanel)
     getHeader().reSortTable();
 }
 
-BlomeTableViewPalette::~BlomeTableViewPalette()
+BlomeTableViewFavourites::~BlomeTableViewFavourites()
 {
     
 }
 
-void BlomeTableViewPalette::cellClicked(int rowNumber, int columnId, MouseEvent const &mouseEvent)
+void BlomeTableViewFavourites::cellClicked(int rowNumber, int columnId, MouseEvent const &mouseEvent)
 {
     // Show options pop up menu
     if (mouseEvent.mods.isRightButtonDown())
     {
         PopupMenu popupMenu;
-        popupMenu.addItem("Remove Sample(s) from Palette", [this] { removeSampleItemFromPalette(); } );
+        popupMenu.addItem("Remove Sample(s) from Favourites", [this] { removeSampleItemFromFavourites(); } );
         popupMenu.addItem("(Re-)analyse Sample(s)", [this] { reanalyseSamples(); });
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
     }
@@ -46,15 +46,15 @@ void BlomeTableViewPalette::cellClicked(int rowNumber, int columnId, MouseEvent 
 /**
  Handles what happens when files are dropped onto the tree view.
  */
-void BlomeTableViewPalette::filesDropped(StringArray const & files, int x, int y)
+void BlomeTableViewFavourites::filesDropped(StringArray const & files, int x, int y)
 {
-    // Adding all the dropped files to the library and palette
-    sampleLibrary.addAllToPalette(files);
+    // Adding all the dropped files to the library and favourites
+    sampleLibrary.addAllToFavourites(files);
 }
 
-void BlomeTableViewPalette::removeSampleItemFromPalette()
+void BlomeTableViewFavourites::removeSampleItemFromFavourites()
 {
-    // Delete all selected items from palette
+    // Delete all selected items from favourites
     Array<SampleItem*> sampleItems;
     
     for (int r = getNumSelectedRows() - 1; r >= 0; r--)
@@ -64,5 +64,5 @@ void BlomeTableViewPalette::removeSampleItemFromPalette()
                         .getUnchecked(getSelectedRow(r)));
     }
     
-    sampleLibrary.removeAllFromPalette(sampleItems);
+    sampleLibrary.removeAllFromFavourites(sampleItems);
 }

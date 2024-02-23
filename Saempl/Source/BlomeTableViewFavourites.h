@@ -1,7 +1,7 @@
 /*
  ==============================================================================
  
- BlomeTableViewPalette.h
+ BlomeTableViewFavourites.h
  Author:  Jonas Blome
  
  ==============================================================================
@@ -12,29 +12,29 @@
 #include "BlomeTableViewBase.h"
 
 /**
- Implements BlomeTableViewBase for the SamplePalettePanel.
+ Implements BlomeTableViewBase for the SampleFavouritesPanel.
  
- Handles removing of each row's SampleItem from the sample palette collection.
+ Handles removing of each row's SampleItem from the sample favourites collection.
  */
-class BlomeTableViewPalette
+class BlomeTableViewFavourites
 :
 public BlomeTableViewBase
 {
 public:
     /**
-     Constructor for the table view on the SampleLibrary::mPaletteSampleItems collection.
+     Constructor for the table view on the SampleLibrary::mFavouriteSampleItems collection.
      
      @param inProcessor the processor object of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
-    BlomeTableViewPalette(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
-    ~BlomeTableViewPalette();
+    BlomeTableViewFavourites(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
+    ~BlomeTableViewFavourites();
     
 private:
     void cellClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent) override;
     void filesDropped(StringArray const & files, int x, int y) override;
     /**
-     Removes the SampleItem object of the selected rows from the sample palette collection collection.
+     Removes the SampleItem object of the selected rows from the sample favourites collection collection.
      */
-    void removeSampleItemFromPalette();
+    void removeSampleItemFromFavourites();
 };

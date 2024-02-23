@@ -249,7 +249,7 @@ private:
      */
     void doSwaps(Array<int>& swapPositions, int numSwapPositions, Array<std::vector<float>>& grid);
     /**
-     Calculates a normalized distance matrix between all vectors that are in the swap positions and the current vectors in the grid.
+     Calculates a normalised distance matrix between all vectors that are in the swap positions and the current vectors in the grid.
      
      @param inFeatureVectors the feature vectors of the collection to cluster.
      @param inGridVectors the vectors in the current grid state.
@@ -265,7 +265,7 @@ private:
      */
     float calculateDistance(std::vector<float> v1, std::vector<float> v2);
     /**
-     Computes the optimal permutation of vectors that minimizes the sum of distances between the vectors.
+     Computes the optimal permutation of vectors that minimises the sum of distances between the vectors.
      
      @param matrix the distance matrix for the vectors.
      @param numDimensions the number of dimensions in a feature vector.

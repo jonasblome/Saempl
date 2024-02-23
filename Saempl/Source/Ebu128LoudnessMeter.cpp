@@ -128,12 +128,12 @@ void Ebu128LoudnessMeter::prepareToPlay(double sampleRate,
     numberOfBinsSinceLastGateMeasurementForI = 1;
     measurementDuration = 0;
     
-    // Initialize the bins
+    // Initialise the bins
     bin.assign(numberOfInputChannels, vector<double>(numberOfBins, 0.0));
     averageOfTheLast3s.assign(numberOfInputChannels, 0.0);
     averageOfTheLast400ms.assign(numberOfInputChannels, 0.0);
     
-    // Initialize the channel weighting
+    // Initialise the channel weighting
     channelWeighting.clear();
     
     for (int k = 0; k != numberOfInputChannels; ++k)

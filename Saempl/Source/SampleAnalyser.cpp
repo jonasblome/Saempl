@@ -33,7 +33,7 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
     // Set sample length
     float length = totalNumSamples * 1.0 / sampleRate;
     inSampleItem->setLength(length);
-    featureVector[0] = length / 3;
+    featureVector[0] = length / 5;
     
     // Set sample loudness and loudness range
     analyseSampleLoudness();
@@ -52,12 +52,12 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
         // Set sample tempo
         float tempo = analyseSampleTempo();
         inSampleItem->setTempo(tempo);
-        featureVector[5] = (tempo - lowerBPMLimit) / (upperBPMLimit - lowerBPMLimit);
+        featureVector[5] = (tempo - lowerBPMLimit) / (upperBPMLimit - lowerBPMLimit) * 4;
         
         // Set sample key
         int key = analyseSampleKey();
         inSampleItem->setKey(key);
-        featureVector[6] = key * 1.0 / 12;
+        featureVector[6] = key * 1.0 / 2;
         
         // Set spectral centroid
         featureVector[7] = spectralCentroid / 5000;
@@ -379,7 +379,7 @@ int SampleAnalyser::analyseSampleTempo()
     // Subtract local average
     noveltyFunctionSubtractAverage(noveltyFunction);
     
-    // Normalize novelty function
+    // Normalise novelty function
     float max = *std::max_element(noveltyFunction.getRawDataPointer(),
                                   noveltyFunction.getRawDataPointer()
                                   + numFFTWindows - 1);
@@ -489,7 +489,7 @@ void SampleAnalyser::calculateChromaDistribution(Array<Array<float>> &logSpectro
     
     chromaFlux = (chromaFlux / numFFTWindows) / logSpectrogram.size();
     
-    // Normalize chroma distribution
+    // Normalise chroma distribution
     float maxChroma = *std::max_element(mChromaDistribution,
                                         mChromaDistribution
                                         + NUM_CHROMA);
@@ -536,7 +536,7 @@ int SampleAnalyser::analyseSampleKey()
     float coefficientSum = 0.0;
     Array<Array<float>> logSpectrogram = calculateLogSpectrogram(coefficientSum);
     
-    // Normalize spectral distribution
+    // Normalise spectral distribution
     float maxSpectral = *std::max_element(mSpectralDistribution,
                                           mSpectralDistribution
                                           + NUM_SPECTRAL_BANDS);

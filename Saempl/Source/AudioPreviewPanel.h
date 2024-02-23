@@ -4,6 +4,9 @@
  AudioPreviewPanel.h
  Author:  Jonas Blome
  
+ Some of the code in this class is adapted from the JUCE DemoRunner Demo
+ that can be found under DemoRunner->Audio->AudioPlaybackDemo.h
+ 
  ==============================================================================
  */
 
@@ -100,7 +103,7 @@ public:
     
 private:
     AudioPlayer& audioPlayer;
-    Slider& mZoomSlider;
+    Slider& zoomSlider;
     std::unique_ptr<ScrollBar> mAudioPreviewScrollbar;
     std::unique_ptr<AudioThumbnailCache> mThumbnailCache;
     std::unique_ptr<AudioThumbnail> mAudioPreview;

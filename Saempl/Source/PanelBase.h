@@ -39,7 +39,7 @@ protected:
     void paint(Graphics& g) override;
     void resized() override;
     /**
-     Initializes the panel's components and adds them to the panel.
+     Initialises the panel's components and adds them to the panel.
      */
     virtual void setPanelComponents() {};
     /**

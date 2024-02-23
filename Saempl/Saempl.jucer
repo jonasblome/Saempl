@@ -81,10 +81,10 @@
             file="Source/BlomeTableViewNavigation.cpp"/>
       <FILE id="eRtVX0" name="BlomeTableViewNavigation.h" compile="0" resource="0"
             file="Source/BlomeTableViewNavigation.h"/>
-      <FILE id="ki9O3Y" name="BlomeTableViewPalette.cpp" compile="1" resource="0"
-            file="Source/BlomeTableViewPalette.cpp"/>
-      <FILE id="MuMIeK" name="BlomeTableViewPalette.h" compile="0" resource="0"
-            file="Source/BlomeTableViewPalette.h"/>
+      <FILE id="ki9O3Y" name="BlomeTableViewFavourites.cpp" compile="1" resource="0"
+            file="Source/BlomeTableViewFavourites.cpp"/>
+      <FILE id="MuMIeK" name="BlomeTableViewFavourites.h" compile="0" resource="0"
+            file="Source/BlomeTableViewFavourites.h"/>
       <FILE id="y7kZFT" name="BlomeSampleTileGridView.cpp" compile="1" resource="0"
             file="Source/BlomeSampleTileGridView.cpp"/>
       <FILE id="CRAXtH" name="BlomeSampleTileGridView.h" compile="0" resource="0"
@@ -123,10 +123,10 @@
             file="Source/SampleGridPanel.cpp"/>
       <FILE id="OHq0aB" name="SampleGridPanel.h" compile="0" resource="0"
             file="Source/SampleGridPanel.h"/>
-      <FILE id="VcRINU" name="SamplePalettePanel.cpp" compile="1" resource="0"
-            file="Source/SamplePalettePanel.cpp"/>
-      <FILE id="aFYuVk" name="SamplePalettePanel.h" compile="0" resource="0"
-            file="Source/SamplePalettePanel.h"/>
+      <FILE id="VcRINU" name="SampleFavouritesPanel.cpp" compile="1" resource="0"
+            file="Source/SampleFavouritesPanel.cpp"/>
+      <FILE id="aFYuVk" name="SampleFavouritesPanel.h" compile="0" resource="0"
+            file="Source/SampleFavouritesPanel.h"/>
       <FILE id="blGuS9" name="SampleItemPanel.cpp" compile="1" resource="0"
             file="Source/SampleItemPanel.cpp"/>
       <FILE id="EGnlFh" name="SampleItemPanel.h" compile="0" resource="0"

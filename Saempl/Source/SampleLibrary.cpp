@@ -14,8 +14,8 @@ SampleLibrary::SampleLibrary()
     mLibraryWasLoaded = false;
     mLibraryWasAltered = false;
     
-    // Initialize library manager
-    mSampleLibraryManager = std::make_unique<SampleLibraryManager>(mAllSampleItems, mPaletteSampleItems, mDeletedSampleItems, mAddedSampleItems, mAlteredSampleItems);
+    // Initialise library manager
+    mSampleLibraryManager = std::make_unique<SampleLibraryManager>(mAllSampleItems, mFavouritesSampleItems, mDeletedSampleItems, mAddedSampleItems, mAlteredSampleItems);
     mSampleLibraryManager->addChangeListener(this);
     
     // Create thread for scanning the sample library directory
@@ -70,13 +70,13 @@ void SampleLibrary::removeSampleItems(StringArray const & inFilePaths, bool dele
     refresh();
 }
 
-void SampleLibrary::addAllToPalette(StringArray const & inFilePaths)
+void SampleLibrary::addAllToFavourites(StringArray const & inFilePaths)
 {
     bool newItemCreated = false;
     
     for (String path : inFilePaths)
     {
-        if (addFileToPalette(path))
+        if (addFileToFavourites(path))
         {
             newItemCreated = true;
         }
@@ -88,11 +88,11 @@ void SampleLibrary::addAllToPalette(StringArray const & inFilePaths)
     }
 }
 
-void SampleLibrary::removeAllFromPalette(Array<SampleItem*> inSampleItems)
+void SampleLibrary::removeAllFromFavourites(Array<SampleItem*> inSampleItems)
 {
     for (SampleItem* sampleItem: inSampleItems)
     {
-        removeFromPalette(*sampleItem);
+        removeFromFavourites(*sampleItem);
     }
 }
 
@@ -156,8 +156,8 @@ OwnedArray<SampleItem>& SampleLibrary::getSampleItems(SampleItemCollectionScope 
         case FILTERED_SAMPLES:
             return mFilteredSampleItems;
             break;
-        case PALETTE_SAMPLES:
-            return mPaletteSampleItems;
+        case FAVOURITE_SAMPLES:
+            return mFavouritesSampleItems;
             break;
         default:
             jassertfalse;
@@ -179,21 +179,21 @@ void SampleLibrary::changeListenerCallback(ChangeBroadcaster* inSource)
     }
     else if (inSource == mSampleLibraryManager.get())
     {
-        // Restore sample palette state
-        if (mRestoredPalettePaths.size() > 0)
+        // Restore sample favourites state
+        if (mRestoredFavouritesPaths.size() > 0)
         {
-            for (String path : mRestoredPalettePaths)
+            for (String path : mRestoredFavouritesPaths)
             {
-                File paletteItem = File(path);
+                File favouritesItem = File(path);
                 
-                if (paletteItem.exists())
+                if (favouritesItem.exists())
                 {
-                    addToPalette(paletteItem);
+                    addToFavourites(favouritesItem);
                 }
             }
         }
         
-        mRestoredPalettePaths.clear();
+        mRestoredFavouritesPaths.clear();
         
         // Refresh library
         mLibraryWasLoaded = true;
@@ -213,7 +213,7 @@ StringArray& SampleLibrary::getFilteredFilePaths()
 
 void SampleLibrary::clearSampleItemCollections()
 {
-    mPaletteSampleItems.clear(false);
+    mFavouritesSampleItems.clear(false);
     mFilteredSampleItems.clear(false);
     mFilteredFilePaths.clear();
     mAllSampleItems.clear();
@@ -295,7 +295,7 @@ SampleItem* SampleLibrary::addToSampleItems(File const & inFile)
     return addedItem;
 }
 
-bool SampleLibrary::addFileToPalette(File const & inFile)
+bool SampleLibrary::addFileToFavourites(File const & inFile)
 {
     bool newItemCreated = false;
     
@@ -305,7 +305,7 @@ bool SampleLibrary::addFileToPalette(File const & inFile)
         
         for (File sampleFile : sampleFiles)
         {
-            if (addToPalette(sampleFile))
+            if (addToFavourites(sampleFile))
             {
                 newItemCreated = true;
             }
@@ -313,13 +313,13 @@ bool SampleLibrary::addFileToPalette(File const & inFile)
     }
     else if (isSupportedAudioFileFormat(inFile.getFileExtension()))
     {
-        return addToPalette(inFile);
+        return addToFavourites(inFile);
     }
     
     return newItemCreated;
 }
 
-bool SampleLibrary::addToPalette(File const & inFile)
+bool SampleLibrary::addToFavourites(File const & inFile)
 {
     SampleItem* itemToAdd = mSampleLibraryManager->getSampleItemWithFilePath(inFile.getFullPathName());
     
@@ -327,14 +327,14 @@ bool SampleLibrary::addToPalette(File const & inFile)
     if (itemToAdd == nullptr)
     {
         itemToAdd = addToSampleItems(inFile);
-        mPaletteSampleItems.add(itemToAdd);
+        mFavouritesSampleItems.add(itemToAdd);
         return true;
     }
     
-    // Check if item is already in palette
-    if (!mPaletteSampleItems.contains(itemToAdd))
+    // Check if item is already in favourites
+    if (!mFavouritesSampleItems.contains(itemToAdd))
     {
-        mPaletteSampleItems.add(itemToAdd);
+        mFavouritesSampleItems.add(itemToAdd);
     }
     
     return false;
@@ -347,7 +347,7 @@ void SampleLibrary::removeSampleItem(String const & inFilePath, bool deletePerma
     // Delete sample item
     SampleItem* itemToDelete = mSampleLibraryManager->getSampleItemWithFilePath(fileToDelete.getFullPathName());
     mDeletedSampleItems.add(itemToDelete);
-    removeFromPalette(*itemToDelete);
+    removeFromFavourites(*itemToDelete);
     mAllSampleItems.removeObject(itemToDelete, false);
     
     // Delete audio file
@@ -359,9 +359,9 @@ void SampleLibrary::removeSampleItem(String const & inFilePath, bool deletePerma
     mLibraryWasAltered = true;
 }
 
-void SampleLibrary::removeFromPalette(SampleItem& inSampleItem)
+void SampleLibrary::removeFromFavourites(SampleItem& inSampleItem)
 {
-    mPaletteSampleItems.removeObject(&inSampleItem, false);
+    mFavouritesSampleItems.removeObject(&inSampleItem, false);
 }
 
 void SampleLibrary::reanalyseSampleItem(File const & inFile)
@@ -390,7 +390,7 @@ bool SampleLibrary::getLibraryWasLoaded()
     return mLibraryWasLoaded;
 }
 
-void SampleLibrary::setRestoredPalettePaths(StringArray inRestoredPalettePaths)
+void SampleLibrary::setRestoredFavouritesPaths(StringArray inRestoredFavouritesPaths)
 {
-    mRestoredPalettePaths = inRestoredPalettePaths;
+    mRestoredFavouritesPaths = inRestoredFavouritesPaths;
 }

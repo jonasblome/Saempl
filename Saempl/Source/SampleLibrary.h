@@ -45,15 +45,15 @@ public:
      */
     void removeSampleItems(StringArray const & inFilePaths, bool deletePermanently);
     /**
-     Adds the files and all their children to the palette collection.
+     Adds the files and all their children to the favourites collection.
      
-     @param inFildPaths the files/directories to add to the palette.
+     @param inFildPaths the files/directories to add to the favourites.
      */
-    void addAllToPalette(StringArray const & inFilePaths);
+    void addAllToFavourites(StringArray const & inFilePaths);
     /**
-     Removes the sample items from the palette collection.
+     Removes the sample items from the favourites collection.
      */
-    void removeAllFromPalette(Array<SampleItem*> inSampleItems);
+    void removeAllFromFavourites(Array<SampleItem*> inSampleItems);
     /**
      Reanalyses the sample and sets the properties to the newly analysed values.
      */
@@ -79,7 +79,7 @@ public:
     /**
      Returns the sample item collection with the given scope.
      
-     @param inCollectionType the type of collection to return (all, filtered or palette).
+     @param inCollectionType the type of collection to return (all, filtered or favourites).
      
      @returns the sample item collection of given type.
      */
@@ -102,9 +102,9 @@ public:
      */
     bool getLibraryWasLoaded();
     /**
-     Sets a collection of restored paths to add to the palette after the library was loaded.
+     Sets a collection of restored paths to add to the favourites after the library was loaded.
      */
-    void setRestoredPalettePaths(StringArray inRestoredPalettePaths);
+    void setRestoredFavouritesPaths(StringArray inRestoredFavouritesPaths);
     
 private:
     std::unique_ptr<TimeSliceThread> mDirectoryScannerThread;
@@ -113,19 +113,19 @@ private:
     std::unique_ptr<DirectoryContentsList> mDirectoryContentsList;
     OwnedArray<SampleItem> mAllSampleItems;
     OwnedArray<SampleItem> mFilteredSampleItems;
-    OwnedArray<SampleItem> mPaletteSampleItems;
+    OwnedArray<SampleItem> mFavouritesSampleItems;
     OwnedArray<SampleItem> mDeletedSampleItems;
     OwnedArray<SampleItem> mAddedSampleItems;
     OwnedArray<SampleItem> mAlteredSampleItems;
     StringArray mFilteredFilePaths;
-    StringArray mRestoredPalettePaths;
+    StringArray mRestoredFavouritesPaths;
     String mDirectoryPathToAddFilesTo;
     std::unique_ptr<SampleLibraryManager> mSampleLibraryManager;
     bool mLibraryWasLoaded;
     bool mLibraryWasAltered;
     
     /**
-     Deletes SampleItem objects in all collections (all, filtered, palette).
+     Deletes SampleItem objects in all collections (all, filtered, favourites).
      */
     void clearSampleItemCollections();
     /**
@@ -148,21 +148,21 @@ private:
      */
     SampleItem* addToSampleItems(File const & newFile);
     /**
-     Adds the file and all its children to the palette collection.
+     Adds the file and all its children to the favourites collection.
      
-     @param inFile the file/directory to add to the palette.
+     @param inFile the file/directory to add to the favourites.
      
      @returns whether a new item was created for this file.
      */
-    bool addFileToPalette(File const & inFile);
+    bool addFileToFavourites(File const & inFile);
     /**
-     Adds the file as a sample item and appends it to the palette collection.
+     Adds the file as a sample item and appends it to the favourites collection.
      
-     @param inFile the file to add to the palette.
+     @param inFile the file to add to the favourites.
      
      @returns whether a new item was created for this file.
      */
-    bool addToPalette(File const & inFile);
+    bool addToFavourites(File const & inFile);
     /**
      Removes the sample item from all collections and deletes it.
      
@@ -171,9 +171,9 @@ private:
      */
     void removeSampleItem(String const & inFilePath, bool deletePermanently);
     /**
-     Removes the sample item from the palette collection.
+     Removes the sample item from the favourites collection.
      */
-    void removeFromPalette(SampleItem& inSampleItem);
+    void removeFromFavourites(SampleItem& inSampleItem);
     /**
      Reanalyses the sample and sets the properties to the newly analysed values.
      */

@@ -10,7 +10,7 @@
 #include "SampleLibraryManager.h"
 
 SampleLibraryManager::SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems, 
-                                           OwnedArray<SampleItem>& inPaletteSampleItems,
+                                           OwnedArray<SampleItem>& inFavouriteSampleItems,
                                            OwnedArray<SampleItem>& inDeletedSampleItems,
                                            OwnedArray<SampleItem>& inAddedSampleItems,
                                            OwnedArray<SampleItem>& inAlteredSampleItems)
@@ -18,7 +18,7 @@ SampleLibraryManager::SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleIt
 ThreadWithProgressWindow("Synching sample library", true, true, 100000, "Stop loading", nullptr),
 ThreadPool(SystemStats::getNumCpus()),
 allSampleItems(inAllSampleItems),
-paletteSampleItems(inPaletteSampleItems),
+favouriteSampleItems(inFavouriteSampleItems),
 deletedSampleItems(inDeletedSampleItems),
 addedSampleItems(inAddedSampleItems),
 alteredSampleItems(inAlteredSampleItems)
@@ -234,7 +234,7 @@ void SampleLibraryManager::run()
     // Go through all current sample items,
     // check if corresponding audio file still exists
     // and if not, delete sample item
-    // from all items and palette collection
+    // from all items and favourites collection
     for (SampleItem* sampleItem : allSampleItems)
     {
         if (threadShouldExit())
@@ -251,7 +251,7 @@ void SampleLibraryManager::run()
     for (SampleItem* sampleItem : deletedSampleItems)
     {
         addedFilePaths.removeString(sampleItem->getFilePath());
-        paletteSampleItems.removeObject(sampleItem, false);
+        favouriteSampleItems.removeObject(sampleItem, false);
         allSampleItems.removeObject(sampleItem, false);
         addedSampleItems.removeObject(sampleItem, false);
         alteredSampleItems.removeObject(sampleItem, false);

@@ -26,7 +26,7 @@ sampleItem(inSampleItem),
 mForceAnalysis(forceAnalysis),
 numProcessedItems(inNumProcessedItems)
 {
-    // Initialize sample analyser
+    // Initialise sample analyser
     mSampleAnalyser = std::make_unique<SampleAnalyser>();
 }
 
@@ -44,10 +44,13 @@ ThreadPoolJob::JobStatus SampleManagerJob::runJob()
         sampleItem->setTitle(file.getFileNameWithoutExtension().convertToPrecomposedUnicode());
         addedFilePaths.add(sampleItem->getFilePath());
         addedSampleItems.add(sampleItem);
+        mSampleAnalyser->analyseSample(sampleItem, mForceAnalysis);
         numProcessedItems++;
+        return jobHasFinished;
     }
-    
-    mSampleAnalyser->analyseSample(sampleItem, mForceAnalysis);
-    
-    return jobHasFinished;
+    else
+    {
+        mSampleAnalyser->analyseSample(sampleItem, mForceAnalysis);
+        return jobHasFinished;
+    }
 }

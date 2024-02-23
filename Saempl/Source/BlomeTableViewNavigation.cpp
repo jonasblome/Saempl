@@ -45,7 +45,7 @@ void BlomeTableViewNavigation::cellClicked(int rowNumber, int columnId, MouseEve
     {
         PopupMenu popupMenu;
         popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
-        popupMenu.addItem("Add Sample(s) to Favorites", [this] { addToPalette(); });
+        popupMenu.addItem("Add Sample(s) to Favourites", [this] { addToFavourites(); });
         popupMenu.addItem("(Re-)analyse Sample(s)", [this] { reanalyseSamples(); });
         popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
@@ -73,7 +73,7 @@ void BlomeTableViewNavigation::deleteFiles(bool deletePermanently = false)
     sampleLibrary.removeSampleItems(filePaths, deletePermanently);
 }
 
-void BlomeTableViewNavigation::addToPalette()
+void BlomeTableViewNavigation::addToFavourites()
 {
     StringArray filePaths;
     
@@ -84,7 +84,7 @@ void BlomeTableViewNavigation::addToPalette()
                       .getUnchecked(getSelectedRow(r))->getFilePath());
     }
     
-    sampleLibrary.addAllToPalette(filePaths);
+    sampleLibrary.addAllToFavourites(filePaths);
 }
 
 void BlomeTableViewNavigation::changeListenerCallback(ChangeBroadcaster *source)

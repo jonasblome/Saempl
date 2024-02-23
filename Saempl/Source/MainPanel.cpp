@@ -36,11 +36,11 @@ void MainPanel::paint(Graphics &g)
                    80,
                    style);
     
-    // Palette panel drop shadow
+    // Favourites panel drop shadow
     drawDropShadow(g,
                    Rectangle<int>(0, 
                                   style->HEADER_PANEL_HEIGHT,
-                                  style->SAMPLE_PALETTE_PANEL_WIDTH,
+                                  style->SAMPLE_FAVOURITES_PANEL_WIDTH,
                                   getHeight()),
                    style->SAMPLE_NAVIGATION_PANEL_WIDTH,
                    0,

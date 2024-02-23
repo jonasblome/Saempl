@@ -28,7 +28,7 @@ void CenterPanel::paint(Graphics& g)
     g.setColour(style->COLOUR_ACCENT_MEDIUM);
     g.fillRoundedRectangle(getLocalBounds()
                            .removeFromBottom(style->BUTTON_SIZE_SMALL + style->PANEL_MARGIN * 0.75)
-                           .removeFromLeft(getWidth() - style->SAMPLE_PALETTE_PANEL_WIDTH)
+                           .removeFromLeft(getWidth() - style->SAMPLE_FAVOURITES_PANEL_WIDTH)
                            .withTrimmedLeft(style->PANEL_MARGIN * 0.5)
                            .withTrimmedTop(style->PANEL_MARGIN * 0.25)
                            .withTrimmedRight(style->PANEL_MARGIN * 0.25)
@@ -47,9 +47,9 @@ void CenterPanel::setPanelComponents()
     mSampleNavigationPanel = std::make_unique<SampleNavigationPanel>(currentProcessor, *mSampleItemPanel);
     addAndMakeVisible(*mSampleNavigationPanel);
     
-    // Add panel for sample palette view
-    mSamplePalettePanel = std::make_unique<SamplePalettePanel>(currentProcessor, *mSampleItemPanel);
-    addAndMakeVisible(*mSamplePalettePanel);
+    // Add panel for sample favourites view
+    mSampleFavouritesPanel = std::make_unique<SampleFavouritesPanel>(currentProcessor, *mSampleItemPanel);
+    addAndMakeVisible(*mSampleFavouritesPanel);
     
     // Add toggle panel button
     mToggleSampleItemPanelButton = std::make_unique<ToggleButton>("ToggleSampleItemPanel");
@@ -93,7 +93,7 @@ void CenterPanel::resizePanelComponents()
         {
             mSampleNavigationPanel->setBounds(0,
                                               0,
-                                              getWidth() - style->SAMPLE_PALETTE_PANEL_WIDTH,
+                                              getWidth() - style->SAMPLE_FAVOURITES_PANEL_WIDTH,
                                               getHeight()
                                               - style->SAMPLE_ITEM_PANEL_HEIGHT
                                               - style->BUTTON_SIZE_SMALL
@@ -103,7 +103,7 @@ void CenterPanel::resizePanelComponents()
         {
             mSampleNavigationPanel->setBounds(0,
                                               0,
-                                              getWidth() - style->SAMPLE_PALETTE_PANEL_WIDTH,
+                                              getWidth() - style->SAMPLE_FAVOURITES_PANEL_WIDTH,
                                               getHeight()
                                               - style->BUTTON_SIZE_SMALL
                                               - style->PANEL_MARGIN * 0.75);
@@ -116,15 +116,15 @@ void CenterPanel::resizePanelComponents()
                                     getHeight() - style->SAMPLE_ITEM_PANEL_HEIGHT
                                     - style->BUTTON_SIZE_SMALL
                                     - style->PANEL_MARGIN,
-                                    getWidth() - style->SAMPLE_PALETTE_PANEL_WIDTH,
+                                    getWidth() - style->SAMPLE_FAVOURITES_PANEL_WIDTH,
                                     style->SAMPLE_ITEM_PANEL_HEIGHT);
     }
     
-    if (mSamplePalettePanel != nullptr)
+    if (mSampleFavouritesPanel != nullptr)
     {
-        mSamplePalettePanel->setBounds(getWidth() - style->SAMPLE_PALETTE_PANEL_WIDTH,
+        mSampleFavouritesPanel->setBounds(getWidth() - style->SAMPLE_FAVOURITES_PANEL_WIDTH,
                                        0,
-                                       style->SAMPLE_PALETTE_PANEL_WIDTH,
+                                       style->SAMPLE_FAVOURITES_PANEL_WIDTH,
                                        getHeight());
     }
     

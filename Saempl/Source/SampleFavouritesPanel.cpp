@@ -1,30 +1,30 @@
 /*
  ==============================================================================
  
- SamplePalettePanel.cpp
+ SampleFavouritesPanel.cpp
  Author:  Jonas Blome
  
  ==============================================================================
  */
 
-#include "SamplePalettePanel.h"
+#include "SampleFavouritesPanel.h"
 
-SamplePalettePanel::SamplePalettePanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
+SampleFavouritesPanel::SampleFavouritesPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
 :
 PanelBase(inProcessor),
 sampleLibrary(currentProcessor.getSampleLibrary()),
 sampleItemPanel(inSampleItemPanel)
 {
-    setSize(style->SAMPLE_PALETTE_PANEL_WIDTH, style->SAMPLE_PALETTE_PANEL_HEIGHT);
+    setSize(style->SAMPLE_FAVOURITES_PANEL_WIDTH, style->SAMPLE_FAVOURITES_PANEL_HEIGHT);
     setPanelComponents();
 }
 
-SamplePalettePanel::~SamplePalettePanel()
+SampleFavouritesPanel::~SampleFavouritesPanel()
 {
     
 }
 
-void SamplePalettePanel::paint(Graphics& g)
+void SampleFavouritesPanel::paint(Graphics& g)
 {
     // Draw background
     g.setColour(style->COLOUR_ACCENT_MEDIUM);
@@ -54,7 +54,7 @@ void SamplePalettePanel::paint(Graphics& g)
                            style->CORNER_SIZE_MEDIUM);
     g.setFont(style->FONT_MEDIUM_SMALL_BOLD);
     g.setColour(style->COLOUR_PANEL_TITLE_FONT);
-    g.drawFittedText("Favorites",
+    g.drawFittedText("Favourites",
                      0,
                      0,
                      getWidth(),
@@ -65,16 +65,16 @@ void SamplePalettePanel::paint(Graphics& g)
     mSampleTable->updateContent();
 }
 
-void SamplePalettePanel::setPanelComponents()
+void SampleFavouritesPanel::setPanelComponents()
 {
     // Set sample table component
-    mSampleTable = std::make_unique<BlomeTableViewPalette>(currentProcessor, sampleItemPanel);
+    mSampleTable = std::make_unique<BlomeTableViewFavourites>(currentProcessor, sampleItemPanel);
     addAndMakeVisible(*mSampleTable);
     
     resizePanelComponents();
 }
 
-void SamplePalettePanel::resizePanelComponents()
+void SampleFavouritesPanel::resizePanelComponents()
 {
     if (mSampleTable != nullptr)
     {

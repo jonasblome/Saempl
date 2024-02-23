@@ -26,7 +26,7 @@ static String const SUPPORTED_AUDIO_FORMATS_WILDCARD = "*.wav;*.mp3;*.aiff;*.m4a
 static String const SUPPORTED_AUDIO_FORMATS_EXTENSIONS = ".wav;.mp3;.aiff;.m4a";
 static StringArray const PROPERTY_NAMES = StringArray({ "Title", "Length", "dB", "LUFS", "Tempo", "Key" });
 static int const NUM_CHROMA = 12;
-static int const NUM_SPECTRAL_BANDS = 32;
+static int const NUM_SPECTRAL_BANDS = 16;
 static int const NUM_FEATURES = 12;
 
 enum CompareOperators
@@ -116,7 +116,7 @@ enum SampleItemCollectionScope
 {
     ALL_SAMPLES,
     FILTERED_SAMPLES,
-    PALETTE_SAMPLES,
+    FAVOURITE_SAMPLES,
 };
 
 /**

@@ -465,7 +465,7 @@ void BlomeSampleTileGridView::showPopupMenu()
 {
     PopupMenu popupMenu;
     popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
-    popupMenu.addItem("Add Sample(s) to Favorites", [this] { addToPalette(); });
+    popupMenu.addItem("Add Sample(s) to Favourites", [this] { addToFavourites(); });
     popupMenu.addItem("(Re-)analyse Sample(s)", [this] { reanalyseSamples(); });
     popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
     popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
@@ -483,7 +483,7 @@ void BlomeSampleTileGridView::deleteFiles(bool deletePermanently = false)
     sampleLibrary.removeSampleItems(filePaths, deletePermanently);
 }
 
-void BlomeSampleTileGridView::addToPalette()
+void BlomeSampleTileGridView::addToFavourites()
 {
     StringArray filePaths;
     
@@ -492,7 +492,7 @@ void BlomeSampleTileGridView::addToPalette()
         filePaths.add(mSampleItemTiles.getUnchecked(t)->getSampleItemFilePath());
     }
     
-    sampleLibrary.addAllToPalette(filePaths);
+    sampleLibrary.addAllToFavourites(filePaths);
 }
 
 void BlomeSampleTileGridView::reanalyseSamples()

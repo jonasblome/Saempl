@@ -4,6 +4,9 @@
  AudioPreviewPanel.cpp
  Author:  Jonas Blome
  
+ Some of the code in this class is adapted from the JUCE DemoRunner Demo
+ that can be found under DemoRunner->Audio->AudioPlaybackDemo.h
+ 
  ==============================================================================
  */
 
@@ -16,7 +19,7 @@ AudioPreviewPanel::AudioPreviewPanel(SaemplAudioProcessor& inProcessor,
 :
 PanelBase(inProcessor),
 audioPlayer(inAudioPlayer),
-mZoomSlider(inSlider),
+zoomSlider(inSlider),
 mThumbnailCache(std::make_unique<AudioThumbnailCache>(5)),
 mAudioPreview(std::make_unique<AudioThumbnail>(512, audioPlayer.getFormatManager(), *mThumbnailCache)),
 isFollowingTransport(false)
@@ -207,7 +210,7 @@ void AudioPreviewPanel::mouseWheelMove(MouseEvent const &, MouseWheelDetails con
         
         if (wheel.deltaY != 0.0f)
         {
-            mZoomSlider.setValue(mZoomSlider.getValue() - wheel.deltaY * 0.06);
+            zoomSlider.setValue(zoomSlider.getValue() - wheel.deltaY * 0.06);
         }
         
         repaint();
@@ -290,7 +293,7 @@ void AudioPreviewPanel::showAudioResource(URL inResource)
         mCurrentAudioFile = std::move(inResource);
     }
     
-    mZoomSlider.setValue(0, dontSendNotification);
+    zoomSlider.setValue(0, dontSendNotification);
     setURL(mCurrentAudioFile);
 }
 
@@ -308,7 +311,7 @@ void AudioPreviewPanel::emptyAudioResource()
 {
     audioPlayer.emptyTransport();
     lastFileDropped = URL();
-    mZoomSlider.setValue(0, dontSendNotification);
+    zoomSlider.setValue(0, dontSendNotification);
     mAudioPreview->clear();
     Range<double> newRange;
     setRange(newRange);

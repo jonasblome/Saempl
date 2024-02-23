@@ -59,7 +59,7 @@ protected:
     BlomeStyling::Ptr style;
     
     /**
-     Initializes the panel's components and adds them to the parent component.
+     Initialises the panel's components and adds them to the parent component.
      */
     virtual void setComponents();
     void paint(Graphics& g) override;

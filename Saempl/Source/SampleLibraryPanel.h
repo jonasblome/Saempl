@@ -53,9 +53,9 @@ private:
      */
     void deleteFiles(bool deletePermanently);
     /**
-     Add all selected files to the sample item palette collection.
+     Add all selected files to the sample item favourites collection.
      */
-    void addToPalette();
+    void addToFavourites();
     /**
      Reanalyses all selected samples.
      */

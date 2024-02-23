@@ -255,19 +255,19 @@ void SaemplAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
         stateInfoFilter->prependChildElement(stateInfoFilterRule);
     }
     
-    // Storing favorite samples
-    XmlElement* stateInfoSamplePalette = new XmlElement("Blome_StateInfoSamplePalette");
+    // Storing favourite samples
+    XmlElement* stateInfoSampleFavourites = new XmlElement("Blome_StateInfoSampleFavourites");
     
-    for (SampleItem* sample : mSampleLibrary->getSampleItems(PALETTE_SAMPLES))
+    for (SampleItem* sample : mSampleLibrary->getSampleItems(FAVOURITE_SAMPLES))
     {
-        XmlElement* stateInfoPaletteItem = new XmlElement("PaletteItem");
-        stateInfoPaletteItem->setAttribute("FilePath", sample->getFilePath());
-        stateInfoSamplePalette->prependChildElement(stateInfoPaletteItem);
+        XmlElement* stateInfoFavouritesItem = new XmlElement("FavouritesItem");
+        stateInfoFavouritesItem->setAttribute("FilePath", sample->getFilePath());
+        stateInfoSampleFavourites->prependChildElement(stateInfoFavouritesItem);
     }
     
     stateInfo.prependChildElement(stateInfoBody);
     stateInfo.prependChildElement(stateInfoFilter);
-    stateInfo.prependChildElement(stateInfoSamplePalette);
+    stateInfo.prependChildElement(stateInfoSampleFavourites);
     copyXmlToBinary(stateInfo, destData);
 }
 
@@ -368,19 +368,19 @@ void SaemplAudioProcessor::setStateInformation(void const * data, int sizeInByte
             }
         }
         
-        // Restoring favorite samples
-        XmlElement* stateInfoSamplePalette = xmlStatePtr->getChildByName("Blome_StateInfoSamplePalette");
+        // Restoring favourite samples
+        XmlElement* stateInfoSampleFavourites = xmlStatePtr->getChildByName("Blome_StateInfoSampleFavourites");
         
-        if (stateInfoSamplePalette)
+        if (stateInfoSampleFavourites)
         {
-            StringArray restoredPalettePaths;
+            StringArray restoredFavouritesPaths;
             
-            for (auto* sample : stateInfoSamplePalette->getChildIterator())
+            for (auto* sample : stateInfoSampleFavourites->getChildIterator())
             {
-                restoredPalettePaths.add(sample->getStringAttribute("FilePath"));
+                restoredFavouritesPaths.add(sample->getStringAttribute("FilePath"));
             }
             
-            mSampleLibrary->setRestoredPalettePaths(restoredPalettePaths);
+            mSampleLibrary->setRestoredFavouritesPaths(restoredFavouritesPaths);
         }
     }
     else

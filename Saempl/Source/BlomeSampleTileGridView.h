@@ -166,9 +166,9 @@ private:
      */
     void deleteFiles(bool deletePermanently);
     /**
-     Adds all selected samples to the library sample palette collection.
+     Adds all selected samples to the library sample favourites collection.
      */
-    void addToPalette();
+    void addToFavourites();
     /**
      Starts the analysis process for all selected samples.
      */

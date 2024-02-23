@@ -45,8 +45,8 @@ private:
      */
     void deleteFiles(bool deletePermanently);
     /**
-     Adds all selected files to the palette sample items collection.
+     Adds all selected files to the favourites sample items collection.
      */
-    void addToPalette();
+    void addToFavourites();
     void changeListenerCallback(ChangeBroadcaster* source) override;
 };

@@ -32,7 +32,7 @@ public:
      @params all sample item collections of the sample library.
      */
     SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems,
-                         OwnedArray<SampleItem>& inPaletteSampleItems,
+                         OwnedArray<SampleItem>& inFavouriteSampleItems,
                          OwnedArray<SampleItem>& inDeletedSampleItems,
                          OwnedArray<SampleItem>& inAddedSampleItems,
                          OwnedArray<SampleItem>& inAlteredSampleItems);
@@ -100,7 +100,7 @@ public:
 private:
     File libraryDirectory;
     OwnedArray<SampleItem>& allSampleItems;
-    OwnedArray<SampleItem>& paletteSampleItems;
+    OwnedArray<SampleItem>& favouriteSampleItems;
     OwnedArray<SampleItem>& deletedSampleItems;
     OwnedArray<SampleItem>& addedSampleItems;
     OwnedArray<SampleItem>& alteredSampleItems;

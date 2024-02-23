@@ -86,7 +86,7 @@ void SecondOrderIIRFilter::prepareToPlay (double sampleRate,
     
     numberOfChannels = numberOfChannels_;
     
-    // Initialize z1 and z2.
+    // Initialise z1 and z2.
     z1.calloc (numberOfChannels); // calloc: Allocates a specified amount of memory and clears it.
     z2.calloc (numberOfChannels);
     
