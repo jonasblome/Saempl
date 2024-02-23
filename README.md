@@ -18,6 +18,7 @@ Search through your sample library in folder view. Drag and drop files into the 
 ![Folder View](https://github.com/jonasblome/Saempl/assets/18214770/ac699579-8e45-4207-a24d-7cb35eb63fb2)
 
 Navigate through the samples in the grid, table or folder view with the arrow buttons.
+Use keybindings to switch between folder (1), table (2) and grid view (3).
 Right click on samples to access a popup menu.
 
 <img width="428" alt="Popup Menu" src="https://github.com/jonasblome/Saempl/assets/18214770/ad6a5805-f86e-4ccb-bf29-ed8d6be3d630">
