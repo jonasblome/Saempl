@@ -40,8 +40,14 @@ ThreadPoolJob::JobStatus SampleManagerJob::runJob()
     if (sampleItem == nullptr)
     {
         sampleItem = allSampleItems.add(new SampleItem());
-        sampleItem->setFilePath(file.getFullPathName().convertToPrecomposedUnicode());
-        sampleItem->setTitle(file.getFileNameWithoutExtension().convertToPrecomposedUnicode());
+        String filePath = file.getFullPathName();
+        String sampleTitle = file.getFileNameWithoutExtension();
+#if JUCE_MAC
+        filePath = filePath.convertToPrecomposedUnicode();
+        sampleTitle = sampleTitle.convertToPrecomposedUnicode();
+#endif
+        sampleItem->setFilePath(filePath);
+        sampleItem->setTitle(sampleTitle);
         addedFilePaths.add(sampleItem->getFilePath());
         addedSampleItems.add(sampleItem);
         mSampleAnalyser->analyseSample(sampleItem, mForceAnalysis);

@@ -112,6 +112,15 @@ void SampleLibraryManager::updateSampleLibraryFile()
     Array<File> allDirectories = File(libraryDirectory).findChildFiles(File::findDirectories, true);
     allDirectories.add(File(libraryDirectory));
     
+    // Create library files directory if non existent
+    File libraryFileDirectory(mLibraryFilesDirectoryPath);
+    
+    if (!libraryFileDirectory.exists())
+    {
+        libraryFileDirectory.createDirectory();
+    }
+    
+    
     for (File libraryFile : allDirectories)
     {
         if (numUpdatedItems == numItemsToUpdate)
@@ -138,7 +147,10 @@ void SampleLibraryManager::updateSampleLibraryFile()
         }
         else
         {
-            libraryPath = libraryFile.getFullPathName().convertToPrecomposedUnicode();
+            libraryPath = libraryFile.getFullPathName();
+#if JUCE_MAC
+            libraryPath = libraryPath.convertToPrecomposedUnicode();
+#endif
             
             // Create sample library file as xml and store path to library
             sampleLibraryXml = XmlElement(encodeForXml(libraryFile.getFileNameWithoutExtension()));
@@ -277,7 +289,12 @@ void SampleLibraryManager::run()
             break;
         }
         
-        if (isLoadingNewLibrary || !fileHasBeenAdded(sampleFile.getFullPathName().convertToPrecomposedUnicode()))
+        String sampleFileName = sampleFile.getFullPathName();
+#if JUCE_MAC
+        sampleFileName = sampleFileName.convertToPrecomposedUnicode();
+#endif
+        
+        if (isLoadingNewLibrary || !fileHasBeenAdded(sampleFileName))
         {
             analyseSampleItem(nullptr, sampleFile, false);
         }
@@ -376,7 +393,10 @@ void SampleLibraryManager::loadSampleLibrary(File const & inLibraryDirectory)
 
 void SampleLibraryManager::createSampleItemFromXml(const XmlElement * sampleItemXml)
 {
-    String filePath = sampleItemXml->getStringAttribute("FilePath").convertToPrecomposedUnicode();
+    String filePath = sampleItemXml->getStringAttribute("FilePath");
+#if JUCE_MAC
+    filePath = filePath.convertToPrecomposedUnicode();
+#endif
     SampleItem* sampleItem = allSampleItems.add(new SampleItem());
     sampleItem->setFilePath(filePath);
     addedFilePaths.add(filePath);
@@ -499,8 +519,14 @@ void SampleLibraryManager::writeXmlToFile(XmlElement& inXml, File& inFile)
 SampleItem* SampleLibraryManager::createSampleItem(File const & inFile)
 {
     SampleItem* newItem = allSampleItems.add(new SampleItem());
-    newItem->setFilePath(inFile.getFullPathName().convertToPrecomposedUnicode());
-    newItem->setTitle(inFile.getFileNameWithoutExtension().convertToPrecomposedUnicode());
+    String filePath = inFile.getFullPathName();
+    String sampleTitle = inFile.getFileNameWithoutExtension();
+#if JUCE_MAC
+    filePath = filePath.convertToPrecomposedUnicode();
+    sampleTitle = sampleTitle.convertToPrecomposedUnicode();
+#endif
+    newItem->setFilePath(filePath);
+    newItem->setTitle(sampleTitle);
     analyseSampleItem(newItem, inFile, false);
     addedFilePaths.add(newItem->getFilePath());
     
@@ -511,7 +537,14 @@ SampleItem* SampleLibraryManager::getSampleItemWithFilePath(String const & inFil
 {
     for (SampleItem* sampleItem : allSampleItems)
     {
-        if (sampleItem->getFilePath().convertToPrecomposedUnicode().compare(inFileName.convertToPrecomposedUnicode()) == 0)
+        String sampleItemFilePath = sampleItem->getFilePath();
+        String fileName = inFileName;
+#if JUCE_MAC
+        sampleItemFilePath = sampleItemFilePath.convertToPrecomposedUnicode();
+        fileName = fileName.convertToPrecomposedUnicode();
+#endif
+        
+        if (sampleItemFilePath.compare(fileName) == 0)
         {
             return sampleItem;
         }

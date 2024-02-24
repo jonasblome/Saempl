@@ -15,7 +15,11 @@ SampleLibrary::SampleLibrary()
     mLibraryWasAltered = false;
     
     // Initialise library manager
-    mSampleLibraryManager = std::make_unique<SampleLibraryManager>(mAllSampleItems, mFavouritesSampleItems, mDeletedSampleItems, mAddedSampleItems, mAlteredSampleItems);
+    mSampleLibraryManager = std::make_unique<SampleLibraryManager>(mAllSampleItems,
+                                                                   mFavouritesSampleItems,
+                                                                   mDeletedSampleItems,
+                                                                   mAddedSampleItems,
+                                                                   mAlteredSampleItems);
     mSampleLibraryManager->addChangeListener(this);
     
     // Create thread for scanning the sample library directory
@@ -243,11 +247,18 @@ bool SampleLibrary::addFileToSampleItems(File const & inFile)
     File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
     
     // Don't add files if they already exist in the current library
-    if (mSampleLibraryManager->fileHasBeenAdded(inFile.getFullPathName().convertToPrecomposedUnicode()))
+    String originalFileName = inFile.getFullPathName();
+    String newFileName = newFile.getFullPathName();
+#if JUCE_MAC
+    originalFileName = originalFileName.convertToPrecomposedUnicode();
+    newFileName = newFileName.convertToPrecomposedUnicode();
+#endif
+    
+    if (mSampleLibraryManager->fileHasBeenAdded(originalFileName))
     {
         return false;
     }
-    else if (mSampleLibraryManager->fileHasBeenAdded(newFile.getFullPathName().convertToPrecomposedUnicode()))
+    else if (mSampleLibraryManager->fileHasBeenAdded(newFileName))
     {
         return false;
     }
@@ -284,7 +295,7 @@ bool SampleLibrary::addFileToSampleItems(File const & inFile)
 
 SampleItem* SampleLibrary::addToSampleItems(File const & inFile)
 {
-    // Add file to current directory and create SampleItem
+    // Add file to current directory and create sample item
     String fileName = inFile.getFileName();
     File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
     inFile.copyFileTo(newFile);
