@@ -58,4 +58,6 @@ private:
     void setPanelComponents() override;
     void changeListenerCallback (ChangeBroadcaster* source) override;
     void resizePanelComponents() override;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleItemPanel);
 };

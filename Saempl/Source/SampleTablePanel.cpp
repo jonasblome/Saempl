@@ -90,6 +90,12 @@ void SampleTablePanel::resizePanelComponents()
 void SampleTablePanel::selectRandomSample()
 {
     int numSamples = mSampleTable->getNumRows();
+    
+    if (numSamples == 0)
+    {
+        return;
+    }
+    
     int randomSampleIndex = Random::getSystemRandom().nextInt(numSamples);
     mSampleTable->selectRow(randomSampleIndex);
 }

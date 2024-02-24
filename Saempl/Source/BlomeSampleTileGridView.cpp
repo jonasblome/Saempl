@@ -139,6 +139,12 @@ Point<int> BlomeSampleTileGridView::getTileCentre(BlomeSampleItemTileView *rando
 Point<int> BlomeSampleTileGridView::selectRandomTile()
 {
     int numTiles = mSampleItemTiles.size();
+    
+    if (numTiles == 0)
+    {
+        return Point<int>();
+    }
+    
     int randomTileIndex = Random::getSystemRandom().nextInt(numTiles);
     deselectAll();
     BlomeSampleItemTileView* randomTile = mSampleItemTiles.getUnchecked(randomTileIndex);

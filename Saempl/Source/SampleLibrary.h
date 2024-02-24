@@ -179,4 +179,6 @@ private:
      */
     void reanalyseSampleItem(File const & inFile);
     void changeListenerCallback(ChangeBroadcaster* inSource) override;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleLibrary);
 };

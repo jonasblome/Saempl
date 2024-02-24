@@ -63,4 +63,6 @@ private:
      Starts the playback of the currently loaded audio resource.
      */
     void playCurrentAudio();
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CentrePanel);
 };

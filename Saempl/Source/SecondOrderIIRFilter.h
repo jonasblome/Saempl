@@ -117,7 +117,7 @@ private:
      */
     HeapBlock<double> z2;
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SecondOrderIIRFilter);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SecondOrderIIRFilter);
 };
 
 #endif  // __FILTER_OF_SECOND_ORDER__

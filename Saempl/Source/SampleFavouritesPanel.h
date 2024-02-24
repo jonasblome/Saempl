@@ -38,4 +38,6 @@ private:
     void paint(Graphics& g) override;
     void setPanelComponents() override;
     void resizePanelComponents() override;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleFavouritesPanel);
 };

@@ -66,4 +66,6 @@ private:
     void setNewRuleTypeChooser();
     void setPanelComponents() override;
     void buttonClicked(Button* button) override;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FileFilterPanel);
 };

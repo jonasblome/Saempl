@@ -46,4 +46,6 @@ private:
     void textEditorEscapeKeyPressed(TextEditor&) override;
     void textEditorFocusLost(TextEditor&) override;
     void comboBoxChanged(ComboBox* comboBoxThatHasChanged) override;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeFileFilterRuleViewLoudnessLUFS);
 };

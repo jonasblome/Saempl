@@ -177,4 +177,6 @@ private:
      @param title the sample's title containing the actual key.
      */
     void evaluateKeyDetection(int key, const String& title);
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleLibraryManager);
 };

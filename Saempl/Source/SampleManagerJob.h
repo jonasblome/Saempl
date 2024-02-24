@@ -51,4 +51,6 @@ private:
      Runs the analysis of a sample item and creates a new one if the pointer is null.
      */
     ThreadPoolJob::JobStatus runJob() override;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleManagerJob);
 };

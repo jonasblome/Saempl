@@ -77,4 +77,6 @@ private:
      Gets permission for audio recording and set audio i/o to default in- and ouput channels.
      */
     void initialiseDefaultDevice();
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPlayer);
 };

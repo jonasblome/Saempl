@@ -187,4 +187,6 @@ private:
      @returns the frequency of that pitch.
      */
     float pitchToFrequency(float inPitchIndex, int referenceIndex = 69, float referenceFrequency = 440.0);
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleAnalyser);
 };

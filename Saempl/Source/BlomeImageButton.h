@@ -34,4 +34,6 @@ private:
     BlomeStyling::Ptr style;
     
     void paintButton(Graphics&, bool, bool) override;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeImageButton);
 };

@@ -37,4 +37,6 @@ private:
      Removes the SampleItem object of the selected rows from the sample favourites collection collection.
      */
     void removeSampleItemFromFavourites();
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeTableViewFavourites);
 };

@@ -63,4 +63,6 @@ private:
     void mouseDoubleClick (MouseEvent const & event) override;
     void resized() override;
     void setPlayButton();
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeSampleItemTileView);
 };

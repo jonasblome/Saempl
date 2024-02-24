@@ -222,5 +222,5 @@ private:
     bool freezeLoudnessRangeOnSilence;
     bool currentBlockIsSilent;
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Ebu128LoudnessMeter);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Ebu128LoudnessMeter);
 };

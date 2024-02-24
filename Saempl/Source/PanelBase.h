@@ -46,4 +46,6 @@ protected:
      Defines how the panel's components are resized when the panel is resized.
      */
     virtual void resizePanelComponents() {};
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PanelBase);
 };

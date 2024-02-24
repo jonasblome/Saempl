@@ -110,4 +110,6 @@ private:
     int mTempo;
     int mKey;
     std::vector<float> mFeatureVector;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleItem);
 };

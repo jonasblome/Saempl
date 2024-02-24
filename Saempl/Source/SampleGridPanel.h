@@ -47,11 +47,12 @@ private:
     void resizePanelComponents() override;
     void visibilityChanged() override;
     bool keyPressed(KeyPress const & key) override;
-    void mouseMagnify(MouseEvent const & mouseEvent, float magnifyAmount) override;
     /**
      Moves the viewport's centre position the given position.
      
      @param newPosition the new centre position.
      */
     void centrePositionInGridViewport(Point<int>& newPosition);
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleGridPanel);
 };

@@ -63,4 +63,6 @@ private:
      Shows the dialogue for choosing the sample library directory.
      */
     void showLibraryChooser();
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HeaderPanel);
 };

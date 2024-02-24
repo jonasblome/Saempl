@@ -18,6 +18,7 @@
 
 #include "SampleItem.h"
 #include <random>
+#include <limits.h>
 
 /**
  Clusters the filtered sample items of the library according to the Fast Linear Assignment Sorting onto a 2D grid.
@@ -271,4 +272,6 @@ private:
      @param numDimensions the number of dimensions in a feature vector.
      */
     Array<int> computeAssignment(Array<Array<int>>& matrix, int numDimensions);
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleItemGridClusterer);    
 };

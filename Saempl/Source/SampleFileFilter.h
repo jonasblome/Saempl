@@ -72,4 +72,6 @@ private:
     
     bool isFileSuitable (File const & file) const override;
     bool isDirectorySuitable (File const & file) const override;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleFileFilter);
 };

@@ -100,7 +100,7 @@ void SampleGridPanel::setPanelComponents()
                            style->PANEL_MARGIN * 0.25 + style->PANEL_TITLE_HEIGHT,
                            sliderWidth,
                            style->PANEL_TITLE_HEIGHT * 0.5);
-    mZoomSlider->setRange(0, 1, 0);
+    mZoomSlider->setRange(0, 1, 0.5);
     mZoomSlider->setValue(currentProcessor.getSampleGridZoomFactor(), NotificationType::dontSendNotification);
     mZoomSlider->onValueChange = [this]
     {
@@ -219,9 +219,4 @@ bool SampleGridPanel::keyPressed(KeyPress const & key)
     }
     
     return false;
-}
-
-void SampleGridPanel::mouseMagnify(MouseEvent const & mouseEvent, float magnifyAmount)
-{
-    mZoomSlider->setValue(jmax<float>(mZoomSlider->getValue(), 0.01) * magnifyAmount, NotificationType::sendNotification);
 }

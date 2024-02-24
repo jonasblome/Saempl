@@ -82,4 +82,6 @@ protected:
      Reanalyses all selected samples.
      */
     void reanalyseSamples();
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeTableViewBase);
 };

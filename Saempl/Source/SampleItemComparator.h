@@ -52,4 +52,6 @@ private:
      @see compareElements()
      */
     template <typename T> int compareElements(T first, T second);
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleItemComparator);
 };

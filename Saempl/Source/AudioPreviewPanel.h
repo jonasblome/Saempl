@@ -149,4 +149,6 @@ private:
      */
     void updateCursorPosition();
     void resizePanelComponents() override;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPreviewPanel);
 };

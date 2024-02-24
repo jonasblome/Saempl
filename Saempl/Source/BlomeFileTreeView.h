@@ -38,4 +38,6 @@ private:
     bool isInterestedInFileDrag(StringArray const & files) override;
     void changeListenerCallback(ChangeBroadcaster* source) override;
     void mouseDrag(MouseEvent const & mouseEvent) override;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeFileTreeView);
 };

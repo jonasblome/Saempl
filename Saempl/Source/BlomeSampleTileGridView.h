@@ -181,4 +181,6 @@ private:
      @returns the point of the tile's centre.
      */
     Point<int> getTileCentre(BlomeSampleItemTileView* inTile);
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeSampleTileGridView);
 };
