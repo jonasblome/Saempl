@@ -9,7 +9,7 @@
 
 #include "SampleLibraryManager.h"
 
-SampleLibraryManager::SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems, 
+SampleLibraryManager::SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems,
                                            OwnedArray<SampleItem>& inFavouriteSampleItems,
                                            OwnedArray<SampleItem>& inDeletedSampleItems,
                                            OwnedArray<SampleItem>& inAddedSampleItems,
@@ -87,17 +87,18 @@ void SampleLibraryManager::updateSampleLibraryFile()
     for (int i = 0; i < addedFilePaths.size() - 1; ++i)
     {
         String s = addedFilePaths.getReference(i);
-
+        
         for (int nextIndex = i + 1;;)
         {
             nextIndex = addedFilePaths.indexOf(s, false, nextIndex);
-
+            
             if (nextIndex < 0)
+            {
                 break;
-
+            }
+            
             deletedSampleItems.add(getSampleItemWithFilePath(s));
             addedFilePaths.remove(nextIndex);
-            jassertfalse;
         }
     }
     
@@ -212,8 +213,13 @@ void SampleLibraryManager::synchWithLibraryDirectory()
 
 void SampleLibraryManager::setProgressAndStatus(int numItemsToProcess, int64 startTime)
 {
+    if (numItemsToProcess == 0 || numProcessedItems == 0)
+    {
+        return;
+    }
+    
     setProgress(numProcessedItems / (double) numItemsToProcess);
-    String statusMessage = String("\n") + "Est. time remaining: ";
+    String statusMessage = String(std::to_string(numProcessedItems) + "/" + std::to_string(numItemsToProcess) + " Samples analysed" + "\n" + "Est. time remaining: ");
     int64 msSinceStart = Time::currentTimeMillis() - startTime;
     int64 estimatedSecondsRemaining = ((msSinceStart / numProcessedItems) * (numItemsToProcess - numProcessedItems)) / 1000;
     
@@ -349,7 +355,7 @@ void SampleLibraryManager::loadSampleLibrary(File const & inLibraryDirectory)
 //    numWithinFiveBPM = 0;
 //    numWithinTenBPM = 0;
 //    numFalseBPMDetected = 0;
-//    
+//
 //    // Key statistics
 //    numCorrectKey = 0;
 //    numWithinOneKey = 0;
@@ -361,20 +367,28 @@ void SampleLibraryManager::loadSampleLibrary(File const & inLibraryDirectory)
 //    // BPM statistics
 //    int totalCorrectBPMDetections = numWithinTwoBPM + numWithinFiveBPM + numWithinTenBPM;
 //    int totalBPMDetections = totalCorrectBPMDetections + numFalseBPMDetected;
-//    float totalCorrectBPMPercentage = totalCorrectBPMDetections * 1.0 / totalBPMDetections;
-//    float withinTwoPercentage = numWithinTwoBPM * 1.0 / totalBPMDetections;
-//    float withinFivePercentage = numWithinFiveBPM * 1.0 / totalBPMDetections;
-//    float withinTenPercentage = numWithinTenBPM * 1.0 / totalBPMDetections;
-//    float falseBPMDetectionsPercentage = numFalseBPMDetected * 1.0 / totalBPMDetections;
-//    
+//
+//    if (totalBPMDetections != 0)
+//    {
+//        float totalCorrectBPMPercentage = totalCorrectBPMDetections * 1.0 / totalBPMDetections;
+//        float withinTwoPercentage = numWithinTwoBPM * 1.0 / totalBPMDetections;
+//        float withinFivePercentage = numWithinFiveBPM * 1.0 / totalBPMDetections;
+//        float withinTenPercentage = numWithinTenBPM * 1.0 / totalBPMDetections;
+//        float falseBPMDetectionsPercentage = numFalseBPMDetected * 1.0 / totalBPMDetections;
+//    }
+//
 //    // Key statistics
 //    int totalCorrectKeyDetections = numCorrectKey + numWithinOneKey + numWithinThreeKey;
 //    int totalKeyDetections = totalCorrectKeyDetections + numFalseKeyDetected;
-//    float totalCorrectKeyPercentage = totalCorrectKeyDetections * 1.0 / totalKeyDetections;
-//    float correctKeyPercentage = numCorrectKey * 1.0 / totalKeyDetections;
-//    float withinOneKeyPercentage = numWithinOneKey * 1.0 / totalKeyDetections;
-//    float withinThreeKeyPercentage = numWithinThreeKey * 1.0 / totalKeyDetections;
-//    float falseKeyDetectionsPercentage = numFalseKeyDetected * 1.0 / totalKeyDetections;
+//
+//    if (totalKeyDetections != 0)
+//    {
+//        float totalCorrectKeyPercentage = totalCorrectKeyDetections * 1.0 / totalKeyDetections;
+//        float correctKeyPercentage = numCorrectKey * 1.0 / totalKeyDetections;
+//        float withinOneKeyPercentage = numWithinOneKey * 1.0 / totalKeyDetections;
+//        float withinThreeKeyPercentage = numWithinThreeKey * 1.0 / totalKeyDetections;
+//        float falseKeyDetectionsPercentage = numFalseKeyDetected * 1.0 / totalKeyDetections;
+//    }
     
     if (libraryHasOldVersion)
     {
@@ -428,13 +442,19 @@ void SampleLibraryManager::createSampleItemFromXml(const XmlElement * sampleItem
     samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[4]);
     int tempo = samplePropertyXml->getIntAttribute("PropertyValue");
     sampleItem->setTempo(tempo);
-//    evaluateTempoDetection(tempo, title);
+//    if (tempo != 0)
+//    {
+//        evaluateTempoDetection(tempo, title);
+//    }
     
     // Adding key property to item
     samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[5]);
     int key = samplePropertyXml->getIntAttribute("PropertyValue");
     sampleItem->setKey(key);
-//    evaluateKeyDetection(key, title);
+//    if (key != SAMPLE_TOO_LONG_INDEX)
+//    {
+//        evaluateKeyDetection(key, title);
+//    }
     
     // Adding feature vector to item
     int numDimensions = NUM_CHROMA + NUM_FEATURES + NUM_SPECTRAL_BANDS;
@@ -560,13 +580,13 @@ bool SampleLibraryManager::fileHasBeenAdded(String const & inFilePath)
 
 void SampleLibraryManager::analyseSampleItem(SampleItem* inSampleItem, File const & inFile, bool forceAnalysis)
 {
-    addJob(new SampleManagerJob(allSampleItems, 
-                                   addedSampleItems, 
-                                   addedFilePaths,
-                                   inFile,
-                                   inSampleItem,
-                                   forceAnalysis,
-                                   numProcessedItems),
+    addJob(new SampleManagerJob(allSampleItems,
+                                addedSampleItems,
+                                addedFilePaths,
+                                inFile,
+                                inSampleItem,
+                                forceAnalysis,
+                                numProcessedItems),
            true);
 }
 
@@ -619,7 +639,7 @@ String SampleLibraryManager::encodeForXml(String inString)
     return String(data);
 }
 
-void SampleLibraryManager::evaluateTempoDetection(int tempo, const String& title)
+void SampleLibraryManager::evaluateTempoDetection(int detectedTempo, const String& title)
 {
     if (title.containsIgnoreCase("bpm"))
     {
@@ -632,17 +652,17 @@ void SampleLibraryManager::evaluateTempoDetection(int tempo, const String& title
         }
         
         bpmString = bpmString.fromLastOccurrenceOf("_", false, true);
-        int bpm = bpmString.getIntValue();
+        int actualTempo = bpmString.getIntValue();
         
-        if ((bpm - 2 <= tempo && tempo <= bpm + 2) || (bpm - 2 <= tempo / 2.0 && tempo / 2.0 <= bpm + 2) || (bpm - 2 <= tempo * 2.0 && tempo * 2.0 <= bpm + 2))
+        if ((actualTempo - 2 <= detectedTempo && detectedTempo <= actualTempo + 2) || (actualTempo - 2 <= detectedTempo / 2.0 && detectedTempo / 2.0 <= actualTempo + 2) || (actualTempo - 2 <= detectedTempo * 2.0 && detectedTempo * 2.0 <= actualTempo + 2))
         {
             numWithinTwoBPM++;
         }
-        else if ((bpm - 5 <= tempo && tempo <= bpm + 5) || (bpm - 5 <= tempo / 2.0 && tempo / 2.0 <= bpm + 5) || (bpm - 5 <= tempo * 2.0 && tempo * 2.0 <= bpm + 5))
+        else if ((actualTempo - 5 <= detectedTempo && detectedTempo <= actualTempo + 5) || (actualTempo - 5 <= detectedTempo / 2.0 && detectedTempo / 2.0 <= actualTempo + 5) || (actualTempo - 5 <= detectedTempo * 2.0 && detectedTempo * 2.0 <= actualTempo + 5))
         {
             numWithinFiveBPM++;
         }
-        else if ((bpm - 10 <= tempo && tempo <= bpm + 10) || (bpm - 10 <= tempo / 2.0 && tempo / 2.0 <= bpm + 10) || (bpm - 10 <= tempo * 2.0 && tempo * 2.0 <= bpm + 10))
+        else if ((actualTempo - 10 <= detectedTempo && detectedTempo <= actualTempo + 10) || (actualTempo - 10 <= detectedTempo / 2.0 && detectedTempo / 2.0 <= actualTempo + 10) || (actualTempo - 10 <= detectedTempo * 2.0 && detectedTempo * 2.0 <= actualTempo + 10))
         {
             numWithinTenBPM++;
         }
@@ -658,7 +678,7 @@ void SampleLibraryManager::evaluateKeyDetection(int key, const String& title)
     String keyString = title.removeCharacters(" _-");
     
     // Minor keys
-    if (keyString.containsIgnoreCase("ebm") || keyString.containsIgnoreCase("d#m"))
+    if (keyString.containsIgnoreCase("ebmin") || keyString.containsIgnoreCase("d#min"))
     {
         if (key == 0)
         {
@@ -677,7 +697,7 @@ void SampleLibraryManager::evaluateKeyDetection(int key, const String& title)
             numFalseKeyDetected++;
         }
     }
-    else if (keyString.containsIgnoreCase("bbm") || keyString.containsIgnoreCase("a#m"))
+    else if (keyString.containsIgnoreCase("bbmin") || keyString.containsIgnoreCase("a#min"))
     {
         if (key == 1)
         {
@@ -829,7 +849,7 @@ void SampleLibraryManager::evaluateKeyDetection(int key, const String& title)
             numFalseKeyDetected++;
         }
     }
-    else if (keyString.containsIgnoreCase("f#m") || keyString.containsIgnoreCase("gbm"))
+    else if (keyString.containsIgnoreCase("f#min") || keyString.containsIgnoreCase("gbmin"))
     {
         if (key == 9)
         {
@@ -848,7 +868,7 @@ void SampleLibraryManager::evaluateKeyDetection(int key, const String& title)
             numFalseKeyDetected++;
         }
     }
-    else if (keyString.containsIgnoreCase("c#m") || keyString.containsIgnoreCase("dbm"))
+    else if (keyString.containsIgnoreCase("c#min") || keyString.containsIgnoreCase("dbmin"))
     {
         if (key == 10)
         {
@@ -867,7 +887,7 @@ void SampleLibraryManager::evaluateKeyDetection(int key, const String& title)
             numFalseKeyDetected++;
         }
     }
-    else if (keyString.containsIgnoreCase("g#m") || keyString.containsIgnoreCase("abm"))
+    else if (keyString.containsIgnoreCase("g#min") || keyString.containsIgnoreCase("abmin"))
     {
         if (key == 11)
         {

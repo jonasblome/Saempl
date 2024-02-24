@@ -44,7 +44,7 @@
  #define JucePlugin_Name                   "Saempl"
 #endif
 #ifndef  JucePlugin_Desc
- #define JucePlugin_Desc                   "Saempl"
+ #define JucePlugin_Desc                   "Advanced Sample Library Manager"
 #endif
 #ifndef  JucePlugin_Manufacturer
  #define JucePlugin_Manufacturer           "Blome"

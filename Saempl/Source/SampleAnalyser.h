@@ -40,7 +40,7 @@ private:
     dsp::WindowingFunction<float> mWindowFunction;
     Array<float> mWindowedFFTData;
     Array<Array<float>> mSTFTSpectrum;
-    // Higher values increase temporal resolution of the STFT spectrum
+    // Lower values increase temporal resolution of the STFT spectrum
     static int const tempoFFTOrder = 11;
     static int const tempoFFTSize = 1 << tempoFFTOrder;
     static int const tempoWindowLength = tempoFFTSize;
@@ -48,12 +48,13 @@ private:
     // Higher values to decrease temporal resolution in tempogram calculation
     static int const tempogramHopLength = 1;
     // Higher values require more periodicity to trigger tempo detection
-    static int const tempogramWindowLengthInSeconds = 12;
+    static int const tempogramWindowLengthInSeconds = 25;
     static int const ignoreTopAndBottomTempi = 10;
     static int const lowerBPMLimit = 70 - ignoreTopAndBottomTempi;
     static int const upperBPMLimit = 180 + ignoreTopAndBottomTempi;
     static int const numTempi = upperBPMLimit - lowerBPMLimit;
-    static int const keyFFTOrder = 15;
+    // Higher values increase frequency resolution of the STFT spectrum
+    static int const keyFFTOrder = 16;
     static int const keyFFTSize = 1 << keyFFTOrder;
     static int const keyWindowLength = keyFFTSize;
     static int const keyFFTHopLength = keyWindowLength / 2;
@@ -68,7 +69,7 @@ private:
     constexpr static float const tempoCompressionFactor = 0.0;
     constexpr static float const keyCompressionFactor = 0.0;
     // Higher values remove more of the smallest local novelty peaks
-    constexpr static float const noveltyAveragingWindowLengthInSeconds = 60 * 1.0 / upperBPMLimit;
+    constexpr static float const noveltyAveragingWindowLengthInSeconds = 60.0f / upperBPMLimit;
     float decibel;
     float integratedLUFS;
     float lufsRangeStart;

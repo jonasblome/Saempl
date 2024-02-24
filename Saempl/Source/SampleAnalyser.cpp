@@ -30,6 +30,11 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
     // Load audio file
     loadAudioFileSource(inSampleItem->getFilePath());
     
+    if (sampleRate == 0 || numChannels == 0 || totalNumSamples == 0 || numBlocks == 0)
+    {
+        return;
+    }
+    
     // Set sample length
     float length = totalNumSamples * 1.0 / sampleRate;
     inSampleItem->setLength(length);
@@ -52,7 +57,7 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
         // Set sample tempo
         float tempo = analyseSampleTempo();
         
-        if (length >= 60.0f / upperBPMLimit * 4)
+        if (length >= 60.0f / lowerBPMLimit * 4)
         {
             inSampleItem->setTempo(tempo);
             featureVector[5] = (tempo - lowerBPMLimit) / (upperBPMLimit - lowerBPMLimit);
@@ -243,17 +248,19 @@ Array<float> SampleAnalyser::calculateNoveltyFunction()
         noveltyFunction.set(w - 1, localNovelty);
     }
     
-    // Calculate spectral flux
-    spectralFlux = spectralFlux / coefficientSum;
+    // Calculate spectral flux and spectral centroid
+    if (coefficientSum != 0)
+    {
+        spectralFlux = spectralFlux / coefficientSum;
+        spectralCentroid = spectralCentroid / coefficientSum;
+    }
     
-    // Calculate spectral centroid
-    spectralCentroid = spectralCentroid / coefficientSum;
     spectralCentroid = (spectralCentroid * sampleRate) / tempoWindowLength;
     
     return noveltyFunction;
 }
 
-void SampleAnalyser::noveltyFunctionSubtractAverage(Array<float> &noveltyFunction)
+void SampleAnalyser::noveltyFunctionSubtractAverage(Array<float>& noveltyFunction)
 {
     noveltyFunctionSampleRate = sampleRate / tempoFFTHopLength;
     int noveltyAveragingWindowLength = noveltyFunctionSampleRate * noveltyAveragingWindowLengthInSeconds;
@@ -261,8 +268,8 @@ void SampleAnalyser::noveltyFunctionSubtractAverage(Array<float> &noveltyFunctio
     for (int w = 0; w < numFFTWindows - 1; w++)
     {
         float localAverage = 0.0;
-        int currentWindowStart = jmax<int>(w - noveltyAveragingWindowLength, 0);
-        int currentWindowEnd = jmin<int>(w + noveltyAveragingWindowLength + 1, numFFTWindows - 1);
+        int currentWindowStart = jmax<int>(w - (noveltyAveragingWindowLength * 1.0 / 2), 0);
+        int currentWindowEnd = jmin<int>(w + 1 + (noveltyAveragingWindowLength * 1.0 / 2), numFFTWindows - 1);
         int currentWindowLength = currentWindowEnd - currentWindowStart;
         
         for (int m = currentWindowStart; m < currentWindowEnd; m++)
@@ -471,7 +478,8 @@ Array<Array<float>> SampleAnalyser::calculateLogSpectrogram(float& coefficientSu
     return logSpectrogram;
 }
 
-void SampleAnalyser::calculateChromaDistribution(Array<Array<float>> &logSpectrogram) {
+void SampleAnalyser::calculateChromaDistribution(Array<Array<float>> &logSpectrogram)
+{
     std::memset(mChromaDistribution, 0, sizeof(mChromaDistribution));
     chromaFlux = 0.0;
     

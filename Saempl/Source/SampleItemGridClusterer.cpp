@@ -70,7 +70,13 @@ void SampleItemGridClusterer::run()
     distanceMatrix.resize(numSwapPositions);
     
     float rad = jmax<int>(columns, rows) * initialRadiusFactor;
-    int numRadiusReductions = log(1 / rad) / log(radiusDecay);
+    int numRadiusReductions = log(endRadius / rad) / log(radiusDecay);
+    
+    if (numRadiusReductions == 0)
+    {
+        return;
+    }
+    
     int i = 0;
     
     while (rad >= endRadius)
@@ -840,17 +846,18 @@ void SampleItemGridClusterer::doSwaps(Array<int>& swapPositions,
     }
 }
 
-Array<Array<int>> SampleItemGridClusterer::calculateNormalisedDistanceMatrix(Array<std::vector<float>>& inFeatureVectors, Array<std::vector<float>>& inGridVectors, int size)
+Array<Array<int>> SampleItemGridClusterer::calculateNormalisedDistanceMatrix(Array<std::vector<float>>& inFeatureVectors, Array<std::vector<float>>& inGridVectors, int inSize)
 {
     // Find maximum distance in the swapping area
     float maxDistance = 0;
     
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < inSize; i++)
     {
-        for (int j = 0; j < size; j++)
+        for (int j = 0; j < inSize; j++)
         {
             float currentDistance = calculateDistance(inFeatureVectors.getReference(i), inGridVectors.getReference(j));
             distanceMatrix.getReference(i).set(j, currentDistance);
+            distanceMatrixNormalised.getReference(i).set(j, 0);
             
             if (currentDistance > maxDistance)
             {
@@ -859,10 +866,15 @@ Array<Array<int>> SampleItemGridClusterer::calculateNormalisedDistanceMatrix(Arr
         }
     }
     
-    // Set normalised and quantised distances for the current swap area
-    for (int i = 0; i < size; i++)
+    if (maxDistance == 0)
     {
-        for (int j = 0; j < size; j++)
+        return distanceMatrixNormalised;
+    }
+    
+    // Set normalised and quantised distances for the current swap area
+    for (int i = 0; i < inSize; i++)
+    {
+        for (int j = 0; j < inSize; j++)
         {
             distanceMatrixNormalised.getReference(i).set(j, (int) (QUANT
                                                                    * distanceMatrix.getReference(i).getReference(j)

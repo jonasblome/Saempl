@@ -3,8 +3,8 @@
 <JUCERPROJECT id="HebHQS" name="Saempl" projectType="audioplug" jucerFormatVersion="1"
               companyName="Blome" pluginAAXCategory="0" pluginVSTCategory="kPlugCategUnknown"
               companyEmail="jonas.blome@gmx.de" pluginManufacturerCode="Blom"
-              pluginManufacturer="Blome" pluginDesc="Saempl" pluginName="Saempl"
-              pluginCode="Smpl" version="0.1" companyWebsite="https://github.com/jonasblome"
+              pluginManufacturer="Blome" pluginDesc="Advanced Sample Library Manager"
+              pluginName="Saempl" pluginCode="Smpl" version="0.1" companyWebsite="https://github.com/jonasblome"
               pluginFormats="buildAU,buildStandalone,buildVST3" displaySplashScreen="1"
               pluginCharacteristicsValue="pluginEditorRequiresKeys">
   <MAINGROUP id="Ryuu1q" name="Saempl">

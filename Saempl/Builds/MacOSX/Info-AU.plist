@@ -31,7 +31,7 @@
         <key>name</key>
         <string>Blome: Saempl</string>
         <key>description</key>
-        <string>Saempl</string>
+        <string>Advanced Sample Library Manager</string>
         <key>factoryFunction</key>
         <string>SaemplAUFactory</string>
         <key>manufacturer</key>
