@@ -1,4 +1,4 @@
-# Saempl
+# Sæmpl
 A sample manager for automatic sample analysis and clustering, giving you access to properties like key, loudness or tempo of a sample!
 
 Choose a directory on your PC as your sample library (Keybinding: D).
