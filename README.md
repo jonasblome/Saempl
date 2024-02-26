@@ -49,30 +49,18 @@ Hover over buttons or sliders for tooltips:
 <img width="900" alt="Tooltip" src="https://github.com/jonasblome/Saempl/assets/18214770/d5ed1677-16ec-482f-a007-14632e31ff43">
 
 
-Coming very soon:
-- Key bindings for instant playback for file tree and table
-- Handing down key events to currently showing components
-- Improve filtering for key with more suitable string comparison
-- Popup menu option to show selected item in favorites or audio preview on grid panel
-- “About the makers” panel when clicking on logo with short instructions
-- Use interfaces for component interactions instead of direct access
-- Toggle option for which features are used during clustering
-    - Store feature properties in sample item fields and remove from/copy them to feature vector on toggle
+Coming soon (hopefully):
+- "About" panel when clicking on logo
+- Volume slider in header panel
+- Toggle option for which sample features are used during clustering
 - Adjustable weightings for features to influence clustering
-    - Multiply values from stored feature properties in sample items
-- Smoothing tempo histogram before picking optimal tempo
+- Fix crash when switching audio output device
+- Multithreading for grid clustering
 - Sample renaming option
 - Customizable tag per sample
-- Suggestions that are close to favorites average
-- Contrasting samples to chosen sample or favorites average
-- Replace JUCE arrays with std::vectors in sorting and analyser
-- Multithreading for grid sorting
-- More features with [spectral analysis](https://docs.twoears.eu/en/latest/afe/available-processors/spectral-features/#tzanetakis2002)
-- Fix crash when switching audio output device
-
-
-Ideas for the Future:
+- Suggestions that are close to average of the favourites
+- Show contrasting samples to chosen sample or the average of the favourites
 - Sample property editor (keep custom values when analysis version changes)
 - Sound category detection and grid tiles colored accordingly
-- Slicing of files after silence and renaming them sensibly
+- Slicing files after silence and renaming slice files
 - Cutting files up in beat clusters with automatic slice renaming
