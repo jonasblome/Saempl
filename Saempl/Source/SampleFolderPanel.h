@@ -1,7 +1,7 @@
 /*
  ==============================================================================
  
- SampleLibraryPanel.h
+ SampleFolderPanel.h
  Author:  Jonas Blome
  
  ==============================================================================
@@ -18,7 +18,7 @@
  
  Handles previewing and deleting of sample files.
  */
-class SampleLibraryPanel
+class SampleFolderPanel
 :
 public PanelBase,
 private FileBrowserListener,
@@ -31,8 +31,8 @@ public:
      @param inProcessor the processor object of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
-    SampleLibraryPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
-    ~SampleLibraryPanel();
+    SampleFolderPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
+    ~SampleFolderPanel();
     
 private:
     SampleLibrary& sampleLibrary;
@@ -64,5 +64,5 @@ private:
     void setPanelComponents() override;
     void resizePanelComponents() override;
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleLibraryPanel);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleFolderPanel);
 };

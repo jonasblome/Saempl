@@ -31,7 +31,7 @@ void SampleNavigationPanel::paint(Graphics& g)
 void SampleNavigationPanel::setPanelComponents()
 {
     // Add library panel
-    mSampleLibraryPanel = std::make_unique<SampleLibraryPanel>(currentProcessor, sampleItemPanel);
+    mSampleLibraryPanel = std::make_unique<SampleFolderPanel>(currentProcessor, sampleItemPanel);
     addChildComponent(*mSampleLibraryPanel);
     
     // Add sample table panel

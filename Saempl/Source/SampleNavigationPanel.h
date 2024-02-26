@@ -10,7 +10,7 @@
 #pragma once
 
 #include "PanelBase.h"
-#include "SampleLibraryPanel.h"
+#include "SampleFolderPanel.h"
 #include "SampleTablePanel.h"
 #include "SampleGridPanel.h"
 #include "SampleItemPanel.h"
@@ -46,7 +46,7 @@ public:
     
 private:
     SampleItemPanel& sampleItemPanel;
-    std::unique_ptr<SampleLibraryPanel> mSampleLibraryPanel;
+    std::unique_ptr<SampleFolderPanel> mSampleLibraryPanel;
     std::unique_ptr<SampleTablePanel> mSampleTablePanel;
     std::unique_ptr<SampleGridPanel> mSampleGridPanel;
     BlomeStyling::Ptr style;

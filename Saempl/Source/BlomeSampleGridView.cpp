@@ -1,15 +1,15 @@
 /*
  ==============================================================================
  
- BlomeSampleTileGridView.cpp
+ BlomeSampleGridView.cpp
  Author:  Jonas Blome
  
  ==============================================================================
  */
 
-#include "BlomeSampleTileGridView.h"
+#include "BlomeSampleGridView.h"
 
-BlomeSampleTileGridView::BlomeSampleTileGridView(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel)
+BlomeSampleGridView::BlomeSampleGridView(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel)
 :
 sampleLibrary(inSampleLibrary),
 sampleItemPanel(inSampleItemPanel)
@@ -19,21 +19,21 @@ sampleItemPanel(inSampleItemPanel)
     addMouseListener(this, true);
     
     // Add grid clusterer
-    mGridClusterer = std::make_unique<SampleItemGridClusterer>(sampleLibrary.getSampleItems(FILTERED_SAMPLES));
+    mGridClusterer = std::make_unique<SampleGridClusterer>(sampleLibrary.getSampleItems(FILTERED_SAMPLES));
     mGridClusterer->addChangeListener(this);
     
     // Add audio player component
     mAudioPlayer = std::make_unique<AudioPlayer>();
 }
 
-BlomeSampleTileGridView::~BlomeSampleTileGridView()
+BlomeSampleGridView::~BlomeSampleGridView()
 {
     sampleLibrary.removeChangeListener(this);
     mGridClusterer->removeChangeListener(this);
     removeMouseListener(this);
 }
 
-void BlomeSampleTileGridView::clusterGrid()
+void BlomeSampleGridView::clusterGrid()
 {
     if (!sampleItemCollectionChanged)
     {
@@ -100,7 +100,7 @@ void BlomeSampleTileGridView::clusterGrid()
     sampleItemCollectionChanged = false;
 }
 
-void BlomeSampleTileGridView::performGridLayout()
+void BlomeSampleGridView::performGridLayout()
 {
     if (mSampleItemTiles.isEmpty())
     {
@@ -122,12 +122,12 @@ void BlomeSampleTileGridView::performGridLayout()
                                                   optimalHeight * tileWidth));
 }
 
-void BlomeSampleTileGridView::setZoomFactor(float inZoomFactor)
+void BlomeSampleGridView::setZoomFactor(float inZoomFactor)
 {
     currentZoomFactor = inZoomFactor;
 }
 
-Point<int> BlomeSampleTileGridView::getTileCentre(BlomeSampleItemTileView *randomTile)
+Point<int> BlomeSampleGridView::getTileCentre(BlomeSampleTileView *randomTile)
 {
     Point<int> centre = randomTile->getPosition();
     int halfTildWidth = randomTile->getWidth() / 2;
@@ -136,7 +136,7 @@ Point<int> BlomeSampleTileGridView::getTileCentre(BlomeSampleItemTileView *rando
     return centre;
 }
 
-Point<int> BlomeSampleTileGridView::selectRandomTile()
+Point<int> BlomeSampleGridView::selectRandomTile()
 {
     int numTiles = mSampleItemTiles.size();
     
@@ -147,13 +147,13 @@ Point<int> BlomeSampleTileGridView::selectRandomTile()
     
     int randomTileIndex = Random::getSystemRandom().nextInt(numTiles);
     deselectAll();
-    BlomeSampleItemTileView* randomTile = mSampleItemTiles.getUnchecked(randomTileIndex);
+    BlomeSampleTileView* randomTile = mSampleItemTiles.getUnchecked(randomTileIndex);
     selectTile(randomTileIndex);
     
     return getTileCentre(randomTile);
 }
 
-void BlomeSampleTileGridView::loadSelectedTileIntoAudioPlayer()
+void BlomeSampleGridView::loadSelectedTileIntoAudioPlayer()
 {
     if (mSelectedSampleTileIndices.isEmpty())
     {
@@ -163,7 +163,7 @@ void BlomeSampleTileGridView::loadSelectedTileIntoAudioPlayer()
     mSampleItemTiles.getUnchecked(mSelectedSampleTileIndices.getUnchecked(0))->loadIntoAudioPlayer();
 }
 
-void BlomeSampleTileGridView::selectAll()
+void BlomeSampleGridView::selectAll()
 {
     mSelectedSampleTileIndices.clear();
     
@@ -175,7 +175,7 @@ void BlomeSampleTileGridView::selectAll()
     repaint();
 }
 
-void BlomeSampleTileGridView::deselectAll()
+void BlomeSampleGridView::deselectAll()
 {
     for (int t : mSelectedSampleTileIndices)
     {
@@ -186,7 +186,7 @@ void BlomeSampleTileGridView::deselectAll()
     repaint();
 }
 
-Point<int> BlomeSampleTileGridView::selectLeft()
+Point<int> BlomeSampleGridView::selectLeft()
 {
     int lastSelectedIndex = mSelectedSampleTileIndices.getLast();
     deselectAll();
@@ -195,7 +195,7 @@ Point<int> BlomeSampleTileGridView::selectLeft()
     return getTileCentre(selectTile(newIndex));
 }
 
-Point<int> BlomeSampleTileGridView::selectUp()
+Point<int> BlomeSampleGridView::selectUp()
 {
     int lastSelectedIndex = mSelectedSampleTileIndices.getLast();
     int newIndex = lastSelectedIndex - optimalWidth;
@@ -204,7 +204,7 @@ Point<int> BlomeSampleTileGridView::selectUp()
     return getTileCentre(selectTile(newIndex < 0 ? lastSelectedIndex : newIndex));
 }
 
-Point<int> BlomeSampleTileGridView::selectRight()
+Point<int> BlomeSampleGridView::selectRight()
 {
     int lastSelectedIndex = mSelectedSampleTileIndices.getLast();
     deselectAll();
@@ -213,7 +213,7 @@ Point<int> BlomeSampleTileGridView::selectRight()
     return getTileCentre(selectTile(newIndex));
 }
 
-Point<int> BlomeSampleTileGridView::selectDown()
+Point<int> BlomeSampleGridView::selectDown()
 {
     int lastSelectedIndex = mSelectedSampleTileIndices.getLast();
     int newIndex = lastSelectedIndex + optimalWidth;
@@ -222,12 +222,12 @@ Point<int> BlomeSampleTileGridView::selectDown()
     return getTileCentre(selectTile(newIndex >= mSampleItemTiles.size() ? lastSelectedIndex : newIndex));
 }
 
-void BlomeSampleTileGridView::setReadyForClustering()
+void BlomeSampleGridView::setReadyForClustering()
 {
     sampleItemCollectionChanged = true;
 }
 
-void BlomeSampleTileGridView::setupGrid()
+void BlomeSampleGridView::setupGrid()
 {
     // Setup tile grid
     mSampleItemTiles.clear();
@@ -262,7 +262,7 @@ void BlomeSampleTileGridView::setupGrid()
     // Setup tiles
     for (SampleItem* sample : sampleItems)
     {
-        addAndMakeVisible(mSampleItemTiles.add(new BlomeSampleItemTileView(sample, sampleLibrary, sampleItemPanel, *mAudioPlayer)));
+        addAndMakeVisible(mSampleItemTiles.add(new BlomeSampleTileView(sample, sampleLibrary, sampleItemPanel, *mAudioPlayer)));
     }
     
     // Remove empty sample items from collection
@@ -276,12 +276,12 @@ void BlomeSampleTileGridView::setupGrid()
     performGridLayout();
 }
 
-void BlomeSampleTileGridView::paint(Graphics& g)
+void BlomeSampleGridView::paint(Graphics& g)
 {
     
 }
 
-void BlomeSampleTileGridView::changeListenerCallback(ChangeBroadcaster* source)
+void BlomeSampleGridView::changeListenerCallback(ChangeBroadcaster* source)
 {
     if (source == &sampleLibrary && isShowing())
     {
@@ -301,34 +301,34 @@ void BlomeSampleTileGridView::changeListenerCallback(ChangeBroadcaster* source)
     }
 }
 
-void BlomeSampleTileGridView::filesDropped(StringArray const & files, int x, int y)
+void BlomeSampleGridView::filesDropped(StringArray const & files, int x, int y)
 {
     // Adding all the dropped files to the database
     sampleLibrary.addAllToSampleItems(files);
 }
 
-bool BlomeSampleTileGridView::isInterestedInFileDrag(StringArray const & files)
+bool BlomeSampleGridView::isInterestedInFileDrag(StringArray const & files)
 {
     return true;
 }
 
-BlomeSampleItemTileView* BlomeSampleTileGridView::selectTile(int inTileIndex)
+BlomeSampleTileView* BlomeSampleGridView::selectTile(int inTileIndex)
 {
     mSelectedSampleTileIndices.add(inTileIndex);
-    BlomeSampleItemTileView* tile = mSampleItemTiles.getUnchecked(inTileIndex);
+    BlomeSampleTileView* tile = mSampleItemTiles.getUnchecked(inTileIndex);
     tile->setSelected(true);
     
     return tile;
     
 }
 
-void BlomeSampleTileGridView::deselectTile(int inTileIndex)
+void BlomeSampleGridView::deselectTile(int inTileIndex)
 {
     mSelectedSampleTileIndices.removeAllInstancesOf(inTileIndex);
     mSampleItemTiles.getUnchecked(inTileIndex)->setSelected(false);
 }
 
-void BlomeSampleTileGridView::mouseUp(MouseEvent const & event)
+void BlomeSampleGridView::mouseUp(MouseEvent const & event)
 {
     Point<int> mousePosition = event.getEventRelativeTo(this).getPosition();
     bool commandIsDown = event.mods.isCommandDown();
@@ -340,7 +340,7 @@ void BlomeSampleTileGridView::mouseUp(MouseEvent const & event)
     {
         for (int t = 0; t < mSelectedSampleTileIndices.size(); t++)
         {
-            BlomeSampleItemTileView* tile = mSampleItemTiles.getUnchecked(mSelectedSampleTileIndices.getReference(t));
+            BlomeSampleTileView* tile = mSampleItemTiles.getUnchecked(mSelectedSampleTileIndices.getReference(t));
             
             if (tile->getBoundsInParent().contains(mousePosition))
             {
@@ -359,7 +359,7 @@ void BlomeSampleTileGridView::mouseUp(MouseEvent const & event)
     // Select or deselect clicked tile
     for (int t = 0; t < mSampleItemTiles.size(); t++)
     {
-        BlomeSampleItemTileView* tile = mSampleItemTiles.getUnchecked(t);
+        BlomeSampleTileView* tile = mSampleItemTiles.getUnchecked(t);
         
         if (tile->getBoundsInParent().contains(mousePosition) && tile->getSampleItemFilePath() != EMPTY_TILE_PATH)
         {
@@ -416,7 +416,7 @@ void BlomeSampleTileGridView::mouseUp(MouseEvent const & event)
             for (int y = yStart; y <= yEnd; y++)
             {
                 int newSelectedIndex = y * optimalWidth + x;
-                BlomeSampleItemTileView* tile = mSampleItemTiles.getUnchecked(newSelectedIndex);
+                BlomeSampleTileView* tile = mSampleItemTiles.getUnchecked(newSelectedIndex);
                 
                 if (tile->getSampleItemFilePath() != EMPTY_TILE_PATH)
                 {
@@ -435,7 +435,7 @@ void BlomeSampleTileGridView::mouseUp(MouseEvent const & event)
     repaint();
 }
 
-void BlomeSampleTileGridView::mouseDrag(MouseEvent const & mouseEvent)
+void BlomeSampleGridView::mouseDrag(MouseEvent const & mouseEvent)
 {
     // If the drag was at least 50ms after the mouse was pressed
     if (mouseEvent.getLengthOfMousePress() > 100)
@@ -445,7 +445,7 @@ void BlomeSampleTileGridView::mouseDrag(MouseEvent const & mouseEvent)
         // Check if any of the selected tiles was dragged
         for (int s : mSelectedSampleTileIndices)
         {
-            BlomeSampleItemTileView* tile = mSampleItemTiles.getUnchecked(s);
+            BlomeSampleTileView* tile = mSampleItemTiles.getUnchecked(s);
             Rectangle<int> tileBounds = tile->getBoundsInParent();
             
             if (tileBounds.contains(mousePosition))
@@ -467,7 +467,7 @@ void BlomeSampleTileGridView::mouseDrag(MouseEvent const & mouseEvent)
     }
 }
 
-void BlomeSampleTileGridView::showPopupMenu()
+void BlomeSampleGridView::showPopupMenu()
 {
     PopupMenu popupMenu;
     popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
@@ -477,7 +477,7 @@ void BlomeSampleTileGridView::showPopupMenu()
     popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
 }
 
-void BlomeSampleTileGridView::deleteFiles(bool deletePermanently = false)
+void BlomeSampleGridView::deleteFiles(bool deletePermanently = false)
 {
     StringArray filePaths;
     
@@ -489,7 +489,7 @@ void BlomeSampleTileGridView::deleteFiles(bool deletePermanently = false)
     sampleLibrary.removeSampleItems(filePaths, deletePermanently);
 }
 
-void BlomeSampleTileGridView::addToFavourites()
+void BlomeSampleGridView::addToFavourites()
 {
     StringArray filePaths;
     
@@ -501,7 +501,7 @@ void BlomeSampleTileGridView::addToFavourites()
     sampleLibrary.addAllToFavourites(filePaths);
 }
 
-void BlomeSampleTileGridView::reanalyseSamples()
+void BlomeSampleGridView::reanalyseSamples()
 {
     StringArray filePaths;
     
@@ -513,12 +513,12 @@ void BlomeSampleTileGridView::reanalyseSamples()
     sampleLibrary.reanalyseSampleItems(filePaths);
 }
 
-float BlomeSampleTileGridView::getTileMinMaxRelation()
+float BlomeSampleGridView::getTileMinMaxRelation()
 {
     return maxTileWidth * 1.0 / minTileWidth;
 }
 
-void BlomeSampleTileGridView::playSelectedSample()
+void BlomeSampleGridView::playSelectedSample()
 {
     if (mSelectedSampleTileIndices.isEmpty())
     {
@@ -528,7 +528,7 @@ void BlomeSampleTileGridView::playSelectedSample()
     mSampleItemTiles.getUnchecked(mSelectedSampleTileIndices.getReference(0))->startPlayback();
 }
 
-void BlomeSampleTileGridView::stopSelectedSample()
+void BlomeSampleGridView::stopSelectedSample()
 {
     mAudioPlayer->stop();
 }

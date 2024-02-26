@@ -1,7 +1,7 @@
 /*
  ==============================================================================
  
- SampleItemGridClusterer.h
+ SampleGridClusterer.h
  Author:  Jonas Blome
  
  Translated and adapted code from the paper
@@ -23,14 +23,14 @@
 /**
  Clusters the filtered sample items of the library according to the Fast Linear Assignment Sorting onto a 2D grid.
  */
-class SampleItemGridClusterer
+class SampleGridClusterer
 :
 public ThreadWithProgressWindow,
 public ChangeBroadcaster
 {
 public:
-    SampleItemGridClusterer(OwnedArray<SampleItem>& inSampleItems);
-    ~SampleItemGridClusterer();
+    SampleGridClusterer(OwnedArray<SampleItem>& inSampleItems);
+    ~SampleGridClusterer();
     /**
      Applies the clustering algorithm to the given grid of sample items.
      
@@ -273,5 +273,5 @@ private:
      */
     Array<int> computeAssignment(Array<Array<int>>& matrix, int numDimensions);
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleItemGridClusterer);    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleGridClusterer);    
 };

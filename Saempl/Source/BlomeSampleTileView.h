@@ -1,7 +1,7 @@
 /*
  ==============================================================================
  
- BlomeSampleItemTileView.h
+ BlomeSampleTileView.h
  Author:  Jonas Blome
  
  ==============================================================================
@@ -16,16 +16,16 @@
 /**
  The view class for tiles on the grid that each represent a sample item.
  */
-class BlomeSampleItemTileView
+class BlomeSampleTileView
 :
 public Component
 {
 public:
-    BlomeSampleItemTileView(SampleItem* inSampleItem, 
+    BlomeSampleTileView(SampleItem* inSampleItem, 
                             SampleLibrary& inSampleLibrary,
                             SampleItemPanel& inSampleItemPanel,
                             AudioPlayer& inAudioPlayer);
-    ~BlomeSampleItemTileView();
+    ~BlomeSampleTileView();
     /**
      @returns the title of the sample item linked to the view.
      */
@@ -64,5 +64,5 @@ private:
     void resized() override;
     void setPlayButton();
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeSampleItemTileView);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeSampleTileView);
 };

@@ -1,7 +1,7 @@
 /*
  ==============================================================================
  
- SampleItemGridClusterer.cpp
+ SampleGridClusterer.cpp
  Author:  Jonas Blome
  
  Translated and adapted code from the paper
@@ -14,9 +14,9 @@
  ==============================================================================
  */
 
-#include "SampleItemGridClusterer.h"
+#include "SampleGridClusterer.h"
 
-SampleItemGridClusterer::SampleItemGridClusterer(OwnedArray<SampleItem>& inSampleItems)
+SampleGridClusterer::SampleGridClusterer(OwnedArray<SampleItem>& inSampleItems)
 :
 ThreadWithProgressWindow("Improving sample grid clustering quality", true, true, 10000, "Stop improving", nullptr),
 sampleItems(inSampleItems)
@@ -24,12 +24,12 @@ sampleItems(inSampleItems)
     
 }
 
-SampleItemGridClusterer::~SampleItemGridClusterer()
+SampleGridClusterer::~SampleGridClusterer()
 {
     
 }
 
-void SampleItemGridClusterer::applyClustering(int inRows, int inColumns, bool doWrap)
+void SampleGridClusterer::applyClustering(int inRows, int inColumns, bool doWrap)
 {
     rows = inRows;
     columns = inColumns;
@@ -37,7 +37,7 @@ void SampleItemGridClusterer::applyClustering(int inRows, int inColumns, bool do
     launchThread();
 }
 
-void SampleItemGridClusterer::run()
+void SampleGridClusterer::run()
 {
     setProgress(0.0);
     int gridSize = columns * rows;
@@ -139,12 +139,12 @@ void SampleItemGridClusterer::run()
     }
 }
 
-void SampleItemGridClusterer::threadComplete(bool userPressedCancel)
+void SampleGridClusterer::threadComplete(bool userPressedCancel)
 {
     sendChangeMessage();
 }
 
-void SampleItemGridClusterer::copyFeatureVectorsToGrid(Array<std::vector<float>>& grid, int numDimensions, Array<float>& weights)
+void SampleGridClusterer::copyFeatureVectorsToGrid(Array<std::vector<float>>& grid, int numDimensions, Array<float>& weights)
 {
     for (int pos = 0; pos < grid.size(); pos++)
     {
@@ -172,7 +172,7 @@ void SampleItemGridClusterer::copyFeatureVectorsToGrid(Array<std::vector<float>>
     }
 }
 
-Array<std::vector<float>> SampleItemGridClusterer::filterHorizontallyWrap(Array<std::vector<float>>& inGrid,
+Array<std::vector<float>> SampleGridClusterer::filterHorizontallyWrap(Array<std::vector<float>>& inGrid,
                                                                           int rows,
                                                                           int columns,
                                                                           int numDimensions,
@@ -243,7 +243,7 @@ Array<std::vector<float>> SampleItemGridClusterer::filterHorizontallyWrap(Array<
     return output;
 }
 
-Array<std::vector<float>> SampleItemGridClusterer::filterVerticallyWrap(Array<std::vector<float>>& inGrid,
+Array<std::vector<float>> SampleGridClusterer::filterVerticallyWrap(Array<std::vector<float>>& inGrid,
                                                                         int rows,
                                                                         int columns,
                                                                         int numDimensions,
@@ -312,7 +312,7 @@ Array<std::vector<float>> SampleItemGridClusterer::filterVerticallyWrap(Array<st
     return output;
 }
 
-Array<float> SampleItemGridClusterer::filterHorizontallyWrap(Array<float>& inWeights,
+Array<float> SampleGridClusterer::filterHorizontallyWrap(Array<float>& inWeights,
                                                              int rows,
                                                              int columns,
                                                              int filterSize)
@@ -369,7 +369,7 @@ Array<float> SampleItemGridClusterer::filterHorizontallyWrap(Array<float>& inWei
     return output;
 }
 
-Array<float> SampleItemGridClusterer::filterVerticallyWrap(Array<float>& inWeights,
+Array<float> SampleGridClusterer::filterVerticallyWrap(Array<float>& inWeights,
                                                            int rows,
                                                            int columns,
                                                            int filterSize)
@@ -424,7 +424,7 @@ Array<float> SampleItemGridClusterer::filterVerticallyWrap(Array<float>& inWeigh
     return output;
 }
 
-Array<std::vector<float>> SampleItemGridClusterer::filterHorizontallyMirror(Array<std::vector<float>>& inGrid,
+Array<std::vector<float>> SampleGridClusterer::filterHorizontallyMirror(Array<std::vector<float>>& inGrid,
                                                                             int rows,
                                                                             int columns,
                                                                             int numDimensions,
@@ -495,7 +495,7 @@ Array<std::vector<float>> SampleItemGridClusterer::filterHorizontallyMirror(Arra
     return output;
 }
 
-Array<std::vector<float>> SampleItemGridClusterer::filterVerticallyMirror(Array<std::vector<float>>& inGrid,
+Array<std::vector<float>> SampleGridClusterer::filterVerticallyMirror(Array<std::vector<float>>& inGrid,
                                                                           int rows,
                                                                           int columns,
                                                                           int numDimensions,
@@ -564,7 +564,7 @@ Array<std::vector<float>> SampleItemGridClusterer::filterVerticallyMirror(Array<
     return output;
 }
 
-Array<float> SampleItemGridClusterer::filterHorizontallyMirror(Array<float>& inWeights, int rows, int columns, int filterSize)
+Array<float> SampleGridClusterer::filterHorizontallyMirror(Array<float>& inWeights, int rows, int columns, int filterSize)
 {
     if (columns == 1)
     {
@@ -618,7 +618,7 @@ Array<float> SampleItemGridClusterer::filterHorizontallyMirror(Array<float>& inW
     return output;
 }
 
-Array<float> SampleItemGridClusterer::filterVerticallyMirror(Array<float>& inWeights, int rows, int columns, int filterSize)
+Array<float> SampleGridClusterer::filterVerticallyMirror(Array<float>& inWeights, int rows, int columns, int filterSize)
 {
     if (rows == 1)
     {
@@ -670,7 +670,7 @@ Array<float> SampleItemGridClusterer::filterVerticallyMirror(Array<float>& inWei
     return output;
 }
 
-void SampleItemGridClusterer::checkRandomSwaps(int radius, Array<std::vector<float>>& grid, int rows, int columns)
+void SampleGridClusterer::checkRandomSwaps(int radius, Array<std::vector<float>>& grid, int rows, int columns)
 {
     // Set swap size
     int swapAreaWidth = jmin<int>(2 * radius + 1, columns);
@@ -738,7 +738,7 @@ void SampleItemGridClusterer::checkRandomSwaps(int radius, Array<std::vector<flo
     }
 }
 
-int SampleItemGridClusterer::findSwapPositionsWrap(Array<int>& swapAreaIndices, Array<int>& swapPositions, int swapAreaWidth, int swapAreaHeight, int rows, int columns)
+int SampleGridClusterer::findSwapPositionsWrap(Array<int>& swapAreaIndices, Array<int>& swapPositions, int swapAreaWidth, int swapAreaHeight, int rows, int columns)
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -763,7 +763,7 @@ int SampleItemGridClusterer::findSwapPositionsWrap(Array<int>& swapAreaIndices, 
     return swapPositions.size();
 }
 
-int SampleItemGridClusterer::findSwapPositions(Array<int>& swapAreaIndices, Array<int>& swapPositions, int swapAreaWidth, int swapAreaHeight, int rows, int columns)
+int SampleGridClusterer::findSwapPositions(Array<int>& swapAreaIndices, Array<int>& swapPositions, int swapAreaWidth, int swapAreaHeight, int rows, int columns)
 {
     std::random_device random;
     std::mt19937 generator(random());
@@ -805,7 +805,7 @@ int SampleItemGridClusterer::findSwapPositions(Array<int>& swapAreaIndices, Arra
     return swapPositions.size();
 }
 
-void SampleItemGridClusterer::doSwaps(Array<int>& swapPositions,
+void SampleGridClusterer::doSwaps(Array<int>& swapPositions,
                                       int numSwapPositions,
                                       Array<std::vector<float>>& grid)
 {
@@ -846,7 +846,7 @@ void SampleItemGridClusterer::doSwaps(Array<int>& swapPositions,
     }
 }
 
-Array<Array<int>> SampleItemGridClusterer::calculateNormalisedDistanceMatrix(Array<std::vector<float>>& inFeatureVectors, Array<std::vector<float>>& inGridVectors, int inSize)
+Array<Array<int>> SampleGridClusterer::calculateNormalisedDistanceMatrix(Array<std::vector<float>>& inFeatureVectors, Array<std::vector<float>>& inGridVectors, int inSize)
 {
     // Find maximum distance in the swapping area
     float maxDistance = 0;
@@ -886,7 +886,7 @@ Array<Array<int>> SampleItemGridClusterer::calculateNormalisedDistanceMatrix(Arr
     return distanceMatrixNormalised;
 }
 
-float SampleItemGridClusterer::calculateDistance(std::vector<float> vector1, std::vector<float> vector2)
+float SampleGridClusterer::calculateDistance(std::vector<float> vector1, std::vector<float> vector2)
 {
     float distance = 0.0;
     
@@ -912,7 +912,7 @@ float SampleItemGridClusterer::calculateDistance(std::vector<float> vector1, std
     return sqrt(distance);
 }
 
-Array<int> SampleItemGridClusterer::computeAssignment(Array<Array<int>>& matrix, int numDimensions)
+Array<int> SampleGridClusterer::computeAssignment(Array<Array<int>>& matrix, int numDimensions)
 {
     int i, imin, i0, freerow;
     int j, j1, j2 = 0, endofpath = 0, last = 0, min = 0;

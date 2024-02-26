@@ -1,15 +1,15 @@
 /*
  ==============================================================================
  
- SampleManagerJob.cpp
+ SampleAnalysisJob.cpp
  Author:  Jonas Blome
  
  ==============================================================================
  */
 
-#include "SampleManagerJob.h"
+#include "SampleAnalysisJob.h"
 
-SampleManagerJob::SampleManagerJob(OwnedArray<SampleItem>& inSampleItems, 
+SampleAnalysisJob::SampleAnalysisJob(OwnedArray<SampleItem>& inSampleItems, 
                                          OwnedArray<SampleItem>& inAddedSampleItems,
                                          StringArray& inAddedFilePaths,
                                          File const & inFile,
@@ -17,7 +17,7 @@ SampleManagerJob::SampleManagerJob(OwnedArray<SampleItem>& inSampleItems,
                                          bool forceAnalysis,
                                          int& inNumProcessedItems)
 :
-ThreadPoolJob("SampleManagerThread"),
+ThreadPoolJob("SampleAnalysisJob"),
 allSampleItems(inSampleItems),
 addedSampleItems(inAddedSampleItems),
 addedFilePaths(inAddedFilePaths),
@@ -30,12 +30,12 @@ numProcessedItems(inNumProcessedItems)
     mSampleAnalyser = std::make_unique<SampleAnalyser>();
 }
 
-SampleManagerJob::~SampleManagerJob()
+SampleAnalysisJob::~SampleAnalysisJob()
 {
     
 }
 
-ThreadPoolJob::JobStatus SampleManagerJob::runJob()
+ThreadPoolJob::JobStatus SampleAnalysisJob::runJob()
 {
     if (sampleItem == nullptr)
     {

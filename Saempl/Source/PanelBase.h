@@ -11,7 +11,7 @@
 
 #include "JuceHeader.h"
 #include "PluginProcessor.h"
-#include "BlomeStyleDefinitions.h"
+#include "BlomeStyling.h"
 
 /**
  The base class for UI panels.

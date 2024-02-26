@@ -11,7 +11,7 @@
 
 #include "PanelBase.h"
 #include "SampleItemPanel.h"
-#include "BlomeSampleTileGridView.h"
+#include "BlomeSampleGridView.h"
 
 /**
  Holds the grid for displaying the library sample item collection.
@@ -38,7 +38,7 @@ private:
     SampleLibrary& sampleLibrary;
     SampleItemPanel& sampleItemPanel;
     BlomeStyling::Ptr style;
-    std::unique_ptr<BlomeSampleTileGridView> mSampleTileGrid;
+    std::unique_ptr<BlomeSampleGridView> mSampleTileGrid;
     std::unique_ptr<Viewport> mGridViewport;
     std::unique_ptr<Slider> mZoomSlider;
     

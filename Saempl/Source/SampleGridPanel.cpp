@@ -80,7 +80,7 @@ void SampleGridPanel::paint(Graphics& g)
 
 void SampleGridPanel::setPanelComponents()
 {
-    mSampleTileGrid = std::make_unique<BlomeSampleTileGridView>(sampleLibrary, sampleItemPanel);
+    mSampleTileGrid = std::make_unique<BlomeSampleGridView>(sampleLibrary, sampleItemPanel);
     mSampleTileGrid->setZoomFactor(currentProcessor.getSampleGridZoomFactor());
     
     if (sampleLibrary.getLibraryWasLoaded())

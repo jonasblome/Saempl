@@ -10,7 +10,7 @@
 #pragma once
 
 #include "JuceHeader.h"
-#include "BlomeStyleDefinitions.h"
+#include "BlomeStyling.h"
 #include "SampleLibrary.h"
 #include "BlomeImageButton.h"
 

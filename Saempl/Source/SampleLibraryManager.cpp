@@ -580,7 +580,7 @@ bool SampleLibraryManager::fileHasBeenAdded(String const & inFilePath)
 
 void SampleLibraryManager::analyseSampleItem(SampleItem* inSampleItem, File const & inFile, bool forceAnalysis)
 {
-    addJob(new SampleManagerJob(allSampleItems,
+    addJob(new SampleAnalysisJob(allSampleItems,
                                 addedSampleItems,
                                 addedFilePaths,
                                 inFile,

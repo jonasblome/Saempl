@@ -1,7 +1,7 @@
 /*
  ==============================================================================
  
- BlomeSampleTileGridView.h
+ BlomeSampleGridView.h
  Author:  Jonas Blome
  
  ==============================================================================
@@ -10,25 +10,25 @@
 #pragma once
 
 #include "JuceHeader.h"
-#include "BlomeStyleDefinitions.h"
+#include "BlomeStyling.h"
 #include "SampleLibrary.h"
-#include "BlomeSampleItemTileView.h"
-#include "SampleItemGridClusterer.h"
+#include "BlomeSampleTileView.h"
+#include "SampleGridClusterer.h"
 
 /**
  The view class for the sample grid.
  
  This handles clustering and arranging the samples as tiles on a grid.
  */
-class BlomeSampleTileGridView
+class BlomeSampleGridView
 :
 public Component,
 public ChangeListener,
 public FileDragAndDropTarget
 {
 public:
-    BlomeSampleTileGridView(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
-    ~BlomeSampleTileGridView();
+    BlomeSampleGridView(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
+    ~BlomeSampleGridView();
     /**
      Clusters the grid by sample item similarity.
      */
@@ -119,11 +119,11 @@ private:
     BlomeStyling::Ptr style;
     std::unique_ptr<Grid> mSampleTileGrid;
     SampleItemPanel& sampleItemPanel;
-    OwnedArray<BlomeSampleItemTileView> mSampleItemTiles;
+    OwnedArray<BlomeSampleTileView> mSampleItemTiles;
     Array<int> mSelectedSampleTileIndices;
     OwnedArray<SampleItem> emptySquares;
     StringArray mAddedSampleFilePaths;
-    std::unique_ptr<SampleItemGridClusterer> mGridClusterer;
+    std::unique_ptr<SampleGridClusterer> mGridClusterer;
     bool sampleItemCollectionChanged;
     int optimalWidth;
     int optimalHeight;
@@ -151,7 +151,7 @@ private:
      
      @returns a pointer to the selected tile view object.
      */
-    BlomeSampleItemTileView* selectTile(int inTileIndex);
+    BlomeSampleTileView* selectTile(int inTileIndex);
     /**
      Deselects a tile in the grid.
      
@@ -180,7 +180,7 @@ private:
      
      @returns the point of the tile's centre.
      */
-    Point<int> getTileCentre(BlomeSampleItemTileView* inTile);
+    Point<int> getTileCentre(BlomeSampleTileView* inTile);
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeSampleTileGridView);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeSampleGridView);
 };

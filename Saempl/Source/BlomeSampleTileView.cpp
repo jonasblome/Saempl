@@ -1,15 +1,43 @@
 /*
  ==============================================================================
  
- BlomeSampleItemTileView.cpp
+ BlomeSampleTileView.cpp
  Author:  Jonas Blome
  
  ==============================================================================
  */
 
-#include "BlomeSampleItemTileView.h"
+#include "BlomeSampleTileView.h"
 
-void BlomeSampleItemTileView::setPlayButton() {
+BlomeSampleTileView::BlomeSampleTileView(SampleItem* inSampleItem,
+                                                 SampleLibrary& inSampleLibrary, 
+                                                 SampleItemPanel& inSampleItemPanel,
+                                                 AudioPlayer& inAudioPlayer)
+:
+sampleItem(inSampleItem),
+sampleLibrary(inSampleLibrary),
+sampleItemPanel(inSampleItemPanel),
+audioPlayer(inAudioPlayer)
+{
+    sampleItemFilePath = sampleItem->getFilePath();
+    isSelected = false;
+    
+    if (sampleItemFilePath == EMPTY_TILE_PATH)
+    {
+        return;
+    }
+    
+    // Add play button component
+    setPlayButton();
+}
+
+BlomeSampleTileView::~BlomeSampleTileView()
+{
+    
+}
+
+void BlomeSampleTileView::setPlayButton()
+{
     mStartStopButton = std::make_unique<BlomeImageButton>("Play/Stop", false);
     mStartStopButton->setImages(false,
                                 true,
@@ -33,34 +61,7 @@ void BlomeSampleItemTileView::setPlayButton() {
     addAndMakeVisible(*mStartStopButton);
 }
 
-BlomeSampleItemTileView::BlomeSampleItemTileView(SampleItem* inSampleItem, 
-                                                 SampleLibrary& inSampleLibrary, 
-                                                 SampleItemPanel& inSampleItemPanel,
-                                                 AudioPlayer& inAudioPlayer)
-:
-sampleItem(inSampleItem),
-sampleLibrary(inSampleLibrary),
-sampleItemPanel(inSampleItemPanel),
-audioPlayer(inAudioPlayer)
-{
-    sampleItemFilePath = sampleItem->getFilePath();
-    isSelected = false;
-    
-    if (sampleItemFilePath == EMPTY_TILE_PATH)
-    {
-        return;
-    }
-    
-    // Add play button component
-    setPlayButton();
-}
-
-BlomeSampleItemTileView::~BlomeSampleItemTileView()
-{
-    
-}
-
-void BlomeSampleItemTileView::startPlayback()
+void BlomeSampleTileView::startPlayback()
 {
     if (sampleItemFilePath == EMPTY_TILE_PATH)
     {
@@ -90,22 +91,22 @@ void BlomeSampleItemTileView::startPlayback()
     }
 }
 
-String BlomeSampleItemTileView::getSampleItemFilePath()
+String BlomeSampleTileView::getSampleItemFilePath()
 {
     return sampleItemFilePath;
 }
 
-void BlomeSampleItemTileView::setSelected(bool inIsSelected)
+void BlomeSampleTileView::setSelected(bool inIsSelected)
 {
     isSelected = inIsSelected;
 }
 
-bool BlomeSampleItemTileView::getIsSelected()
+bool BlomeSampleTileView::getIsSelected()
 {
     return isSelected;
 }
 
-void BlomeSampleItemTileView::loadIntoAudioPlayer()
+void BlomeSampleTileView::loadIntoAudioPlayer()
 {
     if (sampleItemFilePath != EMPTY_TILE_PATH)
     {
@@ -115,7 +116,7 @@ void BlomeSampleItemTileView::loadIntoAudioPlayer()
     }
 }
 
-void BlomeSampleItemTileView::paint(Graphics& g)
+void BlomeSampleTileView::paint(Graphics& g)
 {
     // Don't draw an empty tile
     if (sampleItemFilePath == EMPTY_TILE_PATH)
@@ -178,12 +179,12 @@ void BlomeSampleItemTileView::paint(Graphics& g)
                      5);
 }
 
-void BlomeSampleItemTileView::mouseDoubleClick(MouseEvent const & event)
+void BlomeSampleTileView::mouseDoubleClick(MouseEvent const & event)
 {
     loadIntoAudioPlayer();
 }
 
-void BlomeSampleItemTileView::resized()
+void BlomeSampleTileView::resized()
 {
     if (mStartStopButton != nullptr)
     {

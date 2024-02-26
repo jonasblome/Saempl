@@ -1,7 +1,7 @@
 /*
  ==============================================================================
  
- SampleManagerJob.h
+ SampleAnalysisJob.h
  Author:  Jonas Blome
  
  ==============================================================================
@@ -12,7 +12,7 @@
 #include "JuceHeader.h"
 #include "SampleAnalyser.h"
 
-class SampleManagerJob
+class SampleAnalysisJob
 :
 public ThreadPoolJob
 {
@@ -28,14 +28,14 @@ public:
      @param forceAnalysis see sample analyser analysis method.
      @param numProcessedItems a reference to the item counter.
      */
-    SampleManagerJob(OwnedArray<SampleItem>& inSampleItems,
+    SampleAnalysisJob(OwnedArray<SampleItem>& inSampleItems,
                      OwnedArray<SampleItem>& inAddedSampleItems,
                      StringArray& inAddedFilePaths,
                      File const & inFile,
                      SampleItem* inSampleItem,
                      bool forceAnalysis,
                      int& numProcessedItems);
-    ~SampleManagerJob();
+    ~SampleAnalysisJob();
     
 private:
     std::unique_ptr<SampleAnalyser> mSampleAnalyser;
@@ -52,5 +52,5 @@ private:
      */
     ThreadPoolJob::JobStatus runJob() override;
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleManagerJob);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleAnalysisJob);
 };

@@ -85,14 +85,14 @@
             file="Source/BlomeTableViewFavourites.cpp"/>
       <FILE id="MuMIeK" name="BlomeTableViewFavourites.h" compile="0" resource="0"
             file="Source/BlomeTableViewFavourites.h"/>
-      <FILE id="y7kZFT" name="BlomeSampleTileGridView.cpp" compile="1" resource="0"
-            file="Source/BlomeSampleTileGridView.cpp"/>
-      <FILE id="CRAXtH" name="BlomeSampleTileGridView.h" compile="0" resource="0"
-            file="Source/BlomeSampleTileGridView.h"/>
-      <FILE id="nGo8kE" name="BlomeSampleItemTileView.cpp" compile="1" resource="0"
-            file="Source/BlomeSampleItemTileView.cpp"/>
-      <FILE id="q3qX8z" name="BlomeSampleItemTileView.h" compile="0" resource="0"
-            file="Source/BlomeSampleItemTileView.h"/>
+      <FILE id="y7kZFT" name="BlomeSampleGridView.cpp" compile="1" resource="0"
+            file="Source/BlomeSampleGridView.cpp"/>
+      <FILE id="CRAXtH" name="BlomeSampleGridView.h" compile="0" resource="0"
+            file="Source/BlomeSampleGridView.h"/>
+      <FILE id="nGo8kE" name="BlomeSampleTileView.cpp" compile="1" resource="0"
+            file="Source/BlomeSampleTileView.cpp"/>
+      <FILE id="q3qX8z" name="BlomeSampleTileView.h" compile="0" resource="0"
+            file="Source/BlomeSampleTileView.h"/>
     </GROUP>
     <GROUP id="{6D66FD26-8F3F-0894-5730-966778E462FE}" name="BlomePanels">
       <FILE id="lThgmA" name="PanelBase.cpp" compile="1" resource="0" file="Source/PanelBase.cpp"/>
@@ -111,10 +111,10 @@
             file="Source/SampleNavigationPanel.cpp"/>
       <FILE id="ztCtkY" name="SampleNavigationPanel.h" compile="0" resource="0"
             file="Source/SampleNavigationPanel.h"/>
-      <FILE id="vxYbk9" name="SampleLibraryPanel.cpp" compile="1" resource="0"
-            file="Source/SampleLibraryPanel.cpp"/>
-      <FILE id="dPQ3lJ" name="SampleLibraryPanel.h" compile="0" resource="0"
-            file="Source/SampleLibraryPanel.h"/>
+      <FILE id="vxYbk9" name="SampleFolderPanel.cpp" compile="1" resource="0"
+            file="Source/SampleFolderPanel.cpp"/>
+      <FILE id="dPQ3lJ" name="SampleFolderPanel.h" compile="0" resource="0"
+            file="Source/SampleFolderPanel.h"/>
       <FILE id="oOrBsC" name="SampleTablePanel.cpp" compile="1" resource="0"
             file="Source/SampleTablePanel.cpp"/>
       <FILE id="JuadLI" name="SampleTablePanel.h" compile="0" resource="0"
@@ -140,8 +140,7 @@
       <FILE id="EkzFp4" name="BlomeHelpers.h" compile="0" resource="0" file="Source/BlomeHelpers.h"/>
       <FILE id="Ioam49" name="BlomeLookAndFeel.h" compile="0" resource="0"
             file="Source/BlomeLookAndFeel.h"/>
-      <FILE id="bDidRl" name="BlomeStyleDefinitions.h" compile="0" resource="0"
-            file="Source/BlomeStyleDefinitions.h"/>
+      <FILE id="bDidRl" name="BlomeStyling.h" compile="0" resource="0" file="Source/BlomeStyling.h"/>
     </GROUP>
     <GROUP id="{24E53329-C4AB-C36D-5F45-A76DFCFCE6A5}" name="BlomeDSP">
       <FILE id="UpyEC4" name="SampleAnalyser.cpp" compile="1" resource="0"
@@ -167,10 +166,10 @@
             file="Source/SampleLibraryManager.cpp"/>
       <FILE id="EA3Snn" name="SampleLibraryManager.h" compile="0" resource="0"
             file="Source/SampleLibraryManager.h"/>
-      <FILE id="Q4MCYu" name="SampleManagerJob.cpp" compile="1" resource="0"
-            file="Source/SampleManagerJob.cpp"/>
-      <FILE id="p3hgRp" name="SampleManagerJob.h" compile="0" resource="0"
-            file="Source/SampleManagerJob.h"/>
+      <FILE id="Q4MCYu" name="SampleAnalysisJob.cpp" compile="1" resource="0"
+            file="Source/SampleAnalysisJob.cpp"/>
+      <FILE id="p3hgRp" name="SampleAnalysisJob.h" compile="0" resource="0"
+            file="Source/SampleAnalysisJob.h"/>
       <FILE id="JlCuO2" name="SampleFileFilter.cpp" compile="1" resource="0"
             file="Source/SampleFileFilter.cpp"/>
       <FILE id="krBDMF" name="SampleFileFilter.h" compile="0" resource="0"
@@ -209,10 +208,10 @@
             file="Source/SampleItemComparator.cpp"/>
       <FILE id="yTJLPC" name="SampleItemComparator.h" compile="0" resource="0"
             file="Source/SampleItemComparator.h"/>
-      <FILE id="oRlRXJ" name="SampleItemGridClusterer.cpp" compile="1" resource="0"
-            file="Source/SampleItemGridClusterer.cpp"/>
-      <FILE id="lhx9MY" name="SampleItemGridClusterer.h" compile="0" resource="0"
-            file="Source/SampleItemGridClusterer.h"/>
+      <FILE id="oRlRXJ" name="SampleGridClusterer.cpp" compile="1" resource="0"
+            file="Source/SampleGridClusterer.cpp"/>
+      <FILE id="lhx9MY" name="SampleGridClusterer.h" compile="0" resource="0"
+            file="Source/SampleGridClusterer.h"/>
     </GROUP>
     <GROUP id="{DC34CDD6-63E9-961B-46AF-F2C74C695602}" name="Source">
       <FILE id="tiuyaQ" name="PluginProcessor.cpp" compile="1" resource="0"

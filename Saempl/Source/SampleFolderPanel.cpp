@@ -1,15 +1,15 @@
 /*
  ==============================================================================
  
- SampleLibraryPanel.cpp
+ SampleFolderPanel.cpp
  Author:  Jonas Blome
  
  ==============================================================================
  */
 
-#include "SampleLibraryPanel.h"
+#include "SampleFolderPanel.h"
 
-SampleLibraryPanel::SampleLibraryPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
+SampleFolderPanel::SampleFolderPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
 :
 PanelBase(inProcessor),
 sampleLibrary(currentProcessor.getSampleLibrary()),
@@ -19,13 +19,13 @@ sampleItemPanel(inSampleItemPanel)
     setPanelComponents();
 }
 
-SampleLibraryPanel::~SampleLibraryPanel()
+SampleFolderPanel::~SampleFolderPanel()
 {
     mFileTree->removeListener(this);
     sampleLibrary.getDirectoryList().removeChangeListener(&*mFileTree);
 }
 
-void SampleLibraryPanel::paint(Graphics& g)
+void SampleFolderPanel::paint(Graphics& g)
 {
     // Set background
     g.setColour(style->COLOUR_ACCENT_MEDIUM);
@@ -66,7 +66,7 @@ void SampleLibraryPanel::paint(Graphics& g)
                      1);
 }
 
-void SampleLibraryPanel::setPanelComponents()
+void SampleFolderPanel::setPanelComponents()
 {
     // Set file tree component
     mFileTree = std::make_unique<BlomeFileTreeView>(sampleLibrary);
@@ -80,7 +80,7 @@ void SampleLibraryPanel::setPanelComponents()
     resizePanelComponents();
 }
 
-void SampleLibraryPanel::resizePanelComponents()
+void SampleFolderPanel::resizePanelComponents()
 {
     if (mFileTree != nullptr)
     {
@@ -91,12 +91,12 @@ void SampleLibraryPanel::resizePanelComponents()
     }
 }
 
-void SampleLibraryPanel::selectionChanged()
+void SampleFolderPanel::selectionChanged()
 {
     
 }
 
-void SampleLibraryPanel::fileClicked(File const & file, MouseEvent const & mouseEvent)
+void SampleFolderPanel::fileClicked(File const & file, MouseEvent const & mouseEvent)
 {
     // Show options pop up menu
     if (mouseEvent.mods.isRightButtonDown())
@@ -110,23 +110,23 @@ void SampleLibraryPanel::fileClicked(File const & file, MouseEvent const & mouse
     }
 }
 
-void SampleLibraryPanel::fileDoubleClicked(File const & inFile)
+void SampleFolderPanel::fileDoubleClicked(File const & inFile)
 {
     sampleItemPanel.tryShowAudioResource(inFile);
 }
 
-void SampleLibraryPanel::browserRootChanged(File const &)
+void SampleFolderPanel::browserRootChanged(File const &)
 {
     // Not used...
 }
 
-void SampleLibraryPanel::changeListenerCallback(ChangeBroadcaster* source)
+void SampleFolderPanel::changeListenerCallback(ChangeBroadcaster* source)
 {
     // When the file tree state changes
     repaint();
 }
 
-void SampleLibraryPanel::deleteFiles(bool deletePermanently = false)
+void SampleFolderPanel::deleteFiles(bool deletePermanently = false)
 {
     // Delete all selected files
     StringArray filePaths;
@@ -139,7 +139,7 @@ void SampleLibraryPanel::deleteFiles(bool deletePermanently = false)
     sampleLibrary.removeSampleItems(filePaths, deletePermanently);
 }
 
-void SampleLibraryPanel::addToFavourites()
+void SampleFolderPanel::addToFavourites()
 {
     StringArray filePaths;
     
@@ -151,7 +151,7 @@ void SampleLibraryPanel::addToFavourites()
     sampleLibrary.addAllToFavourites(filePaths);
 }
 
-void SampleLibraryPanel::reanalyseSamples()
+void SampleFolderPanel::reanalyseSamples()
 {
     // Reanalyse all selected files
     StringArray filePaths;
@@ -164,7 +164,7 @@ void SampleLibraryPanel::reanalyseSamples()
     sampleLibrary.reanalyseSampleItems(filePaths);
 }
 
-bool SampleLibraryPanel::keyPressed(KeyPress const & key)
+bool SampleFolderPanel::keyPressed(KeyPress const & key)
 {
     if (key.getKeyCode() == KeyPress::returnKey)
     {

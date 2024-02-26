@@ -12,7 +12,7 @@
 #include "JuceHeader.h"
 #include "SampleItem.h"
 #include "BlomeHelpers.h"
-#include "SampleManagerJob.h"
+#include "SampleAnalysisJob.h"
 
 /**
  Handles updating and creating of directory meta-analysis files.

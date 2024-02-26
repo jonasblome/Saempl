@@ -10,7 +10,7 @@
 #pragma once
 
 #include "JuceHeader.h"
-#include "BlomeStyleDefinitions.h"
+#include "BlomeStyling.h"
 
 #if JUCE_WINDOWS
 static String const DIRECTORY_SEPARATOR = "\\";
