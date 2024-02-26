@@ -52,8 +52,8 @@ Hover over buttons or sliders for tooltips:
 Coming soon (hopefully):
 - "About" panel when clicking on logo
 - Volume slider in header panel
-- Toggle option for which sample features are used during clustering
-- Adjustable weightings for features to influence clustering
+- Toggle option for which sample features to use during clustering
+- Adjustable weights for features to influence clustering
 - Fix crash when switching audio output device
 - Multithreading for grid clustering
 - Sample renaming option
