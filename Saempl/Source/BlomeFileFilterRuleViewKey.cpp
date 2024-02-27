@@ -36,7 +36,7 @@ void BlomeFileFilterRuleViewKey::setComponents()
     mCompareValueEditor->addListener(this);
     addAndMakeVisible(*mCompareValueEditor);
     
-    mCompareOperatorChooser->addItem("is equal to", 1);
+    mCompareOperatorChooser->addItem("is", 1);
     mCompareOperatorChooser->setSelectedItemIndex(0);
 }
 
