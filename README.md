@@ -47,20 +47,3 @@ Keybindings:
 Hover over buttons or sliders for tooltips:
 
 <img width="900" alt="Tooltip" src="https://github.com/jonasblome/Saempl/assets/18214770/d5ed1677-16ec-482f-a007-14632e31ff43">
-
-
-Coming soon (hopefully):
-- "About" panel when clicking on logo
-- Volume slider in header panel
-- Toggle option for which sample features to use during clustering
-- Adjustable weights for features to influence clustering
-- Fix crash when switching audio output device
-- Multithreading for grid clustering
-- Sample renaming option
-- Customizable tag per sample
-- Suggestions that are close to average of the favourites
-- Show contrasting samples to chosen sample or the average of the favourites
-- Sample property editor (keep custom values when analysis version changes)
-- Sound category detection and grid tiles colored accordingly
-- Slicing files after silence and renaming slice files
-- Cutting files up in beat clusters with automatic slice renaming
