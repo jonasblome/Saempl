@@ -27,7 +27,9 @@ public ChangeListener,
 public FileDragAndDropTarget
 {
 public:
-    BlomeSampleGridView(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel);
+    BlomeSampleGridView(SampleLibrary& inSampleLibrary,
+                        SampleItemPanel& inSampleItemPanel,
+                        AudioPlayer& inAudioPlayer);
     ~BlomeSampleGridView();
     /**
      Clusters the grid by sample item similarity.
@@ -69,7 +71,6 @@ public:
      @returns the centre position of the newly selected tile.
      */
     Point<int> selectLeft();
-    
     /**
      Selects the tile above the currrently selected tile.
      
@@ -108,14 +109,10 @@ public:
      Starts playback of the first of all selected samples.
      */
     void playSelectedSample();
-    /**
-     Stops playback of the currently playing sample.
-     */
-    void stopSelectedSample();
     
 private:
     SampleLibrary& sampleLibrary;
-    std::unique_ptr<AudioPlayer> mAudioPlayer;
+    AudioPlayer& audioPlayer;
     BlomeStyling::Ptr style;
     std::unique_ptr<Grid> mSampleGrid;
     SampleItemPanel& sampleItemPanel;

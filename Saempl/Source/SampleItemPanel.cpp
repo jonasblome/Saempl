@@ -189,3 +189,16 @@ void SampleItemPanel::resizePanelComponents()
                                       getHeight());
     }
 }
+
+bool SampleItemPanel::keyPressed(KeyPress const & key)
+{
+    int keyCode = key.getKeyCode();
+    
+    if (keyCode == KeyPress::spaceKey)
+    {
+        startOrStopPlayback();
+        return true;
+    }
+    
+    return false;
+}

@@ -9,11 +9,14 @@
 
 #include "SampleFolderPanel.h"
 
-SampleFolderPanel::SampleFolderPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
+SampleFolderPanel::SampleFolderPanel(SaemplAudioProcessor& inProcessor, 
+                                     SampleItemPanel& inSampleItemPanel,
+                                     AudioPlayer& inAudioPlayer)
 :
 PanelBase(inProcessor),
 sampleLibrary(currentProcessor.getSampleLibrary()),
-sampleItemPanel(inSampleItemPanel)
+sampleItemPanel(inSampleItemPanel),
+audioPlayer(inAudioPlayer)
 {
     setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH, style->SAMPLE_NAVIGATION_PANEL_HEIGHT);
     setPanelComponents();
@@ -69,7 +72,7 @@ void SampleFolderPanel::paint(Graphics& g)
 void SampleFolderPanel::setPanelComponents()
 {
     // Set file tree component
-    mFileTree = std::make_unique<BlomeFileTreeView>(sampleLibrary);
+    mFileTree = std::make_unique<BlomeFileTreeView>(sampleLibrary, audioPlayer);
     mFileTree->setTitle("Files");
     mFileTree->setColour(FileTreeComponent::backgroundColourId, style->COLOUR_TRANSPARENT);
     mFileTree->setMultiSelectEnabled(true);
@@ -169,11 +172,23 @@ void SampleFolderPanel::reanalyseSamples()
 
 bool SampleFolderPanel::keyPressed(KeyPress const & key)
 {
+    if (!isShowing())
+    {
+        return false;
+    }
+    
     if (key.getKeyCode() == KeyPress::returnKey)
     {
         sampleItemPanel.tryShowAudioResource(mFileTree->getSelectedFile(0));
         return true;
     }
-    
-    return false;
+    else if (key.getKeyCode() == 75) // K
+    {
+        mFileTree->playSelectedSample();
+        return true;
+    }
+    else
+    {
+        return mFileTree->keyPressed(key);
+    }
 }

@@ -9,11 +9,14 @@
 
 #include "BlomeTableViewBase.h"
 
-BlomeTableViewBase::BlomeTableViewBase(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
+BlomeTableViewBase::BlomeTableViewBase(SaemplAudioProcessor& inProcessor, 
+                                       SampleItemPanel& inSampleItemPanel,
+                                       AudioPlayer& inAudioPlayer)
 :
 currentProcessor(inProcessor),
 sampleLibrary(currentProcessor.getSampleLibrary()),
-sampleItemPanel(inSampleItemPanel)
+sampleItemPanel(inSampleItemPanel),
+audioPlayer(inAudioPlayer)
 {
     mComparator = std::make_unique<SampleItemComparator>();
     
@@ -228,4 +231,36 @@ void BlomeTableViewBase::reanalyseSamples()
     }
     
     sampleLibrary.reanalyseSampleItems(filePaths);
+}
+
+void BlomeTableViewBase::playSelectedSample()
+{
+    int selectedRowIndex = getLastRowSelected();
+    
+    if (selectedRowIndex == -1)
+    {
+        return;
+    }
+    
+    File sampleFile = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(selectedRowIndex)->getFilePath();
+    
+    // Load file into source
+    if (sampleFile.exists() && !sampleFile.isDirectory() && isSupportedAudioFileFormat(sampleFile.getFileExtension()))
+    {
+        audioPlayer.loadURLIntoTransport(URL(sampleFile));
+        audioPlayer.setTransportSourcePosition(0.0);
+        audioPlayer.start();
+    }
+    
+    if (!sampleFile.exists())
+    {
+        audioPlayer.emptyTransport();
+        sampleLibrary.refresh();
+        AlertWindow::showAsync(MessageBoxOptions()
+                               .withIconType(MessageBoxIconType::NoIcon)
+                               .withTitle("File not available!")
+                               .withMessage("This file has probably been externally deleted and was removed from the list of available samples.")
+                               .withButton("OK"),
+                               nullptr);
+    }
 }

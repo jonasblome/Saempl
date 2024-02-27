@@ -9,11 +9,14 @@
 
 #include "SampleFavouritesPanel.h"
 
-SampleFavouritesPanel::SampleFavouritesPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
+SampleFavouritesPanel::SampleFavouritesPanel(SaemplAudioProcessor& inProcessor, 
+                                             SampleItemPanel& inSampleItemPanel,
+                                             AudioPlayer& inAudioPlayer)
 :
 PanelBase(inProcessor),
 sampleLibrary(currentProcessor.getSampleLibrary()),
-sampleItemPanel(inSampleItemPanel)
+sampleItemPanel(inSampleItemPanel),
+audioPlayer(inAudioPlayer)
 {
     setSize(style->SAMPLE_FAVOURITES_PANEL_WIDTH, style->SAMPLE_FAVOURITES_PANEL_HEIGHT);
     setPanelComponents();
@@ -68,7 +71,7 @@ void SampleFavouritesPanel::paint(Graphics& g)
 void SampleFavouritesPanel::setPanelComponents()
 {
     // Set sample table component
-    mSampleTable = std::make_unique<BlomeTableViewFavourites>(currentProcessor, sampleItemPanel);
+    mSampleTable = std::make_unique<BlomeTableViewFavourites>(currentProcessor, sampleItemPanel, audioPlayer);
     addAndMakeVisible(*mSampleTable);
     
     resizePanelComponents();
@@ -83,4 +86,15 @@ void SampleFavouritesPanel::resizePanelComponents()
                                 getWidth() - style->PANEL_MARGIN * 1.75,
                                 getHeight() - style->PANEL_TITLE_HEIGHT - style->PANEL_MARGIN * 1.25);
     }
+}
+
+bool SampleFavouritesPanel::keyPressed(KeyPress const & key)
+{
+    if (key.getKeyCode() == 75) // K
+    {
+        mSampleTable->playSelectedSample();
+        return true;
+    }
+    
+    return mSampleTable->keyPressed(key);
 }

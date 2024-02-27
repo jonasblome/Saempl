@@ -26,12 +26,16 @@ public:
      @param inSampleLibrary the library object of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
-    SampleFavouritesPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
+    SampleFavouritesPanel(SaemplAudioProcessor& inProcessor, 
+                          SampleItemPanel& inSampleItemPanel,
+                          AudioPlayer& inAudioPlayer);
     ~SampleFavouritesPanel();
+    bool keyPressed(KeyPress const & key) override;
     
 private:
     SampleLibrary& sampleLibrary;
     SampleItemPanel& sampleItemPanel;
+    AudioPlayer& audioPlayer;
     std::unique_ptr<BlomeTableViewFavourites> mSampleTable;
     BlomeStyling::Ptr style;
     

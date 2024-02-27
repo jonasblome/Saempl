@@ -31,7 +31,9 @@ public:
      @param inProcessor the audio processor of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
-    SampleNavigationPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
+    SampleNavigationPanel(SaemplAudioProcessor& inProcessor, 
+                          SampleItemPanel& inSampleItemPanel,
+                          AudioPlayer& inAudioPlayer);
     ~SampleNavigationPanel();
     /**
      Toggles between showing the library panel, the table panel and the grid panel.
@@ -43,8 +45,10 @@ public:
      Selects a random sample in the table view.
      */
     void selectRandomSample();
+    bool keyPressed(KeyPress const & key) override;
     
 private:
+    AudioPlayer& audioPlayer;
     SampleItemPanel& sampleItemPanel;
     std::unique_ptr<SampleFolderPanel> mSampleFolderPanel;
     std::unique_ptr<SampleTablePanel> mSampleTablePanel;

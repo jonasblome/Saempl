@@ -9,11 +9,12 @@
 
 #include "SampleGridPanel.h"
 
-SampleGridPanel::SampleGridPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
+SampleGridPanel::SampleGridPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel, AudioPlayer& inAudioPlayer)
 :
 PanelBase(inProcessor),
 sampleLibrary(currentProcessor.getSampleLibrary()),
-sampleItemPanel(inSampleItemPanel)
+sampleItemPanel(inSampleItemPanel),
+audioPlayer(inAudioPlayer)
 {
     setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH, style->SAMPLE_NAVIGATION_PANEL_HEIGHT);
     setPanelComponents();
@@ -80,7 +81,7 @@ void SampleGridPanel::paint(Graphics& g)
 
 void SampleGridPanel::setPanelComponents()
 {
-    mSampleGrid = std::make_unique<BlomeSampleGridView>(sampleLibrary, sampleItemPanel);
+    mSampleGrid = std::make_unique<BlomeSampleGridView>(sampleLibrary, sampleItemPanel, audioPlayer);
     mSampleGrid->setZoomFactor(currentProcessor.getSampleGridZoomFactor());
     
     if (sampleLibrary.getLibraryWasLoaded())
@@ -166,6 +167,11 @@ void SampleGridPanel::visibilityChanged()
 
 bool SampleGridPanel::keyPressed(KeyPress const & key)
 {
+    if (!isShowing())
+    {
+        return false;
+    }
+    
     int keyCode = key.getKeyCode();
     
     if (keyCode == KeyPress::returnKey)
@@ -178,7 +184,7 @@ bool SampleGridPanel::keyPressed(KeyPress const & key)
         mSampleGrid->deselectAll();
         return true;
     }
-    else if (key.getModifiers().isCommandDown() && keyCode == 65)
+    else if (key.getModifiers().isCommandDown() && keyCode == 65) // Cmd + A
     {
         mSampleGrid->selectAll();
         return true;
@@ -210,11 +216,6 @@ bool SampleGridPanel::keyPressed(KeyPress const & key)
     else if (key.getKeyCode() == 75) // K
     {
         mSampleGrid->playSelectedSample();
-        return true;
-    }
-    else if (key.getKeyCode() == 76) // L
-    {
-        mSampleGrid->stopSelectedSample();
         return true;
     }
     

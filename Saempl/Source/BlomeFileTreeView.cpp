@@ -9,10 +9,12 @@
 
 #include "BlomeFileTreeView.h"
 
-BlomeFileTreeView::BlomeFileTreeView(SampleLibrary& inSampleLibrary)
+BlomeFileTreeView::BlomeFileTreeView(SampleLibrary& inSampleLibrary,
+                                     AudioPlayer& inAudioPlayer)
 :
 FileTreeComponent(inSampleLibrary.getDirectoryList()),
-sampleLibrary(inSampleLibrary)
+sampleLibrary(inSampleLibrary),
+audioPlayer(inAudioPlayer)
 {
     // Mouse listener catches events from the tree view's children
     addMouseListener(this, true);
@@ -68,5 +70,37 @@ void BlomeFileTreeView::mouseDrag(MouseEvent const & e)
                 return;
             }
         }
+    }
+}
+
+void BlomeFileTreeView::playSelectedSample()
+{
+    int selectedItemIndex = getNumSelectedFiles() - 1;
+    
+    if (selectedItemIndex == -1)
+    {
+        return;
+    }
+    
+    File sampleFile = getSelectedFile(selectedItemIndex);
+    
+    // Load file into source
+    if (sampleFile.exists() && !sampleFile.isDirectory() && isSupportedAudioFileFormat(sampleFile.getFileExtension()))
+    {
+        audioPlayer.loadURLIntoTransport(URL(sampleFile));
+        audioPlayer.setTransportSourcePosition(0.0);
+        audioPlayer.start();
+    }
+    
+    if (!sampleFile.exists())
+    {
+        audioPlayer.emptyTransport();
+        sampleLibrary.refresh();
+        AlertWindow::showAsync(MessageBoxOptions()
+                               .withIconType(MessageBoxIconType::NoIcon)
+                               .withTitle("File not available!")
+                               .withMessage("This file has probably been externally deleted and was removed from the list of available samples.")
+                               .withButton("OK"),
+                               nullptr);
     }
 }

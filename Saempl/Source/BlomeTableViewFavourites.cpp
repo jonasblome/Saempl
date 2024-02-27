@@ -9,9 +9,11 @@
 
 #include "BlomeTableViewFavourites.h"
 
-BlomeTableViewFavourites::BlomeTableViewFavourites(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
+BlomeTableViewFavourites::BlomeTableViewFavourites(SaemplAudioProcessor& inProcessor, 
+                                                   SampleItemPanel& inSampleItemPanel,
+                                                   AudioPlayer& inAudioPlayer)
 :
-BlomeTableViewBase(inProcessor, inSampleItemPanel)
+BlomeTableViewBase(inProcessor, inSampleItemPanel, inAudioPlayer)
 {
     mSampleItemCollectionType = FAVOURITE_SAMPLES;
     

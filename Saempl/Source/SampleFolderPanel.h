@@ -31,12 +31,16 @@ public:
      @param inProcessor the processor object of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
-    SampleFolderPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
+    SampleFolderPanel(SaemplAudioProcessor& inProcessor, 
+                      SampleItemPanel& inSampleItemPanel,
+                      AudioPlayer& inAudioPlayer);
     ~SampleFolderPanel();
+    bool keyPressed(const KeyPress& key) override;
     
 private:
     SampleLibrary& sampleLibrary;
     SampleItemPanel& sampleItemPanel;
+    AudioPlayer& audioPlayer;
     std::unique_ptr<BlomeFileTreeView> mFileTree;
     BlomeStyling::Ptr style;
     
@@ -45,7 +49,6 @@ private:
     void fileDoubleClicked(File const &) override;
     void browserRootChanged(File const &) override;
     void changeListenerCallback(ChangeBroadcaster* source) override;
-    bool keyPressed(const KeyPress& key) override;
     /**
      Deletes the files selected in the file tree view.
      

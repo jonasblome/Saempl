@@ -9,11 +9,15 @@
 
 #include "SampleNavigationPanel.h"
 
-SampleNavigationPanel::SampleNavigationPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
+SampleNavigationPanel::SampleNavigationPanel(SaemplAudioProcessor& inProcessor, 
+                                             SampleItemPanel& inSampleItemPanel,
+                                             AudioPlayer& inAudioPlayer)
 :
 PanelBase(inProcessor),
+audioPlayer(inAudioPlayer),
 sampleItemPanel(inSampleItemPanel)
 {
+    // Set components
     setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH, style->SAMPLE_NAVIGATION_PANEL_HEIGHT);
     setPanelComponents();
 }
@@ -31,15 +35,15 @@ void SampleNavigationPanel::paint(Graphics& g)
 void SampleNavigationPanel::setPanelComponents()
 {
     // Add library panel
-    mSampleFolderPanel = std::make_unique<SampleFolderPanel>(currentProcessor, sampleItemPanel);
+    mSampleFolderPanel = std::make_unique<SampleFolderPanel>(currentProcessor, sampleItemPanel, audioPlayer);
     addChildComponent(*mSampleFolderPanel);
     
     // Add sample table panel
-    mSampleTablePanel = std::make_unique<SampleTablePanel>(currentProcessor, sampleItemPanel);
+    mSampleTablePanel = std::make_unique<SampleTablePanel>(currentProcessor, sampleItemPanel, audioPlayer);
     addChildComponent(*mSampleTablePanel);
     
     // Add sample table panel
-    mSampleGridPanel = std::make_unique<SampleGridPanel>(currentProcessor, sampleItemPanel);
+    mSampleGridPanel = std::make_unique<SampleGridPanel>(currentProcessor, sampleItemPanel, audioPlayer);
     addChildComponent(*mSampleGridPanel);
     
     // Set active panel
@@ -121,4 +125,18 @@ void SampleNavigationPanel::selectRandomSample()
             jassertfalse;
             break;
     }
+}
+
+bool SampleNavigationPanel::keyPressed(KeyPress const & key)
+{
+    bool pressWasHandled = false;
+    
+    if (mSampleFolderPanel->keyPressed(key)
+        || mSampleTablePanel->keyPressed(key)
+        || mSampleGridPanel->keyPressed(key))
+    {
+        pressWasHandled = true;
+    }
+    
+    return pressWasHandled;
 }

@@ -9,9 +9,11 @@
 
 #include "BlomeTableViewNavigation.h"
 
-BlomeTableViewNavigation::BlomeTableViewNavigation(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
+BlomeTableViewNavigation::BlomeTableViewNavigation(SaemplAudioProcessor& inProcessor, 
+                                                   SampleItemPanel& inSampleItemPanel,
+                                                   AudioPlayer& inAudioPlayer)
 :
-BlomeTableViewBase(inProcessor, inSampleItemPanel)
+BlomeTableViewBase(inProcessor, inSampleItemPanel, inAudioPlayer)
 {
     sampleLibrary.addChangeListener(this);
     mSampleItemCollectionType = FILTERED_SAMPLES;

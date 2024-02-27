@@ -11,6 +11,7 @@
 
 #include "JuceHeader.h"
 #include "SampleLibrary.h"
+#include "AudioPlayer.h"
 
 /**
  The view class for displaying the sample library directory file tree.
@@ -28,11 +29,17 @@ public:
      
      @param inSampleLibrary the library object of the plugin instance.
      */
-    BlomeFileTreeView(SampleLibrary& inSampleLibrary);
+    BlomeFileTreeView(SampleLibrary& inSampleLibrary,
+                      AudioPlayer& inAudioPlayer);
     ~BlomeFileTreeView();
+    /**
+     Starts playback of the first of all selected samples.
+     */
+    void playSelectedSample();
     
 private:
     SampleLibrary& sampleLibrary;
+    AudioPlayer& audioPlayer;
     
     void filesDropped(StringArray const & files, int x, int y) override;
     bool isInterestedInFileDrag(StringArray const & files) override;

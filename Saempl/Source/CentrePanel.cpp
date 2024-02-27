@@ -39,16 +39,19 @@ void CentrePanel::paint(Graphics& g)
 
 void CentrePanel::setPanelComponents()
 {
+    // Add audio player
+    mAudioPlayer = std::make_unique<AudioPlayer>();
+    
     // Add panel for sample item view
     mSampleItemPanel = std::make_unique<SampleItemPanel>(currentProcessor);
     addAndMakeVisible(*mSampleItemPanel);
     
     // Add panel for sample library views
-    mSampleNavigationPanel = std::make_unique<SampleNavigationPanel>(currentProcessor, *mSampleItemPanel);
+    mSampleNavigationPanel = std::make_unique<SampleNavigationPanel>(currentProcessor, *mSampleItemPanel, *mAudioPlayer);
     addAndMakeVisible(*mSampleNavigationPanel);
     
     // Add panel for sample favourites view
-    mSampleFavouritesPanel = std::make_unique<SampleFavouritesPanel>(currentProcessor, *mSampleItemPanel);
+    mSampleFavouritesPanel = std::make_unique<SampleFavouritesPanel>(currentProcessor, *mSampleItemPanel, *mAudioPlayer);
     addAndMakeVisible(*mSampleFavouritesPanel);
     
     // Add toggle panel button
@@ -78,11 +81,6 @@ void CentrePanel::setActiveNavigationPanel(NavigationPanelType inPanelType)
 void CentrePanel::selectRandomSample()
 {
     mSampleNavigationPanel->selectRandomSample();
-}
-
-void CentrePanel::playCurrentAudio()
-{
-    mSampleItemPanel->startOrStopPlayback();
 }
 
 void CentrePanel::resizePanelComponents()
@@ -139,11 +137,13 @@ void CentrePanel::resizePanelComponents()
 
 bool CentrePanel::keyPressed(KeyPress const & key)
 {
+    bool pressWasHandled = false;
+    
     int keyCode = key.getKeyCode();
     
-    if (key.isKeyCode(KeyPress::spaceKey))
+    if (key.getKeyCode() == 76) // L
     {
-        playCurrentAudio();
+        stopSelectedSample();
         return true;
     }
     else if (keyCode == 84) // T
@@ -151,6 +151,16 @@ bool CentrePanel::keyPressed(KeyPress const & key)
         mToggleSampleItemPanelButton->triggerClick();
         return true;
     }
+    else if (mSampleNavigationPanel->keyPressed(key)
+             || mSampleItemPanel->keyPressed(key))
+    {
+        pressWasHandled = true;
+    }
     
-    return false;
+    return pressWasHandled;
+}
+
+void CentrePanel::stopSelectedSample()
+{
+    mAudioPlayer->stop();
 }

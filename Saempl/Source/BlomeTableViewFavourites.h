@@ -27,7 +27,9 @@ public:
      @param inProcessor the processor object of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
-    BlomeTableViewFavourites(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
+    BlomeTableViewFavourites(SaemplAudioProcessor& inProcessor, 
+                             SampleItemPanel& inSampleItemPanel,
+                             AudioPlayer& inAudioPlayer);
     ~BlomeTableViewFavourites();
     
 private:

@@ -27,16 +27,20 @@ public:
      @param inSampleLibrary the library object of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
-    SampleTablePanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
+    SampleTablePanel(SaemplAudioProcessor& inProcessor,
+                     SampleItemPanel& inSampleItemPanel,
+                     AudioPlayer& inAudioPlayer);
     ~SampleTablePanel();
     /**
      Selects a random sample in the table view.
      */
     void selectRandomSample();
+    bool keyPressed(KeyPress const & key) override;
     
 private:
     SampleLibrary& sampleLibrary;
     SampleItemPanel& sampleItemPanel;
+    AudioPlayer& audioPlayer;
     std::unique_ptr<BlomeTableViewNavigation> mSampleTable;
     BlomeStyling::Ptr style;
     

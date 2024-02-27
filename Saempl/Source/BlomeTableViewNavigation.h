@@ -28,7 +28,9 @@ public:
      @param inSampleLibrary the sample library of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
-    BlomeTableViewNavigation(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
+    BlomeTableViewNavigation(SaemplAudioProcessor& inProcessor, 
+                             SampleItemPanel& inSampleItemPanel,
+                             AudioPlayer& inAudioPlayer);
     ~BlomeTableViewNavigation();
     /**
      Resorts the table with the currently chosen column and direction.

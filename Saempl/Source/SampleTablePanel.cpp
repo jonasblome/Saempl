@@ -9,11 +9,14 @@
 
 #include "SampleTablePanel.h"
 
-SampleTablePanel::SampleTablePanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel)
+SampleTablePanel::SampleTablePanel(SaemplAudioProcessor& inProcessor, 
+                                   SampleItemPanel& inSampleItemPanel,
+                                   AudioPlayer& inAudioPlayer)
 :
 PanelBase(inProcessor),
 sampleLibrary(currentProcessor.getSampleLibrary()),
-sampleItemPanel(inSampleItemPanel)
+sampleItemPanel(inSampleItemPanel),
+audioPlayer(inAudioPlayer)
 {
     setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH, style->SAMPLE_NAVIGATION_PANEL_HEIGHT);
     setPanelComponents();
@@ -70,7 +73,7 @@ void SampleTablePanel::paint(Graphics& g)
 void SampleTablePanel::setPanelComponents()
 {
     // Set sample table component
-    mSampleTable = std::make_unique<BlomeTableViewNavigation>(currentProcessor, sampleItemPanel);
+    mSampleTable = std::make_unique<BlomeTableViewNavigation>(currentProcessor, sampleItemPanel, audioPlayer);
     addAndMakeVisible(*mSampleTable);
     
     resizePanelComponents();
@@ -106,4 +109,20 @@ void SampleTablePanel::visibilityChanged()
     {
         mSampleTable->resortTable();
     }
+}
+
+bool SampleTablePanel::keyPressed(KeyPress const & key)
+{
+    if (!isShowing())
+    {
+        return false;
+    }
+    
+    if (key.getKeyCode() == 75) // K
+    {
+        mSampleTable->playSelectedSample();
+        return true;
+    }
+    
+    return mSampleTable->keyPressed(key);
 }

@@ -44,6 +44,7 @@ public:
      Starts or stops the playback of the audio preview panel.
      */
     void startOrStopPlayback();
+    bool keyPressed(KeyPress const & key) override;
     
 private:
     SampleLibrary& sampleLibrary;

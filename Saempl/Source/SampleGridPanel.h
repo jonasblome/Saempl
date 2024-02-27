@@ -27,16 +27,20 @@ public:
      @param inSampleLibrary the library object of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
-    SampleGridPanel(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
+    SampleGridPanel(SaemplAudioProcessor& inProcessor,
+                    SampleItemPanel& inSampleItemPanel,
+                    AudioPlayer& inAudioPlayer);
     ~SampleGridPanel();
     /**
      Selects a random sample on the grid.
      */
     void selectRandomSample();
+    bool keyPressed(KeyPress const & key) override;
     
 private:
     SampleLibrary& sampleLibrary;
     SampleItemPanel& sampleItemPanel;
+    AudioPlayer& audioPlayer;
     BlomeStyling::Ptr style;
     std::unique_ptr<BlomeSampleGridView> mSampleGrid;
     std::unique_ptr<Viewport> mGridViewport;
@@ -46,7 +50,6 @@ private:
     void setPanelComponents() override;
     void resizePanelComponents() override;
     void visibilityChanged() override;
-    bool keyPressed(KeyPress const & key) override;
     /**
      Moves the viewport's centre position the given position.
      

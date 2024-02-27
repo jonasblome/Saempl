@@ -34,14 +34,21 @@ public:
      @param inProcessor the processor object of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
-    BlomeTableViewBase(SaemplAudioProcessor& inProcessor, SampleItemPanel& inSampleItemPanel);
+    BlomeTableViewBase(SaemplAudioProcessor& inProcessor,
+                       SampleItemPanel& inSampleItemPanel,
+                       AudioPlayer& inAudioPlayer);
     ~BlomeTableViewBase();
     int getNumRows() override;
+    /**
+     Starts playback of the first of all selected samples.
+     */
+    void playSelectedSample();
     
 protected:
     SaemplAudioProcessor& currentProcessor;
     SampleLibrary& sampleLibrary;
     SampleItemPanel& sampleItemPanel;
+    AudioPlayer& audioPlayer;
     int numRows;
     std::unique_ptr<SampleItemComparator> mComparator;
     SampleItemCollectionScope mSampleItemCollectionType;

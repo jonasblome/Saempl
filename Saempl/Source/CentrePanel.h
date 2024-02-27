@@ -44,6 +44,7 @@ public:
     bool keyPressed(KeyPress const & key) override;
     
 private:
+    std::unique_ptr<AudioPlayer> mAudioPlayer;
     std::unique_ptr<SampleNavigationPanel> mSampleNavigationPanel;
     std::unique_ptr<SampleFavouritesPanel> mSampleFavouritesPanel;
     std::unique_ptr<SampleItemPanel> mSampleItemPanel;
@@ -60,9 +61,9 @@ private:
     void setSampleItemPanelVisibility(bool inShouldBeVisible);
     void resizePanelComponents() override;
     /**
-     Starts the playback of the currently loaded audio resource.
+     Stops playback of the currently playing sample.
      */
-    void playCurrentAudio();
+    void stopSelectedSample();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CentrePanel);
 };

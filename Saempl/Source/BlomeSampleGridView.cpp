@@ -9,9 +9,12 @@
 
 #include "BlomeSampleGridView.h"
 
-BlomeSampleGridView::BlomeSampleGridView(SampleLibrary& inSampleLibrary, SampleItemPanel& inSampleItemPanel)
+BlomeSampleGridView::BlomeSampleGridView(SampleLibrary& inSampleLibrary,
+                                         SampleItemPanel& inSampleItemPanel,
+                                         AudioPlayer& inAudioPlayer)
 :
 sampleLibrary(inSampleLibrary),
+audioPlayer(inAudioPlayer),
 sampleItemPanel(inSampleItemPanel)
 {
     sampleLibrary.addChangeListener(this);
@@ -21,9 +24,6 @@ sampleItemPanel(inSampleItemPanel)
     // Add grid clusterer
     mGridClusterer = std::make_unique<SampleGridClusterer>(sampleLibrary.getSampleItems(FILTERED_SAMPLES));
     mGridClusterer->addChangeListener(this);
-    
-    // Add audio player component
-    mAudioPlayer = std::make_unique<AudioPlayer>();
 }
 
 BlomeSampleGridView::~BlomeSampleGridView()
@@ -262,7 +262,7 @@ void BlomeSampleGridView::setupGrid()
     // Setup tiles
     for (SampleItem* sample : sampleItems)
     {
-        addAndMakeVisible(mSampleTiles.add(new BlomeSampleTileView(sample, sampleLibrary, sampleItemPanel, *mAudioPlayer)));
+        addAndMakeVisible(mSampleTiles.add(new BlomeSampleTileView(sample, sampleLibrary, sampleItemPanel, audioPlayer)));
     }
     
     // Remove empty sample items from collection
@@ -526,9 +526,4 @@ void BlomeSampleGridView::playSelectedSample()
     }
     
     mSampleTiles.getUnchecked(mSelectedSampleTileIndices.getReference(0))->startPlayback();
-}
-
-void BlomeSampleGridView::stopSelectedSample()
-{
-    mAudioPlayer->stop();
 }
