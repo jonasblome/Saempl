@@ -101,10 +101,10 @@ void HeaderPanel::setChooseLibraryDirectoryButton(int buttonWidth, int x)
     addAndMakeVisible(*mChooseLibraryDirectoryButton);
 }
 
-void HeaderPanel::setToggleSampleLibraryPanelButton(int buttonWidth, int x)
+void HeaderPanel::setToggleSampleFolderPanelButton(int buttonWidth, int x)
 {
-    mToggleSampleLibraryPanelButton = std::make_unique<BlomeImageButton>("Toggle SampleLibraryPanel", false);
-    mToggleSampleLibraryPanelButton->setImages(false,
+    mToggleSampleFolderPanelButton = std::make_unique<BlomeImageButton>("Toggle SampleFolderPanel", false);
+    mToggleSampleFolderPanelButton->setImages(false,
                                                true,
                                                true,
                                                ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
@@ -123,17 +123,17 @@ void HeaderPanel::setToggleSampleLibraryPanelButton(int buttonWidth, int x)
                                                ? style->BUTTON_IS_DOWN_ALPHA
                                                : style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
                                                style->COLOUR_HEADER_BUTTONS);
-    mToggleSampleLibraryPanelButton->setBounds(x,
+    mToggleSampleFolderPanelButton->setBounds(x,
                                                style->PANEL_MARGIN,
                                                buttonWidth,
                                                buttonWidth);
-    mToggleSampleLibraryPanelButton->setTooltip("Folder View - Show the folder structure of your library directory (1)");
-    mToggleSampleLibraryPanelButton->onClick = [this]
+    mToggleSampleFolderPanelButton->setTooltip("Folder View - Show the folder structure of your library directory (1)");
+    mToggleSampleFolderPanelButton->onClick = [this]
     {
         if (currentProcessor.getActiveNavigationPanel() != PANELS_LIBRARY_PANEL)
         {
             centrePanel.setActiveNavigationPanel(PANELS_LIBRARY_PANEL);
-            mToggleSampleLibraryPanelButton->setImages(false,
+            mToggleSampleFolderPanelButton->setImages(false,
                                                        true,
                                                        true,
                                                        ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
@@ -174,7 +174,7 @@ void HeaderPanel::setToggleSampleLibraryPanelButton(int buttonWidth, int x)
                                                     style->COLOUR_HEADER_BUTTONS);
         }
     };
-    addAndMakeVisible(*mToggleSampleLibraryPanelButton);
+    addAndMakeVisible(*mToggleSampleFolderPanelButton);
 }
 
 void HeaderPanel::setToggleSampleTablePanelButton(int buttonWidth, int x)
@@ -209,7 +209,7 @@ void HeaderPanel::setToggleSampleTablePanelButton(int buttonWidth, int x)
         if (currentProcessor.getActiveNavigationPanel() != PANELS_TABLE_PANEL)
         {
             centrePanel.setActiveNavigationPanel(PANELS_TABLE_PANEL);
-            mToggleSampleLibraryPanelButton->setImages(false,
+            mToggleSampleFolderPanelButton->setImages(false,
                                                        true,
                                                        true,
                                                        ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
@@ -285,7 +285,7 @@ void HeaderPanel::setToggleSampleGridPanelButton(int buttonWidth, int x)
         if (currentProcessor.getActiveNavigationPanel() != PANELS_GRID_PANEL)
         {
             centrePanel.setActiveNavigationPanel(PANELS_GRID_PANEL);
-            mToggleSampleLibraryPanelButton->setImages(false,
+            mToggleSampleFolderPanelButton->setImages(false,
                                                        true,
                                                        true,
                                                        ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
@@ -487,7 +487,7 @@ void HeaderPanel::setPanelComponents()
     x += buttonWidth + style->PANEL_MARGIN * 1.5 + groupDistance;
     
     // Add toggle for library panel
-    setToggleSampleLibraryPanelButton(buttonWidth, x);
+    setToggleSampleFolderPanelButton(buttonWidth, x);
     x += buttonWidth + style->PANEL_MARGIN * 0.5;
     
     // Add toggle for sample table panel
@@ -559,7 +559,7 @@ bool HeaderPanel::keyPressed(KeyPress const & key)
     }
     else if (keyCode == 49) // 1
     {
-        mToggleSampleLibraryPanelButton->triggerClick();
+        mToggleSampleFolderPanelButton->triggerClick();
         return true;
     }
     else if (keyCode == 50) // 2

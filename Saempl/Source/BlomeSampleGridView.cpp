@@ -102,7 +102,7 @@ void BlomeSampleGridView::clusterGrid()
 
 void BlomeSampleGridView::performGridLayout()
 {
-    if (mSampleItemTiles.isEmpty())
+    if (mSampleTiles.isEmpty())
     {
         return;
     }
@@ -111,12 +111,12 @@ void BlomeSampleGridView::performGridLayout()
     float minMargin = style->PANEL_MARGIN * 0.5f;
     float maxMargin = minMargin * getTileMinMaxRelation();
     float margin = minMargin + currentZoomFactor * (maxMargin - minMargin);
-    mSampleTileGrid->setGap(Grid::Px(margin));
+    mSampleGrid->setGap(Grid::Px(margin));
     setBounds(0,
               0,
               optimalWidth * tileWidth,
               optimalHeight * tileWidth);
-    mSampleTileGrid->performLayout(Rectangle<int>(0,
+    mSampleGrid->performLayout(Rectangle<int>(0,
                                                   0,
                                                   optimalWidth * tileWidth,
                                                   optimalHeight * tileWidth));
@@ -138,7 +138,7 @@ Point<int> BlomeSampleGridView::getTileCentre(BlomeSampleTileView *randomTile)
 
 Point<int> BlomeSampleGridView::selectRandomTile()
 {
-    int numTiles = mSampleItemTiles.size();
+    int numTiles = mSampleTiles.size();
     
     if (numTiles == 0)
     {
@@ -147,7 +147,7 @@ Point<int> BlomeSampleGridView::selectRandomTile()
     
     int randomTileIndex = Random::getSystemRandom().nextInt(numTiles);
     deselectAll();
-    BlomeSampleTileView* randomTile = mSampleItemTiles.getUnchecked(randomTileIndex);
+    BlomeSampleTileView* randomTile = mSampleTiles.getUnchecked(randomTileIndex);
     selectTile(randomTileIndex);
     
     return getTileCentre(randomTile);
@@ -160,14 +160,14 @@ void BlomeSampleGridView::loadSelectedTileIntoAudioPlayer()
         return;
     }
     
-    mSampleItemTiles.getUnchecked(mSelectedSampleTileIndices.getUnchecked(0))->loadIntoAudioPlayer();
+    mSampleTiles.getUnchecked(mSelectedSampleTileIndices.getUnchecked(0))->loadIntoAudioPlayer();
 }
 
 void BlomeSampleGridView::selectAll()
 {
     mSelectedSampleTileIndices.clear();
     
-    for (int t = 0; t < mSampleItemTiles.size(); t++)
+    for (int t = 0; t < mSampleTiles.size(); t++)
     {
         selectTile(t);
     }
@@ -179,7 +179,7 @@ void BlomeSampleGridView::deselectAll()
 {
     for (int t : mSelectedSampleTileIndices)
     {
-        mSampleItemTiles.getUnchecked(t)->setSelected(false);
+        mSampleTiles.getUnchecked(t)->setSelected(false);
     }
     
     mSelectedSampleTileIndices.clear();
@@ -219,7 +219,7 @@ Point<int> BlomeSampleGridView::selectDown()
     int newIndex = lastSelectedIndex + optimalWidth;
     deselectAll();
     
-    return getTileCentre(selectTile(newIndex >= mSampleItemTiles.size() ? lastSelectedIndex : newIndex));
+    return getTileCentre(selectTile(newIndex >= mSampleTiles.size() ? lastSelectedIndex : newIndex));
 }
 
 void BlomeSampleGridView::setReadyForClustering()
@@ -230,9 +230,9 @@ void BlomeSampleGridView::setReadyForClustering()
 void BlomeSampleGridView::setupGrid()
 {
     // Setup tile grid
-    mSampleItemTiles.clear();
+    mSampleTiles.clear();
     OwnedArray<SampleItem>& sampleItems = sampleLibrary.getSampleItems(FILTERED_SAMPLES);
-    mSampleTileGrid = std::make_unique<Grid>();
+    mSampleGrid = std::make_unique<Grid>();
     setVisible(true);
     
     if (sampleItems.size() == 0)
@@ -240,29 +240,29 @@ void BlomeSampleGridView::setupGrid()
         return;
     }
     
-    mSampleTileGrid->autoFlow = Grid::AutoFlow::row;
+    mSampleGrid->autoFlow = Grid::AutoFlow::row;
     using Track = Grid::TrackInfo;
-    mSampleTileGrid->autoRows = Track(1_fr);
-    mSampleTileGrid->autoColumns = Track(1_fr);
+    mSampleGrid->autoRows = Track(1_fr);
+    mSampleGrid->autoColumns = Track(1_fr);
     
     // Set up grid rows
-    mSampleTileGrid->templateRows = Array<Track>();
+    mSampleGrid->templateRows = Array<Track>();
     for (int i = 0; i < optimalHeight; i++)
     {
-        mSampleTileGrid->templateRows.add(Track(1_fr));
+        mSampleGrid->templateRows.add(Track(1_fr));
     }
     
     // Set up grid columns
-    mSampleTileGrid->templateColumns = Array<Track>();
+    mSampleGrid->templateColumns = Array<Track>();
     for (int i = 0; i < optimalWidth; i++)
     {
-        mSampleTileGrid->templateColumns.add(Track(1_fr));
+        mSampleGrid->templateColumns.add(Track(1_fr));
     }
     
     // Setup tiles
     for (SampleItem* sample : sampleItems)
     {
-        addAndMakeVisible(mSampleItemTiles.add(new BlomeSampleTileView(sample, sampleLibrary, sampleItemPanel, *mAudioPlayer)));
+        addAndMakeVisible(mSampleTiles.add(new BlomeSampleTileView(sample, sampleLibrary, sampleItemPanel, *mAudioPlayer)));
     }
     
     // Remove empty sample items from collection
@@ -272,7 +272,7 @@ void BlomeSampleGridView::setupGrid()
         sampleItems.removeAndReturn(sampleItems.indexOf(sample));
     }
     
-    mSampleTileGrid->items.addArray(mSampleItemTiles);
+    mSampleGrid->items.addArray(mSampleTiles);
     performGridLayout();
 }
 
@@ -315,7 +315,7 @@ bool BlomeSampleGridView::isInterestedInFileDrag(StringArray const & files)
 BlomeSampleTileView* BlomeSampleGridView::selectTile(int inTileIndex)
 {
     mSelectedSampleTileIndices.add(inTileIndex);
-    BlomeSampleTileView* tile = mSampleItemTiles.getUnchecked(inTileIndex);
+    BlomeSampleTileView* tile = mSampleTiles.getUnchecked(inTileIndex);
     tile->setSelected(true);
     
     return tile;
@@ -325,7 +325,7 @@ BlomeSampleTileView* BlomeSampleGridView::selectTile(int inTileIndex)
 void BlomeSampleGridView::deselectTile(int inTileIndex)
 {
     mSelectedSampleTileIndices.removeAllInstancesOf(inTileIndex);
-    mSampleItemTiles.getUnchecked(inTileIndex)->setSelected(false);
+    mSampleTiles.getUnchecked(inTileIndex)->setSelected(false);
 }
 
 void BlomeSampleGridView::mouseUp(MouseEvent const & event)
@@ -340,7 +340,7 @@ void BlomeSampleGridView::mouseUp(MouseEvent const & event)
     {
         for (int t = 0; t < mSelectedSampleTileIndices.size(); t++)
         {
-            BlomeSampleTileView* tile = mSampleItemTiles.getUnchecked(mSelectedSampleTileIndices.getReference(t));
+            BlomeSampleTileView* tile = mSampleTiles.getUnchecked(mSelectedSampleTileIndices.getReference(t));
             
             if (tile->getBoundsInParent().contains(mousePosition))
             {
@@ -357,9 +357,9 @@ void BlomeSampleGridView::mouseUp(MouseEvent const & event)
     }
     
     // Select or deselect clicked tile
-    for (int t = 0; t < mSampleItemTiles.size(); t++)
+    for (int t = 0; t < mSampleTiles.size(); t++)
     {
-        BlomeSampleTileView* tile = mSampleItemTiles.getUnchecked(t);
+        BlomeSampleTileView* tile = mSampleTiles.getUnchecked(t);
         
         if (tile->getBoundsInParent().contains(mousePosition) && tile->getSampleItemFilePath() != EMPTY_TILE_PATH)
         {
@@ -416,7 +416,7 @@ void BlomeSampleGridView::mouseUp(MouseEvent const & event)
             for (int y = yStart; y <= yEnd; y++)
             {
                 int newSelectedIndex = y * optimalWidth + x;
-                BlomeSampleTileView* tile = mSampleItemTiles.getUnchecked(newSelectedIndex);
+                BlomeSampleTileView* tile = mSampleTiles.getUnchecked(newSelectedIndex);
                 
                 if (tile->getSampleItemFilePath() != EMPTY_TILE_PATH)
                 {
@@ -445,7 +445,7 @@ void BlomeSampleGridView::mouseDrag(MouseEvent const & mouseEvent)
         // Check if any of the selected tiles was dragged
         for (int s : mSelectedSampleTileIndices)
         {
-            BlomeSampleTileView* tile = mSampleItemTiles.getUnchecked(s);
+            BlomeSampleTileView* tile = mSampleTiles.getUnchecked(s);
             Rectangle<int> tileBounds = tile->getBoundsInParent();
             
             if (tileBounds.contains(mousePosition))
@@ -455,7 +455,7 @@ void BlomeSampleGridView::mouseDrag(MouseEvent const & mouseEvent)
                 // Add all selected rows to external drag
                 for (int r : mSelectedSampleTileIndices)
                 {
-                    selectedFilePaths.add(mSampleItemTiles.getUnchecked(r)->getSampleItemFilePath());
+                    selectedFilePaths.add(mSampleTiles.getUnchecked(r)->getSampleItemFilePath());
                 }
                 
                 DragAndDropContainer* dragContainer = DragAndDropContainer::findParentDragContainerFor(this);
@@ -483,7 +483,7 @@ void BlomeSampleGridView::deleteFiles(bool deletePermanently = false)
     
     for (int t : mSelectedSampleTileIndices)
     {
-        filePaths.add(mSampleItemTiles.getUnchecked(t)->getSampleItemFilePath());
+        filePaths.add(mSampleTiles.getUnchecked(t)->getSampleItemFilePath());
     }
     
     sampleLibrary.removeSampleItems(filePaths, deletePermanently);
@@ -495,7 +495,7 @@ void BlomeSampleGridView::addToFavourites()
     
     for (int t : mSelectedSampleTileIndices)
     {
-        filePaths.add(mSampleItemTiles.getUnchecked(t)->getSampleItemFilePath());
+        filePaths.add(mSampleTiles.getUnchecked(t)->getSampleItemFilePath());
     }
     
     sampleLibrary.addAllToFavourites(filePaths);
@@ -507,7 +507,7 @@ void BlomeSampleGridView::reanalyseSamples()
     
     for (int t : mSelectedSampleTileIndices)
     {
-        filePaths.add(mSampleItemTiles.getUnchecked(t)->getSampleItemFilePath());
+        filePaths.add(mSampleTiles.getUnchecked(t)->getSampleItemFilePath());
     }
     
     sampleLibrary.reanalyseSampleItems(filePaths);
@@ -525,7 +525,7 @@ void BlomeSampleGridView::playSelectedSample()
         return;
     }
     
-    mSampleItemTiles.getUnchecked(mSelectedSampleTileIndices.getReference(0))->startPlayback();
+    mSampleTiles.getUnchecked(mSelectedSampleTileIndices.getReference(0))->startPlayback();
 }
 
 void BlomeSampleGridView::stopSelectedSample()

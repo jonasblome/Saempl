@@ -41,7 +41,7 @@ private:
     std::unique_ptr<BlomeImageButton> mRefreshLibraryButton;
     std::unique_ptr<BlomeImageButton> mChooseLibraryDirectoryButton;
     std::unique_ptr<FileChooser> mFileChooser;
-    std::unique_ptr<BlomeImageButton> mToggleSampleLibraryPanelButton;
+    std::unique_ptr<BlomeImageButton> mToggleSampleFolderPanelButton;
     std::unique_ptr<BlomeImageButton> mToggleSampleTablePanelButton;
     std::unique_ptr<BlomeImageButton> mToggleSampleGridPanelButton;
     std::unique_ptr<BlomeImageButton> mChangeFilterButton;
@@ -52,7 +52,7 @@ private:
     void paint(Graphics& g) override;
     void setRefreshLibraryButton(int buttonWidth, int x);
     void setChooseLibraryDirectoryButton(int buttonWidth, int x);
-    void setToggleSampleLibraryPanelButton(int buttonWidth, int x);
+    void setToggleSampleFolderPanelButton(int buttonWidth, int x);
     void setToggleSampleTablePanelButton(int buttonWidth, int x);
     void setToggleSampleGridPanelButton(int buttonWidth, int x);
     void setChangeFilterButton(int buttonWidth, int x);

@@ -117,9 +117,9 @@ private:
     SampleLibrary& sampleLibrary;
     std::unique_ptr<AudioPlayer> mAudioPlayer;
     BlomeStyling::Ptr style;
-    std::unique_ptr<Grid> mSampleTileGrid;
+    std::unique_ptr<Grid> mSampleGrid;
     SampleItemPanel& sampleItemPanel;
-    OwnedArray<BlomeSampleTileView> mSampleItemTiles;
+    OwnedArray<BlomeSampleTileView> mSampleTiles;
     Array<int> mSelectedSampleTileIndices;
     OwnedArray<SampleItem> emptySquares;
     StringArray mAddedSampleFilePaths;

@@ -33,7 +33,7 @@ void SampleGridPanel::centrePositionInGridViewport(Point<int>& newPosition)
 
 void SampleGridPanel::selectRandomSample()
 {
-    Point<int > newPosition = mSampleTileGrid->selectRandomTile();
+    Point<int > newPosition = mSampleGrid->selectRandomTile();
     centrePositionInGridViewport(newPosition);
 }
 
@@ -80,16 +80,16 @@ void SampleGridPanel::paint(Graphics& g)
 
 void SampleGridPanel::setPanelComponents()
 {
-    mSampleTileGrid = std::make_unique<BlomeSampleGridView>(sampleLibrary, sampleItemPanel);
-    mSampleTileGrid->setZoomFactor(currentProcessor.getSampleGridZoomFactor());
+    mSampleGrid = std::make_unique<BlomeSampleGridView>(sampleLibrary, sampleItemPanel);
+    mSampleGrid->setZoomFactor(currentProcessor.getSampleGridZoomFactor());
     
     if (sampleLibrary.getLibraryWasLoaded())
     {
-        mSampleTileGrid->setReadyForClustering();
+        mSampleGrid->setReadyForClustering();
         
         if (isShowing())
         {
-            mSampleTileGrid->clusterGrid();
+            mSampleGrid->clusterGrid();
         }
     }
     
@@ -105,13 +105,13 @@ void SampleGridPanel::setPanelComponents()
     mZoomSlider->onValueChange = [this]
     {
         // Perform zoom while maintaining view position
-        float tileMinMaxRelation = mSampleTileGrid->getTileMinMaxRelation();
+        float tileMinMaxRelation = mSampleGrid->getTileMinMaxRelation();
         float oldZoomFactor = currentProcessor.getSampleGridZoomFactor();
         
         // Set new zoom factor
         float newZoomFactor = mZoomSlider->getValue();
         currentProcessor.setSampleGridZoomFactor(newZoomFactor);
-        mSampleTileGrid->setZoomFactor(newZoomFactor);
+        mSampleGrid->setZoomFactor(newZoomFactor);
         float newOldZoomRatio =
         (1 + (newZoomFactor * (tileMinMaxRelation - 1)))
         / (1 + (oldZoomFactor * (tileMinMaxRelation - 1)));
@@ -126,7 +126,7 @@ void SampleGridPanel::setPanelComponents()
         viewPosition.addXY(mGridViewport->getWidth() * 1.0 / 2, mGridViewport->getHeight() * 1.0 / 2);
         viewPosition.setXY(viewPosition.getX() * newOldZoomRatio,
                            viewPosition.getY() * newOldZoomRatio);
-        mSampleTileGrid->performGridLayout();
+        mSampleGrid->performGridLayout();
         
         // Restore centre view position
         viewPosition.addXY(-mGridViewport->getWidth() * 1.0 / 2, -mGridViewport->getHeight() * 1.0 / 2);
@@ -138,7 +138,7 @@ void SampleGridPanel::setPanelComponents()
     
     // Add grid viewport
     mGridViewport = std::make_unique<Viewport>();
-    mGridViewport->setViewedComponent(&*mSampleTileGrid, false);
+    mGridViewport->setViewedComponent(&*mSampleGrid, false);
     mGridViewport->setWantsKeyboardFocus(false);
     addAndMakeVisible(*mGridViewport);
     
@@ -160,7 +160,7 @@ void SampleGridPanel::visibilityChanged()
 {
     if (isVisible())
     {
-        mSampleTileGrid->clusterGrid();
+        mSampleGrid->clusterGrid();
     }
 }
 
@@ -170,51 +170,51 @@ bool SampleGridPanel::keyPressed(KeyPress const & key)
     
     if (keyCode == KeyPress::returnKey)
     {
-        mSampleTileGrid->loadSelectedTileIntoAudioPlayer();
+        mSampleGrid->loadSelectedTileIntoAudioPlayer();
         return true;
     }
     else if (keyCode == KeyPress::escapeKey)
     {
-        mSampleTileGrid->deselectAll();
+        mSampleGrid->deselectAll();
         return true;
     }
     else if (key.getModifiers().isCommandDown() && keyCode == 65)
     {
-        mSampleTileGrid->selectAll();
+        mSampleGrid->selectAll();
         return true;
     }
     else if (keyCode == KeyPress::leftKey)
     {
-        Point<int > newPosition = mSampleTileGrid->selectLeft();
+        Point<int > newPosition = mSampleGrid->selectLeft();
         centrePositionInGridViewport(newPosition);
         return true;
     }
     else if (keyCode == KeyPress::upKey)
     {
-        Point<int > newPosition = mSampleTileGrid->selectUp();
+        Point<int > newPosition = mSampleGrid->selectUp();
         centrePositionInGridViewport(newPosition);
         return true;
     }
     else if (keyCode == KeyPress::rightKey)
     {
-        Point<int > newPosition = mSampleTileGrid->selectRight();
+        Point<int > newPosition = mSampleGrid->selectRight();
         centrePositionInGridViewport(newPosition);
         return true;
     }
     else if (keyCode == KeyPress::downKey)
     {
-        Point<int > newPosition = mSampleTileGrid->selectDown();
+        Point<int > newPosition = mSampleGrid->selectDown();
         centrePositionInGridViewport(newPosition);
         return true;
     }
     else if (key.getKeyCode() == 75) // K
     {
-        mSampleTileGrid->playSelectedSample();
+        mSampleGrid->playSelectedSample();
         return true;
     }
     else if (key.getKeyCode() == 76) // L
     {
-        mSampleTileGrid->stopSelectedSample();
+        mSampleGrid->stopSelectedSample();
         return true;
     }
     

@@ -112,7 +112,10 @@ void SampleFolderPanel::fileClicked(File const & file, MouseEvent const & mouseE
 
 void SampleFolderPanel::fileDoubleClicked(File const & inFile)
 {
-    sampleItemPanel.tryShowAudioResource(inFile);
+    if (!inFile.isDirectory())
+    {
+        sampleItemPanel.tryShowAudioResource(inFile);
+    }
 }
 
 void SampleFolderPanel::browserRootChanged(File const &)

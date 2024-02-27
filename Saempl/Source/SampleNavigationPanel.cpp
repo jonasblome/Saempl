@@ -31,8 +31,8 @@ void SampleNavigationPanel::paint(Graphics& g)
 void SampleNavigationPanel::setPanelComponents()
 {
     // Add library panel
-    mSampleLibraryPanel = std::make_unique<SampleFolderPanel>(currentProcessor, sampleItemPanel);
-    addChildComponent(*mSampleLibraryPanel);
+    mSampleFolderPanel = std::make_unique<SampleFolderPanel>(currentProcessor, sampleItemPanel);
+    addChildComponent(*mSampleFolderPanel);
     
     // Add sample table panel
     mSampleTablePanel = std::make_unique<SampleTablePanel>(currentProcessor, sampleItemPanel);
@@ -49,9 +49,9 @@ void SampleNavigationPanel::setPanelComponents()
 
 void SampleNavigationPanel::resizePanelComponents()
 {
-    if (mSampleLibraryPanel != nullptr)
+    if (mSampleFolderPanel != nullptr)
     {
-        mSampleLibraryPanel->setBounds(0, 0, getWidth(), getHeight());
+        mSampleFolderPanel->setBounds(0, 0, getWidth(), getHeight());
     }
     
     if (mSampleTablePanel != nullptr)
@@ -73,21 +73,21 @@ void SampleNavigationPanel::setActiveNavigationPanel(NavigationPanelType& inPane
     {
         case PANELS_LIBRARY_PANEL:
         {
-            mSampleLibraryPanel->setVisible(true);
+            mSampleFolderPanel->setVisible(true);
             mSampleTablePanel->setVisible(false);
             mSampleGridPanel->setVisible(false);
             break;
         }
         case PANELS_TABLE_PANEL:
         {
-            mSampleLibraryPanel->setVisible(false);
+            mSampleFolderPanel->setVisible(false);
             mSampleTablePanel->setVisible(true);
             mSampleGridPanel->setVisible(false);
             break;
         }
         case PANELS_GRID_PANEL:
         {
-            mSampleLibraryPanel->setVisible(false);
+            mSampleFolderPanel->setVisible(false);
             mSampleTablePanel->setVisible(false);
             mSampleGridPanel->setVisible(true);
             break;

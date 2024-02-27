@@ -18,7 +18,7 @@
 /**
  Holds the panels for sample navigation.
  
- Includes SampleLibraryPanel, SampleTablePanel and SampleGridPanel.
+ Includes SampleFolderPanel, SampleTablePanel and SampleGridPanel.
  */
 class SampleNavigationPanel
 :
@@ -46,7 +46,7 @@ public:
     
 private:
     SampleItemPanel& sampleItemPanel;
-    std::unique_ptr<SampleFolderPanel> mSampleLibraryPanel;
+    std::unique_ptr<SampleFolderPanel> mSampleFolderPanel;
     std::unique_ptr<SampleTablePanel> mSampleTablePanel;
     std::unique_ptr<SampleGridPanel> mSampleGridPanel;
     BlomeStyling::Ptr style;
