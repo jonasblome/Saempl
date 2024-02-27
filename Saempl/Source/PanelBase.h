@@ -33,6 +33,7 @@ public:
     
 protected:
     SaemplAudioProcessor& currentProcessor;
+    BlomeStyling::Ptr style;
     
     void mouseEnter(MouseEvent const & event) override;
     void mouseExit(MouseEvent const & event) override;

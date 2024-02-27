@@ -42,7 +42,6 @@ private:
     SampleItemPanel& sampleItemPanel;
     AudioPlayer& audioPlayer;
     std::unique_ptr<BlomeFileTreeView> mFileTree;
-    BlomeStyling::Ptr style;
     
     void selectionChanged() override;
     void fileClicked(File const & file, MouseEvent const & mouseEvent) override;

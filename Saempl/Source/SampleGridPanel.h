@@ -41,7 +41,6 @@ private:
     SampleLibrary& sampleLibrary;
     SampleItemPanel& sampleItemPanel;
     AudioPlayer& audioPlayer;
-    BlomeStyling::Ptr style;
     std::unique_ptr<BlomeSampleGridView> mSampleGrid;
     std::unique_ptr<Viewport> mGridViewport;
     std::unique_ptr<Slider> mZoomSlider;

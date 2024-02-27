@@ -53,7 +53,6 @@ private:
     std::unique_ptr<SampleFolderPanel> mSampleFolderPanel;
     std::unique_ptr<SampleTablePanel> mSampleTablePanel;
     std::unique_ptr<SampleGridPanel> mSampleGridPanel;
-    BlomeStyling::Ptr style;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;

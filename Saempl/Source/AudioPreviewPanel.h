@@ -112,7 +112,6 @@ private:
     URL lastFileDropped;
     std::unique_ptr<DrawableRectangle> mAudioPositionMarker;
     URL mCurrentAudioFile;
-    BlomeStyling::Ptr style;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;

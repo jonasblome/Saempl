@@ -39,14 +39,13 @@ void HeaderPanel::paint(Graphics& g)
     g.fillRoundedRectangle(263, getHeight() / 2.0 - 1, 10, 2, 1.0);
     
     // Draw logo text
-    int const logoWidth = 220;
     g.setColour(style->COLOUR_ACCENT_DARK);
     g.setFont(style->FONT_MEDIUM_BOLD);
     g.drawFittedText("Blome Audio",
                      getWidth() - logoWidth - 20 - style->PANEL_MARGIN,
-                     style->PANEL_MARGIN / 2.0,
+                     style->PANEL_MARGIN,
                      logoWidth,
-                     getHeight() - style->PANEL_MARGIN,
+                     getHeight() - style->PANEL_MARGIN * 1.75,
                      Justification::centredRight,
                      1);
 }
@@ -105,28 +104,28 @@ void HeaderPanel::setToggleSampleFolderPanelButton(int buttonWidth, int x)
 {
     mToggleSampleFolderPanelButton = std::make_unique<BlomeImageButton>("Toggle SampleFolderPanel", false);
     mToggleSampleFolderPanelButton->setImages(false,
-                                               true,
-                                               true,
-                                               ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
-                                                                         BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                               currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL
-                                               ? style->BUTTON_IS_DEFAULT_ALPHA
-                                               : style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
-                                               style->COLOUR_HEADER_BUTTONS,
-                                               Image(),
-                                               currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL
-                                               ? style->BUTTON_IS_OVER_ALPHA
-                                               : style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
-                                               style->COLOUR_HEADER_BUTTONS,
-                                               Image(),
-                                               currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL
-                                               ? style->BUTTON_IS_DOWN_ALPHA
-                                               : style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
-                                               style->COLOUR_HEADER_BUTTONS);
+                                              true,
+                                              true,
+                                              ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
+                                                                        BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                              currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL
+                                              ? style->BUTTON_IS_DEFAULT_ALPHA
+                                              : style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                              style->COLOUR_HEADER_BUTTONS,
+                                              Image(),
+                                              currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL
+                                              ? style->BUTTON_IS_OVER_ALPHA
+                                              : style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                              style->COLOUR_HEADER_BUTTONS,
+                                              Image(),
+                                              currentProcessor.getActiveNavigationPanel() == PANELS_LIBRARY_PANEL
+                                              ? style->BUTTON_IS_DOWN_ALPHA
+                                              : style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                              style->COLOUR_HEADER_BUTTONS);
     mToggleSampleFolderPanelButton->setBounds(x,
-                                               style->PANEL_MARGIN,
-                                               buttonWidth,
-                                               buttonWidth);
+                                              style->PANEL_MARGIN,
+                                              buttonWidth,
+                                              buttonWidth);
     mToggleSampleFolderPanelButton->setTooltip("Folder View - Show the folder structure of your library directory (1)");
     mToggleSampleFolderPanelButton->onClick = [this]
     {
@@ -134,18 +133,18 @@ void HeaderPanel::setToggleSampleFolderPanelButton(int buttonWidth, int x)
         {
             centrePanel.setActiveNavigationPanel(PANELS_LIBRARY_PANEL);
             mToggleSampleFolderPanelButton->setImages(false,
-                                                       true,
-                                                       true,
-                                                       ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
-                                                                                 BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                                       style->BUTTON_IS_DEFAULT_ALPHA,
-                                                       style->COLOUR_HEADER_BUTTONS,
-                                                       Image(),
-                                                       style->BUTTON_IS_OVER_ALPHA,
-                                                       style->COLOUR_HEADER_BUTTONS,
-                                                       Image(),
-                                                       style->BUTTON_IS_DOWN_ALPHA,
-                                                       style->COLOUR_HEADER_BUTTONS);
+                                                      true,
+                                                      true,
+                                                      ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
+                                                                                BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                                      style->BUTTON_IS_DEFAULT_ALPHA,
+                                                      style->COLOUR_HEADER_BUTTONS,
+                                                      Image(),
+                                                      style->BUTTON_IS_OVER_ALPHA,
+                                                      style->COLOUR_HEADER_BUTTONS,
+                                                      Image(),
+                                                      style->BUTTON_IS_DOWN_ALPHA,
+                                                      style->COLOUR_HEADER_BUTTONS);
             mToggleSampleTablePanelButton->setImages(false,
                                                      true,
                                                      true,
@@ -210,18 +209,18 @@ void HeaderPanel::setToggleSampleTablePanelButton(int buttonWidth, int x)
         {
             centrePanel.setActiveNavigationPanel(PANELS_TABLE_PANEL);
             mToggleSampleFolderPanelButton->setImages(false,
-                                                       true,
-                                                       true,
-                                                       ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
-                                                                                 BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                                       style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
-                                                       style->COLOUR_HEADER_BUTTONS,
-                                                       Image(),
-                                                       style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
-                                                       style->COLOUR_HEADER_BUTTONS,
-                                                       Image(),
-                                                       style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
-                                                       style->COLOUR_HEADER_BUTTONS);
+                                                      true,
+                                                      true,
+                                                      ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
+                                                                                BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                                      style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                                      style->COLOUR_HEADER_BUTTONS,
+                                                      Image(),
+                                                      style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                                      style->COLOUR_HEADER_BUTTONS,
+                                                      Image(),
+                                                      style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                                      style->COLOUR_HEADER_BUTTONS);
             mToggleSampleTablePanelButton->setImages(false,
                                                      true,
                                                      true,
@@ -286,18 +285,18 @@ void HeaderPanel::setToggleSampleGridPanelButton(int buttonWidth, int x)
         {
             centrePanel.setActiveNavigationPanel(PANELS_GRID_PANEL);
             mToggleSampleFolderPanelButton->setImages(false,
-                                                       true,
-                                                       true,
-                                                       ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
-                                                                                 BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                                       style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
-                                                       style->COLOUR_HEADER_BUTTONS,
-                                                       Image(),
-                                                       style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
-                                                       style->COLOUR_HEADER_BUTTONS,
-                                                       Image(),
-                                                       style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
-                                                       style->COLOUR_HEADER_BUTTONS);
+                                                      true,
+                                                      true,
+                                                      ImageCache::getFromMemory(BinaryData::segment_FILL0_wght400_GRAD0_opsz24_png,
+                                                                                BinaryData::segment_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                                      style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                                      style->COLOUR_HEADER_BUTTONS,
+                                                      Image(),
+                                                      style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                                      style->COLOUR_HEADER_BUTTONS,
+                                                      Image(),
+                                                      style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                                      style->COLOUR_HEADER_BUTTONS);
             mToggleSampleTablePanelButton->setImages(false,
                                                      true,
                                                      true,
@@ -472,6 +471,22 @@ void HeaderPanel::setRandomSampleButton(int buttonWidth, int x)
     addAndMakeVisible(*mRandomSampleButton);
 }
 
+void HeaderPanel::setShowAboutPanelButton()
+{
+    mShowAboutPanelButton = std::make_unique<BlomeTransparentButton>("ShowAboutPanelButton");
+    mShowAboutPanelButton->setBounds(getWidth() - logoWidth - 20 - style->PANEL_MARGIN,
+                                     style->PANEL_MARGIN,
+                                     logoWidth,
+                                     getHeight() - style->PANEL_MARGIN * 1.75);
+    mShowAboutPanelButton->setTooltip("Press to show the About section");
+    mShowAboutPanelButton->onClick = [this]
+    {
+        std::unique_ptr<AboutPanel> aboutPanel = std::make_unique<AboutPanel>();
+        CallOutBox::launchAsynchronously(std::move(aboutPanel), mShowAboutPanelButton->getScreenBounds(), nullptr);
+    };
+    addAndMakeVisible(*mShowAboutPanelButton);
+}
+
 void HeaderPanel::setPanelComponents()
 {
     int x = style->PANEL_MARGIN;
@@ -508,6 +523,9 @@ void HeaderPanel::setPanelComponents()
     
     // Add button to select random sample on the table panel
     setRandomSampleButton(buttonWidth, x);
+    
+    // Add button above logo text to show the "about" panel
+    setShowAboutPanelButton();
 }
 
 void HeaderPanel::showLibraryChooser()

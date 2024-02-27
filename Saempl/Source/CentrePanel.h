@@ -49,7 +49,6 @@ private:
     std::unique_ptr<SampleFavouritesPanel> mSampleFavouritesPanel;
     std::unique_ptr<SampleItemPanel> mSampleItemPanel;
     std::unique_ptr<ToggleButton> mToggleSampleItemPanelButton;
-    BlomeStyling::Ptr style;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;

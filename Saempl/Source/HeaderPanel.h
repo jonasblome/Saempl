@@ -13,6 +13,8 @@
 #include "CentrePanel.h"
 #include "FileFilterPanel.h"
 #include "BlomeImageButton.h"
+#include "AboutPanel.h"
+#include "BlomeTransparentButton.h"
 
 /**
  Holds the logo, and components for global functionality.
@@ -47,7 +49,8 @@ private:
     std::unique_ptr<BlomeImageButton> mChangeFilterButton;
     std::unique_ptr<BlomeImageButton> mToggleFilterButton;
     std::unique_ptr<BlomeImageButton> mRandomSampleButton;
-    BlomeStyling::Ptr style;
+    std::unique_ptr<BlomeTransparentButton> mShowAboutPanelButton;
+    static int const logoWidth = 110;
     
     void paint(Graphics& g) override;
     void setRefreshLibraryButton(int buttonWidth, int x);
@@ -58,6 +61,7 @@ private:
     void setChangeFilterButton(int buttonWidth, int x);
     void setToggleFilterButton(int buttonWidth, int x);
     void setRandomSampleButton(int buttonWidth, int x);
+    void setShowAboutPanelButton();
     void setPanelComponents() override;
     /**
      Shows the dialogue for choosing the sample library directory.

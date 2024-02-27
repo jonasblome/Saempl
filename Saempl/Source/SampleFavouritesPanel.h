@@ -37,7 +37,6 @@ private:
     SampleItemPanel& sampleItemPanel;
     AudioPlayer& audioPlayer;
     std::unique_ptr<BlomeTableViewFavourites> mSampleTable;
-    BlomeStyling::Ptr style;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;

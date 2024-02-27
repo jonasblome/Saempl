@@ -33,7 +33,6 @@ public:
 private:
     std::unique_ptr<HeaderPanel> mHeaderPanel;
     std::unique_ptr<CentrePanel> mCentrePanel;
-    BlomeStyling::Ptr style;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;

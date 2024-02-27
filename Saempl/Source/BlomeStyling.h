@@ -46,6 +46,9 @@ struct BlomeStyling
     
     int const FILTER_RULE_TITLE_WIDTH = 80;
     
+    int const ABOUT_PANEL_WIDTH = 300;
+    int const ABOUT_PANEL_HEIGHT = 160;
+    
     int const CENTRE_PANEL_WIDTH = MAIN_PANEL_WIDTH;
     int const CENTRE_PANEL_HEIGHT = MAIN_PANEL_HEIGHT - HEADER_PANEL_HEIGHT;
     

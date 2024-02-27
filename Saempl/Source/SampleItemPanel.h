@@ -53,7 +53,6 @@ private:
     std::unique_ptr<Slider> mZoomSlider;
     std::unique_ptr<BlomeImageButton> mFollowTransportButton;
     std::unique_ptr<BlomeImageButton> mStartStopButton;
-    BlomeStyling::Ptr style;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;

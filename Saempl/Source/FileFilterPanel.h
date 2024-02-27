@@ -43,7 +43,6 @@ private:
     std::unique_ptr<ComboBox> mNewRuleTypeChooser;
     std::unique_ptr<BlomeImageButton> mAddFilterRuleButton;
     OwnedArray<BlomeFileFilterRuleViewBase> mFilterRuleViews;
-    BlomeStyling::Ptr style;
     
     void paint(Graphics& g) override;
     /**

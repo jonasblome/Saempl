@@ -37,6 +37,10 @@
             compile="0" resource="1" file="Assets/table_rows_FILL0_wght400_GRAD0_opsz24.png"/>
     </GROUP>
     <GROUP id="{42BE264F-73CB-1788-4B66-AF9042EF1615}" name="BlomeComponents">
+      <FILE id="Tn4N0E" name="BlomeTransparentButton.cpp" compile="1" resource="0"
+            file="Source/BlomeTransparentButton.cpp"/>
+      <FILE id="O7tNaZ" name="BlomeTransparentButton.h" compile="0" resource="0"
+            file="Source/BlomeTransparentButton.h"/>
       <FILE id="CZhKhu" name="BlomeImageButton.cpp" compile="1" resource="0"
             file="Source/BlomeImageButton.cpp"/>
       <FILE id="DYAKmb" name="BlomeImageButton.h" compile="0" resource="0"
@@ -105,6 +109,8 @@
             file="Source/FileFilterPanel.cpp"/>
       <FILE id="PleHun" name="FileFilterPanel.h" compile="0" resource="0"
             file="Source/FileFilterPanel.h"/>
+      <FILE id="KroQsN" name="AboutPanel.cpp" compile="1" resource="0" file="Source/AboutPanel.cpp"/>
+      <FILE id="KRHkJO" name="AboutPanel.h" compile="0" resource="0" file="Source/AboutPanel.h"/>
       <FILE id="ccbkEr" name="CentrePanel.cpp" compile="1" resource="0" file="Source/CentrePanel.cpp"/>
       <FILE id="YtLVhW" name="CentrePanel.h" compile="0" resource="0" file="Source/CentrePanel.h"/>
       <FILE id="Wk9vDR" name="SampleNavigationPanel.cpp" compile="1" resource="0"

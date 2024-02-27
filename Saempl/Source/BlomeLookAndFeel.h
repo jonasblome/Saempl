@@ -132,7 +132,7 @@ public:
                                style->CORNER_SIZE_MEDIUM);
     }
     
-    void drawPopupMenuItem (Graphics& g,
+    void drawPopupMenuItem(Graphics& g,
                             Rectangle<int> const & area,
                             bool isSeparator,
                             bool isActive,

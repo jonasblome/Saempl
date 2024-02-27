@@ -8,7 +8,6 @@
  */
 
 #include "PanelBase.h"
-#include "BlomeStyling.h"
 
 PanelBase::PanelBase(SaemplAudioProcessor& inProcessor)
 :
