@@ -112,8 +112,10 @@ void FileFilterPanel::generateRuleView(SampleFileFilterRuleBase *rule)
             break;
         }
         default:
+        {
             jassertfalse;
             break;
+        }
     }
     
     newRuleView->addDeleteButtonListener(this);

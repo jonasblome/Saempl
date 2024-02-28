@@ -63,8 +63,10 @@ bool SampleFileFilterRuleKey::matches(SampleItem const & inSampleItem)
             break;
         }
         default:
+        {
             jassertfalse;
             return false;
+        }
     };
 }
 

@@ -241,10 +241,11 @@
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" targetName="Saempl"/>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Saempl" osxArchitecture="64BitIntel"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="Saempl" enablePluginBinaryCopyStep="1"
                        auBinaryLocation="/Users/jonasblome/Documents/Musikproduktion/Plugins/Saempl/Saempl/Builds/MacOSX/build"
-                       vst3BinaryLocation="/Users/jonasblome/Documents/Musikproduktion/Plugins/Saempl/Saempl/Builds/MacOSX/build"/>
+                       vst3BinaryLocation="/Users/jonasblome/Documents/Musikproduktion/Plugins/Saempl/Saempl/Builds/MacOSX/build"
+                       osxArchitecture="64BitIntel"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="../../../../JUCE/modules"/>

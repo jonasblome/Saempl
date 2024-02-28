@@ -97,8 +97,10 @@ void SampleNavigationPanel::setActiveNavigationPanel(NavigationPanelType& inPane
             break;
         }
         default:
+        {
             jassertfalse;
             break;
+        }
     }
 }
 

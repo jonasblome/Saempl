@@ -49,8 +49,10 @@ bool SampleFileFilterRuleLoudnessLUFS::matches(SampleItem const & inSampleItem)
             break;
         }
         default:
+        {
             jassertfalse;
             return false;
+        }
     };
 }
 

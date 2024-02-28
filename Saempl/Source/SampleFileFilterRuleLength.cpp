@@ -49,8 +49,10 @@ bool SampleFileFilterRuleLength::matches(SampleItem const & inSampleItem)
             break;
         }
         default:
+        {
             jassertfalse;
             return false;
+        }
     };
 }
 

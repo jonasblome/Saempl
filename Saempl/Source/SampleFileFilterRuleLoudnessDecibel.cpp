@@ -49,8 +49,10 @@ bool SampleFileFilterRuleLoudnessDecibel::matches(SampleItem const & inSampleIte
             break;
         }
         default:
+        {
             jassertfalse;
             return false;
+        }
     };
 }
 

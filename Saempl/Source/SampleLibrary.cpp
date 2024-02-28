@@ -165,6 +165,7 @@ OwnedArray<SampleItem>& SampleLibrary::getSampleItems(SampleItemCollectionScope 
             break;
         default:
             jassertfalse;
+            return mAllSampleItems;
             break;
     }
 }

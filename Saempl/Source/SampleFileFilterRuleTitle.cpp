@@ -48,8 +48,10 @@ bool SampleFileFilterRuleTitle::matches(SampleItem const & inSampleItem)
             return propertyValue.containsIgnoreCase(mCompareValue);
         }
         default:
+        {
             jassertfalse;
             return false;
+        }
     };
 }
 
