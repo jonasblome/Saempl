@@ -45,6 +45,12 @@ public:
      */
     void startOrStopPlayback();
     bool keyPressed(KeyPress const & key) override;
+    /**
+     Sets the gain for the audio playback.
+     
+     @param inGain the gain value from 0.0 to 1.0;
+     */
+    void setGain(float inGain);
     
 private:
     SampleLibrary& sampleLibrary;

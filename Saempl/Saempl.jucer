@@ -11,6 +11,8 @@
     <GROUP id="{F65A6678-A68F-58F1-A4D6-F2BF2D42BA2E}" name="Assets">
       <FILE id="x5lZ5t" name="grid_view_FILL0_wght400_GRAD0_opsz24.png" compile="0"
             resource="1" file="Assets/grid_view_FILL0_wght400_GRAD0_opsz24.png"/>
+      <FILE id="YPJJ65" name="volume_up_FILL0_wght400_GRAD0_opsz24.png" compile="0"
+            resource="1" file="Assets/volume_up_FILL0_wght400_GRAD0_opsz24.png"/>
       <FILE id="MfdNxs" name="ifl_FILL0_wght400_GRAD0_opsz24.png" compile="0"
             resource="1" file="Assets/ifl_FILL0_wght400_GRAD0_opsz24.png"/>
       <FILE id="ljBuyf" name="power_settings_new_FILL0_wght400_GRAD0_opsz24.png"

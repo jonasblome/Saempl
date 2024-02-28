@@ -63,6 +63,12 @@ public:
      Empties and resets the audio sources.
      */
     void emptyTransport();
+    /**
+     Sets the gain for the audio playback.
+     
+     @param inGain the gain value from 0.0 to 1.0;
+     */
+    void setGain(float inGain);
     
 private:
     std::unique_ptr<TimeSliceThread> mThread;

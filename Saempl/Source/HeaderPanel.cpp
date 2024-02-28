@@ -38,6 +38,16 @@ void HeaderPanel::paint(Graphics& g)
     g.setColour(style->COLOUR_ACCENT_DARK);
     g.fillRoundedRectangle(263, getHeight() / 2.0 - 1, 10, 2, 1.0);
     
+    // Draw volume icon
+    g.setColour(style->COLOUR_ACCENT_DARK);
+    Rectangle<float> volumeIconArea(getWidth() - sliderWidth - logoWidth - 20 - style->PANEL_MARGIN * 4.0 - (getHeight() - style->PANEL_MARGIN * 4.0),
+                                    style->PANEL_MARGIN * 1.7,
+                                    getHeight() - style->PANEL_MARGIN * 3.4,
+                                    getHeight() - style->PANEL_MARGIN * 3.4);
+    g.drawImage(ImageCache::getFromMemory(BinaryData::volume_up_FILL0_wght400_GRAD0_opsz24_png,
+                                          BinaryData::volume_up_FILL0_wght400_GRAD0_opsz24_pngSize),
+                volumeIconArea);
+    
     // Draw logo text
     g.setColour(style->COLOUR_ACCENT_DARK);
     g.setFont(style->FONT_MEDIUM_BOLD);
@@ -471,6 +481,21 @@ void HeaderPanel::setRandomSampleButton(int buttonWidth, int x)
     addAndMakeVisible(*mRandomSampleButton);
 }
 
+void HeaderPanel::setGainSlider()
+{
+    // Add zoom slider
+    mGainSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::NoTextBox);
+    mGainSlider->setRange(0, 1, 0);
+    mGainSlider->setValue(1.0, NotificationType::dontSendNotification);
+    mGainSlider->onValueChange = [this]
+    {
+        centrePanel.setGain(mGainSlider->getValue());
+    };
+    mGainSlider->setSkewFactor(0.5);
+    mGainSlider->setTooltip("Sets the gain of the audio playback");
+    addAndMakeVisible(*mGainSlider);
+}
+
 void HeaderPanel::setShowAboutPanelButton()
 {
     mShowAboutPanelButton = std::make_unique<BlomeTransparentButton>("ShowAboutPanelButton");
@@ -524,8 +549,14 @@ void HeaderPanel::setPanelComponents()
     // Add button to select random sample on the table panel
     setRandomSampleButton(buttonWidth, x);
     
+    // Add gain slider
+    setGainSlider();
+    
     // Add button above logo text to show the "about" panel
     setShowAboutPanelButton();
+    
+    // Resize components
+    resizePanelComponents();
 }
 
 void HeaderPanel::showLibraryChooser()
@@ -592,4 +623,15 @@ bool HeaderPanel::keyPressed(KeyPress const & key)
     }
     
     return false;
+}
+
+void HeaderPanel::resizePanelComponents()
+{
+    if (mGainSlider != nullptr)
+    {
+        mGainSlider->setBounds(getWidth() - logoWidth - sliderWidth - 20 - style->PANEL_MARGIN * 3,
+                               style->PANEL_MARGIN,
+                               sliderWidth,
+                               getHeight() - style->PANEL_MARGIN * 1.75);
+    }
 }

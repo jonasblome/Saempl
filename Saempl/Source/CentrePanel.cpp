@@ -164,3 +164,9 @@ void CentrePanel::stopSelectedSample()
 {
     mAudioPlayer->stop();
 }
+
+void CentrePanel::setGain(float inGain)
+{
+    mAudioPlayer->setGain(inGain);
+    mSampleItemPanel->setGain(inGain);
+}

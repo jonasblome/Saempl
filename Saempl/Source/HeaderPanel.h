@@ -49,8 +49,10 @@ private:
     std::unique_ptr<BlomeImageButton> mChangeFilterButton;
     std::unique_ptr<BlomeImageButton> mToggleFilterButton;
     std::unique_ptr<BlomeImageButton> mRandomSampleButton;
+    std::unique_ptr<Slider> mGainSlider;
     std::unique_ptr<BlomeTransparentButton> mShowAboutPanelButton;
     static int const logoWidth = 110;
+    static int const sliderWidth = 100;
     
     void paint(Graphics& g) override;
     void setRefreshLibraryButton(int buttonWidth, int x);
@@ -61,12 +63,14 @@ private:
     void setChangeFilterButton(int buttonWidth, int x);
     void setToggleFilterButton(int buttonWidth, int x);
     void setRandomSampleButton(int buttonWidth, int x);
+    void setGainSlider();
     void setShowAboutPanelButton();
     void setPanelComponents() override;
     /**
      Shows the dialogue for choosing the sample library directory.
      */
     void showLibraryChooser();
+    void resizePanelComponents() override;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HeaderPanel);
 };

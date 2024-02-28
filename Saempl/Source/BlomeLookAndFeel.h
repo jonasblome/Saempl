@@ -296,7 +296,9 @@ public:
             if (! isTwoVal)
             {
                 g.setColour(style->COLOUR_ACCENT_LIGHT);
-                g.fillEllipse (Rectangle<float> (static_cast<float> (thumbWidth), static_cast<float> (thumbWidth)).withCentre (isThreeVal ? thumbPoint : maxPoint));
+                g.fillEllipse(Rectangle<float>(static_cast<float>(thumbWidth), static_cast<float>(thumbWidth)).withCentre(isThreeVal ? thumbPoint : maxPoint));
+                g.setColour(style->COLOUR_ACCENT_DARK);
+                g.drawEllipse((Rectangle<float>(static_cast<float>(thumbWidth), static_cast<float>(thumbWidth)).withCentre(isThreeVal ? thumbPoint : maxPoint)), 2.0);
             }
             
             if (isTwoVal || isThreeVal)

@@ -32,7 +32,7 @@ void AboutPanel::mouseExit(MouseEvent const & event)
 void AboutPanel::paint(Graphics& g)
 {
     // Draw background
-    g.setColour(style->COLOUR_ACCENT_LIGHT);
+    g.setColour(style->COLOUR_ACCENT_MEDIUM);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), style->CORNER_SIZE_MEDIUM);
     
     // Draw text
@@ -40,6 +40,7 @@ void AboutPanel::paint(Graphics& g)
     g.setFont(style->FONT_MEDIUM_BOLD);
     Rectangle<int> textBounds = getLocalBounds().reduced(style->PANEL_MARGIN);
     g.drawFittedText("Saempl - Sample Manager", textBounds.removeFromTop(30), Justification::topLeft, 1);
+    g.setColour(style->COLOUR_ACCENT_LIGHT);
     g.setFont(style->FONT_SMALL_BOLD);
     g.drawFittedText(String("\n")
                      + "Developed by Jonas Blome"

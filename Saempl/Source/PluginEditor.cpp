@@ -21,7 +21,7 @@ audioProcessor(inProcessor)
     
     // Set plugin window size
     setSize(style->MAIN_PANEL_WIDTH, style->MAIN_PANEL_HEIGHT);
-    setResizeLimits(600, 500, 1600, 1000);
+    setResizeLimits(style->MIN_WINDOW_WIDTH, style->MIN_WINDOW_HEIGHT, style->MAX_WINDOW_WIDTH, style->MAX_WINDOW_HEIGHT);
     setResizable(true, true);
     
     // Set main panel into plugin window

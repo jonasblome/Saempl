@@ -202,3 +202,8 @@ bool SampleItemPanel::keyPressed(KeyPress const & key)
     
     return false;
 }
+
+void SampleItemPanel::setGain(float inGain)
+{
+    mAudioPlayer->setGain(inGain);
+}

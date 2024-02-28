@@ -11,6 +11,9 @@ namespace BinaryData
     extern const char*   grid_view_FILL0_wght400_GRAD0_opsz24_png;
     const int            grid_view_FILL0_wght400_GRAD0_opsz24_pngSize = 156;
 
+    extern const char*   volume_up_FILL0_wght400_GRAD0_opsz24_png;
+    const int            volume_up_FILL0_wght400_GRAD0_opsz24_pngSize = 399;
+
     extern const char*   ifl_FILL0_wght400_GRAD0_opsz24_png;
     const int            ifl_FILL0_wght400_GRAD0_opsz24_pngSize = 239;
 
@@ -48,7 +51,7 @@ namespace BinaryData
     const int            table_rows_FILL0_wght400_GRAD0_opsz24_pngSize = 187;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 13;
+    const int namedResourceListSize = 14;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

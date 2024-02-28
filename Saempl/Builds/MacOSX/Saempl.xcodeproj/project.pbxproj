@@ -196,6 +196,7 @@
 		59BB9EF6CC4B6FE63CAFF83E /* SampleFileFilterRuleLength.h */ /* SampleFileFilterRuleLength.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleFileFilterRuleLength.h; path = ../../Source/SampleFileFilterRuleLength.h; sourceTree = SOURCE_ROOT; };
 		5A0F77A66DFA2E613BB01BB7 /* Info-VST3.plist */ /* Info-VST3.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-VST3.plist"; path = "Info-VST3.plist"; sourceTree = SOURCE_ROOT; };
 		5BE7C92F4997906FA6B209B1 /* juce_audio_utils */ /* juce_audio_utils */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_utils; path = /Users/jonasblome/Documents/JUCE/modules/juce_audio_utils; sourceTree = "<absolute>"; };
+		61E034FB7D15B5AE43EC07F3 /* volume_up_FILL0_wght400_GRAD0_opsz24.png */ /* volume_up_FILL0_wght400_GRAD0_opsz24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = volume_up_FILL0_wght400_GRAD0_opsz24.png; path = ../../Assets/volume_up_FILL0_wght400_GRAD0_opsz24.png; sourceTree = SOURCE_ROOT; };
 		62372E9E969BEB9B34CF461C /* SecondOrderIIRFilter.h */ /* SecondOrderIIRFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SecondOrderIIRFilter.h; path = ../../Source/SecondOrderIIRFilter.h; sourceTree = SOURCE_ROOT; };
 		635F80A138F0D7EEDC9D41C0 /* juce_VST3ManifestHelper.mm */ /* juce_VST3ManifestHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = juce_VST3ManifestHelper.mm; path = /Users/jonasblome/Documents/JUCE/modules/juce_audio_plugin_client/VST3/juce_VST3ManifestHelper.mm; sourceTree = "<absolute>"; };
 		63F67428549DF3FF35E4ABDF /* BlomeFileFilterRuleViewLength.h */ /* BlomeFileFilterRuleViewLength.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BlomeFileFilterRuleViewLength.h; path = ../../Source/BlomeFileFilterRuleViewLength.h; sourceTree = SOURCE_ROOT; };
@@ -455,6 +456,7 @@
 			isa = PBXGroup;
 			children = (
 				3FF9E04643D23895C7BA2789,
+				61E034FB7D15B5AE43EC07F3,
 				B8F1B0E19D59A8BF6A684CB2,
 				07A8D97314AD29A544952BC8,
 				7206EC450F6C61191BBCB249,

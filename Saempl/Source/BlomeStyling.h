@@ -32,6 +32,12 @@ struct BlomeStyling
     
     
     // Panel dimensions
+    int const MIN_WINDOW_WIDTH = 700;
+    int const MIN_WINDOW_HEIGHT = 500;
+    
+    int const MAX_WINDOW_WIDTH = 1600;
+    int const MAX_WINDOW_HEIGHT = 1000;
+    
     int const MAIN_PANEL_WIDTH = 900;
     int const MAIN_PANEL_HEIGHT = 750;
     

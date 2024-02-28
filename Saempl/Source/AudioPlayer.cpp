@@ -144,3 +144,8 @@ void AudioPlayer::initialiseDefaultDevice()
                                 { numInputChannels = granted ? 2 : 0; });
     mAudioDeviceManager->initialise(numInputChannels, 2, nullptr, true, {}, nullptr);
 }
+
+void AudioPlayer::setGain(float inGain)
+{
+    mAudioSourcePlayer->setGain(inGain);
+}
