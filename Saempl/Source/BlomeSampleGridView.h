@@ -27,7 +27,7 @@ public ChangeListener,
 public FileDragAndDropTarget
 {
 public:
-    BlomeSampleGridView(SampleLibrary& inSampleLibrary,
+    BlomeSampleGridView(SaemplAudioProcessor& inProcessor,
                         SampleItemPanel& inSampleItemPanel,
                         AudioPlayer& inAudioPlayer);
     ~BlomeSampleGridView();
@@ -111,6 +111,7 @@ public:
     void playSelectedSample();
     
 private:
+    SaemplAudioProcessor& currentProcessor;
     SampleLibrary& sampleLibrary;
     AudioPlayer& audioPlayer;
     BlomeStyling::Ptr style;

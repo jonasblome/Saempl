@@ -61,11 +61,11 @@ public:
     {
         Colour fillColour;
         
-        if(shouldDrawButtonAsDown)
+        if (shouldDrawButtonAsDown)
         {
             fillColour = style->COLOUR_ACCENT_DARK.withAlpha(0.9f);
         }
-        else if(shouldDrawButtonAsHighlighted)
+        else if (shouldDrawButtonAsHighlighted)
         {
             fillColour = style->COLOUR_ACCENT_DARK.withAlpha(0.7f);
         }
@@ -106,7 +106,7 @@ public:
         g.setColour(fillColour);
         g.fillRoundedRectangle(bounds, cornerSize);
         
-        if(button.getToggleState())
+        if (button.getToggleState())
         {
             cornerSize = 4.0f;
             g.setColour(style->COLOUR_ACCENT_LIGHT);

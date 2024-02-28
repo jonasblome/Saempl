@@ -122,8 +122,10 @@ void SampleNavigationPanel::selectRandomSample()
             break;
         }
         default:
+        {
             jassertfalse;
             break;
+        }
     }
 }
 

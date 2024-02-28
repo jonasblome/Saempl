@@ -16,6 +16,8 @@ SampleItem::SampleItem()
     mKey = NO_KEY_INDEX;
     mTempo = 0;
     mFeatureVector = std::vector<float>(NUM_CHROMA + NUM_SPECTRAL_BANDS + NUM_FEATURES);
+    mSpectralDistribution = std::vector<float>(NUM_SPECTRAL_BANDS);
+    mChromaDistribution = std::vector<float>(NUM_CHROMA);
 }
 
 SampleItem::~SampleItem()
@@ -43,34 +45,134 @@ void SampleItem::setTitle(String inTitle)
     mTitle = inTitle;
 }
 
-double SampleItem::getLength() const
+float SampleItem::getLength() const
 {
     return mLength;
 }
 
-void SampleItem::setLength(double inLength)
+void SampleItem::setLength(float inLength)
 {
     mLength = inLength;
 }
 
-double SampleItem::getLoudnessDecibel() const
+float SampleItem::getLoudnessDecibel() const
 {
     return mLoudnessDecibel;
 }
 
-void SampleItem::setLoudnessDecibel(double inDB)
+void SampleItem::setLoudnessDecibel(float inDB)
 {
     mLoudnessDecibel = inDB;
 }
 
-double SampleItem::getLoudnessLUFS() const
+float SampleItem::getLoudnessLUFS() const
 {
     return mLoudnessLUFS;
 }
 
-void SampleItem::setLoudnessLUFS(double inLUFS)
+void SampleItem::setLoudnessLUFS(float inLUFS)
 {
     mLoudnessLUFS = inLUFS;
+}
+
+float SampleItem::getLoudnessLUFSStart() const
+{
+    return mLoudnessLUFSStart;
+}
+
+void SampleItem::setLoudnessLUFSStart(float inLUFSStart)
+{
+    mLoudnessLUFSStart = inLUFSStart;
+}
+
+float SampleItem::getLoudnessLUFSEnd() const
+{
+    return mLoudnessLUFSEnd;
+}
+
+void SampleItem::setLoudnessLUFSEnd(float inLUFSEnd)
+{
+    mLoudnessLUFSEnd = inLUFSEnd;
+}
+
+float SampleItem::getZeroCrossingRate() const
+{
+    return mZeroCrossingRate;
+}
+
+void SampleItem::setZeroCrossingRate(float inRate)
+{
+    mZeroCrossingRate = inRate;
+}
+
+float SampleItem::getSpectralCentroid() const
+{
+    return mSpectralCentroid;
+}
+
+void SampleItem::setSpectralCentroid(float inSpectralCentroid)
+{
+    mSpectralCentroid = inSpectralCentroid;
+}
+
+float SampleItem::getSpectralSpread() const
+{
+    return mSpectralSpread;
+}
+
+void SampleItem::setSpectralSpread(float inSpectralSpread)
+{
+    mSpectralSpread = inSpectralSpread;
+}
+
+float SampleItem::getSpectralRolloff() const
+{
+    return mSpectralRolloff;
+}
+
+void SampleItem::setSpectralRolloff(float inRolloff)
+{
+    mSpectralRolloff = inRolloff;
+}
+
+float SampleItem::getSpectralFlux() const
+{
+    return mSpectralFlux;
+}
+
+void SampleItem::setSpectralFlux(float inSpectralFlux)
+{
+    mSpectralFlux = inSpectralFlux;
+}
+
+float SampleItem::getChromaFlux() const
+{
+    return mChromaFlux;
+}
+
+void SampleItem::setChromaFlux(float inChromaFlux)
+{
+    mChromaFlux = inChromaFlux;
+}
+
+std::vector<float> SampleItem::getSpectralDistribution() const
+{
+    return mSpectralDistribution;
+}
+
+void SampleItem::setSpectralDistribution(std::vector<float> inSpectralDistribution)
+{
+    mSpectralDistribution = inSpectralDistribution;
+}
+
+std::vector<float> SampleItem::getChromaDistribution() const
+{
+    return mChromaDistribution;
+}
+
+void SampleItem::setChromaDistribution(std::vector<float> inChromaDistribution)
+{
+    mChromaDistribution = inChromaDistribution;
 }
 
 int SampleItem::getTempo() const

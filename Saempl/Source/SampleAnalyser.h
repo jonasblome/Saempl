@@ -50,17 +50,17 @@ private:
     // Higher values require more periodicity to trigger tempo detection
     static int const tempogramWindowLengthInSeconds = 25;
     static int const ignoreTopAndBottomTempi = 10;
-    static int const lowerBPMLimit = 70 - ignoreTopAndBottomTempi;
-    static int const upperBPMLimit = 180 + ignoreTopAndBottomTempi;
-    static int const numTempi = upperBPMLimit - lowerBPMLimit;
+    static int const lowerBPMLimitExpanded = LOWER_BPM_LIMIT - ignoreTopAndBottomTempi;
+    static int const upperBPMLimitExpanded = UPPER_BPM_LIMIT + ignoreTopAndBottomTempi;
+    static int const numTempi = upperBPMLimitExpanded - lowerBPMLimitExpanded;
     // Higher values increase frequency resolution of the STFT spectrum
     static int const keyFFTOrder = 16;
     static int const keyFFTSize = 1 << keyFFTOrder;
     static int const keyWindowLength = keyFFTSize;
     static int const keyFFTHopLength = keyWindowLength / 2;
     static int const loudnessBufferSize = 1024;
-    float mSpectralDistribution[NUM_SPECTRAL_BANDS];
-    float mChromaDistribution[NUM_CHROMA];
+    std::vector<float> mSpectralDistribution = std::vector<float>(NUM_SPECTRAL_BANDS);
+    std::vector<float> mChromaDistribution = std::vector<float>(NUM_CHROMA);
     // Change to only count local tempo optima that are above the local average
     constexpr static float const tempoAverageBinHeightThresholdFactor = 1.2;
     // Change to only count a key that has a correlation that is above the average correlation
@@ -69,7 +69,7 @@ private:
     constexpr static float const tempoCompressionFactor = 0.0;
     constexpr static float const keyCompressionFactor = 0.0;
     // Higher values remove more of the smallest local novelty peaks
-    constexpr static float const noveltyAveragingWindowLengthInSeconds = 60.0f / upperBPMLimit;
+    constexpr static float const noveltyAveragingWindowLengthInSeconds = 60.0f / upperBPMLimitExpanded;
     float decibel;
     float integratedLUFS;
     float lufsRangeStart;

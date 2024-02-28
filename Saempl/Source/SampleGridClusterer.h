@@ -9,7 +9,7 @@
  by Kai Barthel, Nico Hezel, Klaus Jung, and Konstantin Schall.
  @HTW Berlin, Visual Computing Group, Germany
  https://visual-computing.com/
- The code was written by Nico Hezel, Konstantin Schall and Kai Barthel.
+ The code was originally written by Nico Hezel, Konstantin Schall and Kai Barthel.
  
  ==============================================================================
  */
@@ -39,6 +39,10 @@ public:
      @param doWrap whether the clustering should wrap around the edges of the grid.
      */
     void applyClustering(int rows, int columns, bool doWrap);
+    /**
+     Sets the collection feature weights.
+     */
+    void setFeatureWeights(std::vector<float> inFeatureWeights);
     
 private:
     constexpr static float const initialRadiusFactor = 0.5;
@@ -51,14 +55,16 @@ private:
     static int const QUANT = 2048;
     Array<int> swapPositions;
     Array<SampleItem*> swappedElements;
-    Array<std::vector<float>> featureVectors;
-    Array<std::vector<float>> gridFeatureVectors;
-    Array<Array<int>> distanceMatrixNormalised;
-    Array<Array<float>> distanceMatrix;
+    Array<std::vector<float>> mFeatureVectors;
+    Array<std::vector<float>> mGridVectors;
+    Array<Array<float>> mDistanceMatrix;
+    Array<Array<int>> mDistanceMatrixNormalised;
     OwnedArray<SampleItem>& sampleItems;
+    std::vector<float> mFeatureWeights;
     int rows;
     int columns;
     bool applyWrap;
+    bool featureWeightsChanged = true;
     
     /**
      Runs the clustering of the sample items while setting the progress for the progress bar.

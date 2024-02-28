@@ -32,7 +32,7 @@ public:
     /**
      The constructor of the panel for the library's file filter.
      
-     @param inSampleLibrary the library object of the current plugin instance.
+     @param inProcessor the processor object of the current plugin instance.
      */
     FileFilterPanel(SaemplAudioProcessor& inProcessor);
     ~FileFilterPanel();

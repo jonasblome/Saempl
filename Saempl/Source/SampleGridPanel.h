@@ -12,6 +12,7 @@
 #include "PanelBase.h"
 #include "SampleItemPanel.h"
 #include "BlomeSampleGridView.h"
+#include "SampleGridOptionsPanel.h"
 
 /**
  Holds the grid for displaying the library sample item collection.
@@ -43,6 +44,7 @@ private:
     AudioPlayer& audioPlayer;
     std::unique_ptr<BlomeSampleGridView> mSampleGrid;
     std::unique_ptr<Viewport> mGridViewport;
+    std::unique_ptr<BlomeImageButton> mChangeGridClusteringOptionsButton;
     std::unique_ptr<Slider> mZoomSlider;
     
     void paint(Graphics& g) override;

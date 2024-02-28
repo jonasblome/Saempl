@@ -25,8 +25,6 @@ SampleAnalyser::~SampleAnalyser()
 
 void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
 {
-    std::vector<float> featureVector = std::vector<float>(NUM_SPECTRAL_BANDS + NUM_CHROMA + NUM_FEATURES);
-    
     // Load audio file
     loadAudioFileSource(inSampleItem->getFilePath());
     
@@ -38,71 +36,42 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
     // Set sample length
     float length = totalNumSamples * 1.0 / sampleRate;
     inSampleItem->setLength(length);
-    featureVector[0] = length / 60;
     
     // Set sample loudness and loudness range
     analyseSampleLoudness();
     inSampleItem->setLoudnessDecibel(decibel);
     inSampleItem->setLoudnessLUFS(integratedLUFS);
-    featureVector[1] = integratedLUFS + 300 / (3 - 300);
-    featureVector[2] = lufsRangeStart + 300 / (3 - 300);
-    featureVector[3] = lufsRangeEnd + 300 / (3 - 300);
+    inSampleItem->setLoudnessLUFSStart(lufsRangeStart + 300 / (3 + 300));
+    inSampleItem->setLoudnessLUFSEnd(lufsRangeEnd + 300 / (3 + 300));
     
     // Set zero crossing rate
-    featureVector[4] = zeroCrossingRate;
+    inSampleItem->setZeroCrossingRate(zeroCrossingRate);
     
     // Maximum length for initial analysis is 1 minute
     if (length <= 60 || forceAnalysis)
     {
-        // Set sample tempo
+        // Set properties
         float tempo = analyseSampleTempo();
         
-        if (length >= 60.0f / lowerBPMLimit * 4)
+        if (length >= 60.0f / upperBPMLimitExpanded * 5)
         {
             inSampleItem->setTempo(tempo);
-            featureVector[5] = (tempo - lowerBPMLimit) / (upperBPMLimit - lowerBPMLimit);
         }
         
-        // Set sample key
         int key = analyseSampleKey();
         inSampleItem->setKey(key);
-        featureVector[6] = key * 1.0 / 2;
-        
-        // Set spectral centroid
-        featureVector[7] = spectralCentroid / 20000;
-        
-        // Set spectral spread
-        featureVector[8] = spectralSpread / 100;
-        
-        // Set spectral roll off
-        featureVector[9] = spectralRollOffBandIndex * 1.0 / NUM_SPECTRAL_BANDS;
-        
-        // Set spectral flux
-        featureVector[10] = spectralFlux;
-        
-        // Set chroma flux
-        featureVector[11] = chromaFlux / 1000;
-        
-        // Set spectral distribution coefficients
-        for (int b = 0; b < NUM_SPECTRAL_BANDS; b++)
-        {
-            featureVector[NUM_FEATURES + b] = mSpectralDistribution[b];
-        }
-        
-        // Set chroma distribution coefficients
-        for (int c = 0; c < NUM_CHROMA; c++)
-        {
-            featureVector[NUM_FEATURES + NUM_SPECTRAL_BANDS + c] = mChromaDistribution[c];
-        }
+        inSampleItem->setSpectralCentroid(spectralCentroid / 20000);
+        inSampleItem->setSpectralSpread(spectralSpread / 100);
+        inSampleItem->setSpectralRolloff(spectralRollOffBandIndex * 1.0 / NUM_SPECTRAL_BANDS);
+        inSampleItem->setSpectralFlux(spectralFlux);
+        inSampleItem->setChromaFlux(chromaFlux / 1000);
+        inSampleItem->setSpectralDistribution(mSpectralDistribution);
+        inSampleItem->setChromaDistribution(mChromaDistribution);
     }
     else
     {
         inSampleItem->setKey(SAMPLE_TOO_LONG_INDEX);
-        featureVector[6] = inSampleItem->getKey() * 1.0 / 12;
     }
-    
-    // Set sample item's feature vector
-    inSampleItem->setFeatureVector(featureVector);
 }
 
 void SampleAnalyser::loadAudioFileSource(File const & inFile)
@@ -302,7 +271,7 @@ Array<Array<float>> SampleAnalyser::calculateTempogram(Array<float> & noveltyFun
     {
         Array<float> localEstimationsForCurrentTempo;
         localEstimationsForCurrentTempo.resize(numTempogramWindows);
-        float beatsPerSample = ((t + lowerBPMLimit) * 1.0 / 60) / noveltyFunctionSampleRate;
+        float beatsPerSample = ((t + lowerBPMLimitExpanded) * 1.0 / 60) / noveltyFunctionSampleRate;
         float noveltyFunctionProjection[noveltyFunction.size()];
         
         for (int s = 0; s < noveltyFunction.size(); s++)
@@ -415,7 +384,7 @@ int SampleAnalyser::analyseSampleTempo()
                                                               + numTempi
                                                               - ignoreTopAndBottomTempi));
     
-    int bestTempoEstimation = bestTempoIndex + lowerBPMLimit;
+    int bestTempoEstimation = bestTempoIndex + lowerBPMLimitExpanded;
     
     return bestTempoEstimation;
 }
@@ -480,7 +449,7 @@ Array<Array<float>> SampleAnalyser::calculateLogSpectrogram(float& coefficientSu
 
 void SampleAnalyser::calculateChromaDistribution(Array<Array<float>> &logSpectrogram)
 {
-    std::memset(mChromaDistribution, 0, sizeof(mChromaDistribution));
+    std::memset(mChromaDistribution.data(), 0, sizeof(mChromaDistribution));
     chromaFlux = 0.0;
     
     // Loop over all pitches
@@ -502,9 +471,8 @@ void SampleAnalyser::calculateChromaDistribution(Array<Array<float>> &logSpectro
     chromaFlux = (chromaFlux / numFFTWindows) / logSpectrogram.size();
     
     // Normalise chroma distribution
-    float maxChroma = *std::max_element(mChromaDistribution,
-                                        mChromaDistribution
-                                        + NUM_CHROMA);
+    float maxChroma = *std::max_element(mChromaDistribution.begin(),
+                                        mChromaDistribution.end());
     
     for (int c = 0; c < NUM_CHROMA; c++)
     {
@@ -541,7 +509,7 @@ int SampleAnalyser::analyseSampleKey()
 {
     // Calculate STFT spectrum
     calculateSTFTSpectrum(keyFFTOrder, keyWindowLength, keyFFTHopLength, keyCompressionFactor);
-    std::memset(mSpectralDistribution, 0, sizeof(mSpectralDistribution));
+    std::memset(mSpectralDistribution.data(), 0, sizeof(mSpectralDistribution));
     
     // Calculate logarithmic spectrogram
     spectralSpread = 0.0;
@@ -549,9 +517,8 @@ int SampleAnalyser::analyseSampleKey()
     Array<Array<float>> logSpectrogram = calculateLogSpectrogram(coefficientSum);
     
     // Normalise spectral distribution
-    float maxSpectral = *std::max_element(mSpectralDistribution,
-                                          mSpectralDistribution
-                                          + NUM_SPECTRAL_BANDS);
+    float maxSpectral = *std::max_element(mSpectralDistribution.begin(),
+                                          mSpectralDistribution.end());
     float summedBands = 0.0;
     
     for (int b = 0; b < NUM_SPECTRAL_BANDS; b++)

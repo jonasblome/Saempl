@@ -35,8 +35,15 @@ void AboutPanel::paint(Graphics& g)
     g.setColour(style->COLOUR_ACCENT_MEDIUM);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), style->CORNER_SIZE_MEDIUM);
     
-    // Draw text
+    // Draw line
     g.setColour(style->COLOUR_ACCENT_DARK);
+    g.drawLine(style->PANEL_MARGIN,
+               40,
+               getWidth() - style->PANEL_MARGIN,
+               40);
+    
+    // Draw text
+    g.setColour(style->COLOUR_ACCENT_LIGHT);
     g.setFont(style->FONT_MEDIUM_BOLD);
     Rectangle<int> textBounds = getLocalBounds().reduced(style->PANEL_MARGIN);
     g.drawFittedText("Saempl - Sample Manager", textBounds.removeFromTop(30), Justification::topLeft, 1);
@@ -52,6 +59,6 @@ void AboutPanel::paint(Graphics& g)
                      + String("\n") + " - Hover over buttons and sliders to get explanations"
                      + String("\n") + " - Press Enter to load selected samples into the preview"
                      + String("\n") + " - Drag and drop samples into Favourites or into your DAW",
-                     textBounds.removeFromBottom(getHeight() - 30),
+                     textBounds.removeFromBottom(getHeight() - 60),
                      Justification::left, 10);
 }

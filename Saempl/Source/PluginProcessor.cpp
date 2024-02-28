@@ -30,7 +30,10 @@ SaemplAudioProcessor::SaemplAudioProcessor()
     mSampleItemPanelIsVisible = true;
     mFollowAudioPlayhead = false;
     mFilterIsActivated = true;
+    mFeatureWeightsChanged = true;
     mSampleGridZoomFactor = 0.0;
+    mFeatureWeights = std::vector<float>(NUM_FEATURES + 1);
+    std::fill(mFeatureWeights.begin(), mFeatureWeights.end(), 1.0);
 }
 
 SaemplAudioProcessor::~SaemplAudioProcessor()
@@ -141,32 +144,32 @@ bool SaemplAudioProcessor::isBusesLayoutSupported (BusesLayout const & layouts) 
 
 void SaemplAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
-    
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-    {
-        buffer.clear (i, 0, buffer.getNumSamples());
-    }
-    
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        // auto* channelData = buffer.getWritePointer (channel);
-        // ..do something to the data...
-    }
+//    juce::ScopedNoDenormals noDenormals;
+//    auto totalNumInputChannels  = getTotalNumInputChannels();
+//    auto totalNumOutputChannels = getTotalNumOutputChannels();
+//    
+//    // In case we have more outputs than inputs, this code clears any output
+//    // channels that didn't contain input data, (because these aren't
+//    // guaranteed to be empty - they may contain garbage).
+//    // This is here to avoid people getting screaming feedback
+//    // when they first compile a plugin, but obviously you don't need to keep
+//    // this code if your algorithm always overwrites all the output channels.
+//    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+//    {
+//        buffer.clear (i, 0, buffer.getNumSamples());
+//    }
+//    
+//    // This is the place where you'd normally do the guts of your plugin's
+//    // audio processing...
+//    // Make sure to reset the state if your inner loop is processing
+//    // the samples and the outer loop is handling the channels.
+//    // Alternatively, you can process the samples with the channels
+//    // interleaved by keeping the same state.
+//    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+//    {
+//        // auto* channelData = buffer.getWritePointer (channel);
+//        // ..do something to the data...
+//    }
 }
 
 //==============================================================================
@@ -197,6 +200,13 @@ void SaemplAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
     stateInfoBody->setAttribute("FollowAudioPlayhead", mFollowAudioPlayhead);
     stateInfoBody->setAttribute("SampleGridZoomFactor", mSampleGridZoomFactor);
     stateInfoBody->setAttribute("LastOpenedLibraryPath", mLastOpenedLibraryPath);
+    
+    // Storing feature weights
+    for (int fw = 0; fw < mFeatureWeights.size(); fw++)
+    {
+        String weightName = "FW" + std::to_string(fw);
+        stateInfoBody->setAttribute(weightName, mFeatureWeights[fw]);
+    }
     
     // Storing filter rules
     XmlElement* stateInfoFilter = new XmlElement("Blome_StateInfoFilter");
@@ -292,6 +302,14 @@ void SaemplAudioProcessor::setStateInformation(void const * data, int sizeInByte
             mFollowAudioPlayhead = stateInfoBody->getBoolAttribute("FollowAudioPlayhead");
             mSampleGridZoomFactor = stateInfoBody->getDoubleAttribute("SampleGridZoomFactor");
             mLastOpenedLibraryPath = stateInfoBody->getStringAttribute("LastOpenedLibraryPath");
+            
+            for (int fw = 0; fw < mFeatureWeights.size(); fw++)
+            {
+                String weightName = "FW" + std::to_string(fw);
+                mFeatureWeights[fw] = stateInfoBody->getDoubleAttribute(weightName);
+            }
+            
+            mFeatureWeightsChanged = true;
         }
         
         if (mLastOpenedLibraryPath == "")
@@ -361,11 +379,11 @@ void SaemplAudioProcessor::setStateInformation(void const * data, int sizeInByte
                 newRule->setIsActive(filterRule->getBoolAttribute("RuleIsActive"));
                 newRule->setCompareOperator(STRING_TO_COMPARE_OPERATORS[filterRule->getStringAttribute("CompareOperator")]);
             }
-            
-            if (mSampleLibrary->getFileFilter().canHaveEffect())
-            {
-                mSampleLibrary->refresh();
-            }
+        }
+        
+        if (mSampleLibrary->getFileFilter().canHaveEffect())
+        {
+            mSampleLibrary->refresh();
         }
         
         // Restoring favourite samples
@@ -475,4 +493,26 @@ float SaemplAudioProcessor::getSampleGridZoomFactor()
 void SaemplAudioProcessor::setSampleGridZoomFactor(float inZoomFactor)
 {
     mSampleGridZoomFactor = inZoomFactor;
+}
+
+std::vector<float> SaemplAudioProcessor::getFeatureWeights()
+{
+    return mFeatureWeights;
+}
+
+void SaemplAudioProcessor::setFeatureWeights(std::vector<float> inFeatureWeights)
+{
+    mFeatureWeights = inFeatureWeights;
+    mFeatureWeightsChanged = true;
+    mSampleLibrary->refresh();
+}
+
+bool SaemplAudioProcessor::getFeatureWeightsChanged()
+{
+    return mFeatureWeightsChanged;
+}
+
+void SaemplAudioProcessor::setFeatureWeightsChanged(bool inFeatureWeightsChanged)
+{
+    mFeatureWeightsChanged = inFeatureWeightsChanged;
 }

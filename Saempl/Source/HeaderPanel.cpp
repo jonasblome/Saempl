@@ -491,7 +491,7 @@ void HeaderPanel::setGainSlider()
     {
         centrePanel.setGain(mGainSlider->getValue());
     };
-    mGainSlider->setSkewFactor(0.5);
+    mGainSlider->setSkewFactor(0.7);
     mGainSlider->setTooltip("Sets the gain of the audio playback");
     addAndMakeVisible(*mGainSlider);
 }
@@ -499,10 +499,6 @@ void HeaderPanel::setGainSlider()
 void HeaderPanel::setShowAboutPanelButton()
 {
     mShowAboutPanelButton = std::make_unique<BlomeTransparentButton>("ShowAboutPanelButton");
-    mShowAboutPanelButton->setBounds(getWidth() - logoWidth - 20 - style->PANEL_MARGIN,
-                                     style->PANEL_MARGIN,
-                                     logoWidth,
-                                     getHeight() - style->PANEL_MARGIN * 1.75);
     mShowAboutPanelButton->setTooltip("Press to show the About section");
     mShowAboutPanelButton->onClick = [this]
     {
@@ -633,5 +629,13 @@ void HeaderPanel::resizePanelComponents()
                                style->PANEL_MARGIN,
                                sliderWidth,
                                getHeight() - style->PANEL_MARGIN * 1.75);
+    }
+    
+    if (mShowAboutPanelButton != nullptr)
+    {
+        mShowAboutPanelButton->setBounds(getWidth() - logoWidth - 20 - style->PANEL_MARGIN,
+                                         style->PANEL_MARGIN,
+                                         logoWidth,
+                                         getHeight() - style->PANEL_MARGIN * 1.75);
     }
 }

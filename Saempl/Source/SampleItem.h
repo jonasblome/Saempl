@@ -43,33 +43,113 @@ public:
     /**
      @returns the sample's length in seconds.
      */
-    double getLength() const;
+    float getLength() const;
     /**
      Sets the length of the sample item in seconds.
      
      @param inLength the length to set.
      */
-    void setLength(double inLength);
+    void setLength(float inLength);
     /**
      @returns the sample's loudness in dB.
      */
-    double getLoudnessDecibel() const;
+    float getLoudnessDecibel() const;
     /**
      Sets the loudness of the sample item in dB.
      
-     @param inLoudness the loudness to set.
+     @param inDecibel the loudness to set.
      */
-    void setLoudnessDecibel(double inDB);
+    void setLoudnessDecibel(float inDecibel);
     /**
      @returns the sample's loudness in LUFS.
      */
-    double getLoudnessLUFS() const;
+    float getLoudnessLUFS() const;
     /**
      Sets the loudness of the sample item in LUFS.
      
-     @param inLoudness the loudness to set.
+     @param inLUFS the loudness to set.
      */
-    void setLoudnessLUFS(double inLUFS);
+    void setLoudnessLUFS(float inLUFS);
+    /**
+     @returns the sample's loudness range start in LUFS.
+     */
+    float getLoudnessLUFSStart() const;
+    /**
+     Sets the loudness range start of the sample item in LUFS.
+     
+     @param inLUFSStart the loudness to set.
+     */
+    void setLoudnessLUFSStart(float inLUFSStart);
+    /**
+     @returns the sample's loudness range end in LUFS.
+     */
+    float getLoudnessLUFSEnd() const;
+    /**
+     Sets the loudness range end of the sample item in LUFS.
+     
+     @param inLUFSEnd the loudness to set.
+     */
+    void setLoudnessLUFSEnd(float inLUFSEnd);
+    /**
+     @returns the sample's zero crossing rate.
+     */
+    float getZeroCrossingRate() const;
+    /**
+     Sets the zero crossing rate of the sample.
+     
+     @param inRate the loudness to set.
+     */
+    void setZeroCrossingRate(float inRate);
+    /**
+     @returns the sample's spectral centroid.
+     */
+    float getSpectralCentroid() const;
+    /**
+     Sets the spectral centroid of the sample.
+     
+     @param inSpectralCentroid the spectral centroid to set.
+     */
+    void setSpectralCentroid(float inSpectralCentroid);
+    /**
+     @returns the sample's spectral spread.
+     */
+    float getSpectralSpread() const;
+    /**
+     Sets the spectral spread of the sample.
+     
+     @param inSpectralSpread the spectral spread to set.
+     */
+    void setSpectralSpread(float inSpectralSpread);
+    /**
+     @returns the sample's spectral rolloff.
+     */
+    float getSpectralRolloff() const;
+    /**
+     Sets the spectral rolloff of the sample.
+     
+     @param inRolloff the rolloff to set.
+     */
+    void setSpectralRolloff(float inRolloff);
+    /**
+     @returns the sample's spectral flux.
+     */
+    float getSpectralFlux() const;
+    /**
+     Sets the spectral flux of the sample.
+     
+     @param inSpectralFlux the spectral flux to set.
+     */
+    void setSpectralFlux(float inSpectralFlux);
+    /**
+     @returns the sample's chroma flux.
+     */
+    float getChromaFlux() const;
+    /**
+     Sets the chroma flux of the sample.
+     
+     @param inChromaFlux the chroma flux to set.
+     */
+    void setChromaFlux(float inChromaFlux);
     /**
      @returns the sample's tempo in bpm.
      */
@@ -91,6 +171,26 @@ public:
      */
     void setKey(int inKey);
     /**
+     @returns the sample's spectral distribution.
+     */
+    std::vector<float> getSpectralDistribution() const;
+    /**
+     Sets the spectral distribution of the sample item.
+     
+     @param inSpectralDistribution the distribution to set.
+     */
+    void setSpectralDistribution(std::vector<float> inSpectralDistribution);
+    /**
+     @returns the sample's chromaDistribution.
+     */
+    std::vector<float> getChromaDistribution() const;
+    /**
+     Sets the chroma distribution of the sample item.
+     
+     @param inChromaDistribution the vector to set.
+     */
+    void setChromaDistribution(std::vector<float> inChromaDistribution);
+    /**
      @returns the sample's feature vector.
      */
     std::vector<float> getFeatureVector() const;
@@ -104,11 +204,21 @@ public:
 private:
     String mFilePath;
     String mTitle;
-    double mLength;
-    double mLoudnessDecibel;
-    double mLoudnessLUFS;
+    float mLength;
+    float mLoudnessDecibel;
+    float mLoudnessLUFS;
+    float mLoudnessLUFSStart;
+    float mLoudnessLUFSEnd;
+    float mZeroCrossingRate;
+    float mSpectralCentroid;
+    float mSpectralSpread;
+    float mSpectralRolloff;
+    float mSpectralFlux;
+    float mChromaFlux;
     int mTempo;
     int mKey;
+    std::vector<float> mSpectralDistribution;
+    std::vector<float> mChromaDistribution;
     std::vector<float> mFeatureVector;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleItem);

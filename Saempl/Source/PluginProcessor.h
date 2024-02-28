@@ -140,6 +140,26 @@ public:
      @param inZoomFactor the zoom factor of the grid panel's zoom slider.
      */
     void setSampleGridZoomFactor(float inZoomFactor);
+    /**
+     @returns the feature weights for the grid clusterer.
+     */
+    std::vector<float> getFeatureWeights();
+    /**
+     Sets the feature weights for the grid clusterer.
+     
+     @param inFeatureWeights the feature weights.
+     */
+    void setFeatureWeights(std::vector<float> inFeatureWeights);
+    /**
+     @returns the whether the feature weights changed since the last clustering.
+     */
+    bool getFeatureWeightsChanged();
+    /**
+     Sets whether the feature weights changed since the last clustering.
+     
+     @param inFeatureWeightsChanged whether the feature weights changed since the last clustering.
+     */
+    void setFeatureWeightsChanged(bool inFeatureWeightsChanged);
     
 private:
     //==============================================================================
@@ -161,5 +181,7 @@ private:
     bool mSampleItemPanelIsVisible;
     bool mFollowAudioPlayhead;
     bool mFilterIsActivated;
+    bool mFeatureWeightsChanged;
     float mSampleGridZoomFactor;
+    std::vector<float> mFeatureWeights;
 };

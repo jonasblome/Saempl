@@ -62,7 +62,7 @@ void SampleGridPanel::paint(Graphics& g)
                            .removeFromTop(style->PANEL_TITLE_HEIGHT)
                            .withTrimmedLeft(style->PANEL_MARGIN)
                            .withTrimmedTop(style->PANEL_MARGIN * 0.75)
-                           .withTrimmedRight(style->PANEL_MARGIN * 0.75)
+                           .withTrimmedRight(style->PANEL_MARGIN * 0.25 + style->PANEL_TITLE_HEIGHT)
                            .withTrimmedBottom(style->PANEL_MARGIN * 0.25)
                            .toFloat(),
                            style->CORNER_SIZE_MEDIUM);
@@ -73,7 +73,7 @@ void SampleGridPanel::paint(Graphics& g)
                      + " - " + std::to_string(sampleLibrary.getSampleItems(FILTERED_SAMPLES).size()) + " Samples",
                      style->PANEL_MARGIN * 1.5,
                      0,
-                     getWidth() - style->PANEL_MARGIN * 3,
+                     getWidth() - style->PANEL_MARGIN * 4 - style->PANEL_TITLE_HEIGHT,
                      style->PANEL_TITLE_HEIGHT,
                      Justification::centred,
                      1);
@@ -81,7 +81,7 @@ void SampleGridPanel::paint(Graphics& g)
 
 void SampleGridPanel::setPanelComponents()
 {
-    mSampleGrid = std::make_unique<BlomeSampleGridView>(sampleLibrary, sampleItemPanel, audioPlayer);
+    mSampleGrid = std::make_unique<BlomeSampleGridView>(currentProcessor, sampleItemPanel, audioPlayer);
     mSampleGrid->setZoomFactor(currentProcessor.getSampleGridZoomFactor());
     
     if (sampleLibrary.getLibraryWasLoaded())
@@ -93,6 +93,28 @@ void SampleGridPanel::setPanelComponents()
             mSampleGrid->clusterGrid();
         }
     }
+    
+    mChangeGridClusteringOptionsButton = std::make_unique<BlomeImageButton>("ChangeClusteringOptionsButton", true);
+    mChangeGridClusteringOptionsButton->setImages(false,
+                                                  true,
+                                                  true,
+                                                  ImageCache::getFromMemory(BinaryData::settings_FILL0_wght400_GRAD0_opsz24_png,
+                                                                            BinaryData::settings_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                                  style->BUTTON_IS_DEFAULT_ALPHA,
+                                                  style->COLOUR_SYMBOL_BUTTON,
+                                                  Image(),
+                                                  style->BUTTON_IS_OVER_ALPHA,
+                                                  style->COLOUR_SYMBOL_BUTTON,
+                                                  Image(),
+                                                  style->BUTTON_IS_DOWN_ALPHA,
+                                                  style->COLOUR_SYMBOL_BUTTON);
+    mChangeGridClusteringOptionsButton->setTooltip("Change the clustering options here");
+    mChangeGridClusteringOptionsButton->onClick = [this]
+    {
+        std::unique_ptr<SampleGridOptionsPanel> optionsPanel = std::make_unique<SampleGridOptionsPanel>(currentProcessor);
+        CallOutBox::launchAsynchronously(std::move(optionsPanel), mChangeGridClusteringOptionsButton->getScreenBounds(), nullptr);
+    };
+    addAndMakeVisible(*mChangeGridClusteringOptionsButton);
     
     // Add zoom slider
     int sliderWidth = 150;
@@ -133,7 +155,6 @@ void SampleGridPanel::setPanelComponents()
         viewPosition.addXY(-mGridViewport->getWidth() * 1.0 / 2, -mGridViewport->getHeight() * 1.0 / 2);
         mGridViewport->setViewPosition(viewPosition.roundToInt());
     };
-    mZoomSlider->setSkewFactor(0.8);
     mZoomSlider->setTooltip("Scales the size of the grid tiles");
     addAndMakeVisible(*mZoomSlider);
     
@@ -154,6 +175,14 @@ void SampleGridPanel::resizePanelComponents()
                                  style->PANEL_TITLE_HEIGHT * 1.5 + style->PANEL_MARGIN * 0.75,
                                  getWidth() - style->PANEL_MARGIN * 1.75,
                                  getHeight() - style->PANEL_TITLE_HEIGHT * 1.5 - style->PANEL_MARGIN * 1.5);
+    }
+    
+    if (mChangeGridClusteringOptionsButton != nullptr)
+    {
+        mChangeGridClusteringOptionsButton->setBounds(getWidth() - style->PANEL_TITLE_HEIGHT + style->PANEL_MARGIN * 0.25,
+                                                      style->PANEL_MARGIN * 0.75,
+                                                      style->PANEL_TITLE_HEIGHT - style->PANEL_MARGIN,
+                                                      style->PANEL_TITLE_HEIGHT - style->PANEL_MARGIN);
     }
 }
 

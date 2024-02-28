@@ -9,11 +9,12 @@
 
 #include "BlomeSampleGridView.h"
 
-BlomeSampleGridView::BlomeSampleGridView(SampleLibrary& inSampleLibrary,
+BlomeSampleGridView::BlomeSampleGridView(SaemplAudioProcessor& inProcessor,
                                          SampleItemPanel& inSampleItemPanel,
                                          AudioPlayer& inAudioPlayer)
 :
-sampleLibrary(inSampleLibrary),
+currentProcessor(inProcessor),
+sampleLibrary(inProcessor.getSampleLibrary()),
 audioPlayer(inAudioPlayer),
 sampleItemPanel(inSampleItemPanel)
 {
@@ -90,6 +91,12 @@ void BlomeSampleGridView::clusterGrid()
     // Cluster sample item tiles with Fast Linear Assignment Sorting (FLAS)
     if (sampleItems.size() > 3)
     {
+        if (currentProcessor.getFeatureWeightsChanged())
+        {
+            mGridClusterer->setFeatureWeights(currentProcessor.getFeatureWeights());
+            currentProcessor.setFeatureWeightsChanged(false);
+        }
+        
         mGridClusterer->applyClustering(optimalHeight, optimalWidth, false);
     }
     else

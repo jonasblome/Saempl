@@ -9,6 +9,8 @@
               pluginCharacteristicsValue="pluginEditorRequiresKeys">
   <MAINGROUP id="Ryuu1q" name="Saempl">
     <GROUP id="{F65A6678-A68F-58F1-A4D6-F2BF2D42BA2E}" name="Assets">
+      <FILE id="gpkHSp" name="settings_FILL0_wght400_GRAD0_opsz24.png" compile="0"
+            resource="1" file="Assets/settings_FILL0_wght400_GRAD0_opsz24.png"/>
       <FILE id="x5lZ5t" name="grid_view_FILL0_wght400_GRAD0_opsz24.png" compile="0"
             resource="1" file="Assets/grid_view_FILL0_wght400_GRAD0_opsz24.png"/>
       <FILE id="YPJJ65" name="volume_up_FILL0_wght400_GRAD0_opsz24.png" compile="0"
@@ -131,6 +133,10 @@
             file="Source/SampleGridPanel.cpp"/>
       <FILE id="OHq0aB" name="SampleGridPanel.h" compile="0" resource="0"
             file="Source/SampleGridPanel.h"/>
+      <FILE id="mSvVs6" name="SampleGridOptionsPanel.cpp" compile="1" resource="0"
+            file="Source/SampleGridOptionsPanel.cpp"/>
+      <FILE id="q4emDe" name="SampleGridOptionsPanel.h" compile="0" resource="0"
+            file="Source/SampleGridOptionsPanel.h"/>
       <FILE id="VcRINU" name="SampleFavouritesPanel.cpp" compile="1" resource="0"
             file="Source/SampleFavouritesPanel.cpp"/>
       <FILE id="aFYuVk" name="SampleFavouritesPanel.h" compile="0" resource="0"

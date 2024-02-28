@@ -9,7 +9,7 @@
  by Kai Barthel, Nico Hezel, Klaus Jung, and Konstantin Schall.
  @HTW Berlin, Visual Computing Group, Germany
  https://visual-computing.com/
- The code was written by Nico Hezel, Konstantin Schall and Kai Barthel.
+ The code was originally written by Nico Hezel, Konstantin Schall and Kai Barthel.
  
  ==============================================================================
  */
@@ -37,6 +37,12 @@ void SampleGridClusterer::applyClustering(int inRows, int inColumns, bool doWrap
     launchThread();
 }
 
+void SampleGridClusterer::setFeatureWeights(std::vector<float> inFeatureWeights)
+{
+    mFeatureWeights = inFeatureWeights;
+    featureWeightsChanged = true;
+}
+
 void SampleGridClusterer::run()
 {
     setProgress(0.0);
@@ -48,6 +54,44 @@ void SampleGridClusterer::run()
     std::shuffle(sampleItems.getRawDataPointer(),
                  sampleItems.getRawDataPointer() + sampleItems.size(),
                  std::default_random_engine(seed));
+    
+    // Copy weighted features to feature vectors
+    if (featureWeightsChanged)
+    {
+        for (SampleItem* sample : sampleItems)
+        {
+            std::vector<float> featureVector = std::vector<float>(NUM_FEATURES + NUM_SPECTRAL_BANDS + NUM_CHROMA);
+            
+            featureVector[0] = sample->getLength() / 60 * mFeatureWeights[0];
+            featureVector[1] = (sample->getLoudnessLUFS() + 300) / (3 + 300) * mFeatureWeights[1];
+            featureVector[2] = sample->getLoudnessLUFSStart() * mFeatureWeights[2];
+            featureVector[3] = sample->getLoudnessLUFSEnd() * mFeatureWeights[2];
+            featureVector[4] = sample->getZeroCrossingRate() * mFeatureWeights[3];
+            featureVector[5] = (sample->getTempo() + LOWER_BPM_LIMIT) / (UPPER_BPM_LIMIT - LOWER_BPM_LIMIT) * mFeatureWeights[4];
+            featureVector[6] = sample->getKey() * 1.0 / NUM_CHROMA * mFeatureWeights[5];
+            featureVector[7] = sample->getSpectralCentroid() * mFeatureWeights[6];
+            featureVector[8] = sample->getSpectralSpread() * mFeatureWeights[7];
+            featureVector[9] = sample->getSpectralRolloff() * mFeatureWeights[8];
+            featureVector[10] = sample->getSpectralFlux() * mFeatureWeights[9];
+            featureVector[11] = sample->getChromaFlux() * mFeatureWeights[10];
+            
+            std::vector<float> spectralDistribution = sample->getSpectralDistribution();
+            for (int sb = 0; sb < NUM_SPECTRAL_BANDS; sb++)
+            {
+                featureVector[NUM_FEATURES + sb] = spectralDistribution[sb] * mFeatureWeights[11];
+            }
+            
+            std::vector<float> chromaDistribution = sample->getChromaDistribution();
+            for (int c = 0; c < NUM_CHROMA; c++)
+            {
+                featureVector[NUM_FEATURES + NUM_SPECTRAL_BANDS + c] = chromaDistribution[c] * mFeatureWeights[12];
+            }
+            
+            sample->setFeatureVector(featureVector);
+        }
+        
+        featureWeightsChanged = false;
+    }
     
     // Initialise arrays
     Array<std::vector<float>> grid;
@@ -64,10 +108,10 @@ void SampleGridClusterer::run()
     {
         swappedElements.add(sampleItems.getUnchecked(s));
     }
-    featureVectors.resize(numSwapPositions);
-    gridFeatureVectors.resize(numSwapPositions);
-    distanceMatrixNormalised.resize(numSwapPositions);
-    distanceMatrix.resize(numSwapPositions);
+    mFeatureVectors.resize(numSwapPositions);
+    mGridVectors.resize(numSwapPositions);
+    mDistanceMatrixNormalised.resize(numSwapPositions);
+    mDistanceMatrix.resize(numSwapPositions);
     
     float rad = jmax<int>(columns, rows) * initialRadiusFactor;
     int numRadiusReductions = log(endRadius / rad) / log(radiusDecay);
@@ -820,21 +864,21 @@ void SampleGridClusterer::doSwaps(Array<int>& swapPositions,
         // Handle holes
         if (swappedElement->getFilePath() != EMPTY_TILE_PATH)
         {
-            featureVectors.set(s, swappedElement->getFeatureVector());
+            mFeatureVectors.set(s, swappedElement->getFeatureVector());
             numValid++;
         }
         else
         {
             // Hole
-            featureVectors.set(s, grid.getReference(swapPosition));
+            mFeatureVectors.set(s, grid.getReference(swapPosition));
         }
         
-        gridFeatureVectors.set(s, grid.getReference(swapPosition));
+        mGridVectors.set(s, grid.getReference(swapPosition));
     }
     
     if (numValid > 0)
     {
-        Array<Array<int>> distanceMatrix = calculateNormalisedDistanceMatrix(featureVectors, gridFeatureVectors, numSwapPositions);
+        Array<Array<int>> distanceMatrix = calculateNormalisedDistanceMatrix(mFeatureVectors, mGridVectors, numSwapPositions);
         Array<int> optimalPermutation = computeAssignment(distanceMatrix, numSwapPositions);
         
         for (int s = 0; s < numSwapPositions; s++)
@@ -856,8 +900,8 @@ Array<Array<int>> SampleGridClusterer::calculateNormalisedDistanceMatrix(Array<s
         for (int j = 0; j < inSize; j++)
         {
             float currentDistance = calculateDistance(inFeatureVectors.getReference(i), inGridVectors.getReference(j));
-            distanceMatrix.getReference(i).set(j, currentDistance);
-            distanceMatrixNormalised.getReference(i).set(j, 0);
+            mDistanceMatrix.getReference(i).set(j, currentDistance);
+            mDistanceMatrixNormalised.getReference(i).set(j, 0);
             
             if (currentDistance > maxDistance)
             {
@@ -868,7 +912,7 @@ Array<Array<int>> SampleGridClusterer::calculateNormalisedDistanceMatrix(Array<s
     
     if (maxDistance == 0)
     {
-        return distanceMatrixNormalised;
+        return mDistanceMatrixNormalised;
     }
     
     // Set normalised and quantised distances for the current swap area
@@ -876,14 +920,14 @@ Array<Array<int>> SampleGridClusterer::calculateNormalisedDistanceMatrix(Array<s
     {
         for (int j = 0; j < inSize; j++)
         {
-            distanceMatrixNormalised.getReference(i).set(j, (int) (QUANT
-                                                                   * distanceMatrix.getReference(i).getReference(j)
+            mDistanceMatrixNormalised.getReference(i).set(j, (int) (QUANT
+                                                                   * mDistanceMatrix.getReference(i).getReference(j)
                                                                    / maxDistance
                                                                    + 0.5));
         }
     }
     
-    return distanceMatrixNormalised;
+    return mDistanceMatrixNormalised;
 }
 
 float SampleGridClusterer::calculateDistance(std::vector<float> vector1, std::vector<float> vector2)

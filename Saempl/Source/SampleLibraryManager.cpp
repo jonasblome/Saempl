@@ -31,57 +31,6 @@ SampleLibraryManager::~SampleLibraryManager()
     
 }
 
-void SampleLibraryManager::writeSampleItemToXml(SampleItem *sampleItem, XmlElement *sampleItemXml)
-{
-    sampleItemXml->setAttribute("FilePath", sampleItem->getFilePath());
-    
-    // Adding sample properties xml to sample item xml
-    XmlElement* samplePropertiesXml = new XmlElement("SampleProperties");
-    
-    // Adding title property
-    XmlElement* samplePropertyXml = new XmlElement(PROPERTY_NAMES[0]);
-    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getTitle());
-    samplePropertiesXml->prependChildElement(samplePropertyXml);
-    
-    // Adding length property
-    samplePropertyXml = new XmlElement(PROPERTY_NAMES[1]);
-    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLength());
-    samplePropertiesXml->prependChildElement(samplePropertyXml);
-    
-    // Adding decibel loudness property
-    samplePropertyXml = new XmlElement(PROPERTY_NAMES[2]);
-    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLoudnessDecibel());
-    samplePropertiesXml->prependChildElement(samplePropertyXml);
-    
-    // Adding LUFS loudness property
-    samplePropertyXml = new XmlElement(PROPERTY_NAMES[3]);
-    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLoudnessLUFS());
-    samplePropertiesXml->prependChildElement(samplePropertyXml);
-    
-    // Adding tempo property
-    samplePropertyXml = new XmlElement(PROPERTY_NAMES[4]);
-    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getTempo());
-    samplePropertiesXml->prependChildElement(samplePropertyXml);
-    
-    // Adding key property
-    samplePropertyXml = new XmlElement(PROPERTY_NAMES[5]);
-    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getKey());
-    samplePropertiesXml->prependChildElement(samplePropertyXml);
-    
-    // Adding feature vector
-    std::vector<float> featureVector = sampleItem->getFeatureVector();
-    
-    for (int d = 0; d < featureVector.size(); d++)
-    {
-        String childName = "FV" + std::to_string(d);
-        samplePropertyXml = new XmlElement(childName);
-        samplePropertyXml->setAttribute("PropertyValue", featureVector[d]);
-        samplePropertiesXml->prependChildElement(samplePropertyXml);
-    }
-    
-    sampleItemXml->prependChildElement(samplePropertiesXml);
-}
-
 void SampleLibraryManager::updateSampleLibraryFile()
 {
     for (int i = 0; i < addedFilePaths.size() - 1; ++i)
@@ -405,6 +354,104 @@ void SampleLibraryManager::loadSampleLibrary(File const & inLibraryDirectory)
     synchWithLibraryDirectory();
 }
 
+void SampleLibraryManager::writeSampleItemToXml(SampleItem *sampleItem, XmlElement *sampleItemXml)
+{
+    sampleItemXml->setAttribute("FilePath", sampleItem->getFilePath());
+    
+    // Adding sample properties xml to sample item xml
+    XmlElement* samplePropertiesXml = new XmlElement("SampleProperties");
+    
+    // Adding title property
+    XmlElement* samplePropertyXml = new XmlElement(PROPERTY_NAMES[0]);
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getTitle());
+    samplePropertiesXml->prependChildElement(samplePropertyXml);
+    
+    // Adding length property
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[1]);
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLength());
+    samplePropertiesXml->prependChildElement(samplePropertyXml);
+    
+    // Adding decibel loudness property
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[2]);
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLoudnessDecibel());
+    samplePropertiesXml->prependChildElement(samplePropertyXml);
+    
+    // Adding LUFS loudness property
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[3]);
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLoudnessLUFS());
+    samplePropertiesXml->prependChildElement(samplePropertyXml);
+    
+    // Adding tempo property
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[4]);
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getTempo());
+    samplePropertiesXml->prependChildElement(samplePropertyXml);
+    
+    // Adding key property
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[5]);
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getKey());
+    samplePropertiesXml->prependChildElement(samplePropertyXml);
+    
+    // Adding LUFS range start property
+    samplePropertyXml = new XmlElement("LUFSStart");
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLoudnessLUFSStart());
+    samplePropertiesXml->prependChildElement(samplePropertyXml);
+    
+    // Adding LUFS range end property
+    samplePropertyXml = new XmlElement("LUFSEnd");
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLoudnessLUFSEnd());
+    samplePropertiesXml->prependChildElement(samplePropertyXml);
+    
+    // Adding Zero Crossing Rate property
+    samplePropertyXml = new XmlElement("ZCR");
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getZeroCrossingRate());
+    samplePropertiesXml->prependChildElement(samplePropertyXml);
+    
+    // Adding spectral centroid property
+    samplePropertyXml = new XmlElement("Centroid");
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getSpectralCentroid());
+    samplePropertiesXml->prependChildElement(samplePropertyXml);
+    
+    // Adding spectral spread property
+    samplePropertyXml = new XmlElement("Spread");
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getSpectralSpread());
+    samplePropertiesXml->prependChildElement(samplePropertyXml);
+    
+    // Adding spectral rolloff property
+    samplePropertyXml = new XmlElement("Rolloff");
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getSpectralRolloff());
+    samplePropertiesXml->prependChildElement(samplePropertyXml);
+    
+    // Adding spectral flux property
+    samplePropertyXml = new XmlElement("SpectralFlux");
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getSpectralFlux());
+    samplePropertiesXml->prependChildElement(samplePropertyXml);
+    
+    // Adding chroma flux property
+    samplePropertyXml = new XmlElement("ChromaFlux");
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getChromaFlux());
+    samplePropertiesXml->prependChildElement(samplePropertyXml);
+    
+    // Adding feature vector
+    std::vector<float> spectralDistribution = sampleItem->getSpectralDistribution();
+    
+    for (int d = 0; d < spectralDistribution.size(); d++)
+    {
+        String childName = "SB" + std::to_string(d);
+        samplePropertiesXml->setAttribute(childName, spectralDistribution[d]);
+    }
+    
+    // Adding feature vector
+    std::vector<float> chromaDistribution = sampleItem->getChromaDistribution();
+    
+    for (int d = 0; d < chromaDistribution.size(); d++)
+    {
+        String childName = "CH" + std::to_string(d);
+        samplePropertiesXml->setAttribute(childName, chromaDistribution[d]);
+    }
+    
+    sampleItemXml->prependChildElement(samplePropertiesXml);
+}
+
 void SampleLibraryManager::createSampleItemFromXml(const XmlElement * sampleItemXml)
 {
     String filePath = sampleItemXml->getStringAttribute("FilePath");
@@ -456,18 +503,67 @@ void SampleLibraryManager::createSampleItemFromXml(const XmlElement * sampleItem
 //        evaluateKeyDetection(key, title);
 //    }
     
-    // Adding feature vector to item
-    int numDimensions = NUM_CHROMA + NUM_FEATURES + NUM_SPECTRAL_BANDS;
-    std::vector<float> featureVector(numDimensions);
+    // Adding LUFS Start to item
+    samplePropertyXml = samplePropertiesXml->getChildByName("LUFSStart");
+    float lufsStart = samplePropertyXml->getDoubleAttribute("PropertyValue");
+    sampleItem->setLoudnessLUFSStart(lufsStart);
     
-    for (int d = 0; d < numDimensions; d++)
+    // Adding LUFS End to item
+    samplePropertyXml = samplePropertiesXml->getChildByName("LUFSEnd");
+    float lufsEnd = samplePropertyXml->getDoubleAttribute("PropertyValue");
+    sampleItem->setLoudnessLUFSStart(lufsEnd);
+    
+    // Adding Zero Crossing Rate to item
+    samplePropertyXml = samplePropertiesXml->getChildByName("ZCR");
+    float zcr = samplePropertyXml->getDoubleAttribute("PropertyValue");
+    sampleItem->setLoudnessLUFSStart(zcr);
+    
+    // Adding spectral centroid to item
+    samplePropertyXml = samplePropertiesXml->getChildByName("Centroid");
+    float centroid = samplePropertyXml->getDoubleAttribute("PropertyValue");
+    sampleItem->setLoudnessLUFSStart(centroid);
+    
+    // Adding spectral spread to item
+    samplePropertyXml = samplePropertiesXml->getChildByName("Spread");
+    float spread = samplePropertyXml->getDoubleAttribute("PropertyValue");
+    sampleItem->setLoudnessLUFSStart(spread);
+    
+    // Adding spectral rolloff to item
+    samplePropertyXml = samplePropertiesXml->getChildByName("Rolloff");
+    float rolloff = samplePropertyXml->getDoubleAttribute("PropertyValue");
+    sampleItem->setLoudnessLUFSStart(rolloff);
+    
+    // Adding spectral flux to item
+    samplePropertyXml = samplePropertiesXml->getChildByName("SpectralFlux");
+    float spectralFlux = samplePropertyXml->getDoubleAttribute("PropertyValue");
+    sampleItem->setLoudnessLUFSStart(spectralFlux);
+    
+    // Adding chroma flux to item
+    samplePropertyXml = samplePropertiesXml->getChildByName("ChromaFlux");
+    float chromaFlux = samplePropertyXml->getDoubleAttribute("PropertyValue");
+    sampleItem->setLoudnessLUFSStart(chromaFlux);
+    
+    // Adding spectral distribution to item
+    std::vector<float> spectralDistribution(NUM_SPECTRAL_BANDS);
+    
+    for (int sb = 0; sb < NUM_SPECTRAL_BANDS; sb++)
     {
-        String childName = "FV" + std::to_string(d);
-        samplePropertyXml = samplePropertiesXml->getChildByName(childName);
-        featureVector[d] = samplePropertyXml->getDoubleAttribute("PropertyValue");
+        String attributeName = "SB" + std::to_string(sb);
+        spectralDistribution[sb] = samplePropertyXml->getDoubleAttribute(attributeName);
     }
     
-    sampleItem->setFeatureVector(featureVector);
+    sampleItem->setSpectralDistribution(spectralDistribution);
+    
+    // Adding spectral distribution to item
+    std::vector<float> chromaDistribution(NUM_CHROMA);
+    
+    for (int sb = 0; sb < NUM_CHROMA; sb++)
+    {
+        String attributeName = "CH" + std::to_string(sb);
+        chromaDistribution[sb] = samplePropertiesXml->getDoubleAttribute(attributeName);
+    }
+    
+    sampleItem->setChromaDistribution(chromaDistribution);
 }
 
 void SampleLibraryManager::loadSampleLibraryFile(File const & inLibraryDirectory)
@@ -599,7 +695,7 @@ String SampleLibraryManager::encodeForXml(String inString)
     std::string buffer;
     buffer.reserve(data.size());
     
-    for(size_t pos = 0; pos != data.size(); ++pos)
+    for (size_t pos = 0; pos != data.size(); ++pos)
     {
         switch(data[pos]) {
             case '&':  buffer.append("_"); break;

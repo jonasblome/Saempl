@@ -43,7 +43,7 @@ AudioFormatManager& AudioPlayer::getFormatManager()
 
 void AudioPlayer::startOrStop()
 {
-    if(mTransportSource->isPlaying())
+    if (mTransportSource->isPlaying())
     {
         mTransportSource->stop();
     }
