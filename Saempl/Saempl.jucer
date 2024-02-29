@@ -1,269 +1,243 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="HebHQS" name="Saempl" projectType="audioplug" jucerFormatVersion="1"
-              companyName="Blome" pluginAAXCategory="0" pluginVSTCategory="kPlugCategUnknown"
-              companyEmail="jonas.blome@gmx.de" pluginManufacturerCode="Blom"
-              pluginManufacturer="Blome" pluginDesc="Advanced Sample Library Manager"
-              pluginName="Saempl" pluginCode="Smpl" version="1.0.0" companyWebsite="https://github.com/jonasblome"
-              pluginFormats="buildAU,buildStandalone,buildVST3" displaySplashScreen="1"
-              pluginCharacteristicsValue="pluginEditorRequiresKeys">
-  <MAINGROUP id="Ryuu1q" name="Saempl">
-    <GROUP id="{F65A6678-A68F-58F1-A4D6-F2BF2D42BA2E}" name="Assets">
-      <FILE id="gpkHSp" name="settings_FILL0_wght400_GRAD0_opsz24.png" compile="0"
-            resource="1" file="Assets/settings_FILL0_wght400_GRAD0_opsz24.png"/>
-      <FILE id="x5lZ5t" name="grid_view_FILL0_wght400_GRAD0_opsz24.png" compile="0"
-            resource="1" file="Assets/grid_view_FILL0_wght400_GRAD0_opsz24.png"/>
-      <FILE id="YPJJ65" name="volume_up_FILL0_wght400_GRAD0_opsz24.png" compile="0"
-            resource="1" file="Assets/volume_up_FILL0_wght400_GRAD0_opsz24.png"/>
-      <FILE id="MfdNxs" name="ifl_FILL0_wght400_GRAD0_opsz24.png" compile="0"
-            resource="1" file="Assets/ifl_FILL0_wght400_GRAD0_opsz24.png"/>
-      <FILE id="ljBuyf" name="power_settings_new_FILL0_wght400_GRAD0_opsz24.png"
-            compile="0" resource="1" file="Assets/power_settings_new_FILL0_wght400_GRAD0_opsz24.png"/>
-      <FILE id="STqKCu" name="trending_flat_FILL0_wght400_GRAD0_opsz24.png"
-            compile="0" resource="1" file="Assets/trending_flat_FILL0_wght400_GRAD0_opsz24.png"/>
-      <FILE id="SQi3a7" name="play_pause_FILL0_wght400_GRAD0_opsz24.png"
-            compile="0" resource="1" file="Assets/play_pause_FILL0_wght400_GRAD0_opsz24.png"/>
-      <FILE id="fBO2zf" name="add_FILL0_wght400_GRAD0_opsz24.png" compile="0"
+<JUCERPROJECT id="Tks1Bh" name="Saempl" projectType="audioplug" displaySplashScreen="1"
+              jucerFormatVersion="1" version="1.0.0" companyName="Blome Audio"
+              companyWebsite="https://github.com/jonasblome" companyEmail="jonas.blome@gmx.de"
+              pluginFormats="buildAU,buildStandalone,buildVST3" pluginCharacteristicsValue="pluginEditorRequiresKeys"
+              pluginName="Saempl" pluginDesc="Advanced Sample Library Manager"
+              pluginManufacturer="Blome Audio" pluginManufacturerCode="BLAU"
+              pluginCode="SMPL" pluginAUMainType="'aufx'" pluginVSTCategory="kPlugCategUnknown"
+              pluginAAXCategory="0" pluginVST3Category="Fx">
+  <MAINGROUP id="JMwE9c" name="Saempl">
+    <GROUP id="{6E68DDAE-FD9F-D11F-3AF2-27F37B7DD7C7}" name="Assets">
+      <FILE id="lQh5UE" name="add_FILL0_wght400_GRAD0_opsz24.png" compile="0"
             resource="1" file="Assets/add_FILL0_wght400_GRAD0_opsz24.png"/>
-      <FILE id="enEvFV" name="delete_FILL0_wght400_GRAD0_opsz24.png" compile="0"
+      <FILE id="gGbjtY" name="delete_FILL0_wght400_GRAD0_opsz24.png" compile="0"
             resource="1" file="Assets/delete_FILL0_wght400_GRAD0_opsz24.png"/>
-      <FILE id="YMDB6m" name="filter_alt_FILL0_wght400_GRAD0_opsz24.png"
+      <FILE id="hgeZAR" name="filter_alt_FILL0_wght400_GRAD0_opsz24.png"
             compile="0" resource="1" file="Assets/filter_alt_FILL0_wght400_GRAD0_opsz24.png"/>
-      <FILE id="OJNPSd" name="filter_alt_off_FILL0_wght400_GRAD0_opsz24.png"
+      <FILE id="pSG7oF" name="filter_alt_off_FILL0_wght400_GRAD0_opsz24.png"
             compile="0" resource="1" file="Assets/filter_alt_off_FILL0_wght400_GRAD0_opsz24.png"/>
-      <FILE id="RxQwLv" name="folder_open_FILL0_wght400_GRAD0_opsz24.png"
+      <FILE id="jBOnde" name="folder_open_FILL0_wght400_GRAD0_opsz24.png"
             compile="0" resource="1" file="Assets/folder_open_FILL0_wght400_GRAD0_opsz24.png"/>
-      <FILE id="mOqtdY" name="segment_FILL0_wght400_GRAD0_opsz24.png" compile="0"
+      <FILE id="V6rASS" name="grid_view_FILL0_wght400_GRAD0_opsz24.png" compile="0"
+            resource="1" file="Assets/grid_view_FILL0_wght400_GRAD0_opsz24.png"/>
+      <FILE id="P4IdTj" name="ifl_FILL0_wght400_GRAD0_opsz24.png" compile="0"
+            resource="1" file="Assets/ifl_FILL0_wght400_GRAD0_opsz24.png"/>
+      <FILE id="Jkyve2" name="play_pause_FILL0_wght400_GRAD0_opsz24.png"
+            compile="0" resource="1" file="Assets/play_pause_FILL0_wght400_GRAD0_opsz24.png"/>
+      <FILE id="iboaXc" name="power_settings_new_FILL0_wght400_GRAD0_opsz24.png"
+            compile="0" resource="1" file="Assets/power_settings_new_FILL0_wght400_GRAD0_opsz24.png"/>
+      <FILE id="l5nxgO" name="segment_FILL0_wght400_GRAD0_opsz24.png" compile="0"
             resource="1" file="Assets/segment_FILL0_wght400_GRAD0_opsz24.png"/>
-      <FILE id="viO1Il" name="sync_FILL0_wght400_GRAD0_opsz24.png" compile="0"
+      <FILE id="phKZVC" name="settings_FILL0_wght400_GRAD0_opsz24.png" compile="0"
+            resource="1" file="Assets/settings_FILL0_wght400_GRAD0_opsz24.png"/>
+      <FILE id="q4d61V" name="sync_FILL0_wght400_GRAD0_opsz24.png" compile="0"
             resource="1" file="Assets/sync_FILL0_wght400_GRAD0_opsz24.png"/>
-      <FILE id="DtxDmB" name="table_rows_FILL0_wght400_GRAD0_opsz24.png"
+      <FILE id="IuF9dM" name="table_rows_FILL0_wght400_GRAD0_opsz24.png"
             compile="0" resource="1" file="Assets/table_rows_FILL0_wght400_GRAD0_opsz24.png"/>
+      <FILE id="KOwLtw" name="trending_flat_FILL0_wght400_GRAD0_opsz24.png"
+            compile="0" resource="1" file="Assets/trending_flat_FILL0_wght400_GRAD0_opsz24.png"/>
+      <FILE id="Z5av2F" name="volume_up_FILL0_wght400_GRAD0_opsz24.png" compile="0"
+            resource="1" file="Assets/volume_up_FILL0_wght400_GRAD0_opsz24.png"/>
     </GROUP>
-    <GROUP id="{42BE264F-73CB-1788-4B66-AF9042EF1615}" name="BlomeComponents">
-      <FILE id="Tn4N0E" name="BlomeTransparentButton.cpp" compile="1" resource="0"
+    <GROUP id="{11D371C0-6818-DF92-BD5B-AAFF8B5BC450}" name="BlomeComponents">
+      <FILE id="gfuGbv" name="BlomeTransparentButton.cpp" compile="1" resource="0"
             file="Source/BlomeTransparentButton.cpp"/>
-      <FILE id="O7tNaZ" name="BlomeTransparentButton.h" compile="0" resource="0"
+      <FILE id="wJiEyr" name="BlomeTransparentButton.h" compile="0" resource="0"
             file="Source/BlomeTransparentButton.h"/>
-      <FILE id="CZhKhu" name="BlomeImageButton.cpp" compile="1" resource="0"
+      <FILE id="Aq2vgl" name="BlomeImageButton.cpp" compile="1" resource="0"
             file="Source/BlomeImageButton.cpp"/>
-      <FILE id="DYAKmb" name="BlomeImageButton.h" compile="0" resource="0"
+      <FILE id="punEIE" name="BlomeImageButton.h" compile="0" resource="0"
             file="Source/BlomeImageButton.h"/>
-      <FILE id="qeGOnn" name="BlomeFileFilterRuleViewBase.cpp" compile="1"
+      <FILE id="t2HZdk" name="BlomeFileFilterRuleViewBase.cpp" compile="1"
             resource="0" file="Source/BlomeFileFilterRuleViewBase.cpp"/>
-      <FILE id="eeWtdy" name="BlomeFileFilterRuleViewBase.h" compile="0"
+      <FILE id="NrcAkq" name="BlomeFileFilterRuleViewBase.h" compile="0"
             resource="0" file="Source/BlomeFileFilterRuleViewBase.h"/>
-      <FILE id="sji7rW" name="BlomeFileFilterRuleViewTitle.cpp" compile="1"
+      <FILE id="WbdQac" name="BlomeFileFilterRuleViewTitle.cpp" compile="1"
             resource="0" file="Source/BlomeFileFilterRuleViewTitle.cpp"/>
-      <FILE id="FvL4Ds" name="BlomeFileFilterRuleViewTitle.h" compile="0"
+      <FILE id="Zl8xfU" name="BlomeFileFilterRuleViewTitle.h" compile="0"
             resource="0" file="Source/BlomeFileFilterRuleViewTitle.h"/>
-      <FILE id="Eu12LZ" name="BlomeFileFilterRuleViewLength.cpp" compile="1"
+      <FILE id="XZ3IQE" name="BlomeFileFilterRuleViewLength.cpp" compile="1"
             resource="0" file="Source/BlomeFileFilterRuleViewLength.cpp"/>
-      <FILE id="a5ieSp" name="BlomeFileFilterRuleViewLength.h" compile="0"
+      <FILE id="RAOTjQ" name="BlomeFileFilterRuleViewLength.h" compile="0"
             resource="0" file="Source/BlomeFileFilterRuleViewLength.h"/>
-      <FILE id="NnAbsu" name="BlomeFileFilterRuleViewLoudnessDecibel.cpp"
+      <FILE id="Jzrr5n" name="BlomeFileFilterRuleViewLoudnessDecibel.cpp"
             compile="1" resource="0" file="Source/BlomeFileFilterRuleViewLoudnessDecibel.cpp"/>
-      <FILE id="tcU2d1" name="BlomeFileFilterRuleViewLoudnessDecibel.h" compile="0"
+      <FILE id="JX2lYB" name="BlomeFileFilterRuleViewLoudnessDecibel.h" compile="0"
             resource="0" file="Source/BlomeFileFilterRuleViewLoudnessDecibel.h"/>
-      <FILE id="ocSs5g" name="BlomeFileFilterRuleViewLoudnessLUFS.cpp" compile="1"
+      <FILE id="wGwonz" name="BlomeFileFilterRuleViewLoudnessLUFS.cpp" compile="1"
             resource="0" file="Source/BlomeFileFilterRuleViewLoudnessLUFS.cpp"/>
-      <FILE id="oKd4Io" name="BlomeFileFilterRuleViewLoudnessLUFS.h" compile="0"
+      <FILE id="sWYR5q" name="BlomeFileFilterRuleViewLoudnessLUFS.h" compile="0"
             resource="0" file="Source/BlomeFileFilterRuleViewLoudnessLUFS.h"/>
-      <FILE id="A0O5uM" name="BlomeFileFilterRuleViewTempo.cpp" compile="1"
+      <FILE id="Iuxd3k" name="BlomeFileFilterRuleViewTempo.cpp" compile="1"
             resource="0" file="Source/BlomeFileFilterRuleViewTempo.cpp"/>
-      <FILE id="Nf883X" name="BlomeFileFilterRuleViewTempo.h" compile="0"
+      <FILE id="DrVNCf" name="BlomeFileFilterRuleViewTempo.h" compile="0"
             resource="0" file="Source/BlomeFileFilterRuleViewTempo.h"/>
-      <FILE id="GsR0hl" name="BlomeFileFilterRuleViewKey.cpp" compile="1"
+      <FILE id="SvcUHq" name="BlomeFileFilterRuleViewKey.cpp" compile="1"
             resource="0" file="Source/BlomeFileFilterRuleViewKey.cpp"/>
-      <FILE id="Rz8pbh" name="BlomeFileFilterRuleViewKey.h" compile="0" resource="0"
+      <FILE id="cSeHFd" name="BlomeFileFilterRuleViewKey.h" compile="0" resource="0"
             file="Source/BlomeFileFilterRuleViewKey.h"/>
-      <FILE id="WxYaGi" name="BlomeFileTreeView.cpp" compile="1" resource="0"
+      <FILE id="V9Z3KI" name="BlomeFileTreeView.cpp" compile="1" resource="0"
             file="Source/BlomeFileTreeView.cpp"/>
-      <FILE id="eHx4JX" name="BlomeFileTreeView.h" compile="0" resource="0"
+      <FILE id="jx3afv" name="BlomeFileTreeView.h" compile="0" resource="0"
             file="Source/BlomeFileTreeView.h"/>
-      <FILE id="dENz96" name="BlomeTableViewBase.cpp" compile="1" resource="0"
+      <FILE id="NbXQrq" name="BlomeTableViewBase.cpp" compile="1" resource="0"
             file="Source/BlomeTableViewBase.cpp"/>
-      <FILE id="Vf7dQl" name="BlomeTableViewBase.h" compile="0" resource="0"
+      <FILE id="hJ90Mh" name="BlomeTableViewBase.h" compile="0" resource="0"
             file="Source/BlomeTableViewBase.h"/>
-      <FILE id="Go188N" name="BlomeTableViewNavigation.cpp" compile="1" resource="0"
+      <FILE id="oUQfiw" name="BlomeTableViewNavigation.cpp" compile="1" resource="0"
             file="Source/BlomeTableViewNavigation.cpp"/>
-      <FILE id="eRtVX0" name="BlomeTableViewNavigation.h" compile="0" resource="0"
+      <FILE id="JAzcBA" name="BlomeTableViewNavigation.h" compile="0" resource="0"
             file="Source/BlomeTableViewNavigation.h"/>
-      <FILE id="ki9O3Y" name="BlomeTableViewFavourites.cpp" compile="1" resource="0"
+      <FILE id="BIAhLT" name="BlomeTableViewFavourites.cpp" compile="1" resource="0"
             file="Source/BlomeTableViewFavourites.cpp"/>
-      <FILE id="MuMIeK" name="BlomeTableViewFavourites.h" compile="0" resource="0"
+      <FILE id="kEyTNB" name="BlomeTableViewFavourites.h" compile="0" resource="0"
             file="Source/BlomeTableViewFavourites.h"/>
-      <FILE id="y7kZFT" name="BlomeSampleGridView.cpp" compile="1" resource="0"
+      <FILE id="QmJW7G" name="BlomeSampleGridView.cpp" compile="1" resource="0"
             file="Source/BlomeSampleGridView.cpp"/>
-      <FILE id="CRAXtH" name="BlomeSampleGridView.h" compile="0" resource="0"
+      <FILE id="tAGldC" name="BlomeSampleGridView.h" compile="0" resource="0"
             file="Source/BlomeSampleGridView.h"/>
-      <FILE id="nGo8kE" name="BlomeSampleTileView.cpp" compile="1" resource="0"
+      <FILE id="BVkQbj" name="BlomeSampleTileView.cpp" compile="1" resource="0"
             file="Source/BlomeSampleTileView.cpp"/>
-      <FILE id="q3qX8z" name="BlomeSampleTileView.h" compile="0" resource="0"
+      <FILE id="zoOdVI" name="BlomeSampleTileView.h" compile="0" resource="0"
             file="Source/BlomeSampleTileView.h"/>
     </GROUP>
-    <GROUP id="{6D66FD26-8F3F-0894-5730-966778E462FE}" name="BlomePanels">
-      <FILE id="lThgmA" name="PanelBase.cpp" compile="1" resource="0" file="Source/PanelBase.cpp"/>
-      <FILE id="EsamqD" name="PanelBase.h" compile="0" resource="0" file="Source/PanelBase.h"/>
-      <FILE id="OyVv0E" name="MainPanel.cpp" compile="1" resource="0" file="Source/MainPanel.cpp"/>
-      <FILE id="NTzZV2" name="MainPanel.h" compile="0" resource="0" file="Source/MainPanel.h"/>
-      <FILE id="dcV6X9" name="HeaderPanel.cpp" compile="1" resource="0" file="Source/HeaderPanel.cpp"/>
-      <FILE id="fmjpIw" name="HeaderPanel.h" compile="0" resource="0" file="Source/HeaderPanel.h"/>
-      <FILE id="szHDlD" name="FileFilterPanel.cpp" compile="1" resource="0"
+    <GROUP id="{C2E1DFFB-61EC-A2D4-933B-AD8DC3CBC1C5}" name="BlomePanels">
+      <FILE id="hza6pK" name="PanelBase.cpp" compile="1" resource="0" file="Source/PanelBase.cpp"/>
+      <FILE id="pLtHy2" name="PanelBase.h" compile="0" resource="0" file="Source/PanelBase.h"/>
+      <FILE id="XC0YRy" name="MainPanel.cpp" compile="1" resource="0" file="Source/MainPanel.cpp"/>
+      <FILE id="CvagOr" name="MainPanel.h" compile="0" resource="0" file="Source/MainPanel.h"/>
+      <FILE id="IBeGUb" name="HeaderPanel.cpp" compile="1" resource="0" file="Source/HeaderPanel.cpp"/>
+      <FILE id="v3uKJI" name="HeaderPanel.h" compile="0" resource="0" file="Source/HeaderPanel.h"/>
+      <FILE id="rqpADT" name="FileFilterPanel.cpp" compile="1" resource="0"
             file="Source/FileFilterPanel.cpp"/>
-      <FILE id="PleHun" name="FileFilterPanel.h" compile="0" resource="0"
+      <FILE id="gSMfUl" name="FileFilterPanel.h" compile="0" resource="0"
             file="Source/FileFilterPanel.h"/>
-      <FILE id="KroQsN" name="AboutPanel.cpp" compile="1" resource="0" file="Source/AboutPanel.cpp"/>
-      <FILE id="KRHkJO" name="AboutPanel.h" compile="0" resource="0" file="Source/AboutPanel.h"/>
-      <FILE id="ccbkEr" name="CentrePanel.cpp" compile="1" resource="0" file="Source/CentrePanel.cpp"/>
-      <FILE id="YtLVhW" name="CentrePanel.h" compile="0" resource="0" file="Source/CentrePanel.h"/>
-      <FILE id="Wk9vDR" name="SampleNavigationPanel.cpp" compile="1" resource="0"
+      <FILE id="w4uaf4" name="AboutPanel.cpp" compile="1" resource="0" file="Source/AboutPanel.cpp"/>
+      <FILE id="FiRqzQ" name="AboutPanel.h" compile="0" resource="0" file="Source/AboutPanel.h"/>
+      <FILE id="r33owi" name="CentrePanel.cpp" compile="1" resource="0" file="Source/CentrePanel.cpp"/>
+      <FILE id="Pv8Kcm" name="CentrePanel.h" compile="0" resource="0" file="Source/CentrePanel.h"/>
+      <FILE id="y0ChUb" name="SampleNavigationPanel.cpp" compile="1" resource="0"
             file="Source/SampleNavigationPanel.cpp"/>
-      <FILE id="ztCtkY" name="SampleNavigationPanel.h" compile="0" resource="0"
+      <FILE id="mjtVxa" name="SampleNavigationPanel.h" compile="0" resource="0"
             file="Source/SampleNavigationPanel.h"/>
-      <FILE id="vxYbk9" name="SampleFolderPanel.cpp" compile="1" resource="0"
+      <FILE id="bGW3Zz" name="SampleFolderPanel.cpp" compile="1" resource="0"
             file="Source/SampleFolderPanel.cpp"/>
-      <FILE id="dPQ3lJ" name="SampleFolderPanel.h" compile="0" resource="0"
+      <FILE id="KfRPBa" name="SampleFolderPanel.h" compile="0" resource="0"
             file="Source/SampleFolderPanel.h"/>
-      <FILE id="oOrBsC" name="SampleTablePanel.cpp" compile="1" resource="0"
+      <FILE id="STirrE" name="SampleTablePanel.cpp" compile="1" resource="0"
             file="Source/SampleTablePanel.cpp"/>
-      <FILE id="JuadLI" name="SampleTablePanel.h" compile="0" resource="0"
+      <FILE id="snLT2s" name="SampleTablePanel.h" compile="0" resource="0"
             file="Source/SampleTablePanel.h"/>
-      <FILE id="kKyIil" name="SampleGridPanel.cpp" compile="1" resource="0"
+      <FILE id="g7PtWt" name="SampleGridPanel.cpp" compile="1" resource="0"
             file="Source/SampleGridPanel.cpp"/>
-      <FILE id="OHq0aB" name="SampleGridPanel.h" compile="0" resource="0"
+      <FILE id="Ca8OwX" name="SampleGridPanel.h" compile="0" resource="0"
             file="Source/SampleGridPanel.h"/>
-      <FILE id="mSvVs6" name="SampleGridOptionsPanel.cpp" compile="1" resource="0"
+      <FILE id="ldQYsa" name="SampleGridOptionsPanel.cpp" compile="1" resource="0"
             file="Source/SampleGridOptionsPanel.cpp"/>
-      <FILE id="q4emDe" name="SampleGridOptionsPanel.h" compile="0" resource="0"
+      <FILE id="xmvwCq" name="SampleGridOptionsPanel.h" compile="0" resource="0"
             file="Source/SampleGridOptionsPanel.h"/>
-      <FILE id="VcRINU" name="SampleFavouritesPanel.cpp" compile="1" resource="0"
+      <FILE id="ej8Tyr" name="SampleFavouritesPanel.cpp" compile="1" resource="0"
             file="Source/SampleFavouritesPanel.cpp"/>
-      <FILE id="aFYuVk" name="SampleFavouritesPanel.h" compile="0" resource="0"
+      <FILE id="vfREHk" name="SampleFavouritesPanel.h" compile="0" resource="0"
             file="Source/SampleFavouritesPanel.h"/>
-      <FILE id="blGuS9" name="SampleItemPanel.cpp" compile="1" resource="0"
+      <FILE id="kq53i4" name="SampleItemPanel.cpp" compile="1" resource="0"
             file="Source/SampleItemPanel.cpp"/>
-      <FILE id="EGnlFh" name="SampleItemPanel.h" compile="0" resource="0"
+      <FILE id="K4zE0N" name="SampleItemPanel.h" compile="0" resource="0"
             file="Source/SampleItemPanel.h"/>
-      <FILE id="qSTxfB" name="AudioPreviewPanel.cpp" compile="1" resource="0"
+      <FILE id="Iu5CqY" name="AudioPreviewPanel.cpp" compile="1" resource="0"
             file="Source/AudioPreviewPanel.cpp"/>
-      <FILE id="vwfWT5" name="AudioPreviewPanel.h" compile="0" resource="0"
+      <FILE id="mU7ZZi" name="AudioPreviewPanel.h" compile="0" resource="0"
             file="Source/AudioPreviewPanel.h"/>
     </GROUP>
-    <GROUP id="{F1D19C9D-5976-FA7E-4145-99A46D7DB6D2}" name="BlomeHelpers">
-      <FILE id="EkzFp4" name="BlomeHelpers.h" compile="0" resource="0" file="Source/BlomeHelpers.h"/>
-      <FILE id="Ioam49" name="BlomeLookAndFeel.h" compile="0" resource="0"
+    <GROUP id="{1539ECCA-DF00-E4D1-5673-9CC8669B2DC3}" name="BlomeHelpers">
+      <FILE id="sogVNx" name="BlomeHelpers.h" compile="0" resource="0" file="Source/BlomeHelpers.h"/>
+      <FILE id="IMgbwf" name="BlomeLookAndFeel.h" compile="0" resource="0"
             file="Source/BlomeLookAndFeel.h"/>
-      <FILE id="bDidRl" name="BlomeStyling.h" compile="0" resource="0" file="Source/BlomeStyling.h"/>
+      <FILE id="JNm0tv" name="BlomeStyling.h" compile="0" resource="0" file="Source/BlomeStyling.h"/>
     </GROUP>
-    <GROUP id="{24E53329-C4AB-C36D-5F45-A76DFCFCE6A5}" name="BlomeDSP">
-      <FILE id="UpyEC4" name="SampleAnalyser.cpp" compile="1" resource="0"
+    <GROUP id="{2F3A4CDE-4B41-3D2A-FC2B-D755FF273BC7}" name="BlomeDSP">
+      <FILE id="dBcCOI" name="SampleAnalyser.cpp" compile="1" resource="0"
             file="Source/SampleAnalyser.cpp"/>
-      <FILE id="Vj1R2H" name="SampleAnalyser.h" compile="0" resource="0"
+      <FILE id="sSvYll" name="SampleAnalyser.h" compile="0" resource="0"
             file="Source/SampleAnalyser.h"/>
-      <FILE id="bxJcVD" name="Ebu128LoudnessMeter.cpp" compile="1" resource="0"
+      <FILE id="dJL0zf" name="Ebu128LoudnessMeter.cpp" compile="1" resource="0"
             file="Source/Ebu128LoudnessMeter.cpp"/>
-      <FILE id="G1zpRK" name="Ebu128LoudnessMeter.h" compile="0" resource="0"
+      <FILE id="FFwkWz" name="Ebu128LoudnessMeter.h" compile="0" resource="0"
             file="Source/Ebu128LoudnessMeter.h"/>
-      <FILE id="veLVxA" name="SecondOrderIIRFilter.cpp" compile="1" resource="0"
+      <FILE id="WU6jvD" name="SecondOrderIIRFilter.cpp" compile="1" resource="0"
             file="Source/SecondOrderIIRFilter.cpp"/>
-      <FILE id="hGpdKL" name="SecondOrderIIRFilter.h" compile="0" resource="0"
+      <FILE id="RSK8wA" name="SecondOrderIIRFilter.h" compile="0" resource="0"
             file="Source/SecondOrderIIRFilter.h"/>
-      <FILE id="njsawu" name="AudioPlayer.cpp" compile="1" resource="0" file="Source/AudioPlayer.cpp"/>
-      <FILE id="NcbmLC" name="AudioPlayer.h" compile="0" resource="0" file="Source/AudioPlayer.h"/>
+      <FILE id="f5dP8Z" name="AudioPlayer.cpp" compile="1" resource="0" file="Source/AudioPlayer.cpp"/>
+      <FILE id="gZJZKx" name="AudioPlayer.h" compile="0" resource="0" file="Source/AudioPlayer.h"/>
     </GROUP>
-    <GROUP id="{E9B1E780-95F6-8A24-1076-4F173F69A7D1}" name="BlomeSampleManagement">
-      <FILE id="UMdojm" name="SampleLibrary.cpp" compile="1" resource="0"
+    <GROUP id="{EA0F6978-DD15-3B8F-9550-807B4798583D}" name="BlomeSampleManagement">
+      <FILE id="gSMz1Y" name="SampleLibrary.cpp" compile="1" resource="0"
             file="Source/SampleLibrary.cpp"/>
-      <FILE id="ijfj3H" name="SampleLibrary.h" compile="0" resource="0" file="Source/SampleLibrary.h"/>
-      <FILE id="GzQN7D" name="SampleLibraryManager.cpp" compile="1" resource="0"
+      <FILE id="lLUzZy" name="SampleLibrary.h" compile="0" resource="0" file="Source/SampleLibrary.h"/>
+      <FILE id="tGm5Ex" name="SampleLibraryManager.cpp" compile="1" resource="0"
             file="Source/SampleLibraryManager.cpp"/>
-      <FILE id="EA3Snn" name="SampleLibraryManager.h" compile="0" resource="0"
+      <FILE id="s29RDU" name="SampleLibraryManager.h" compile="0" resource="0"
             file="Source/SampleLibraryManager.h"/>
-      <FILE id="Q4MCYu" name="SampleAnalysisJob.cpp" compile="1" resource="0"
+      <FILE id="eIuH1M" name="SampleAnalysisJob.cpp" compile="1" resource="0"
             file="Source/SampleAnalysisJob.cpp"/>
-      <FILE id="p3hgRp" name="SampleAnalysisJob.h" compile="0" resource="0"
+      <FILE id="fXrvVB" name="SampleAnalysisJob.h" compile="0" resource="0"
             file="Source/SampleAnalysisJob.h"/>
-      <FILE id="JlCuO2" name="SampleFileFilter.cpp" compile="1" resource="0"
+      <FILE id="muYvVb" name="SampleFileFilter.cpp" compile="1" resource="0"
             file="Source/SampleFileFilter.cpp"/>
-      <FILE id="krBDMF" name="SampleFileFilter.h" compile="0" resource="0"
+      <FILE id="QbhPZj" name="SampleFileFilter.h" compile="0" resource="0"
             file="Source/SampleFileFilter.h"/>
-      <FILE id="NFTqs2" name="SampleFileFilterRuleBase.cpp" compile="1" resource="0"
+      <FILE id="TuoERX" name="SampleFileFilterRuleBase.cpp" compile="1" resource="0"
             file="Source/SampleFileFilterRuleBase.cpp"/>
-      <FILE id="xzn8A3" name="SampleFileFilterRuleBase.h" compile="0" resource="0"
+      <FILE id="MUfyKi" name="SampleFileFilterRuleBase.h" compile="0" resource="0"
             file="Source/SampleFileFilterRuleBase.h"/>
-      <FILE id="PoJDHD" name="SampleFileFilterRuleTitle.cpp" compile="1"
+      <FILE id="LDieba" name="SampleFileFilterRuleTitle.cpp" compile="1"
             resource="0" file="Source/SampleFileFilterRuleTitle.cpp"/>
-      <FILE id="Z9NwLN" name="SampleFileFilterRuleTitle.h" compile="0" resource="0"
+      <FILE id="e4hMcx" name="SampleFileFilterRuleTitle.h" compile="0" resource="0"
             file="Source/SampleFileFilterRuleTitle.h"/>
-      <FILE id="zL5bUL" name="SampleFileFilterRuleLength.cpp" compile="1"
+      <FILE id="xCb5V7" name="SampleFileFilterRuleLength.cpp" compile="1"
             resource="0" file="Source/SampleFileFilterRuleLength.cpp"/>
-      <FILE id="fMAOY3" name="SampleFileFilterRuleLength.h" compile="0" resource="0"
+      <FILE id="sKOp8F" name="SampleFileFilterRuleLength.h" compile="0" resource="0"
             file="Source/SampleFileFilterRuleLength.h"/>
-      <FILE id="pqJxhH" name="SampleFileFilterRuleLoudnessDecibel.cpp" compile="1"
+      <FILE id="pEK9f2" name="SampleFileFilterRuleLoudnessDecibel.cpp" compile="1"
             resource="0" file="Source/SampleFileFilterRuleLoudnessDecibel.cpp"/>
-      <FILE id="eYL8eY" name="SampleFileFilterRuleLoudnessDecibel.h" compile="0"
+      <FILE id="NEds4w" name="SampleFileFilterRuleLoudnessDecibel.h" compile="0"
             resource="0" file="Source/SampleFileFilterRuleLoudnessDecibel.h"/>
-      <FILE id="Pp1tdU" name="SampleFileFilterRuleLoudnessLUFS.cpp" compile="1"
+      <FILE id="ZaP1NL" name="SampleFileFilterRuleLoudnessLUFS.cpp" compile="1"
             resource="0" file="Source/SampleFileFilterRuleLoudnessLUFS.cpp"/>
-      <FILE id="urj6sF" name="SampleFileFilterRuleLoudnessLUFS.h" compile="0"
+      <FILE id="CxuJKC" name="SampleFileFilterRuleLoudnessLUFS.h" compile="0"
             resource="0" file="Source/SampleFileFilterRuleLoudnessLUFS.h"/>
-      <FILE id="zMSK6D" name="SampleFileFilterRuleTempo.cpp" compile="1"
+      <FILE id="RLpYTe" name="SampleFileFilterRuleTempo.cpp" compile="1"
             resource="0" file="Source/SampleFileFilterRuleTempo.cpp"/>
-      <FILE id="lksA9N" name="SampleFileFilterRuleTempo.h" compile="0" resource="0"
+      <FILE id="PYT3WH" name="SampleFileFilterRuleTempo.h" compile="0" resource="0"
             file="Source/SampleFileFilterRuleTempo.h"/>
-      <FILE id="VHagy3" name="SampleFileFilterRuleKey.cpp" compile="1" resource="0"
+      <FILE id="p92SHO" name="SampleFileFilterRuleKey.cpp" compile="1" resource="0"
             file="Source/SampleFileFilterRuleKey.cpp"/>
-      <FILE id="BpRWHd" name="SampleFileFilterRuleKey.h" compile="0" resource="0"
+      <FILE id="IER5T6" name="SampleFileFilterRuleKey.h" compile="0" resource="0"
             file="Source/SampleFileFilterRuleKey.h"/>
-      <FILE id="i4IYPu" name="SampleItem.cpp" compile="1" resource="0" file="Source/SampleItem.cpp"/>
-      <FILE id="i15BWX" name="SampleItem.h" compile="0" resource="0" file="Source/SampleItem.h"/>
-      <FILE id="fjhQHu" name="SampleItemComparator.cpp" compile="1" resource="0"
+      <FILE id="dlIPH8" name="SampleItem.cpp" compile="1" resource="0" file="Source/SampleItem.cpp"/>
+      <FILE id="QPDhPJ" name="SampleItem.h" compile="0" resource="0" file="Source/SampleItem.h"/>
+      <FILE id="UlKa0R" name="SampleItemComparator.cpp" compile="1" resource="0"
             file="Source/SampleItemComparator.cpp"/>
-      <FILE id="yTJLPC" name="SampleItemComparator.h" compile="0" resource="0"
+      <FILE id="ukS2IR" name="SampleItemComparator.h" compile="0" resource="0"
             file="Source/SampleItemComparator.h"/>
-      <FILE id="oRlRXJ" name="SampleGridClusterer.cpp" compile="1" resource="0"
+      <FILE id="EnCldQ" name="SampleGridClusterer.cpp" compile="1" resource="0"
             file="Source/SampleGridClusterer.cpp"/>
-      <FILE id="lhx9MY" name="SampleGridClusterer.h" compile="0" resource="0"
+      <FILE id="SZ8uQc" name="SampleGridClusterer.h" compile="0" resource="0"
             file="Source/SampleGridClusterer.h"/>
     </GROUP>
-    <GROUP id="{DC34CDD6-63E9-961B-46AF-F2C74C695602}" name="Source">
-      <FILE id="tiuyaQ" name="PluginProcessor.cpp" compile="1" resource="0"
+    <GROUP id="{FD25D35B-6639-E2CB-3CB8-A90791DF69A0}" name="Source">
+      <FILE id="n9l05k" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
-      <FILE id="AgoPr6" name="PluginProcessor.h" compile="0" resource="0"
+      <FILE id="iRmmFZ" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
-      <FILE id="W2UkSg" name="PluginEditor.cpp" compile="1" resource="0"
+      <FILE id="aU7IYo" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
-      <FILE id="gOzHia" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="JAJzYr" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
   </MAINGROUP>
-  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
-  <EXPORTFORMATS>
-    <XCODE_MAC targetFolder="Builds/MacOSX">
-      <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" targetName="Saempl" osxArchitecture="64BitIntel"/>
-        <CONFIGURATION isDebug="0" name="Release" targetName="Saempl" enablePluginBinaryCopyStep="1"
-                       auBinaryLocation="/Users/jonasblome/Documents/Musikproduktion/Plugins/Saempl/Saempl/Builds/MacOSX/build"
-                       vst3BinaryLocation="/Users/jonasblome/Documents/Musikproduktion/Plugins/Saempl/Saempl/Builds/MacOSX/build"
-                       osxArchitecture="64BitIntel"/>
-      </CONFIGURATIONS>
-      <MODULEPATHS>
-        <MODULEPATH id="juce_audio_basics" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_devices" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_formats" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_processors" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_utils" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_core" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_data_structures" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_events" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_graphics" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_basics" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_dsp" path="../../../../JUCE/modules"/>
-      </MODULEPATHS>
-    </XCODE_MAC>
-  </EXPORTFORMATS>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
@@ -280,4 +254,28 @@
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
   </MODULES>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Saempl" osxArchitecture="64BitIntel"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="Saempl" osxArchitecture="64BitIntel"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../../../JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
 </JUCERPROJECT>

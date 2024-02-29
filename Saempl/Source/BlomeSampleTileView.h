@@ -21,7 +21,7 @@ class BlomeSampleTileView
 public Component
 {
 public:
-    BlomeSampleTileView(SampleItem* inSampleItem, 
+    BlomeSampleTileView(SampleItem* inSampleItem,
                             SampleLibrary& inSampleLibrary,
                             SampleItemPanel& inSampleItemPanel,
                             AudioPlayer& inAudioPlayer);

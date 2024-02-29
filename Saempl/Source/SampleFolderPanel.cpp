@@ -9,7 +9,7 @@
 
 #include "SampleFolderPanel.h"
 
-SampleFolderPanel::SampleFolderPanel(SaemplAudioProcessor& inProcessor, 
+SampleFolderPanel::SampleFolderPanel(SaemplAudioProcessor& inProcessor,
                                      SampleItemPanel& inSampleItemPanel,
                                      AudioPlayer& inAudioPlayer)
 :

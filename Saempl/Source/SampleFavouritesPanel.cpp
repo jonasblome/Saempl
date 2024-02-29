@@ -9,7 +9,7 @@
 
 #include "SampleFavouritesPanel.h"
 
-SampleFavouritesPanel::SampleFavouritesPanel(SaemplAudioProcessor& inProcessor, 
+SampleFavouritesPanel::SampleFavouritesPanel(SaemplAudioProcessor& inProcessor,
                                              SampleItemPanel& inSampleItemPanel,
                                              AudioPlayer& inAudioPlayer)
 :

@@ -2,7 +2,7 @@
   "Name": "Saempl",
   "Version": "1.0.0",
   "Factory Info": {
-    "Vendor": "Blome",
+    "Vendor": "Blome Audio",
     "URL": "https://github.com/jonasblome",
     "E-Mail": "jonas.blome@gmx.de",
     "Flags": {
@@ -13,10 +13,10 @@
   },
   "Classes": [
     {
-      "CID": "ABCDEF019182FAEB426C6F6D536D706C",
+      "CID": "ABCDEF019182FAEB424C4155534D504C",
       "Category": "Audio Module Class",
       "Name": "Saempl",
-      "Vendor": "Blome",
+      "Vendor": "Blome Audio",
       "Version": "1.0.0",
       "SDKVersion": "VST 3.7.8",
       "Sub Categories": [
@@ -28,10 +28,10 @@
       ],
     },
     {
-      "CID": "ABCDEF011234ABCD426C6F6D536D706C",
+      "CID": "ABCDEF011234ABCD424C4155534D504C",
       "Category": "Component Controller Class",
       "Name": "Saempl",
-      "Vendor": "Blome",
+      "Vendor": "Blome Audio",
       "Version": "1.0.0",
       "SDKVersion": "VST 3.7.8",
       "Sub Categories": [
@@ -43,10 +43,10 @@
       ],
     },
     {
-      "CID": "ABCDEF01C0DEF00D426C6F6D536D706C",
+      "CID": "ABCDEF01C0DEF00D424C4155534D504C",
       "Category": "Plugin Compatibility Class",
       "Name": "Saempl",
-      "Vendor": "Blome",
+      "Vendor": "Blome Audio",
       "Version": "1.0.0",
       "SDKVersion": "VST 3.7.8",
       "Class Flags": 0,

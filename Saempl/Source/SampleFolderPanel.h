@@ -31,7 +31,7 @@ public:
      @param inProcessor the processor object of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
-    SampleFolderPanel(SaemplAudioProcessor& inProcessor, 
+    SampleFolderPanel(SaemplAudioProcessor& inProcessor,
                       SampleItemPanel& inSampleItemPanel,
                       AudioPlayer& inAudioPlayer);
     ~SampleFolderPanel();

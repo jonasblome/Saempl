@@ -27,7 +27,7 @@ void MainPanel::paint(Graphics &g)
 {
     // Header panel drop shadow
     drawDropShadow(g,
-                   Rectangle<int>(0, 
+                   Rectangle<int>(0,
                                   - style->HEADER_PANEL_HEIGHT * 0.5,
                                   getWidth(),
                                   2),
@@ -38,7 +38,7 @@ void MainPanel::paint(Graphics &g)
     
     // Favourites panel drop shadow
     drawDropShadow(g,
-                   Rectangle<int>(0, 
+                   Rectangle<int>(0,
                                   style->HEADER_PANEL_HEIGHT,
                                   style->SAMPLE_FAVOURITES_PANEL_WIDTH,
                                   getHeight()),

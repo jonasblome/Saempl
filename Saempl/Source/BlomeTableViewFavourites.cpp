@@ -9,7 +9,7 @@
 
 #include "BlomeTableViewFavourites.h"
 
-BlomeTableViewFavourites::BlomeTableViewFavourites(SaemplAudioProcessor& inProcessor, 
+BlomeTableViewFavourites::BlomeTableViewFavourites(SaemplAudioProcessor& inProcessor,
                                                    SampleItemPanel& inSampleItemPanel,
                                                    AudioPlayer& inAudioPlayer)
 :

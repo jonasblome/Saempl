@@ -36,11 +36,6 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  
- -------------------------------------------------------------------------------
- 
- To release a closed-source product which uses the LUFS Meter or parts of it,
- get in contact via www.klangfreund.com/contact/.
- 
  ===============================================================================
  */
 

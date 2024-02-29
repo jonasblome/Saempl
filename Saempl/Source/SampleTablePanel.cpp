@@ -9,7 +9,7 @@
 
 #include "SampleTablePanel.h"
 
-SampleTablePanel::SampleTablePanel(SaemplAudioProcessor& inProcessor, 
+SampleTablePanel::SampleTablePanel(SaemplAudioProcessor& inProcessor,
                                    SampleItemPanel& inSampleItemPanel,
                                    AudioPlayer& inAudioPlayer)
 :

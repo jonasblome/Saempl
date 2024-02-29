@@ -10,7 +10,7 @@
 #include "BlomeSampleTileView.h"
 
 BlomeSampleTileView::BlomeSampleTileView(SampleItem* inSampleItem,
-                                                 SampleLibrary& inSampleLibrary, 
+                                                 SampleLibrary& inSampleLibrary,
                                                  SampleItemPanel& inSampleItemPanel,
                                                  AudioPlayer& inAudioPlayer)
 :

@@ -26,7 +26,7 @@ public:
      @param inSampleLibrary the library object of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
-    SampleFavouritesPanel(SaemplAudioProcessor& inProcessor, 
+    SampleFavouritesPanel(SaemplAudioProcessor& inProcessor,
                           SampleItemPanel& inSampleItemPanel,
                           AudioPlayer& inAudioPlayer);
     ~SampleFavouritesPanel();

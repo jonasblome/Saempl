@@ -8,27 +8,6 @@
 
 namespace BinaryData
 {
-    extern const char*   settings_FILL0_wght400_GRAD0_opsz24_png;
-    const int            settings_FILL0_wght400_GRAD0_opsz24_pngSize = 475;
-
-    extern const char*   grid_view_FILL0_wght400_GRAD0_opsz24_png;
-    const int            grid_view_FILL0_wght400_GRAD0_opsz24_pngSize = 156;
-
-    extern const char*   volume_up_FILL0_wght400_GRAD0_opsz24_png;
-    const int            volume_up_FILL0_wght400_GRAD0_opsz24_pngSize = 399;
-
-    extern const char*   ifl_FILL0_wght400_GRAD0_opsz24_png;
-    const int            ifl_FILL0_wght400_GRAD0_opsz24_pngSize = 239;
-
-    extern const char*   power_settings_new_FILL0_wght400_GRAD0_opsz24_png;
-    const int            power_settings_new_FILL0_wght400_GRAD0_opsz24_pngSize = 410;
-
-    extern const char*   trending_flat_FILL0_wght400_GRAD0_opsz24_png;
-    const int            trending_flat_FILL0_wght400_GRAD0_opsz24_pngSize = 195;
-
-    extern const char*   play_pause_FILL0_wght400_GRAD0_opsz24_png;
-    const int            play_pause_FILL0_wght400_GRAD0_opsz24_pngSize = 178;
-
     extern const char*   add_FILL0_wght400_GRAD0_opsz24_png;
     const int            add_FILL0_wght400_GRAD0_opsz24_pngSize = 143;
 
@@ -44,14 +23,35 @@ namespace BinaryData
     extern const char*   folder_open_FILL0_wght400_GRAD0_opsz24_png;
     const int            folder_open_FILL0_wght400_GRAD0_opsz24_pngSize = 301;
 
+    extern const char*   grid_view_FILL0_wght400_GRAD0_opsz24_png;
+    const int            grid_view_FILL0_wght400_GRAD0_opsz24_pngSize = 156;
+
+    extern const char*   ifl_FILL0_wght400_GRAD0_opsz24_png;
+    const int            ifl_FILL0_wght400_GRAD0_opsz24_pngSize = 239;
+
+    extern const char*   play_pause_FILL0_wght400_GRAD0_opsz24_png;
+    const int            play_pause_FILL0_wght400_GRAD0_opsz24_pngSize = 178;
+
+    extern const char*   power_settings_new_FILL0_wght400_GRAD0_opsz24_png;
+    const int            power_settings_new_FILL0_wght400_GRAD0_opsz24_pngSize = 410;
+
     extern const char*   segment_FILL0_wght400_GRAD0_opsz24_png;
     const int            segment_FILL0_wght400_GRAD0_opsz24_pngSize = 147;
+
+    extern const char*   settings_FILL0_wght400_GRAD0_opsz24_png;
+    const int            settings_FILL0_wght400_GRAD0_opsz24_pngSize = 475;
 
     extern const char*   sync_FILL0_wght400_GRAD0_opsz24_png;
     const int            sync_FILL0_wght400_GRAD0_opsz24_pngSize = 360;
 
     extern const char*   table_rows_FILL0_wght400_GRAD0_opsz24_png;
     const int            table_rows_FILL0_wght400_GRAD0_opsz24_pngSize = 187;
+
+    extern const char*   trending_flat_FILL0_wght400_GRAD0_opsz24_png;
+    const int            trending_flat_FILL0_wght400_GRAD0_opsz24_pngSize = 195;
+
+    extern const char*   volume_up_FILL0_wght400_GRAD0_opsz24_png;
+    const int            volume_up_FILL0_wght400_GRAD0_opsz24_pngSize = 399;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
     const int namedResourceListSize = 15;

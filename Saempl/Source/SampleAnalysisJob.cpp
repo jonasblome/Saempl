@@ -9,7 +9,7 @@
 
 #include "SampleAnalysisJob.h"
 
-SampleAnalysisJob::SampleAnalysisJob(OwnedArray<SampleItem>& inSampleItems, 
+SampleAnalysisJob::SampleAnalysisJob(OwnedArray<SampleItem>& inSampleItems,
                                          OwnedArray<SampleItem>& inAddedSampleItems,
                                          StringArray& inAddedFilePaths,
                                          File const & inFile,

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "86C3A28AF421105374359E8C"
+               BlueprintIdentifier = "25447A2D2B49D436EDB6E758"
                BuildableName = "Saempl.vst3"
                BlueprintName = "Saempl - VST3"
                ReferencedContainer = "container:Saempl.xcodeproj">
@@ -53,7 +53,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "86C3A28AF421105374359E8C"
+            BlueprintIdentifier = "25447A2D2B49D436EDB6E758"
             BuildableName = "Saempl.vst3"
             BlueprintName = "Saempl - VST3"
             ReferencedContainer = "container:Saempl.xcodeproj">

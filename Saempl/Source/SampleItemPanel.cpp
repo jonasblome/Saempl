@@ -102,7 +102,7 @@ void SampleItemPanel::setPanelComponents()
                                           true,
                                           ImageCache::getFromMemory(BinaryData::trending_flat_FILL0_wght400_GRAD0_opsz24_png,
                                                                     BinaryData::trending_flat_FILL0_wght400_GRAD0_opsz24_pngSize),
-                                          follows 
+                                          follows
                                           ? style->BUTTON_IS_DEFAULT_ALPHA
                                           : style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
                                           style->COLOUR_SYMBOL_BUTTON,

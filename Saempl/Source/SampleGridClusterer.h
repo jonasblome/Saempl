@@ -279,5 +279,5 @@ private:
      */
     Array<int> computeAssignment(Array<Array<int>>& matrix, int numDimensions);
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleGridClusterer);    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleGridClusterer);
 };

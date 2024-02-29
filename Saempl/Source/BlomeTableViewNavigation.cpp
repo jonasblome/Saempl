@@ -9,7 +9,7 @@
 
 #include "BlomeTableViewNavigation.h"
 
-BlomeTableViewNavigation::BlomeTableViewNavigation(SaemplAudioProcessor& inProcessor, 
+BlomeTableViewNavigation::BlomeTableViewNavigation(SaemplAudioProcessor& inProcessor,
                                                    SampleItemPanel& inSampleItemPanel,
                                                    AudioPlayer& inAudioPlayer)
 :

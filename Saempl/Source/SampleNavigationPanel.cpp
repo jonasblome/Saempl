@@ -9,7 +9,7 @@
 
 #include "SampleNavigationPanel.h"
 
-SampleNavigationPanel::SampleNavigationPanel(SaemplAudioProcessor& inProcessor, 
+SampleNavigationPanel::SampleNavigationPanel(SaemplAudioProcessor& inProcessor,
                                              SampleItemPanel& inSampleItemPanel,
                                              AudioPlayer& inAudioPlayer)
 :

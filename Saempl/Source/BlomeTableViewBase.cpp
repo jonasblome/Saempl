@@ -9,7 +9,7 @@
 
 #include "BlomeTableViewBase.h"
 
-BlomeTableViewBase::BlomeTableViewBase(SaemplAudioProcessor& inProcessor, 
+BlomeTableViewBase::BlomeTableViewBase(SaemplAudioProcessor& inProcessor,
                                        SampleItemPanel& inSampleItemPanel,
                                        AudioPlayer& inAudioPlayer)
 :
