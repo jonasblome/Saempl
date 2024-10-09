@@ -164,6 +164,7 @@ void SampleLibraryManager::setProgressAndStatus(int numItemsToProcess, int64 sta
 {
     if (numItemsToProcess == 0 || numProcessedItems == 0)
     {
+        setStatusMessage("Loading...");
         return;
     }
     
@@ -192,11 +193,12 @@ void SampleLibraryManager::run()
 {
     // Go through all files in directory, check if a corresponding sample item
     // already exists in the sample item list, if not add it
+    setProgress(0.0);
+    int64 startTime = Time::currentTimeMillis();
+    setProgressAndStatus(0, startTime);
     Array<File> allSampleFiles = libraryDirectory.findChildFiles(File::findFiles,
                                                                  true,
                                                                  SUPPORTED_AUDIO_FORMATS_WILDCARD);
-    setProgress(0.0);
-    int64 startTime = Time::currentTimeMillis();
     
     // Go through all current sample items,
     // check if corresponding audio file still exists
@@ -689,8 +691,8 @@ void SampleLibraryManager::analyseSampleItem(SampleItem* inSampleItem, File cons
 String SampleLibraryManager::encodeForXml(String inString)
 {
     inString = String("_" + inString);
-    inString = inString.replaceCharacters("äàáâæãåāöôòóõœøōüûùúūßśšçćčéèêëėîïíīìñńÿΛ°§´`",
-                                          "aaaaaaaaoooooooouuuuusssccceeeeeiiiiinny_____");
+    inString = inString.replaceCharacters("äàáâæãåāöôòóõœøōüûùúūßśšçćčéèêëėîïíīìñńÿΛ°§´`’…",
+                                          "aaaaaaaaoooooooouuuuusssccceeeeeiiiiinny_______");
     std::string data = inString.toStdString();
     std::string buffer;
     buffer.reserve(data.size());

@@ -39,6 +39,7 @@ void SampleItemPanel::setPanelComponents()
 {
     // Add audio player component
     mAudioPlayer = std::make_unique<AudioPlayer>();
+    mAudioPlayer->setVolumeIsNormalised(currentProcessor.getVolumeIsNormalised());
     
     int followTransportButtonHeight = 34;
     
@@ -206,4 +207,14 @@ bool SampleItemPanel::keyPressed(KeyPress const & key)
 void SampleItemPanel::setGain(float inGain)
 {
     mAudioPlayer->setGain(inGain);
+}
+
+void SampleItemPanel::setVolumeIsNormalised(bool inVolumeIsNormalised)
+{
+    mAudioPlayer->setVolumeIsNormalised(inVolumeIsNormalised);
+}
+
+void SampleItemPanel::selectOutputDevice(String inDeviceName)
+{
+    mAudioPlayer->selectOutputDevice(inDeviceName);
 }

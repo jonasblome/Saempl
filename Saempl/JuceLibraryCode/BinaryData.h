@@ -14,6 +14,9 @@ namespace BinaryData
     extern const char*   delete_FILL0_wght400_GRAD0_opsz24_png;
     const int            delete_FILL0_wght400_GRAD0_opsz24_pngSize = 198;
 
+    extern const char*   expand_24dp_000000_FILL0_wght400_GRAD0_opsz24_png;
+    const int            expand_24dp_000000_FILL0_wght400_GRAD0_opsz24_pngSize = 1033;
+
     extern const char*   filter_alt_FILL0_wght400_GRAD0_opsz24_png;
     const int            filter_alt_FILL0_wght400_GRAD0_opsz24_pngSize = 314;
 
@@ -54,7 +57,7 @@ namespace BinaryData
     const int            volume_up_FILL0_wght400_GRAD0_opsz24_pngSize = 399;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 15;
+    const int namedResourceListSize = 16;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

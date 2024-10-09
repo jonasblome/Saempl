@@ -14,6 +14,8 @@
             resource="1" file="Assets/add_FILL0_wght400_GRAD0_opsz24.png"/>
       <FILE id="gGbjtY" name="delete_FILL0_wght400_GRAD0_opsz24.png" compile="0"
             resource="1" file="Assets/delete_FILL0_wght400_GRAD0_opsz24.png"/>
+      <FILE id="WujNPk" name="expand_24dp_000000_FILL0_wght400_GRAD0_opsz24.png"
+            compile="0" resource="1" file="Assets/expand_24dp_000000_FILL0_wght400_GRAD0_opsz24.png"/>
       <FILE id="hgeZAR" name="filter_alt_FILL0_wght400_GRAD0_opsz24.png"
             compile="0" resource="1" file="Assets/filter_alt_FILL0_wght400_GRAD0_opsz24.png"/>
       <FILE id="pSG7oF" name="filter_alt_off_FILL0_wght400_GRAD0_opsz24.png"
@@ -50,6 +52,10 @@
             file="Source/BlomeImageButton.cpp"/>
       <FILE id="punEIE" name="BlomeImageButton.h" compile="0" resource="0"
             file="Source/BlomeImageButton.h"/>
+      <FILE id="RXh160" name="BlomeImageComboBox.cpp" compile="1" resource="0"
+            file="Source/BlomeImageComboBox.cpp"/>
+      <FILE id="ltPbUM" name="BlomeImageComboBox.h" compile="0" resource="0"
+            file="Source/BlomeImageComboBox.h"/>
       <FILE id="t2HZdk" name="BlomeFileFilterRuleViewBase.cpp" compile="1"
             resource="0" file="Source/BlomeFileFilterRuleViewBase.cpp"/>
       <FILE id="NrcAkq" name="BlomeFileFilterRuleViewBase.h" compile="0"

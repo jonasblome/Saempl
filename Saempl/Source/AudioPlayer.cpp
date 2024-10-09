@@ -16,6 +16,9 @@ AudioPlayer::AudioPlayer()
     mThread->startThread(Thread::Priority::normal);
     
     // Audio setup
+    currentMaxLevel = 0.0;
+    currentUserLevel = 1.0;
+    currentNormalisationGain = 1.0;
     mFormatManager = std::make_unique<AudioFormatManager>();
     mTransportSource = std::make_unique<AudioTransportSource>();
     mAudioDeviceManager = std::make_unique<AudioDeviceManager>();
@@ -24,7 +27,9 @@ AudioPlayer::AudioPlayer()
     mFormatManager->registerBasicFormats();
     mAudioDeviceManager->addAudioCallback(&*mAudioSourcePlayer);
     mAudioSourcePlayer->setSource(&*mTransportSource);
-    startTimerHz(5);
+    // Start timer to automatically switch audio device along with the current system output
+    // Currently deactivated to enable custom audio output device option
+    // startTimerHz(5);
 }
 
 AudioPlayer::~AudioPlayer()
@@ -115,6 +120,20 @@ bool AudioPlayer::loadURLIntoTransport(URL const & inURL)
                                 &*mThread,                 // This is the background thread to use for reading-ahead
                                 mCurrentAudioFileSource->getAudioFormatReader()->sampleRate);     // Allows for sample rate correction
     
+    // Read max level from file and normalise volume
+    float lowestLeft = 0;
+    float hightestLeft = 0;
+    float lowestRight = 0;
+    float hightestRight = 0;
+    mCurrentAudioFileSource->getAudioFormatReader()->readMaxLevels(0,
+                                                                   mTransportSource->getTotalLength(),
+                                                                   lowestLeft,
+                                                                   hightestLeft,
+                                                                   lowestRight,
+                                                                   hightestRight);
+    currentMaxLevel = juce::jmax<float>(hightestLeft - lowestLeft, hightestRight - lowestRight) / 2.0;
+    setVolumeIsNormalised(mVolumeIsNormalised);
+    
     return true;
 }
 
@@ -147,5 +166,18 @@ void AudioPlayer::initialiseDefaultDevice()
 
 void AudioPlayer::setGain(float inGain)
 {
-    mAudioSourcePlayer->setGain(inGain);
+    currentUserLevel = inGain;
+    mAudioSourcePlayer->setGain(currentUserLevel / currentNormalisationGain);
+}
+
+void AudioPlayer::setVolumeIsNormalised(bool inVolumeIsNormalised)
+{
+    mVolumeIsNormalised = inVolumeIsNormalised;
+    currentNormalisationGain = (mVolumeIsNormalised && currentMaxLevel != 0) ? currentMaxLevel : 1.0;
+    setGain(currentUserLevel);
+}
+
+void AudioPlayer::selectOutputDevice(String inDeviceName)
+{
+    mAudioDeviceManager->initialise(0, 2, nullptr, true, inDeviceName, nullptr);
 }

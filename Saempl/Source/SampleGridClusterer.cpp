@@ -64,16 +64,15 @@ void SampleGridClusterer::run()
             
             featureVector[0] = sample->getLength() / 60 * mFeatureWeights[0];
             featureVector[1] = (sample->getLoudnessLUFS() + 300) / (3 + 300) * mFeatureWeights[1];
-            featureVector[2] = sample->getLoudnessLUFSStart() * mFeatureWeights[2];
-            featureVector[3] = sample->getLoudnessLUFSEnd() * mFeatureWeights[2];
-            featureVector[4] = sample->getZeroCrossingRate() * mFeatureWeights[3];
-            featureVector[5] = (sample->getTempo() + LOWER_BPM_LIMIT) / (UPPER_BPM_LIMIT - LOWER_BPM_LIMIT) * mFeatureWeights[4];
-            featureVector[6] = sample->getKey() * 1.0 / NUM_CHROMA * mFeatureWeights[5];
-            featureVector[7] = sample->getSpectralCentroid() * mFeatureWeights[6];
-            featureVector[8] = sample->getSpectralSpread() * mFeatureWeights[7];
-            featureVector[9] = sample->getSpectralRolloff() * mFeatureWeights[8];
-            featureVector[10] = sample->getSpectralFlux() * mFeatureWeights[9];
-            featureVector[11] = sample->getChromaFlux() * mFeatureWeights[10];
+            featureVector[2] = (sample->getLoudnessLUFSEnd() - sample->getLoudnessLUFSStart()) * mFeatureWeights[2];
+            featureVector[3] = sample->getZeroCrossingRate() * mFeatureWeights[3];
+            featureVector[4] = (sample->getTempo() + LOWER_BPM_LIMIT) / (UPPER_BPM_LIMIT - LOWER_BPM_LIMIT) * mFeatureWeights[4];
+            featureVector[5] = sample->getKey() * 1.0 / NUM_CHROMA * mFeatureWeights[5];
+            featureVector[6] = sample->getSpectralCentroid() * mFeatureWeights[6];
+            featureVector[7] = sample->getSpectralSpread() * mFeatureWeights[7];
+            featureVector[8] = sample->getSpectralRolloff() * mFeatureWeights[8];
+            featureVector[9] = sample->getSpectralFlux() * mFeatureWeights[9];
+            featureVector[10] = sample->getChromaFlux() * mFeatureWeights[10];
             
             std::vector<float> spectralDistribution = sample->getSpectralDistribution();
             for (int sb = 0; sb < NUM_SPECTRAL_BANDS; sb++)

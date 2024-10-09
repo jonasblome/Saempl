@@ -69,6 +69,16 @@ public:
      @param inGain the gain value from 0.0 to 1.0;
      */
     void setGain(float inGain);
+    /**
+     Sets the normalisation of audio playback volume.
+     
+     @param inVolumeIsNormalised whether the volume is normalised or not.
+     */
+    void setVolumeIsNormalised(bool inVolumeIsNormalised);
+    /**
+     Selects an output device for the audio player.
+     */
+    void selectOutputDevice(String inDeviceName);
     
 private:
     std::unique_ptr<TimeSliceThread> mThread;
@@ -77,6 +87,10 @@ private:
     std::unique_ptr<AudioSourcePlayer> mAudioSourcePlayer;
     std::unique_ptr<AudioTransportSource> mTransportSource;
     std::unique_ptr<AudioFormatReaderSource> mCurrentAudioFileSource;
+    bool mVolumeIsNormalised;
+    float currentMaxLevel;
+    float currentUserLevel;
+    float currentNormalisationGain;
     
     void timerCallback() override;
     /**

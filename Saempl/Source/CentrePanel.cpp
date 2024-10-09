@@ -41,6 +41,7 @@ void CentrePanel::setPanelComponents()
 {
     // Add audio player
     mAudioPlayer = std::make_unique<AudioPlayer>();
+    mAudioPlayer->setVolumeIsNormalised(currentProcessor.getVolumeIsNormalised());
     
     // Add panel for sample item view
     mSampleItemPanel = std::make_unique<SampleItemPanel>(currentProcessor);
@@ -56,7 +57,7 @@ void CentrePanel::setPanelComponents()
     
     // Add toggle panel button
     mToggleSampleItemPanelButton = std::make_unique<ToggleButton>("ToggleSampleItemPanel");
-    mToggleSampleItemPanelButton->setTooltip("Toggle visibility of the audio player (T)");
+    mToggleSampleItemPanelButton->setTooltip("Toggle visibility of the audio player (P)");
     mToggleSampleItemPanelButton->onClick = [this] { setSampleItemPanelVisibility(mToggleSampleItemPanelButton->getToggleState()); };
     mToggleSampleItemPanelButton->setToggleState(currentProcessor.getSampleItemPanelIsVisible(), NotificationType::dontSendNotification);
     addAndMakeVisible(*mToggleSampleItemPanelButton);
@@ -146,7 +147,7 @@ bool CentrePanel::keyPressed(KeyPress const & key)
         stopSelectedSample();
         return true;
     }
-    else if (keyCode == 84) // T
+    else if (keyCode == 80) // P
     {
         mToggleSampleItemPanelButton->triggerClick();
         return true;
@@ -160,13 +161,27 @@ bool CentrePanel::keyPressed(KeyPress const & key)
     return pressWasHandled;
 }
 
-void CentrePanel::stopSelectedSample()
-{
-    mAudioPlayer->stop();
-}
-
 void CentrePanel::setGain(float inGain)
 {
     mAudioPlayer->setGain(inGain);
     mSampleItemPanel->setGain(inGain);
+}
+
+void CentrePanel::toggleVolumeIsNormalised()
+{
+    bool volumeIsNormalised = !currentProcessor.getVolumeIsNormalised();
+    currentProcessor.setVolumeIsNormalised(volumeIsNormalised);
+    mAudioPlayer->setVolumeIsNormalised(volumeIsNormalised);
+    mSampleItemPanel->setVolumeIsNormalised(volumeIsNormalised);
+}
+
+void CentrePanel::selectOutputDevice(String inDeviceName)
+{
+    mAudioPlayer->selectOutputDevice(inDeviceName);
+    mSampleItemPanel->selectOutputDevice(inDeviceName);
+}
+
+void CentrePanel::stopSelectedSample()
+{
+    mAudioPlayer->stop();
 }

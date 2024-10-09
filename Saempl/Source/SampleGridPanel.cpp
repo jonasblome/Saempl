@@ -155,7 +155,7 @@ void SampleGridPanel::setPanelComponents()
         viewPosition.addXY(-mGridViewport->getWidth() * 1.0 / 2, -mGridViewport->getHeight() * 1.0 / 2);
         mGridViewport->setViewPosition(viewPosition.roundToInt());
     };
-    mZoomSlider->setTooltip("Scales the size of the grid tiles");
+    mZoomSlider->setTooltip("Scales the size of the grid tiles (+/-)");
     addAndMakeVisible(*mZoomSlider);
     
     // Add grid viewport
@@ -245,6 +245,20 @@ bool SampleGridPanel::keyPressed(KeyPress const & key)
     else if (key.getKeyCode() == 75) // K
     {
         mSampleGrid->playSelectedSample();
+        return true;
+    }
+    else if (keyCode == 43) // +
+    {
+        float currentValue = mZoomSlider->getValue();
+        float newValue = currentValue == 1.0 || currentValue == 0.5 ? 1.0 : 0.5;
+        mZoomSlider->setValue(newValue, NotificationType::sendNotification);
+        return true;
+    }
+    else if (keyCode == 45) // -
+    {
+        float currentValue = mZoomSlider->getValue();
+        float newValue = currentValue == 0.5 || currentValue == 0.0 ? 0.0 : 0.5;
+        mZoomSlider->setValue(newValue, NotificationType::sendNotification);
         return true;
     }
     

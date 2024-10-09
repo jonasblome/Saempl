@@ -151,7 +151,7 @@ public:
      */
     void setFeatureWeights(std::vector<float> inFeatureWeights);
     /**
-     @returns the whether the feature weights changed since the last clustering.
+     @returns whether the feature weights changed since the last clustering.
      */
     bool getFeatureWeightsChanged();
     /**
@@ -160,6 +160,16 @@ public:
      @param inFeatureWeightsChanged whether the feature weights changed since the last clustering.
      */
     void setFeatureWeightsChanged(bool inFeatureWeightsChanged);
+    /**
+     @returns whether the audio playback volume is normalised.
+     */
+    bool getVolumeIsNormalised();
+    /**
+     Sets whether the audio playback volume is normalised.
+     
+     @param inVolumeIsNormalised whether the audio playback volume is normalised.
+     */
+    void setVolumeIsNormalised(bool inVolumeIsNormalised);
     
 private:
     //==============================================================================
@@ -182,6 +192,7 @@ private:
     bool mFollowAudioPlayhead;
     bool mFilterIsActivated;
     bool mFeatureWeightsChanged;
+    bool mVolumeIsNormalised;
     float mSampleGridZoomFactor;
     std::vector<float> mFeatureWeights;
 };

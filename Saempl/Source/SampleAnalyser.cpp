@@ -393,7 +393,7 @@ Array<Array<float>> SampleAnalyser::calculateLogSpectrogram(float& coefficientSu
 {
     // Apply logarithmic frequency pooling
     Array<Array<float>> logSpectrogram;
-    int numPitches = 155;
+    int numPitches = 128;
     int numPitchesPerBand = numPitches / NUM_SPECTRAL_BANDS;
     
     // Loop over all pitch pools

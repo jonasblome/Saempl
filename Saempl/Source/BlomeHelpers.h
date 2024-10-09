@@ -100,17 +100,86 @@ static std::map<int, String> KEY_INDEX_TO_KEY_NAME
 static Array<Array<int>> const KEY_PATTERNS = Array<Array<int>>
 ({
     Array<int>({ 6, 8, 10, 11, 1, 3, 5 }), // Gb
-    Array<int>({ 1, 3, 5, 6, 8, 10, 0 }), // Db
-    Array<int>({ 8, 10, 0, 1, 3, 5, 7 }), // Ab
-    Array<int>({ 3, 5, 7, 8, 10, 0, 2 }), // Eb
-    Array<int>({ 10, 0, 2, 3, 5, 7, 9 }), // Bb
-    Array<int>({ 5, 7, 9, 10, 0, 2, 4 }), // F
-    Array<int>({ 0, 2, 4, 5, 7, 9, 11 }), // C
-    Array<int>({ 7, 9, 11, 0, 2, 4, 6 }), // G
-    Array<int>({ 2, 4, 6, 7, 9, 11, 1 }), // D
-    Array<int>({ 9, 11, 1, 2, 4, 6, 8 }), // A
-    Array<int>({ 4, 6, 8, 9, 11, 1, 3 }), // E
+    Array<int>({ 1, 3, 5, 6, 8, 10, 0 }),  // Db
+    Array<int>({ 8, 10, 0, 1, 3, 5, 7 }),  // Ab
+    Array<int>({ 3, 5, 7, 8, 10, 0, 2 }),  // Eb
+    Array<int>({ 10, 0, 2, 3, 5, 7, 9 }),  // Bb
+    Array<int>({ 5, 7, 9, 10, 0, 2, 4 }),  // F
+    Array<int>({ 0, 2, 4, 5, 7, 9, 11 }),  // C
+    Array<int>({ 7, 9, 11, 0, 2, 4, 6 }),  // G
+    Array<int>({ 2, 4, 6, 7, 9, 11, 1 }),  // D
+    Array<int>({ 9, 11, 1, 2, 4, 6, 8 }),  // A
+    Array<int>({ 4, 6, 8, 9, 11, 1, 3 }),  // E
     Array<int>({ 11, 1, 3, 4, 6, 8, 10 }), // B
+});
+
+// Grid options preset vectors
+static std::vector<float> const GRID_PRESET_HARMONIC = std::vector<float>
+({
+    1.0,  // Length
+    0.0,  // Loudness
+    0.0,  // Dynamic Range
+    1.0,  // Zero Crossing Rate
+    0.5,  // Tempo
+    1.0,  // Key
+    1.0,  // Avg. Frequency
+    1.0,  // Freq. Spread
+    1.0,  // Upper Freq. Rolloff
+    1.0,  // Freq. Flux
+    1.0,  // Harmonic Flux
+    3.0,  // Freq. Distribution
+    4.0,  // Harmonic Distribution
+});
+
+static std::vector<float> const GRID_PRESET_DRUMS = std::vector<float>
+({
+    1.0,  // Length
+    0.0,  // Loudness
+    1.0,  // Dynamic Range
+    1.0,  // Zero Crossing Rate
+    0.0,  // Tempo
+    0.0,  // Key
+    10.0, // Avg. Frequency,
+    1.0,  // Freq. Spread
+    1.0,  // Upper Freq. Rolloff
+    1.0,  // Freq. Flux
+    0.2,  // Harmonic Flux
+    5.0,  // Freq. Distribution
+    0.2,  // Harmonic Distribution
+});
+
+static std::vector<float> const GRID_PRESET_MONOPHONIC = std::vector<float>
+({
+    1.0,  // Length
+    0.0,  // Loudness
+    1.0,  // Dynamic Range
+    1.0,  // Zero Crossing Rate
+    0.5,  // Tempo
+    1.0,  // Key
+    1.0,  // Avg. Frequency
+    1.0,  // Freq. Spread
+    1.0,  // Upper Freq. Rolloff
+    1.0,  // Freq. Flux
+    1.0,  // Harmonic Flux
+    1.0,  // Freq. Distribution
+    1.0,  // Harmonic Distribution
+});
+
+static std::vector<float> const GRID_PRESET_FOLEY = std::vector<float>
+({
+    1.0,  // Length
+    0.0,  // Loudness
+    1.0,  // Dynamic Range
+    1.0,  // Zero Crossing Rate
+    0.0,  // Tempo
+    0.0,  // Key
+    1.0,  // Avg. Frequency
+    1.0,  // Freq. Spread
+    1.0,  // Upper Freq. Rolloff
+    1.0,  // Freq. Flux
+    0.0,  // Harmonic Flux
+    4.0,  // Freq. Distribution
+    0.0,  // Harmonic Distribution
 });
 
 // Sample library collection types

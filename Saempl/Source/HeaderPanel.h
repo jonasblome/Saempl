@@ -49,10 +49,17 @@ private:
     std::unique_ptr<BlomeImageButton> mChangeFilterButton;
     std::unique_ptr<BlomeImageButton> mToggleFilterButton;
     std::unique_ptr<BlomeImageButton> mRandomSampleButton;
+    std::unique_ptr<BlomeImageButton> mNormaliseVolumeButton;
+    std::unique_ptr<BlomeImageButton> mChooseOutputDeviceButton;
     std::unique_ptr<Slider> mGainSlider;
     std::unique_ptr<BlomeTransparentButton> mShowAboutPanelButton;
+    std::unique_ptr<AudioDeviceManager> mAudioDeviceManager;
     static int const logoWidth = 110;
+    static int const logoMarginRight = 20;
     static int const sliderWidth = 100;
+    static int const connectionLineWidth = 10;
+    static int const connectionLineHeight = 2;
+    constexpr static float const connectionLineRadius = 1.0;
     
     void paint(Graphics& g) override;
     void setRefreshLibraryButton(int buttonWidth, int x);
@@ -63,6 +70,8 @@ private:
     void setChangeFilterButton(int buttonWidth, int x);
     void setToggleFilterButton(int buttonWidth, int x);
     void setRandomSampleButton(int buttonWidth, int x);
+    void setNormaliseVolumeButton(int buttonWidth);
+    void setChooseOutputDeviceButton(int buttonWidth);
     void setGainSlider();
     void setShowAboutPanelButton();
     void setPanelComponents() override;
@@ -71,6 +80,10 @@ private:
      */
     void showLibraryChooser();
     void resizePanelComponents() override;
+    /**
+     Selects an output device for the audio players.
+     */
+    void selectOutputDevice(String inDeviceName);
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HeaderPanel);
 };

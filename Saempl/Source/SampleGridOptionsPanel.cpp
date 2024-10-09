@@ -46,27 +46,28 @@ void SampleGridOptionsPanel::paint(Graphics& g)
     g.setColour(style->COLOUR_ACCENT_MEDIUM);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), style->CORNER_SIZE_MEDIUM);
     
-    // Draw line
-    g.setColour(style->COLOUR_ACCENT_DARK);
-    g.drawLine(style->PANEL_MARGIN,
-               75,
-               getWidth() - style->PANEL_MARGIN,
-               75);
-    
     // Draw explanation text
     g.setFont(style->FONT_SMALL_BOLD);
     g.setColour(style->COLOUR_ACCENT_LIGHT);
-    g.drawFittedText(String("Change how much the clustering focuses on each property:\n\n")
+    g.drawFittedText(String("Change how much the clustering focuses on each property or choose a preset:\n\n")
                      + String("(Double click sliders to reset to default value)"),
                      style->PANEL_MARGIN,
                      style->PANEL_MARGIN,
                      getWidth() - style->PANEL_MARGIN * 2.0,
-                     70,
+                     introTextHeight,
                      Justification::topLeft, 10);
     
-    int y = style->PANEL_MARGIN * 2.0 + 70;
+    // Draw separation line
+    g.setColour(style->COLOUR_ACCENT_DARK);
+    g.drawLine(style->PANEL_MARGIN,
+               introTextHeight + 5,
+               getWidth() - style->PANEL_MARGIN,
+               introTextHeight + 5);
     
     // Draw slider annotations
+    g.setColour(style->COLOUR_ACCENT_LIGHT);
+    int y = style->PANEL_MARGIN * 3.0 + introTextHeight + style->PANEL_TITLE_HEIGHT * 0.5;
+    
     g.drawFittedText("Length:",
                      style->PANEL_MARGIN,
                      y,
@@ -173,10 +174,85 @@ void SampleGridOptionsPanel::paint(Graphics& g)
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
 }
 
+void SampleGridOptionsPanel::applyPresetToSliders(std::vector<float> inPresetValues)
+{
+    mLengthSlider->setValue(inPresetValues[0]);
+    mLoudnessSlider->setValue(inPresetValues[1]);
+    mDynamicRangeSlider->setValue(inPresetValues[2]);
+    mZeroCrossingRateSlider->setValue(inPresetValues[3]);
+    mTempoSlider->setValue(inPresetValues[4]);
+    mKeySlider->setValue(inPresetValues[5]);
+    mSpectralCentroidSlider->setValue(inPresetValues[6]);
+    mSpectralSpreadSlider->setValue(inPresetValues[7]);
+    mSpectralRolloffSlider->setValue(inPresetValues[8]);
+    mSpectralFluxSlider->setValue(inPresetValues[9]);
+    mChromaFluxSlider->setValue(inPresetValues[10]);
+    mSpectralDistributionSlider->setValue(inPresetValues[11]);
+    mChromaDistributionSlider->setValue(inPresetValues[12]);
+}
+
 void SampleGridOptionsPanel::setPanelComponents()
 {
     std::vector<float> initialWeights = currentProcessor.getFeatureWeights();
-    int y = style->PANEL_MARGIN * 2.0 + 70;
+    
+    // Add preset buttons
+    int buttonWidth = 60;
+    int y = style->PANEL_MARGIN * 2.0 + introTextHeight;
+    
+    // Adds harmonic preset button
+    mHarmonicPresetButton = std::make_unique<TextButton>("Harmonic");
+    mHarmonicPresetButton->setBounds(style->PANEL_MARGIN * 0.5,
+                                     y,
+                                     buttonWidth,
+                                     style->PANEL_TITLE_HEIGHT * 0.5);
+    mHarmonicPresetButton->onClick = [this]
+    {
+        applyPresetToSliders(GRID_PRESET_HARMONIC);
+    };
+    mHarmonicPresetButton->setTooltip("A preset to optimise clustering for harmonic loops");
+    addAndMakeVisible(*mHarmonicPresetButton);
+    
+    // Adds drums preset button
+    mDrumsPresetButton = std::make_unique<TextButton>("Drums");
+    mDrumsPresetButton->setBounds(style->PANEL_MARGIN * 1.0 + buttonWidth,
+                                  y,
+                                  buttonWidth,
+                                  style->PANEL_TITLE_HEIGHT * 0.5);
+    mDrumsPresetButton->onClick = [this]
+    {
+        applyPresetToSliders(GRID_PRESET_DRUMS);
+    };
+    mDrumsPresetButton->setTooltip("A preset to optimise clustering for drum one-shots");
+    addAndMakeVisible(*mDrumsPresetButton);
+    
+    // Adds solo instrument preset button
+    mMonophonicPresetButton = std::make_unique<TextButton>("Monoph.");
+    mMonophonicPresetButton->setBounds(style->PANEL_MARGIN * 1.5 + buttonWidth * 2,
+                                       y,
+                                       buttonWidth,
+                                       style->PANEL_TITLE_HEIGHT * 0.5);
+    mMonophonicPresetButton->onClick = [this]
+    {
+        applyPresetToSliders(GRID_PRESET_MONOPHONIC);
+    };
+    mMonophonicPresetButton->setTooltip("A preset to optimise clustering for monophonic samples");
+    addAndMakeVisible(*mMonophonicPresetButton);
+    
+    // Adds foley preset button
+    mFoleyPresetButton = std::make_unique<TextButton>("Foley");
+    mFoleyPresetButton->setBounds(style->PANEL_MARGIN * 2.0 + buttonWidth * 3,
+                                  y,
+                                  buttonWidth,
+                                  style->PANEL_TITLE_HEIGHT * 0.5);
+    mFoleyPresetButton->onClick = [this]
+    {
+        applyPresetToSliders(GRID_PRESET_FOLEY);
+    };
+    mFoleyPresetButton->setTooltip("A preset to optimise clustering for foley samples");
+    addAndMakeVisible(*mFoleyPresetButton);
+    
+    // Add sliders
+    y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds length slider
     mLengthSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::NoTextBox);

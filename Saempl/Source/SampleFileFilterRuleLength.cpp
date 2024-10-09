@@ -24,7 +24,7 @@ SampleFileFilterRuleLength::~SampleFileFilterRuleLength()
 
 bool SampleFileFilterRuleLength::matches(SampleItem const & inSampleItem)
 {
-    int propertyValue = inSampleItem.getLength();
+    double propertyValue = inSampleItem.getLength();
     
     switch (mCompareOperator)
     {

@@ -65,7 +65,7 @@ struct BlomeStyling
     int const SAMPLE_NAVIGATION_PANEL_HEIGHT = 520;
     
     int const GRID_OPTIONS_PANEL_WIDTH = 260;
-    int const GRID_OPTIONS_PANEL_HEIGHT = 470;
+    int const GRID_OPTIONS_PANEL_HEIGHT = 499;
     
     int const SAMPLE_ITEM_PANEL_WIDTH = SAMPLE_NAVIGATION_PANEL_WIDTH;
     int const SAMPLE_ITEM_PANEL_HEIGHT =

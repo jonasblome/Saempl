@@ -16,6 +16,7 @@ sampleLibrary(currentProcessor.getSampleLibrary()),
 centrePanel(inCentrePanel)
 {
     setSize(style->HEADER_PANEL_WIDTH, style->HEADER_PANEL_HEIGHT);
+    mAudioDeviceManager = std::make_unique<AudioDeviceManager>();
     setPanelComponents();
 }
 
@@ -36,23 +37,25 @@ void HeaderPanel::paint(Graphics& g)
     
     // Draw filter on/off button line
     g.setColour(style->COLOUR_ACCENT_DARK);
-    g.fillRoundedRectangle(263, getHeight() / 2.0 - 1, 10, 2, 1.0);
+    g.fillRoundedRectangle(263,
+                           getHeight() / 2.0 - 1,
+                           connectionLineWidth,
+                           connectionLineHeight,
+                           connectionLineRadius);
     
-    // Draw volume icon
+    // Draw volume normalisation on/off button line
     g.setColour(style->COLOUR_ACCENT_DARK);
-    Rectangle<float> volumeIconArea(getWidth() - sliderWidth - logoWidth - 20 - style->PANEL_MARGIN * 4.0 - (getHeight() - style->PANEL_MARGIN * 4.0),
-                                    style->PANEL_MARGIN * 1.7,
-                                    getHeight() - style->PANEL_MARGIN * 3.4,
-                                    getHeight() - style->PANEL_MARGIN * 3.4);
-    g.drawImage(ImageCache::getFromMemory(BinaryData::volume_up_FILL0_wght400_GRAD0_opsz24_png,
-                                          BinaryData::volume_up_FILL0_wght400_GRAD0_opsz24_pngSize),
-                volumeIconArea);
+    g.fillRoundedRectangle(getWidth() - 295,
+                           getHeight() / 2.0 - 1,
+                           connectionLineWidth,
+                           connectionLineHeight,
+                           connectionLineRadius);
     
     // Draw logo text
     g.setColour(style->COLOUR_ACCENT_DARK);
     g.setFont(style->FONT_MEDIUM_BOLD);
     g.drawFittedText("Blome Audio",
-                     getWidth() - logoWidth - 20 - style->PANEL_MARGIN,
+                     getWidth() - logoWidth - logoMarginRight - style->PANEL_MARGIN,
                      style->PANEL_MARGIN,
                      logoWidth,
                      getHeight() - style->PANEL_MARGIN * 1.75,
@@ -481,6 +484,92 @@ void HeaderPanel::setRandomSampleButton(int buttonWidth, int x)
     addAndMakeVisible(*mRandomSampleButton);
 }
 
+void HeaderPanel::setNormaliseVolumeButton(int buttonWidth)
+{
+    mNormaliseVolumeButton = std::make_unique<BlomeImageButton>("NormaliseVolumeButton", false);
+    mNormaliseVolumeButton->setImages(false,
+                                      true,
+                                      true,
+                                      ImageCache::getFromMemory(BinaryData::expand_24dp_000000_FILL0_wght400_GRAD0_opsz24_png,
+                                                                BinaryData::expand_24dp_000000_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                      currentProcessor.getVolumeIsNormalised()
+                                      ? style->BUTTON_IS_DEFAULT_ALPHA
+                                      : style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                      style->COLOUR_HEADER_BUTTONS,
+                                      Image(),
+                                      currentProcessor.getVolumeIsNormalised()
+                                      ? style->BUTTON_IS_OVER_ALPHA
+                                      : style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                      style->COLOUR_HEADER_BUTTONS,
+                                      Image(),
+                                      currentProcessor.getVolumeIsNormalised()
+                                      ? style->BUTTON_IS_DOWN_ALPHA
+                                      : style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                      style->COLOUR_HEADER_BUTTONS);
+    mNormaliseVolumeButton->setSize(buttonWidth, buttonWidth);
+    mNormaliseVolumeButton->setTooltip("Normalises the volume of the audio playback (N)");
+    mNormaliseVolumeButton->onClick = [this]
+    {
+        centrePanel.toggleVolumeIsNormalised();
+        
+        mNormaliseVolumeButton->setImages(false,
+                                          true,
+                                          true,
+                                          ImageCache::getFromMemory(BinaryData::expand_24dp_000000_FILL0_wght400_GRAD0_opsz24_png,
+                                                                    BinaryData::expand_24dp_000000_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                          currentProcessor.getVolumeIsNormalised()
+                                          ? style->BUTTON_IS_DEFAULT_ALPHA
+                                          : style->BUTTON_IS_DEFAULT_DEACTIVATED_ALPHA,
+                                          style->COLOUR_HEADER_BUTTONS,
+                                          Image(),
+                                          currentProcessor.getVolumeIsNormalised()
+                                          ? style->BUTTON_IS_OVER_ALPHA
+                                          : style->BUTTON_IS_OVER_DEACTIVATED_ALPHA,
+                                          style->COLOUR_HEADER_BUTTONS,
+                                          Image(),
+                                          currentProcessor.getVolumeIsNormalised()
+                                          ? style->BUTTON_IS_DOWN_ALPHA
+                                          : style->BUTTON_IS_DOWN_DEACTIVATED_ALPHA,
+                                          style->COLOUR_HEADER_BUTTONS);
+    };
+    addAndMakeVisible(*mNormaliseVolumeButton);
+}
+
+void HeaderPanel::setChooseOutputDeviceButton(int buttonWidth)
+{
+    mChooseOutputDeviceButton = std::make_unique<BlomeImageButton>("ChooseOutputDeviceButton", false);
+    mChooseOutputDeviceButton->setImages(false,
+                                         true,
+                                         true,
+                                         ImageCache::getFromMemory(BinaryData::volume_up_FILL0_wght400_GRAD0_opsz24_png,
+                                                                   BinaryData::volume_up_FILL0_wght400_GRAD0_opsz24_pngSize),
+                                         style->BUTTON_IS_DEFAULT_ALPHA,
+                                         style->COLOUR_HEADER_BUTTONS,
+                                         Image(),
+                                         style->BUTTON_IS_OVER_ALPHA,
+                                         style->COLOUR_HEADER_BUTTONS,
+                                         Image(),
+                                         style->BUTTON_IS_DOWN_ALPHA,
+                                         style->COLOUR_HEADER_BUTTONS);
+    mChooseOutputDeviceButton->setSize(buttonWidth, buttonWidth);
+    mChooseOutputDeviceButton->setTooltip("Choose the output device for audio playback");
+    mChooseOutputDeviceButton->onClick = [this]
+    {
+        PopupMenu popupMenu;
+        
+        // Add all output devices to popup menu
+        for (AudioIODeviceType* deviceType : mAudioDeviceManager->getAvailableDeviceTypes())
+        {
+            for(String deviceName : deviceType->getDeviceNames())
+            {
+                popupMenu.addItem(deviceName, [this, deviceName] { selectOutputDevice(deviceName); });
+            }
+        }
+        popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
+    };
+    addAndMakeVisible(*mChooseOutputDeviceButton);
+}
+
 void HeaderPanel::setGainSlider()
 {
     // Add zoom slider
@@ -492,7 +581,7 @@ void HeaderPanel::setGainSlider()
         centrePanel.setGain(mGainSlider->getValue());
     };
     mGainSlider->setSkewFactor(0.7);
-    mGainSlider->setTooltip("Sets the gain of the audio playback");
+    mGainSlider->setTooltip("Sets the gain of the audio playback (after the normalisation)");
     addAndMakeVisible(*mGainSlider);
 }
 
@@ -545,6 +634,12 @@ void HeaderPanel::setPanelComponents()
     // Add button to select random sample on the table panel
     setRandomSampleButton(buttonWidth, x);
     
+    // Add button to normalise playback volume
+    setNormaliseVolumeButton(buttonWidth - 1);
+    
+    // Add combo box to choose output device
+    setChooseOutputDeviceButton(buttonWidth);
+    
     // Add gain slider
     setGainSlider();
     
@@ -582,27 +677,7 @@ bool HeaderPanel::keyPressed(KeyPress const & key)
 {
     int keyCode = key.getKeyCode();
     
-    if (keyCode == 83) // S
-    {
-        mRandomSampleButton->triggerClick();
-        return true;
-    }
-    else if (keyCode == 82) // R
-    {
-        mRefreshLibraryButton->triggerClick();
-        return true;
-    }
-    else if (keyCode == 70) // F
-    {
-        mToggleFilterButton->triggerClick();
-        return true;
-    }
-    else if (keyCode == 68) // D
-    {
-        mChooseLibraryDirectoryButton->triggerClick();
-        return true;
-    }
-    else if (keyCode == 49) // 1
+    if (keyCode == 49) // 1
     {
         mToggleSampleFolderPanelButton->triggerClick();
         return true;
@@ -617,15 +692,68 @@ bool HeaderPanel::keyPressed(KeyPress const & key)
         mToggleSampleGridPanelButton->triggerClick();
         return true;
     }
+    else if (keyCode == 68) // D
+    {
+        mChooseLibraryDirectoryButton->triggerClick();
+        return true;
+    }
+    else if (keyCode == 70) // F
+    {
+        mToggleFilterButton->triggerClick();
+        return true;
+    }
+    else if (keyCode == 78) // N
+    {
+        mNormaliseVolumeButton->triggerClick();
+        return true;
+    }
+    else if (keyCode == 82) // R
+    {
+        mRefreshLibraryButton->triggerClick();
+        return true;
+    }
+    else if (keyCode == 83) // S
+    {
+        mRandomSampleButton->triggerClick();
+        return true;
+    }
     
     return false;
 }
 
 void HeaderPanel::resizePanelComponents()
 {
+    int buttonWidth = getHeight() - style->PANEL_MARGIN * 2.0;
+    
+    if (mNormaliseVolumeButton != nullptr)
+    {
+        mNormaliseVolumeButton->setTopLeftPosition(getWidth()
+                                                   - logoMarginRight
+                                                   - logoWidth
+                                                   - sliderWidth
+                                                   - style->PANEL_MARGIN * 3.5
+                                                   - buttonWidth * 2,
+                                                   style->PANEL_MARGIN + 2);
+    }
+    
+    if (mChooseOutputDeviceButton != nullptr)
+    {
+        mChooseOutputDeviceButton->setTopLeftPosition(getWidth()
+                                                      - logoMarginRight
+                                                      - logoWidth
+                                                      - sliderWidth
+                                                      - style->PANEL_MARGIN * 2.5
+                                                      - buttonWidth,
+                                                      style->PANEL_MARGIN);
+    }
+    
     if (mGainSlider != nullptr)
     {
-        mGainSlider->setBounds(getWidth() - logoWidth - sliderWidth - 20 - style->PANEL_MARGIN * 3,
+        mGainSlider->setBounds(getWidth()
+                               - logoMarginRight
+                               - logoWidth
+                               - sliderWidth
+                               - style->PANEL_MARGIN * 3,
                                style->PANEL_MARGIN,
                                sliderWidth,
                                getHeight() - style->PANEL_MARGIN * 1.75);
@@ -633,9 +761,17 @@ void HeaderPanel::resizePanelComponents()
     
     if (mShowAboutPanelButton != nullptr)
     {
-        mShowAboutPanelButton->setBounds(getWidth() - logoWidth - 20 - style->PANEL_MARGIN,
+        mShowAboutPanelButton->setBounds(getWidth()
+                                         - logoMarginRight
+                                         - logoWidth
+                                         - style->PANEL_MARGIN,
                                          style->PANEL_MARGIN,
                                          logoWidth,
                                          getHeight() - style->PANEL_MARGIN * 1.75);
     }
+}
+
+void HeaderPanel::selectOutputDevice(String inDeviceName)
+{
+    centrePanel.selectOutputDevice(inDeviceName);
 }

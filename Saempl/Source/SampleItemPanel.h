@@ -51,6 +51,16 @@ public:
      @param inGain the gain value from 0.0 to 1.0;
      */
     void setGain(float inGain);
+    /**
+     Sets the normalisation of audio playback volume.
+     
+     @param inVolumeIsNormalised whether the volume is normalised or not.
+     */
+    void setVolumeIsNormalised(bool inVolumeIsNormalised);
+    /**
+     Selects an output device for the audio player object.
+     */
+    void selectOutputDevice(String inDeviceName);
     
 private:
     SampleLibrary& sampleLibrary;

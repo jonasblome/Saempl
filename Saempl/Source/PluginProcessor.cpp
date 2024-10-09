@@ -31,9 +31,9 @@ SaemplAudioProcessor::SaemplAudioProcessor()
     mFollowAudioPlayhead = false;
     mFilterIsActivated = true;
     mFeatureWeightsChanged = true;
+    mVolumeIsNormalised = false;
     mSampleGridZoomFactor = 0.0;
-    mFeatureWeights = std::vector<float>(NUM_FEATURES + 1);
-    std::fill(mFeatureWeights.begin(), mFeatureWeights.end(), 1.0);
+    mFeatureWeights = GRID_PRESET_HARMONIC;
 }
 
 SaemplAudioProcessor::~SaemplAudioProcessor()
@@ -200,6 +200,7 @@ void SaemplAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
     stateInfoBody->setAttribute("FollowAudioPlayhead", mFollowAudioPlayhead);
     stateInfoBody->setAttribute("SampleGridZoomFactor", mSampleGridZoomFactor);
     stateInfoBody->setAttribute("LastOpenedLibraryPath", mLastOpenedLibraryPath);
+    stateInfoBody->setAttribute("VolumeIsNormalised", mVolumeIsNormalised);
     
     // Storing feature weights
     for (int fw = 0; fw < mFeatureWeights.size(); fw++)
@@ -302,6 +303,7 @@ void SaemplAudioProcessor::setStateInformation(void const * data, int sizeInByte
             mFollowAudioPlayhead = stateInfoBody->getBoolAttribute("FollowAudioPlayhead");
             mSampleGridZoomFactor = stateInfoBody->getDoubleAttribute("SampleGridZoomFactor");
             mLastOpenedLibraryPath = stateInfoBody->getStringAttribute("LastOpenedLibraryPath");
+            mVolumeIsNormalised = stateInfoBody->getBoolAttribute("VolumeIsNormalised");
             
             for (int fw = 0; fw < mFeatureWeights.size(); fw++)
             {
@@ -515,4 +517,14 @@ bool SaemplAudioProcessor::getFeatureWeightsChanged()
 void SaemplAudioProcessor::setFeatureWeightsChanged(bool inFeatureWeightsChanged)
 {
     mFeatureWeightsChanged = inFeatureWeightsChanged;
+}
+
+bool SaemplAudioProcessor::getVolumeIsNormalised()
+{
+    return mVolumeIsNormalised;
+}
+
+void SaemplAudioProcessor::setVolumeIsNormalised(bool inVolumeIsNormalised)
+{
+    mVolumeIsNormalised = inVolumeIsNormalised;
 }

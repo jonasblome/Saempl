@@ -25,6 +25,10 @@ public:
     ~SampleGridOptionsPanel();
     
 private:
+    std::unique_ptr<TextButton> mHarmonicPresetButton;
+    std::unique_ptr<TextButton> mDrumsPresetButton;
+    std::unique_ptr<TextButton> mMonophonicPresetButton;
+    std::unique_ptr<TextButton> mFoleyPresetButton;
     std::unique_ptr<Slider> mLengthSlider;
     std::unique_ptr<Slider> mLoudnessSlider;
     std::unique_ptr<Slider> mDynamicRangeSlider;
@@ -39,9 +43,12 @@ private:
     std::unique_ptr<Slider> mSpectralDistributionSlider;
     std::unique_ptr<Slider> mChromaDistributionSlider;
     static int const labelWidth = 100;
+    static int const introTextHeight = 70;
     
     void paint(Graphics& g) override;
-    void setPanelComponents() override;
+    void applyPresetToSliders(std::vector<float> inPresetValues);
+    
+void setPanelComponents() override;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleGridOptionsPanel);
 };

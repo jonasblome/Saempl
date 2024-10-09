@@ -48,6 +48,14 @@ public:
      @param inGain the gain value from 0.0 to 1.0;
      */
     void setGain(float inGain);
+    /**
+     Toggles the normalisation of audio playback volume.
+     */
+    void toggleVolumeIsNormalised();
+    /**
+     Selects an output device for the audio player objects.
+     */
+    void selectOutputDevice(String inDeviceName);
     
 private:
     std::unique_ptr<AudioPlayer> mAudioPlayer;
