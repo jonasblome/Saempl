@@ -114,25 +114,25 @@ bool AudioPlayer::loadURLIntoTransport(URL const & inURL)
     
     mCurrentAudioFileSource = std::make_unique<AudioFormatReaderSource>(reader.release(), true);
     
-    // Plug new audio source into our transport source
-    mTransportSource->setSource(mCurrentAudioFileSource.get(),
-                                32768,                   // Tells it to buffer this many samples ahead
-                                &*mThread,                 // This is the background thread to use for reading-ahead
-                                mCurrentAudioFileSource->getAudioFormatReader()->sampleRate);     // Allows for sample rate correction
-    
     // Read max level from file and normalise volume
     float lowestLeft = 0;
     float hightestLeft = 0;
     float lowestRight = 0;
     float hightestRight = 0;
     mCurrentAudioFileSource->getAudioFormatReader()->readMaxLevels(0,
-                                                                   mTransportSource->getTotalLength(),
+                                                                   mCurrentAudioFileSource->getTotalLength(),
                                                                    lowestLeft,
                                                                    hightestLeft,
                                                                    lowestRight,
                                                                    hightestRight);
     currentMaxLevel = juce::jmax<float>(hightestLeft - lowestLeft, hightestRight - lowestRight) / 2.0;
     setVolumeIsNormalised(mVolumeIsNormalised);
+    
+    // Plug new audio source into our transport source
+    mTransportSource->setSource(mCurrentAudioFileSource.get(),
+                                32768,                   // Tells it to buffer this many samples ahead
+                                &*mThread,                 // This is the background thread to use for reading-ahead
+                                mCurrentAudioFileSource->getAudioFormatReader()->sampleRate);     // Allows for sample rate correction
     
     return true;
 }
