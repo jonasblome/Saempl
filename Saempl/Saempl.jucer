@@ -233,6 +233,9 @@
             file="Source/SampleGridClusterer.cpp"/>
       <FILE id="SZ8uQc" name="SampleGridClusterer.h" compile="0" resource="0"
             file="Source/SampleGridClusterer.h"/>
+      <FILE id="y468O7" name="SampleSwapJob.cpp" compile="1" resource="0"
+            file="Source/SampleSwapJob.cpp"/>
+      <FILE id="iR0rfc" name="SampleSwapJob.h" compile="0" resource="0" file="Source/SampleSwapJob.h"/>
     </GROUP>
     <GROUP id="{FD25D35B-6639-E2CB-3CB8-A90791DF69A0}" name="Source">
       <FILE id="n9l05k" name="PluginProcessor.cpp" compile="1" resource="0"

@@ -51,14 +51,15 @@ void AboutPanel::paint(Graphics& g)
     g.setFont(style->FONT_SMALL_BOLD);
     g.drawFittedText(String("\n")
                      + "Developed by Jonas Blome"
-                     + String("\n") + "Copyleft Saempl 2024"
-                     + String("\n") + "Email: jonas.blome@gmx.de"
-                     + String("\n") + "GitHub: https://github.com/jonasblome"
+                     + String("\n") + "Copyleft @Saempl 2024"
+                  // + String("\n") + "Email: jonas.blome@gmx.de"
+                  // + String("\n") + "GitHub: https://github.com/jonasblome"
                      + String("\n")
                      + String("\n") + "Short Intructions:"
                      + String("\n") + " - Hover over buttons and sliders to get explanations"
                      + String("\n") + " - Press Enter to load selected samples into the preview"
-                     + String("\n") + " - Drag and drop samples into Favourites or into your DAW",
+                     + String("\n") + " - Press K to start and L to stop quick preview of a selected sample"
+                     + String("\n") + " - Drag and drop samples into \"Favourites\" or into your DAW",
                      textBounds.removeFromBottom(getHeight() - 60),
                      Justification::left, 10);
 }
