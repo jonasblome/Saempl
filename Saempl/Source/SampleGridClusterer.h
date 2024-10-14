@@ -45,20 +45,19 @@ public:
     void setFeatureWeights(std::vector<float> inFeatureWeights);
     
 private:
-    constexpr static float const initialRadiusFactor = 0.5;
-    constexpr static float const radiusDecay = 0.975;
+    constexpr static float const initialRadiusFactor = 0.5; // Keep <= 0.5 to not waste time
     constexpr static float const endRadius = 1.0;
     constexpr static float const weightHole = 0.01;
     constexpr static float const weightTile = 1.0;
-    constexpr static float const sampleFactor = 2.0;
+    constexpr static float const sampleFactor = 2.0; // How often the tiles are swapped per radius reduction
     static int const maxSwapPositions = 9;
     static int const QUANT = 2048;
-    Array<int> swapPositions;
-    Array<SampleItem*> swappedElements;
-    Array<std::vector<float>> mFeatureVectors;
-    Array<std::vector<float>> mGridVectors;
-    Array<Array<float>> mDistanceMatrix;
-    Array<Array<int>> mDistanceMatrixNormalised;
+    std::vector<int> swapPositions;
+    std::vector<SampleItem*> swappedElements;
+    std::vector<std::vector<float>> mSwappedFeatureVectors;
+    std::vector<std::vector<float>> mGridVectorsAtSwapPosition;
+    std::vector<std::vector<float>> mDistanceMatrix;
+    std::vector<std::vector<int>> mDistanceMatrixNormalised;
     OwnedArray<SampleItem>& sampleItems;
     std::vector<float> mFeatureWeights;
     int rows;
@@ -78,7 +77,7 @@ private:
      @param numDimensions the number of dimensions in a feature vector.
      @param weights the weights for the grid positions.
      */
-    void copyFeatureVectorsToGrid(Array<std::vector<float>>& grid, int numDimensions, Array<float>& weights);
+    void copyFeatureVectorsToGrid(std::vector<std::vector<float>>& grid, int numDimensions, std::vector<float>& weights);
     /**
      Filters the grid's vectors horizontally with a low-pass filter, wrapping the grid around the edges.
      
@@ -90,7 +89,7 @@ private:
      
      @returns the filtered grid vectors.
      */
-    Array<std::vector<float>> filterHorizontallyWrap(Array<std::vector<float>>& inGrid,
+    std::vector<std::vector<float>> filterHorizontallyWrap(std::vector<std::vector<float>>& inGrid,
                                                      int rows,
                                                      int columns,
                                                      int numDimensions,
@@ -106,7 +105,7 @@ private:
      
      @returns the filtered grid vectors.
      */
-    Array<std::vector<float>> filterVerticallyWrap(Array<std::vector<float>>& inGrid,
+    std::vector<std::vector<float>> filterVerticallyWrap(std::vector<std::vector<float>>& inGrid,
                                                    int rows,
                                                    int columns,
                                                    int numDimensions,
@@ -121,7 +120,7 @@ private:
      
      @returns the filtered weights.
      */
-    Array<float> filterHorizontallyWrap(Array<float>& inWeights,
+    std::vector<float> filterHorizontallyWrap(std::vector<float>& inWeights,
                                         int rows,
                                         int columns,
                                         int filterSize);
@@ -135,7 +134,7 @@ private:
      
      @returns the filtered weights.
      */
-    Array<float> filterVerticallyWrap(Array<float>& inWeights,
+    std::vector<float> filterVerticallyWrap(std::vector<float>& inWeights,
                                       int rows,
                                       int columns,
                                       int filterSize);
@@ -150,7 +149,7 @@ private:
      
      @returns the filtered grid vectors.
      */
-    Array<std::vector<float>> filterHorizontallyMirror(Array<std::vector<float>>& inGrid,
+    std::vector<std::vector<float>> filterHorizontallyMirror(std::vector<std::vector<float>>& inGrid,
                                                        int rows,
                                                        int columns,
                                                        int numDimensions,
@@ -166,7 +165,7 @@ private:
      
      @returns the filtered grid vectors.
      */
-    Array<std::vector<float>> filterVerticallyMirror(Array<std::vector<float>>& inGrid,
+    std::vector<std::vector<float>> filterVerticallyMirror(std::vector<std::vector<float>>& inGrid,
                                                      int rows,
                                                      int columns,
                                                      int numDimensions,
@@ -181,7 +180,7 @@ private:
      
      @returns the filtered weights.
      */
-    Array<float> filterHorizontallyMirror(Array<float>& inWeights,
+    std::vector<float> filterHorizontallyMirror(std::vector<float>& inWeights,
                                           int rows,
                                           int columns,
                                           int filterSize);
@@ -195,7 +194,7 @@ private:
      
      @returns the filtered weights.
      */
-    Array<float> filterVerticallyMirror(Array<float>& inWeights,
+    std::vector<float> filterVerticallyMirror(std::vector<float>& inWeights,
                                         int rows,
                                         int columns,
                                         int filterSize);
@@ -208,7 +207,7 @@ private:
      @param rows the number of rows in the grid.
      @param columns the number of columns in the grid.
      */
-    void checkRandomSwaps(int radius, Array<std::vector<float>>& grid, int rows, int columns);
+    void checkRandomSwaps(int radius, std::vector<std::vector<float>>& grid, int rows, int columns);
     /**
      Chooses a random position on the grid and finds a set of random positions within a given area around that initial position,
      while wrapping the grid around the edges.
@@ -222,8 +221,8 @@ private:
      
      @returns the amound of swaps.
      */
-    int findSwapPositionsWrap(Array<int>& swapAreaIndices,
-                              Array<int>& swapPositions,
+    int findSwapPositionsWrap(std::vector<int>& swapAreaIndices,
+                              std::vector<int>& swapPositions,
                               int swapAreaWidth,
                               int swapAreaHeight,
                               int rows,
@@ -241,8 +240,8 @@ private:
      
      @returns the amound of swaps.
      */
-    int findSwapPositions(Array<int>& swapAreaIndices,
-                          Array<int>& swapPositions,
+    int findSwapPositions(std::vector<int>& swapAreaIndices,
+                          std::vector<int>& swapPositions,
                           int swapAreaWidth,
                           int swapAreaHeight,
                           int rows,
@@ -254,7 +253,7 @@ private:
      @param numSwapPositions the number of swaps to perform.
      @param grid the grid of vectors to cluster.
      */
-    void doSwaps(Array<int>& swapPositions, int numSwapPositions, Array<std::vector<float>>& grid);
+    void doSwaps(std::vector<int>& swapPositions, int numSwapPositions, std::vector<std::vector<float>>& grid);
     /**
      Calculates a normalised distance matrix between all vectors that are in the swap positions and the current vectors in the grid.
      
@@ -262,8 +261,8 @@ private:
      @param inGridVectors the vectors in the current grid state.
      @param size the size of the grid.
      */
-    Array<Array<int>> calculateNormalisedDistanceMatrix(Array<std::vector<float>>& inFeatureVectors,
-                                                        Array<std::vector<float>>& inGridVectors,
+    std::vector<std::vector<int>> calculateNormalisedDistanceMatrix(std::vector<std::vector<float>>& inFeatureVectors,
+                                                        std::vector<std::vector<float>>& inGridVectors,
                                                         int size);
     /**
      Calculates the euclidean distance between the two vectors.
@@ -277,7 +276,14 @@ private:
      @param matrix the distance matrix for the vectors.
      @param numDimensions the number of dimensions in a feature vector.
      */
-    Array<int> computeAssignment(Array<Array<int>>& matrix, int numDimensions);
+    std::vector<int> computeAssignment(std::vector<std::vector<int>>& matrix, int numDimensions);
+    /**
+     Calculates the radius decay dependent on the current radius.
+     
+     @param inRadius the current radius.
+     @returns the new radius decay.
+     */
+    float getRadiusDecay(float inRadius);
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleGridClusterer);
 };

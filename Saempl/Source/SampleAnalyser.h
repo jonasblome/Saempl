@@ -38,8 +38,8 @@ private:
     Ebu128LoudnessMeter mEbuLoudnessMeter;
     dsp::FFT mForwardFFT;
     dsp::WindowingFunction<float> mWindowFunction;
-    Array<float> mWindowedFFTData;
-    Array<Array<float>> mSTFTSpectrum;
+    std::vector<float> mWindowedFFTData;
+    std::vector<std::vector<float>> mSTFTSpectrum;
     // Lower values increase temporal resolution of the STFT spectrum
     static int const tempoFFTOrder = 11;
     static int const tempoFFTSize = 1 << tempoFFTOrder;
@@ -111,24 +111,24 @@ private:
     /**
      Calculates the novelty function and the spectral centroid and flux.
      
-     @returns the novelty function as an array.
+     @returns the novelty function as a vector.
      */
-    Array<float> calculateNoveltyFunction();
+    std::vector<float> calculateNoveltyFunction();
     /**
      Subtracts the local average from a given novelty function.
      
      @param noveltyFunction the novelty function to subtract the average from.
      */
-    void noveltyFunctionSubtractAverage(Array<float>& noveltyFunction);
+    void noveltyFunctionSubtractAverage(std::vector<float>& noveltyFunction);
     /**
      Calculates a tempogram from a given novelty function.
      
      @param noveltyFunction the function to calculate the tempogram from.
      @param numTempogramWindows the amount of windows in the tempogram.
      
-     @returns the tempogram as a 2d array.
+     @returns the tempogram as a 2d vector.
      */
-    Array<Array<float>> calculateTempogram(Array<float>& noveltyFunction, int& numTempogramWindows);
+    std::vector<std::vector<float>> calculateTempogram(std::vector<float>& noveltyFunction, int& numTempogramWindows);
     /**
      Calculates a tempo histogram with the optimal pitch at each position from a given tempogram.
      
@@ -137,7 +137,7 @@ private:
      
      @returns histogram of optimal tempi in the tempogram.
      */
-    Array<int> calculateTempoHistogram(int numTempogramWindows, Array<Array<float>>& spectralTempogram);
+    std::vector<int> calculateTempoHistogram(int numTempogramWindows, std::vector<std::vector<float>>& spectralTempogram);
     /**
      Analyses the tempo of the given file in bpm.
      
@@ -153,20 +153,20 @@ private:
      
      @returns the log-spectrogram.
      */
-    Array<Array<float>> calculateLogSpectrogram(float& coefficientSum);
+    std::vector<std::vector<float>> calculateLogSpectrogram(float& coefficientSum);
     /**
      Calculates the distribution of chroma in the given spectrogram.
      
      @param logSpectrogram the spectrogram to calculate the chroma distribution from.
      */
-    void calculateChromaDistribution(Array<Array<float>>& logSpectrogram);
+    void calculateChromaDistribution(std::vector<std::vector<float>>& logSpectrogram);
     /**
      Calculates the correlation between the chroma distribution and the index list for each key.
      
      @param averageCorrelation the output variable for the average key chroma correlation.
      @param numKeys the amount of keys to correlate with.
      */
-    Array<float> calculateKeyChromaCorrelations(float& averageCorrelation, int& numKeys);
+    std::vector<float> calculateKeyChromaCorrelations(float& averageCorrelation, int& numKeys);
     /**
      Analyses the key of the given file.
      

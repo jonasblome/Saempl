@@ -129,9 +129,10 @@ void SampleAnalyser::calculateSTFTSpectrum(int inFFTOrder,
                                            int inFFTHopLength,
                                            float inCompressionFactor)
 {
-    mSTFTSpectrum.clear();
     mForwardFFT = dsp::FFT(inFFTOrder);
     numFFTWindows = ((jmax<int>(0, totalNumSamples - inWindowLength)) / inFFTHopLength) + 1;
+    mSTFTSpectrum.clear();
+    mSTFTSpectrum.resize(numFFTWindows);
     mWindowFunction.fillWindowingTables(inWindowLength + 1, juce::dsp::WindowingFunction<float>::hann);
     mAnalysisBuffer = AudioBuffer<float>(numChannels, inWindowLength);
     mWindowedFFTData.clear();
@@ -148,7 +149,7 @@ void SampleAnalyser::calculateSTFTSpectrum(int inFFTOrder,
                                                               true,
                                                               true);
         
-        // Create mono signal and write into FFT data array
+        // Create mono signal and write into FFT data vector
         for (int s = 0; s < inWindowLength; s++)
         {
             float summedChannelMagnitude = 0.0;
@@ -158,34 +159,35 @@ void SampleAnalyser::calculateSTFTSpectrum(int inFFTOrder,
                 summedChannelMagnitude += mAnalysisBuffer.getSample(ch, s);
             }
             
-            mWindowedFFTData.set(s, summedChannelMagnitude);
+            mWindowedFFTData[s] = summedChannelMagnitude;
         }
         
         // Apply window function to buffer
-        mWindowFunction.multiplyWithWindowingTable(mWindowedFFTData.getRawDataPointer(), inWindowLength);
+        mWindowFunction.multiplyWithWindowingTable(&*mWindowedFFTData.begin(), inWindowLength);
         
         // Perform FFT on buffer
-        mForwardFFT.performFrequencyOnlyForwardTransform(mWindowedFFTData.getRawDataPointer(), true);
+        mForwardFFT.performFrequencyOnlyForwardTransform(&*mWindowedFFTData.begin(), true);
         
         // Apply logarithmic compression to frequency coefficients
         if (inCompressionFactor > 0.0)
         {
             for (int fc = 0; fc < (inWindowLength / 2) + 1; fc++)
             {
-                float frequencyCoefficient = mWindowedFFTData.getReference(fc);
+                float frequencyCoefficient = mWindowedFFTData[fc];
                 float compressedCoefficient = log(1 + tempoCompressionFactor * frequencyCoefficient);
-                mWindowedFFTData.set(fc, compressedCoefficient);
+                mWindowedFFTData[fc] = compressedCoefficient;
             }
         }
         
         // Store FFT vector in STFT spectrum
-        mSTFTSpectrum.add(mWindowedFFTData);
+        mSTFTSpectrum[w] = mWindowedFFTData;
     }
 }
 
-Array<float> SampleAnalyser::calculateNoveltyFunction()
+std::vector<float> SampleAnalyser::calculateNoveltyFunction()
 {
-    Array<float> noveltyFunction;
+    std::vector<float> noveltyFunction;
+    noveltyFunction.resize(numFFTWindows);
     int numCoefficients = (tempoWindowLength / 2) + 1;
     float coefficientSum = 0.0;
     spectralFlux = 0.0;
@@ -199,8 +201,8 @@ Array<float> SampleAnalyser::calculateNoveltyFunction()
         for (int fc = 0; fc < numCoefficients; fc++)
         {
             // Calculate derivative
-            float currentCoefficient = mSTFTSpectrum.getReference(w).getReference(fc);
-            float previousCoefficient = mSTFTSpectrum.getReference(w - 1).getReference(fc);
+            float currentCoefficient = mSTFTSpectrum[w][fc];
+            float previousCoefficient = mSTFTSpectrum[w - 1][fc];
             float localDerivative = currentCoefficient - previousCoefficient;
             coefficientSum += currentCoefficient;
             
@@ -214,7 +216,7 @@ Array<float> SampleAnalyser::calculateNoveltyFunction()
             localNovelty += jmax<float>(localDerivative, 0);
         }
         
-        noveltyFunction.set(w - 1, localNovelty);
+        noveltyFunction[w - 1] = localNovelty;
     }
     
     // Calculate spectral flux and spectral centroid
@@ -229,7 +231,7 @@ Array<float> SampleAnalyser::calculateNoveltyFunction()
     return noveltyFunction;
 }
 
-void SampleAnalyser::noveltyFunctionSubtractAverage(Array<float>& noveltyFunction)
+void SampleAnalyser::noveltyFunctionSubtractAverage(std::vector<float>& noveltyFunction)
 {
     noveltyFunctionSampleRate = sampleRate / tempoFFTHopLength;
     int noveltyAveragingWindowLength = noveltyFunctionSampleRate * noveltyAveragingWindowLengthInSeconds;
@@ -243,24 +245,28 @@ void SampleAnalyser::noveltyFunctionSubtractAverage(Array<float>& noveltyFunctio
         
         for (int m = currentWindowStart; m < currentWindowEnd; m++)
         {
-            localAverage += noveltyFunction.getReference(m) / currentWindowLength;
+            localAverage += noveltyFunction[m] / currentWindowLength;
         }
         
         // Apply half-wave rectification
-        noveltyFunction.set(w, jmax<float>(noveltyFunction.getReference(w) - localAverage, 0));
+        noveltyFunction[w] = jmax<float>(noveltyFunction[w] - localAverage, 0);
     }
 }
 
-Array<Array<float>> SampleAnalyser::calculateTempogram(Array<float> & noveltyFunction, int & numTempogramWindows)
+std::vector<std::vector<float>> SampleAnalyser::calculateTempogram(std::vector<float> & noveltyFunction,
+                                                                   int & numTempogramWindows)
 {
-    Array<Array<float>> spectralTempogram;
-    int tempogramWindowLength = jmin(noveltyFunctionSampleRate * tempogramWindowLengthInSeconds, noveltyFunction.size());
+    std::vector<std::vector<float>> spectralTempogram;
+    spectralTempogram.resize(numTempi);
+    int tempogramWindowLength = jmin(noveltyFunctionSampleRate * tempogramWindowLengthInSeconds,
+                                     (int) noveltyFunction.size());
     int paddingLength = tempogramWindowLength / 2;
-    float zeroPadding[paddingLength];
-    memset(zeroPadding, 0, sizeof(float) * paddingLength);
-    noveltyFunction.insertArray(0, zeroPadding, paddingLength);
-    noveltyFunction.addArray(zeroPadding, paddingLength);
-    numTempogramWindows = ((noveltyFunction.size() - tempogramWindowLength) / tempogramHopLength) + 1;
+    std::vector<float> zeroPadding;
+    zeroPadding.resize(paddingLength);
+    memset(&*zeroPadding.begin(), 0, sizeof(float) * paddingLength);
+    noveltyFunction.insert(noveltyFunction.begin(), zeroPadding.begin(), zeroPadding.end());
+    noveltyFunction.insert(noveltyFunction.end(), zeroPadding.begin(), zeroPadding.end());
+    numTempogramWindows = (((int) noveltyFunction.size() - tempogramWindowLength) / tempogramHopLength) + 1;
     
     // Calculate Fourier Tempogram
     mWindowFunction.fillWindowingTables(tempogramWindowLength + 1, juce::dsp::WindowingFunction<float>::hann);
@@ -269,7 +275,7 @@ Array<Array<float>> SampleAnalyser::calculateTempogram(Array<float> & noveltyFun
     // Project novelty function onto each tempo sinusoid
     for (int t = 0; t < numTempi; t++)
     {
-        Array<float> localEstimationsForCurrentTempo;
+        std::vector<float> localEstimationsForCurrentTempo;
         localEstimationsForCurrentTempo.resize(numTempogramWindows);
         float beatsPerSample = ((t + lowerBPMLimitExpanded) * 1.0 / 60) / noveltyFunctionSampleRate;
         float noveltyFunctionProjection[noveltyFunction.size()];
@@ -281,7 +287,7 @@ Array<Array<float>> SampleAnalyser::calculateTempogram(Array<float> & noveltyFun
                                                      * i
                                                      * beatsPerSample
                                                      * float (s))
-                                            * noveltyFunction.getReference(s)).real();
+                                            * noveltyFunction[s]).real();
         }
         
         // Apply windowing to tempo projection for each position
@@ -296,19 +302,19 @@ Array<Array<float>> SampleAnalyser::calculateTempogram(Array<float> & noveltyFun
             // Accumulate all windowed values for the current window position
             for (int m = 0; m < tempogramWindowLength; m++)
             {
-                localEstimationsForCurrentTempo.getReference(w) += windowedProjection[m];
+                localEstimationsForCurrentTempo[w] += windowedProjection[m];
             }
         }
         
-        spectralTempogram.add(localEstimationsForCurrentTempo);
+        spectralTempogram[t] =localEstimationsForCurrentTempo;
     }
     
     return spectralTempogram;
 }
 
-Array<int> SampleAnalyser::calculateTempoHistogram(int numTempogramWindows, Array<Array<float>> & spectralTempogram)
+std::vector<int> SampleAnalyser::calculateTempoHistogram(int numTempogramWindows, std::vector<std::vector<float>> & spectralTempogram)
 {
-    Array<int> tempoEstimationsHistogram;
+    std::vector<int> tempoEstimationsHistogram;
     tempoEstimationsHistogram.resize(numTempi);
     
     for (int w = 0; w < numTempogramWindows; w++)
@@ -320,7 +326,7 @@ Array<int> SampleAnalyser::calculateTempoHistogram(int numTempogramWindows, Arra
         
         for (int t = 0; t < numTempi; t++)
         {
-            float currentTempoBinHeight = spectralTempogram.getReference(t).getReference(w);
+            float currentTempoBinHeight = spectralTempogram[t][w];
             localAverageBinHeight += currentTempoBinHeight;
             
             if (currentTempoBinHeight > optimalTempoBinHeight)
@@ -336,7 +342,7 @@ Array<int> SampleAnalyser::calculateTempoHistogram(int numTempogramWindows, Arra
         // Check if optimal is above local average
         if (optimalTempoBinHeight > localAverageBinHeight * tempoAverageBinHeightThresholdFactor)
         {
-            tempoEstimationsHistogram.getReference(optimalTempoIndex) += 1;
+            tempoEstimationsHistogram[optimalTempoIndex] += 1;
         }
     }
     
@@ -354,33 +360,33 @@ int SampleAnalyser::analyseSampleTempo()
     }
     
     // Calculate spectral novelty function
-    Array<float> noveltyFunction = calculateNoveltyFunction();
+    std::vector<float> noveltyFunction = calculateNoveltyFunction();
     
     // Subtract local average
     noveltyFunctionSubtractAverage(noveltyFunction);
     
     // Normalise novelty function
-    float max = *std::max_element(noveltyFunction.getRawDataPointer(),
-                                  noveltyFunction.getRawDataPointer()
+    float max = *std::max_element(noveltyFunction.begin(),
+                                  noveltyFunction.begin()
                                   + numFFTWindows - 1);
     
     for (int w = 0; w < numFFTWindows - 1; w++)
     {
-        noveltyFunction.getReference(w) /= max;
+        noveltyFunction[w] /= max;
     }
     
     // Padding novelty function to apply a centred windowing function at position t = 0
     int numTempogramWindows;
-    Array<Array<float>> spectralTempogram = calculateTempogram(noveltyFunction, numTempogramWindows);
+    std::vector<std::vector<float>> spectralTempogram = calculateTempogram(noveltyFunction, numTempogramWindows);
     
     // Calculate histogram of optimal local tempo
-    Array<int> tempoEstimationsHistogram = calculateTempoHistogram(numTempogramWindows, spectralTempogram);
+    std::vector<int> tempoEstimationsHistogram = calculateTempoHistogram(numTempogramWindows, spectralTempogram);
     
     // Find the most prominent tempo in the histogram
-    int bestTempoIndex = (int) std::distance(tempoEstimationsHistogram.getRawDataPointer(),
-                                             std::max_element(tempoEstimationsHistogram.getRawDataPointer()
+    int bestTempoIndex = (int) std::distance(tempoEstimationsHistogram.begin(),
+                                             std::max_element(tempoEstimationsHistogram.begin()
                                                               + ignoreTopAndBottomTempi,
-                                                              tempoEstimationsHistogram.getRawDataPointer()
+                                                              tempoEstimationsHistogram.begin()
                                                               + numTempi
                                                               - ignoreTopAndBottomTempi));
     
@@ -389,12 +395,13 @@ int SampleAnalyser::analyseSampleTempo()
     return bestTempoEstimation;
 }
 
-Array<Array<float>> SampleAnalyser::calculateLogSpectrogram(float& coefficientSum)
+std::vector<std::vector<float>> SampleAnalyser::calculateLogSpectrogram(float& coefficientSum)
 {
     // Apply logarithmic frequency pooling
-    Array<Array<float>> logSpectrogram;
     int numPitches = 128;
     int numPitchesPerBand = numPitches / NUM_SPECTRAL_BANDS;
+    std::vector<std::vector<float>> logSpectrogram;
+    logSpectrogram.resize(numPitches);
     
     // Loop over all pitch pools
     for (int p = 0; p < numPitches; p++)
@@ -402,7 +409,7 @@ Array<Array<float>> SampleAnalyser::calculateLogSpectrogram(float& coefficientSu
         float lowerFrequencyLimit = pitchToFrequency(p - 0.5);
         float upperFrequencyLimit = pitchToFrequency(p + 0.5);
         
-        Array<float> localPitchCoefficients;
+        std::vector<float> localPitchCoefficients;
         localPitchCoefficients.resize(numFFTWindows);
         
         // Loop over all frequency coefficients in the pool
@@ -416,8 +423,8 @@ Array<Array<float>> SampleAnalyser::calculateLogSpectrogram(float& coefficientSu
             // For each window, sum up all coefficients in the current pitch pool
             for (int w = 0; w < numFFTWindows; w++)
             {
-                float currentCoefficient = mSTFTSpectrum.getReference(w).getReference(fc);
-                localPitchCoefficients.getReference(w) += currentCoefficient;
+                float currentCoefficient = mSTFTSpectrum[w][fc];
+                localPitchCoefficients[w] += currentCoefficient;
                 
                 // Calculate spectral distribution
                 mSpectralDistribution[p / numPitchesPerBand] += currentCoefficient;
@@ -430,7 +437,7 @@ Array<Array<float>> SampleAnalyser::calculateLogSpectrogram(float& coefficientSu
             }
         }
         
-        logSpectrogram.add(localPitchCoefficients);
+        logSpectrogram[p] = localPitchCoefficients;
         
         // Don't go higher than the frequency limit
         if (highestCoefficientIndexForCurrentPool == keyWindowLength / 2 + 1)
@@ -447,7 +454,7 @@ Array<Array<float>> SampleAnalyser::calculateLogSpectrogram(float& coefficientSu
     return logSpectrogram;
 }
 
-void SampleAnalyser::calculateChromaDistribution(Array<Array<float>> &logSpectrogram)
+void SampleAnalyser::calculateChromaDistribution(std::vector<std::vector<float>> &logSpectrogram)
 {
     std::memset(mChromaDistribution.data(), 0, sizeof(mChromaDistribution));
     chromaFlux = 0.0;
@@ -457,12 +464,12 @@ void SampleAnalyser::calculateChromaDistribution(Array<Array<float>> &logSpectro
     {
         for (int w = 0; w < numFFTWindows; w++)
         {
-            float currentCoefficient = logSpectrogram.getReference(p).getReference(w);
+            float currentCoefficient = logSpectrogram[p][w];
             mChromaDistribution[p % NUM_CHROMA] += currentCoefficient;
             
             if (w >= 1)
             {
-                float previousCoefficient = logSpectrogram.getReference(p).getReference(w - 1);
+                float previousCoefficient = logSpectrogram[p][w - 1];
                 chromaFlux += abs(currentCoefficient - previousCoefficient);
             }
         }
@@ -480,22 +487,22 @@ void SampleAnalyser::calculateChromaDistribution(Array<Array<float>> &logSpectro
     }
 }
 
-Array<float> SampleAnalyser::calculateKeyChromaCorrelations(float & averageCorrelation, int & numKeys)
+std::vector<float> SampleAnalyser::calculateKeyChromaCorrelations(float & averageCorrelation, int & numKeys)
 {
-    Array<float> keyChromaCorrelations;
+    std::vector<float> keyChromaCorrelations;
     keyChromaCorrelations.resize(numKeys);
     
     averageCorrelation = 0.0;
     
     for (int k = 0; k < numKeys; k++)
     {
-        Array<int> const & keyPattern = KEY_PATTERNS.getReference(k);
+        std::vector<int> const & keyPattern = KEY_PATTERNS[k];
         
         for (int c = 0; c < NUM_CHROMA; c++)
         {
-            if (keyPattern.contains(c))
+            if (std::find(keyPattern.begin(), keyPattern.end(), c) != keyPattern.end())
             {
-                keyChromaCorrelations.getReference(k) += mChromaDistribution[c];
+                keyChromaCorrelations[k] += mChromaDistribution[c];
             }
         }
         
@@ -514,7 +521,7 @@ int SampleAnalyser::analyseSampleKey()
     // Calculate logarithmic spectrogram
     spectralSpread = 0.0;
     float coefficientSum = 0.0;
-    Array<Array<float>> logSpectrogram = calculateLogSpectrogram(coefficientSum);
+    std::vector<std::vector<float>> logSpectrogram = calculateLogSpectrogram(coefficientSum);
     
     // Normalise spectral distribution
     float maxSpectral = *std::max_element(mSpectralDistribution.begin(),
@@ -543,19 +550,19 @@ int SampleAnalyser::analyseSampleKey()
     calculateChromaDistribution(logSpectrogram);
     
     // Correlate the key patterns and the chroma distribution
-    int numKeys = KEY_PATTERNS.size();
+    int numKeys = (int) KEY_PATTERNS.size();
     float averageCorrelation;
-    Array<float> keyHistogramCorrelations = calculateKeyChromaCorrelations(averageCorrelation, numKeys);
+    std::vector<float> keyHistogramCorrelations = calculateKeyChromaCorrelations(averageCorrelation, numKeys);
     
     // Find key with the highest histogram correlation
     averageCorrelation /= numKeys;
     int optimalKeyIndex = NO_KEY_INDEX;
-    float* maxCorrelation = std::max_element(keyHistogramCorrelations.getRawDataPointer(),
-                                             keyHistogramCorrelations.getRawDataPointer() + numKeys);
+    float* maxCorrelation = std::max_element(&*keyHistogramCorrelations.begin(),
+                                             &*keyHistogramCorrelations.begin() + numKeys);
     
     if (*maxCorrelation > keyHistogramCorrelationThresholdFactor * averageCorrelation)
     {
-        optimalKeyIndex = (int) std::distance(keyHistogramCorrelations.getRawDataPointer(), maxCorrelation);
+        optimalKeyIndex = (int) std::distance(&*keyHistogramCorrelations.begin(), maxCorrelation);
     }
     
     return optimalKeyIndex;

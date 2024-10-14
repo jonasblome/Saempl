@@ -46,8 +46,6 @@ void SampleGridClusterer::setFeatureWeights(std::vector<float> inFeatureWeights)
 void SampleGridClusterer::run()
 {
     setProgress(0.0);
-    int gridSize = columns * rows;
-    int numDimensions = (int) sampleItems.getFirst()->getFeatureVector().size();
     
     // Assign input vectors to random grid positions
     unsigned seed = (unsigned) std::chrono::system_clock::now().time_since_epoch().count();
@@ -92,28 +90,45 @@ void SampleGridClusterer::run()
         featureWeightsChanged = false;
     }
     
-    // Initialise arrays
-    Array<std::vector<float>> grid;
+    // Initialise vectors
+    std::vector<std::vector<float>> grid;
+    int gridSize = columns * rows;
     grid.resize(gridSize);
+    int numDimensions = (int) sampleItems.getFirst()->getFeatureVector().size();
     for (int pos = 0; pos < grid.size(); pos++)
     {
-        grid.set(pos, std::vector<float>(numDimensions));
+        grid[pos] = std::vector<float>(numDimensions);
     }
-    Array<float> weights;
+    std::vector<float> weights;
     weights.resize(gridSize);
     int numSwapPositions = jmin<int>(maxSwapPositions, columns * rows);
     swapPositions.resize(numSwapPositions);
+    swappedElements.resize(numSwapPositions);
     for (int s = 0; s < numSwapPositions; s++)
     {
-        swappedElements.add(sampleItems.getUnchecked(s));
+        swappedElements[s] = sampleItems.getUnchecked(s);
     }
-    mFeatureVectors.resize(numSwapPositions);
-    mGridVectors.resize(numSwapPositions);
-    mDistanceMatrixNormalised.resize(numSwapPositions);
+    mSwappedFeatureVectors.resize(numSwapPositions);
+    mGridVectorsAtSwapPosition.resize(numSwapPositions);
     mDistanceMatrix.resize(numSwapPositions);
+    mDistanceMatrixNormalised.resize(numSwapPositions);
+    for (int pos = 0; pos < mDistanceMatrix.size(); pos++)
+    {
+        mDistanceMatrix[pos] = std::vector<float>(numDimensions);
+        mDistanceMatrixNormalised[pos] = std::vector<int>(numDimensions);
+    }
     
+    // Calculate initial radius and number of reductions
     float rad = jmax<int>(columns, rows) * initialRadiusFactor;
-    int numRadiusReductions = log(endRadius / rad) / log(radiusDecay);
+    
+    int numRadiusReductions = 0;
+    float tempRad = rad;
+    
+    while (tempRad > endRadius)
+    {
+        tempRad *= getRadiusDecay(tempRad);
+        numRadiusReductions++;
+    }
     
     if (numRadiusReductions == 0)
     {
@@ -166,11 +181,11 @@ void SampleGridClusterer::run()
         // Apply weights to grid vectors
         for (int pos = 0; pos < grid.size(); pos++)
         {
-            float weight = 1 / weights.getReference(pos);
+            float weight = 1 / weights[pos];
             
             for (int d = 0; d < numDimensions; d++)
             {
-                grid.getReference(pos)[d] *= weight;
+                grid[pos][d] *= weight;
             }
         }
         
@@ -178,7 +193,7 @@ void SampleGridClusterer::run()
         checkRandomSwaps(radius, grid, rows, columns);
         
         // Reduce the filter radius
-        rad *= radiusDecay;
+        rad *= getRadiusDecay(rad);
     }
 }
 
@@ -187,11 +202,13 @@ void SampleGridClusterer::threadComplete(bool userPressedCancel)
     sendChangeMessage();
 }
 
-void SampleGridClusterer::copyFeatureVectorsToGrid(Array<std::vector<float>>& grid, int numDimensions, Array<float>& weights)
+void SampleGridClusterer::copyFeatureVectorsToGrid(std::vector<std::vector<float>>& grid,
+                                                   int numDimensions,
+                                                   std::vector<float>& weights)
 {
     for (int pos = 0; pos < grid.size(); pos++)
     {
-        std::vector<float>& gridCell = grid.getReference(pos);
+        std::vector<float>& gridCell = grid[pos];
         SampleItem* sampleItem = sampleItems.getUnchecked(pos);
         
         if (sampleItem->getFilePath() != EMPTY_TILE_PATH)
@@ -201,7 +218,7 @@ void SampleGridClusterer::copyFeatureVectorsToGrid(Array<std::vector<float>>& gr
                 gridCell[d] = sampleItem->getFeatureVector()[d] * weightTile;
             }
             
-            weights.set(pos, weightTile);
+            weights[pos] = weightTile;
         }
         else // Hole
         {
@@ -210,264 +227,12 @@ void SampleGridClusterer::copyFeatureVectorsToGrid(Array<std::vector<float>>& gr
                 gridCell[d] *= weightHole;
             }
             
-            weights.set(pos, weightHole);
+            weights[pos] = weightHole;
         }
     }
 }
 
-Array<std::vector<float>> SampleGridClusterer::filterHorizontallyWrap(Array<std::vector<float>>& inGrid,
-                                                                          int rows,
-                                                                          int columns,
-                                                                          int numDimensions,
-                                                                          int filterSize)
-{
-    if (columns == 1)
-    {
-        return inGrid;
-    }
-    
-    Array<std::vector<float>> output;
-    output.resize(rows * columns);
-    int borderExtension = filterSize / 2;
-    Array<std::vector<float>> extendedRow;
-    extendedRow.resize(columns + 2 * borderExtension);
-    
-    // Filter the rows
-    for (int row = 0; row < rows; row++)
-    {
-        int actualRowIndex = row * columns;
-        
-        // Copy the current row
-        for (int col = 0; col < columns; col++)
-        {
-            extendedRow.set(col + borderExtension, inGrid.getReference(actualRowIndex + col));
-        }
-        
-        // Extend the row with wrapped values
-        for (int e = 0; e < borderExtension; e++)
-        {
-            extendedRow.set(borderExtension - 1 - e, extendedRow.getReference(columns + borderExtension - e - 1));
-            extendedRow.set(columns + borderExtension + e, extendedRow.getReference(borderExtension + e));
-        }
-        
-        std::vector<float> tmp = std::vector<float>(numDimensions);
-        
-        // Filter the first element
-        for (int fp = 0; fp < filterSize; fp++)
-        {
-            for (int d = 0; d < numDimensions; d++)
-            {
-                tmp[d] += extendedRow.getReference(fp)[d];
-            }
-        }
-        
-        output.set(actualRowIndex, std::vector<float>(numDimensions));
-        
-        for (int d = 0; d < numDimensions; d++)
-        {
-            output.getReference(actualRowIndex)[d] = tmp[d] / filterSize;
-        }
-        
-        // Filter the rest of the row
-        for (int col = 1; col < columns; col++)
-        {
-            output.set(actualRowIndex + col, std::vector<float>(numDimensions));
-            int left = col - 1;
-            int right = left + filterSize;
-            
-            for (int d = 0; d < numDimensions; d++)
-            {
-                tmp[d] += extendedRow.getReference(right)[d] - extendedRow.getReference(left)[d];
-                output.getReference(actualRowIndex + col)[d] = tmp[d] / filterSize;
-            }
-        }
-    }
-    
-    return output;
-}
-
-Array<std::vector<float>> SampleGridClusterer::filterVerticallyWrap(Array<std::vector<float>>& inGrid,
-                                                                        int rows,
-                                                                        int columns,
-                                                                        int numDimensions,
-                                                                        int filterSize)
-{
-    if (rows == 1)
-    {
-        return inGrid;
-    }
-    
-    Array<std::vector<float>> output;
-    output.resize(rows * columns);
-    int borderExtension = filterSize / 2;
-    Array<std::vector<float>> extendedColumn;
-    extendedColumn.resize(rows + 2 * borderExtension);
-    
-    // Filter the columns
-    for (int col = 0; col < columns; col++)
-    {
-        // Copy the current column
-        for (int row = 0; row < rows; row++)
-        {
-            extendedColumn.set(row + borderExtension, inGrid.getReference(col + row * columns));
-        }
-        
-        // Extend the column with wrapped values
-        for (int e = 0; e < borderExtension; e++)
-        {
-            extendedColumn.set(borderExtension - 1 - e, extendedColumn.getReference(rows + borderExtension - e - 1));
-            extendedColumn.set(rows + borderExtension + e, extendedColumn.getReference(borderExtension + e));
-        }
-        
-        std::vector<float> tmp = std::vector<float>(numDimensions);
-        
-        // Filter the first element
-        for (int fp = 0; fp < filterSize; fp++)
-        {
-            for (int d = 0; d < numDimensions; d++)
-            {
-                tmp[d] += extendedColumn.getReference(fp)[d];
-            }
-        }
-        
-        output.set(col, std::vector<float>(numDimensions));
-        
-        for (int d = 0; d < numDimensions; d++)
-        {
-            output.getReference(col)[d] = tmp[d] / filterSize;
-        }
-        
-        // Filter the rest of the column
-        for (int row = 1; row < rows; row++)
-        {
-            output.set(col + row * columns, std::vector<float>(numDimensions));
-            int left = row - 1;
-            int right = left + filterSize;
-            
-            for (int d = 0; d < numDimensions; d++)
-            {
-                tmp[d] += extendedColumn.getReference(right)[d] - extendedColumn.getReference(left)[d];
-                output.getReference(col + row * columns)[d] = tmp[d] / filterSize;
-            }
-        }
-    }
-    
-    return output;
-}
-
-Array<float> SampleGridClusterer::filterHorizontallyWrap(Array<float>& inWeights,
-                                                             int rows,
-                                                             int columns,
-                                                             int filterSize)
-{
-    if (columns == 1)
-    {
-        return inWeights;
-    }
-    
-    Array<float> output;
-    output.resize(rows * columns);
-    int borderExtension = filterSize / 2;
-    Array<float> extendedRow;
-    extendedRow.resize(columns + 2 * borderExtension);
-    
-    // Filter the rows
-    for (int row = 0; row < rows; row++)
-    {
-        int actualRowIndex = row * columns;
-        
-        // Copy the current row
-        for (int col = 0; col < columns; col++)
-        {
-            extendedRow.set(col + borderExtension, inWeights.getReference(actualRowIndex + col));
-        }
-        
-        // Extend the row with wrapped values
-        for (int e = 0; e < borderExtension; e++)
-        {
-            extendedRow.set(borderExtension - 1 - e, extendedRow.getReference(columns + borderExtension - e - 1));
-            extendedRow.set(columns + borderExtension + e, extendedRow.getReference(borderExtension + e));
-        }
-        
-        float tmp = 0;
-        
-        // Filter the first element
-        for (int fp = 0; fp < filterSize; fp++)
-        {
-            tmp += extendedRow.getReference(fp);
-        }
-        
-        output.set(actualRowIndex, tmp / filterSize);
-        
-        // Filter the rest of the row
-        for (int col = 1; col < columns; col++)
-        {
-            int left = col - 1;
-            int right = left + filterSize;
-            tmp += extendedRow.getReference(right) - extendedRow.getReference(left);
-            output.set(actualRowIndex + col, tmp / filterSize);
-        }
-    }
-    
-    return output;
-}
-
-Array<float> SampleGridClusterer::filterVerticallyWrap(Array<float>& inWeights,
-                                                           int rows,
-                                                           int columns,
-                                                           int filterSize)
-{
-    if (rows == 1)
-    {
-        return inWeights;
-    }
-    
-    Array<float> output;
-    output.resize(rows * columns);
-    int borderExtension = filterSize / 2;
-    Array<float> extendedColumn;
-    extendedColumn.resize(rows + 2 * borderExtension);
-    
-    // Filter the columns
-    for (int col = 0; col < columns; col++)
-    {
-        // Copy the current column
-        for (int row = 0; row < rows; row++)
-        {
-            extendedColumn.set(row + borderExtension, inWeights.getReference(col + row * columns));
-        }
-        
-        // Extend the current column with wrapped values
-        for (int e = 0; e < borderExtension; e++)
-        {
-            extendedColumn.set(borderExtension - 1 - e, extendedColumn.getReference(rows + borderExtension - e - 1));
-            extendedColumn.set(rows + borderExtension + e, extendedColumn.getReference(borderExtension + e));
-        }
-        
-        float tmp = 0;
-        
-        // Filter the first element
-        for (int fp = 0; fp < filterSize; fp++)
-        {
-            tmp += extendedColumn.getReference(fp);
-        }
-        
-        output.set(col, tmp / filterSize);
-        
-        // Filter the rest of the column
-        for (int row = 1; row < rows; row++)
-        {
-            int left = row - 1;
-            int right = left + filterSize;
-            tmp += extendedColumn.getReference(right) - extendedColumn.getReference(left);
-            output.set(col + row * columns, tmp / filterSize);
-        }
-    }
-    
-    return output;
-}
-
-Array<std::vector<float>> SampleGridClusterer::filterHorizontallyMirror(Array<std::vector<float>>& inGrid,
+std::vector<std::vector<float>> SampleGridClusterer::filterHorizontallyWrap(std::vector<std::vector<float>>& inGrid,
                                                                             int rows,
                                                                             int columns,
                                                                             int numDimensions,
@@ -478,10 +243,10 @@ Array<std::vector<float>> SampleGridClusterer::filterHorizontallyMirror(Array<st
         return inGrid;
     }
     
-    Array<std::vector<float>> output;
+    std::vector<std::vector<float>> output;
     output.resize(rows * columns);
     int borderExtension = filterSize / 2;
-    Array<std::vector<float>> extendedRow;
+    std::vector<std::vector<float>> extendedRow;
     extendedRow.resize(columns + 2 * borderExtension);
     
     // Filter the rows
@@ -492,14 +257,14 @@ Array<std::vector<float>> SampleGridClusterer::filterHorizontallyMirror(Array<st
         // Copy the current row
         for (int col = 0; col < columns; col++)
         {
-            extendedRow.set(col + borderExtension, inGrid.getReference(actualRowIndex + col));
+            extendedRow[col + borderExtension] = inGrid[actualRowIndex + col];
         }
         
-        // Extend the row with mirrored values
+        // Extend the row with wrapped values
         for (int e = 0; e < borderExtension; e++)
         {
-            extendedRow.set(borderExtension - 1 - e, extendedRow.getReference(borderExtension + e + 1));
-            extendedRow.set(columns + borderExtension + e, extendedRow.getReference(columns + borderExtension - 2 - e));
+            extendedRow[borderExtension - 1 - e] = extendedRow[columns + borderExtension - e - 1];
+            extendedRow[columns + borderExtension + e] = extendedRow[borderExtension + e];
         }
         
         std::vector<float> tmp = std::vector<float>(numDimensions);
@@ -509,28 +274,28 @@ Array<std::vector<float>> SampleGridClusterer::filterHorizontallyMirror(Array<st
         {
             for (int d = 0; d < numDimensions; d++)
             {
-                tmp[d] += extendedRow.getReference(fp)[d];
+                tmp[d] += extendedRow[fp][d];
             }
         }
         
-        output.set(actualRowIndex, std::vector<float>(numDimensions));
+        output[actualRowIndex] = std::vector<float>(numDimensions);
         
         for (int d = 0; d < numDimensions; d++)
         {
-            output.getReference(actualRowIndex)[d] = tmp[d] / filterSize;
+            output[actualRowIndex][d] = tmp[d] / filterSize;
         }
         
         // Filter the rest of the row
         for (int col = 1; col < columns; col++)
         {
-            output.set(actualRowIndex + col, std::vector<float>(numDimensions));
+            output[actualRowIndex + col] = std::vector<float>(numDimensions);
             int left = col - 1;
             int right = left + filterSize;
             
             for (int d = 0; d < numDimensions; d++)
             {
-                tmp[d] += extendedRow.getReference(right)[d] - extendedRow.getReference(left)[d];
-                output.getReference(actualRowIndex + col)[d] = tmp[d] / filterSize;
+                tmp[d] += extendedRow[right][d] - extendedRow[left][d];
+                output[actualRowIndex + col][d] = tmp[d] / filterSize;
             }
         }
     }
@@ -538,7 +303,7 @@ Array<std::vector<float>> SampleGridClusterer::filterHorizontallyMirror(Array<st
     return output;
 }
 
-Array<std::vector<float>> SampleGridClusterer::filterVerticallyMirror(Array<std::vector<float>>& inGrid,
+std::vector<std::vector<float>> SampleGridClusterer::filterVerticallyWrap(std::vector<std::vector<float>>& inGrid,
                                                                           int rows,
                                                                           int columns,
                                                                           int numDimensions,
@@ -549,10 +314,10 @@ Array<std::vector<float>> SampleGridClusterer::filterVerticallyMirror(Array<std:
         return inGrid;
     }
     
-    Array<std::vector<float>> output;
+    std::vector<std::vector<float>> output;
     output.resize(rows * columns);
     int borderExtension = filterSize / 2;
-    Array<std::vector<float>> extendedColumn;
+    std::vector<std::vector<float>> extendedColumn;
     extendedColumn.resize(rows + 2 * borderExtension);
     
     // Filter the columns
@@ -561,14 +326,14 @@ Array<std::vector<float>> SampleGridClusterer::filterVerticallyMirror(Array<std:
         // Copy the current column
         for (int row = 0; row < rows; row++)
         {
-            extendedColumn.set(row + borderExtension, inGrid.getReference(col + row * columns));
+            extendedColumn[row + borderExtension] = inGrid[col + row * columns];
         }
         
-        // Extend the column with mirrored values
+        // Extend the column with wrapped values
         for (int e = 0; e < borderExtension; e++)
         {
-            extendedColumn.set(borderExtension - 1 - e, extendedColumn.getReference(borderExtension + e + 1));
-            extendedColumn.set(rows + borderExtension + e, extendedColumn.getReference(borderExtension + rows - 2 - e));
+            extendedColumn[borderExtension - 1 - e] = extendedColumn[rows + borderExtension - e - 1];
+            extendedColumn[rows + borderExtension + e] = extendedColumn[borderExtension + e];
         }
         
         std::vector<float> tmp = std::vector<float>(numDimensions);
@@ -578,28 +343,28 @@ Array<std::vector<float>> SampleGridClusterer::filterVerticallyMirror(Array<std:
         {
             for (int d = 0; d < numDimensions; d++)
             {
-                tmp[d] += extendedColumn.getReference(fp)[d];
+                tmp[d] += extendedColumn[fp][d];
             }
         }
         
-        output.set(col, std::vector<float>(numDimensions));
+        output[col] = std::vector<float>(numDimensions);
         
         for (int d = 0; d < numDimensions; d++)
         {
-            output.getReference(col)[d] = tmp[d] / filterSize;
+            output[col][d] = tmp[d] / filterSize;
         }
         
         // Filter the rest of the column
         for (int row = 1; row < rows; row++)
         {
-            output.set(col + row * columns, std::vector<float>(numDimensions));
+            output[col + row * columns] = std::vector<float>(numDimensions);
             int left = row - 1;
             int right = left + filterSize;
             
             for (int d = 0; d < numDimensions; d++)
             {
-                tmp[d] += extendedColumn.getReference(right)[d] - extendedColumn.getReference(left)[d];
-                output.getReference(col + row * columns)[d] = tmp[d] / filterSize;
+                tmp[d] += extendedColumn[right][d] - extendedColumn[left][d];
+                output[col + row * columns][d] = tmp[d] / filterSize;
             }
         }
     }
@@ -607,17 +372,20 @@ Array<std::vector<float>> SampleGridClusterer::filterVerticallyMirror(Array<std:
     return output;
 }
 
-Array<float> SampleGridClusterer::filterHorizontallyMirror(Array<float>& inWeights, int rows, int columns, int filterSize)
+std::vector<float> SampleGridClusterer::filterHorizontallyWrap(std::vector<float>& inWeights,
+                                                               int rows,
+                                                               int columns,
+                                                               int filterSize)
 {
     if (columns == 1)
     {
         return inWeights;
     }
     
-    Array<float> output;
+    std::vector<float> output;
     output.resize(rows * columns);
     int borderExtension = filterSize / 2;
-    Array<float> extendedRow;
+    std::vector<float> extendedRow;
     extendedRow.resize(columns + 2 * borderExtension);
     
     // Filter the rows
@@ -628,14 +396,14 @@ Array<float> SampleGridClusterer::filterHorizontallyMirror(Array<float>& inWeigh
         // Copy the current row
         for (int col = 0; col < columns; col++)
         {
-            extendedRow.set(col + borderExtension, inWeights.getReference(actualRowIndex + col));
+            extendedRow[col + borderExtension] = inWeights[actualRowIndex + col];
         }
         
-        // Extend the row with mirrored values
+        // Extend the row with wrapped values
         for (int e = 0; e < borderExtension; e++)
         {
-            extendedRow.set(borderExtension - 1 - e, extendedRow.getReference(borderExtension + e + 1));
-            extendedRow.set(columns + borderExtension + e, extendedRow.getReference(columns + borderExtension - 2 - e));
+            extendedRow[borderExtension - 1 - e] = extendedRow[columns + borderExtension - e - 1];
+            extendedRow[columns + borderExtension + e] = extendedRow[borderExtension + e];
         }
         
         float tmp = 0;
@@ -643,35 +411,38 @@ Array<float> SampleGridClusterer::filterHorizontallyMirror(Array<float>& inWeigh
         // Filter the first element
         for (int fp = 0; fp < filterSize; fp++)
         {
-            tmp += extendedRow.getReference(fp);
+            tmp += extendedRow[fp];
         }
         
-        output.set(actualRowIndex, tmp / filterSize);
+        output[actualRowIndex] = tmp / filterSize;
         
         // Filter the rest of the row
         for (int col = 1; col < columns; col++)
         {
             int left = col - 1;
             int right = left + filterSize;
-            tmp += extendedRow.getReference(right) - extendedRow.getReference(left);
-            output.set(actualRowIndex + col, tmp / filterSize);
+            tmp += extendedRow[right] - extendedRow[left];
+            output[actualRowIndex + col] = tmp / filterSize;
         }
     }
     
     return output;
 }
 
-Array<float> SampleGridClusterer::filterVerticallyMirror(Array<float>& inWeights, int rows, int columns, int filterSize)
+std::vector<float> SampleGridClusterer::filterVerticallyWrap(std::vector<float>& inWeights,
+                                                             int rows,
+                                                             int columns,
+                                                             int filterSize)
 {
     if (rows == 1)
     {
         return inWeights;
     }
     
-    Array<float> output;
+    std::vector<float> output;
     output.resize(rows * columns);
     int borderExtension = filterSize / 2;
-    Array<float> extendedColumn;
+    std::vector<float> extendedColumn;
     extendedColumn.resize(rows + 2 * borderExtension);
     
     // Filter the columns
@@ -680,14 +451,14 @@ Array<float> SampleGridClusterer::filterVerticallyMirror(Array<float>& inWeights
         // Copy the current column
         for (int row = 0; row < rows; row++)
         {
-            extendedColumn.set(row + borderExtension, inWeights.getReference(col + row * columns));
+            extendedColumn[row + borderExtension] = inWeights[col + row * columns];
         }
         
         // Extend the current column with wrapped values
         for (int e = 0; e < borderExtension; e++)
         {
-            extendedColumn.set(borderExtension - 1 - e, extendedColumn.getReference(rows + borderExtension - e - 1));
-            extendedColumn.set(rows + borderExtension + e, extendedColumn.getReference(borderExtension + e));
+            extendedColumn[borderExtension - 1 - e] = extendedColumn[rows + borderExtension - e - 1];
+            extendedColumn[rows + borderExtension + e] = extendedColumn[borderExtension + e];
         }
         
         float tmp = 0;
@@ -695,25 +466,274 @@ Array<float> SampleGridClusterer::filterVerticallyMirror(Array<float>& inWeights
         // Filter the first element
         for (int fp = 0; fp < filterSize; fp++)
         {
-            tmp += extendedColumn.getReference(fp);
+            tmp += extendedColumn[fp];
         }
         
-        output.set(col, tmp / filterSize);
+        output[col] = tmp / filterSize;
         
         // Filter the rest of the column
         for (int row = 1; row < rows; row++)
         {
             int left = row - 1;
             int right = left + filterSize;
-            tmp += extendedColumn.getReference(right) - extendedColumn.getReference(left);
-            output.set(col + row * columns, tmp / filterSize);
+            tmp += extendedColumn[right] - extendedColumn[left];
+            output[col + row * columns] = tmp / filterSize;
         }
     }
     
     return output;
 }
 
-void SampleGridClusterer::checkRandomSwaps(int radius, Array<std::vector<float>>& grid, int rows, int columns)
+std::vector<std::vector<float>> SampleGridClusterer::filterHorizontallyMirror(std::vector<std::vector<float>>& inGrid,
+                                                                              int rows,
+                                                                              int columns,
+                                                                              int numDimensions,
+                                                                              int filterSize)
+{
+    if (columns == 1)
+    {
+        return inGrid;
+    }
+    
+    std::vector<std::vector<float>> output;
+    output.resize(rows * columns);
+    int borderExtension = filterSize / 2;
+    std::vector<std::vector<float>> extendedRow;
+    extendedRow.resize(columns + 2 * borderExtension);
+    
+    // Filter the rows
+    for (int row = 0; row < rows; row++)
+    {
+        int actualRowIndex = row * columns;
+        
+        // Copy the current row
+        for (int col = 0; col < columns; col++)
+        {
+            extendedRow[col + borderExtension] = inGrid[actualRowIndex + col];
+        }
+        
+        // Extend the row with mirrored values
+        for (int e = 0; e < borderExtension; e++)
+        {
+            extendedRow[borderExtension - 1 - e] = extendedRow[borderExtension + e + 1];
+            extendedRow[columns + borderExtension + e] = extendedRow[columns + borderExtension - 2 - e];
+        }
+        
+        std::vector<float> tmp = std::vector<float>(numDimensions);
+        
+        // Filter the first element
+        for (int fp = 0; fp < filterSize; fp++)
+        {
+            for (int d = 0; d < numDimensions; d++)
+            {
+                tmp[d] += extendedRow[fp][d];
+            }
+        }
+        
+        output[actualRowIndex] = std::vector<float>(numDimensions);
+        
+        for (int d = 0; d < numDimensions; d++)
+        {
+            output[actualRowIndex][d] = tmp[d] / filterSize;
+        }
+        
+        // Filter the rest of the row
+        for (int col = 1; col < columns; col++)
+        {
+            output[actualRowIndex + col] = std::vector<float>(numDimensions);
+            int left = col - 1;
+            int right = left + filterSize;
+            
+            for (int d = 0; d < numDimensions; d++)
+            {
+                tmp[d] += extendedRow[right][d] - extendedRow[left][d];
+                output[actualRowIndex + col][d] = tmp[d] / filterSize;
+            }
+        }
+    }
+    
+    return output;
+}
+
+std::vector<std::vector<float>> SampleGridClusterer::filterVerticallyMirror(std::vector<std::vector<float>>& inGrid,
+                                                                            int rows,
+                                                                            int columns,
+                                                                            int numDimensions,
+                                                                            int filterSize)
+{
+    if (rows == 1)
+    {
+        return inGrid;
+    }
+    
+    std::vector<std::vector<float>> output;
+    output.resize(rows * columns);
+    int borderExtension = filterSize / 2;
+    std::vector<std::vector<float>> extendedColumn;
+    extendedColumn.resize(rows + 2 * borderExtension);
+    
+    // Filter the columns
+    for (int col = 0; col < columns; col++)
+    {
+        // Copy the current column
+        for (int row = 0; row < rows; row++)
+        {
+            extendedColumn[row + borderExtension] = inGrid[col + row * columns];
+        }
+        
+        // Extend the column with mirrored values
+        for (int e = 0; e < borderExtension; e++)
+        {
+            extendedColumn[borderExtension - 1 - e] = extendedColumn[borderExtension + e + 1];
+            extendedColumn[rows + borderExtension + e] = extendedColumn[borderExtension + rows - 2 - e];
+        }
+        
+        std::vector<float> tmp = std::vector<float>(numDimensions);
+        
+        // Filter the first element
+        for (int fp = 0; fp < filterSize; fp++)
+        {
+            for (int d = 0; d < numDimensions; d++)
+            {
+                tmp[d] += extendedColumn[fp][d];
+            }
+        }
+        
+        output[col] = std::vector<float>(numDimensions);
+        
+        for (int d = 0; d < numDimensions; d++)
+        {
+            output[col][d] = tmp[d] / filterSize;
+        }
+        
+        // Filter the rest of the column
+        for (int row = 1; row < rows; row++)
+        {
+            output[col + row * columns] = std::vector<float>(numDimensions);
+            int left = row - 1;
+            int right = left + filterSize;
+            
+            for (int d = 0; d < numDimensions; d++)
+            {
+                tmp[d] += extendedColumn[right][d] - extendedColumn[left][d];
+                output[col + row * columns][d] = tmp[d] / filterSize;
+            }
+        }
+    }
+    
+    return output;
+}
+
+std::vector<float> SampleGridClusterer::filterHorizontallyMirror(std::vector<float>& inWeights,
+                                                                 int rows,
+                                                                 int columns,
+                                                                 int filterSize)
+{
+    if (columns == 1)
+    {
+        return inWeights;
+    }
+    
+    std::vector<float> output;
+    output.resize(rows * columns);
+    int borderExtension = filterSize / 2;
+    std::vector<float> extendedRow;
+    extendedRow.resize(columns + 2 * borderExtension);
+    
+    // Filter the rows
+    for (int row = 0; row < rows; row++)
+    {
+        int actualRowIndex = row * columns;
+        
+        // Copy the current row
+        for (int col = 0; col < columns; col++)
+        {
+            extendedRow[col + borderExtension] = inWeights[actualRowIndex + col];
+        }
+        
+        // Extend the row with mirrored values
+        for (int e = 0; e < borderExtension; e++)
+        {
+            extendedRow[borderExtension - 1 - e] = extendedRow[borderExtension + e + 1];
+            extendedRow[columns + borderExtension + e] = extendedRow[columns + borderExtension - 2 - e];
+        }
+        
+        float tmp = 0;
+        
+        // Filter the first element
+        for (int fp = 0; fp < filterSize; fp++)
+        {
+            tmp += extendedRow[fp];
+        }
+        
+        output[actualRowIndex] = tmp / filterSize;
+        
+        // Filter the rest of the row
+        for (int col = 1; col < columns; col++)
+        {
+            int left = col - 1;
+            int right = left + filterSize;
+            tmp += extendedRow[right] - extendedRow[left];
+            output[actualRowIndex + col] = tmp / filterSize;
+        }
+    }
+    
+    return output;
+}
+
+std::vector<float> SampleGridClusterer::filterVerticallyMirror(std::vector<float>& inWeights, int rows, int columns, int filterSize)
+{
+    if (rows == 1)
+    {
+        return inWeights;
+    }
+    
+    std::vector<float> output;
+    output.resize(rows * columns);
+    int borderExtension = filterSize / 2;
+    std::vector<float> extendedColumn;
+    extendedColumn.resize(rows + 2 * borderExtension);
+    
+    // Filter the columns
+    for (int col = 0; col < columns; col++)
+    {
+        // Copy the current column
+        for (int row = 0; row < rows; row++)
+        {
+            extendedColumn[row + borderExtension] = inWeights[col + row * columns];
+        }
+        
+        // Extend the current column with wrapped values
+        for (int e = 0; e < borderExtension; e++)
+        {
+            extendedColumn[borderExtension - 1 - e] = extendedColumn[rows + borderExtension - e - 1];
+            extendedColumn[rows + borderExtension + e] = extendedColumn[borderExtension + e];
+        }
+        
+        float tmp = 0;
+        
+        // Filter the first element
+        for (int fp = 0; fp < filterSize; fp++)
+        {
+            tmp += extendedColumn[fp];
+        }
+        
+        output[col] = tmp / filterSize;
+        
+        // Filter the rest of the column
+        for (int row = 1; row < rows; row++)
+        {
+            int left = row - 1;
+            int right = left + filterSize;
+            tmp += extendedColumn[right] - extendedColumn[left];
+            output[col + row * columns] = tmp / filterSize;
+        }
+    }
+    
+    return output;
+}
+
+void SampleGridClusterer::checkRandomSwaps(int radius, std::vector<std::vector<float>>& grid, int rows, int columns)
 {
     // Set swap size
     int swapAreaWidth = jmin<int>(2 * radius + 1, columns);
@@ -734,21 +754,21 @@ void SampleGridClusterer::checkRandomSwaps(int radius, Array<std::vector<float>>
     }
     
     // Get all positions of the actual swap region
-    Array<int> swapAreaIndices;
+    std::vector<int> swapAreaIndices;
     swapAreaIndices.resize(swapAreaWidth * swapAreaHeight);
     
     for (int i = 0, y = 0; y < swapAreaHeight; y++)
     {
         for (int x = 0; x < swapAreaWidth; x++)
         {
-            swapAreaIndices.set(i++, y * columns + x);
+            swapAreaIndices[i++] = y * columns + x;
         }
     }
     
     // Shuffle swap indices
     unsigned seed = (unsigned) std::chrono::system_clock::now().time_since_epoch().count();
-    std::shuffle(swapAreaIndices.getRawDataPointer(),
-                 swapAreaIndices.getRawDataPointer() + swapAreaIndices.size(),
+    std::shuffle(swapAreaIndices.begin(),
+                 swapAreaIndices.begin() + swapAreaIndices.size(),
                  std::default_random_engine(seed));
     
     int numSwapTries = jmax<int>(1, (sampleFactor * rows * columns / swapPositions.size()));
@@ -781,12 +801,17 @@ void SampleGridClusterer::checkRandomSwaps(int radius, Array<std::vector<float>>
     }
 }
 
-int SampleGridClusterer::findSwapPositionsWrap(Array<int>& swapAreaIndices, Array<int>& swapPositions, int swapAreaWidth, int swapAreaHeight, int rows, int columns)
+int SampleGridClusterer::findSwapPositionsWrap(std::vector<int>& swapAreaIndices,
+                                               std::vector<int>& swapPositions,
+                                               int swapAreaWidth,
+                                               int swapAreaHeight,
+                                               int rows,
+                                               int columns)
 {
     std::random_device random;
     std::mt19937 generator(random());
     
-    std::uniform_int_distribution<> distribution1(0, swapAreaIndices.size() - swapPositions.size());
+    std::uniform_int_distribution<> distribution1(0, (int) swapAreaIndices.size() - (int) swapPositions.size());
     int startIndex = (swapAreaIndices.size() - swapPositions.size() > 0) ? distribution1(generator) : 0;
     
     std::uniform_int_distribution<> distribution2(0, rows * columns);
@@ -795,27 +820,34 @@ int SampleGridClusterer::findSwapPositionsWrap(Array<int>& swapAreaIndices, Arra
     for (int j = startIndex; j < swapAreaIndices.size() && numSwapPositions < swapPositions.size(); j++)
     {
         // Get wrapped position of random element to swap
-        int d = randomPosition + swapAreaIndices.getReference(j);
+        int d = randomPosition + swapAreaIndices[j];
         int x = d % columns;
         int y = (d / columns) % rows;
         int pos = y * columns + x;
         
-        swapPositions.set(numSwapPositions++, pos);
+        swapPositions[numSwapPositions++] = pos;
     }
     
-    return swapPositions.size();
+    return (int) swapPositions.size();
 }
 
-int SampleGridClusterer::findSwapPositions(Array<int>& swapAreaIndices, Array<int>& swapPositions, int swapAreaWidth, int swapAreaHeight, int rows, int columns)
+int SampleGridClusterer::findSwapPositions(std::vector<int>& swapAreaIndices,
+                                           std::vector<int>& swapPositions,
+                                           int swapAreaWidth,
+                                           int swapAreaHeight,
+                                           int rows,
+                                           int columns)
 {
     std::random_device random;
     std::mt19937 generator(random());
     
+    // Find random position in grid
     std::uniform_int_distribution<> distribution1(0, rows * columns);
     int randomPosition = distribution1(generator);
     int randomX = randomPosition % columns;
     int randomY = randomPosition / columns;
     
+    // Limit swap area positions to grid bounds
     int xStart = jmax<int>(0, randomX - swapAreaWidth / 2);
     int yStart = jmax<int>(0, randomY - swapAreaHeight / 2);
     
@@ -829,67 +861,71 @@ int SampleGridClusterer::findSwapPositions(Array<int>& swapAreaIndices, Array<in
         yStart = rows - swapAreaHeight;
     }
     
-    std::uniform_int_distribution<> distribution2(0, swapAreaIndices.size() - swapPositions.size());
+    // Select random position in swap area
+    std::uniform_int_distribution<> distribution2(0, (int) swapAreaIndices.size() - (int) swapPositions.size());
     int startIndex = (swapAreaIndices.size() - swapPositions.size() > 0) ? distribution2(generator) : 0;
     int numSwapPositions = 0;
+    
     for (int j = startIndex; j < swapAreaIndices.size() && numSwapPositions < swapPositions.size(); j++)
     {
         // Get position of random element to swap
-        int dx = swapAreaIndices.getReference(j) % columns;
-        int dy = swapAreaIndices.getReference(j) / columns;
+        int dx = swapAreaIndices[j] % columns;
+        int dy = swapAreaIndices[j] / columns;
         
         int x = (xStart + dx) % columns;
         int y = (yStart + dy) % rows;
         int pos = y * columns + x;
         
-        swapPositions.set(numSwapPositions++, pos);
+        swapPositions[numSwapPositions++] = pos;
     }
     
-    return swapPositions.size();
+    return (int) swapPositions.size();
 }
 
-void SampleGridClusterer::doSwaps(Array<int>& swapPositions,
-                                      int numSwapPositions,
-                                      Array<std::vector<float>>& grid)
+void SampleGridClusterer::doSwaps(std::vector<int>& swapPositions,
+                                  int numSwapPositions,
+                                  std::vector<std::vector<float>>& grid)
 {
     int numValid = 0;
     
     for (int s = 0; s < numSwapPositions; s++)
     {
-        int swapPosition = swapPositions.getReference(s);
+        int swapPosition = swapPositions[s];
         SampleItem* swappedElement = sampleItems.getUnchecked(swapPosition);
-        swappedElements.set(s, swappedElement);
+        swappedElements[s] = swappedElement;
         
         // Handle holes
         if (swappedElement->getFilePath() != EMPTY_TILE_PATH)
         {
-            mFeatureVectors.set(s, swappedElement->getFeatureVector());
+            mSwappedFeatureVectors[s] = swappedElement->getFeatureVector();
             numValid++;
         }
         else
         {
             // Hole
-            mFeatureVectors.set(s, grid.getReference(swapPosition));
+            mSwappedFeatureVectors[s] = grid[swapPosition];
         }
         
-        mGridVectors.set(s, grid.getReference(swapPosition));
+        mGridVectorsAtSwapPosition[s] = grid[swapPosition];
     }
     
     if (numValid > 0)
     {
-        Array<Array<int>> distanceMatrix = calculateNormalisedDistanceMatrix(mFeatureVectors, mGridVectors, numSwapPositions);
-        Array<int> optimalPermutation = computeAssignment(distanceMatrix, numSwapPositions);
+        std::vector<std::vector<int>> distanceMatrix = calculateNormalisedDistanceMatrix(mSwappedFeatureVectors, mGridVectorsAtSwapPosition, numSwapPositions);
+        std::vector<int> optimalPermutation = computeAssignment(distanceMatrix, numSwapPositions);
         
         for (int s = 0; s < numSwapPositions; s++)
         {
-            sampleItems.set(swapPositions.getReference(optimalPermutation.getReference(s)),
-                            swappedElements.getUnchecked(s),
+            sampleItems.set(swapPositions[optimalPermutation[s]],
+                            swappedElements[s],
                             false);
         }
     }
 }
 
-Array<Array<int>> SampleGridClusterer::calculateNormalisedDistanceMatrix(Array<std::vector<float>>& inFeatureVectors, Array<std::vector<float>>& inGridVectors, int inSize)
+std::vector<std::vector<int>> SampleGridClusterer::calculateNormalisedDistanceMatrix(std::vector<std::vector<float>>& inFeatureVectors,
+                                                                                     std::vector<std::vector<float>>& inGridVectors,
+                                                                                     int inSize)
 {
     // Find maximum distance in the swapping area
     float maxDistance = 0;
@@ -898,9 +934,9 @@ Array<Array<int>> SampleGridClusterer::calculateNormalisedDistanceMatrix(Array<s
     {
         for (int j = 0; j < inSize; j++)
         {
-            float currentDistance = calculateDistance(inFeatureVectors.getReference(i), inGridVectors.getReference(j));
-            mDistanceMatrix.getReference(i).set(j, currentDistance);
-            mDistanceMatrixNormalised.getReference(i).set(j, 0);
+            float currentDistance = calculateDistance(inFeatureVectors[i], inGridVectors[j]);
+            mDistanceMatrix[i][j] = currentDistance;
+            mDistanceMatrixNormalised[i][j] = 0;
             
             if (currentDistance > maxDistance)
             {
@@ -919,10 +955,10 @@ Array<Array<int>> SampleGridClusterer::calculateNormalisedDistanceMatrix(Array<s
     {
         for (int j = 0; j < inSize; j++)
         {
-            mDistanceMatrixNormalised.getReference(i).set(j, (int) (QUANT
-                                                                   * mDistanceMatrix.getReference(i).getReference(j)
-                                                                   / maxDistance
-                                                                   + 0.5));
+            mDistanceMatrixNormalised[i][j] = (int) (QUANT
+                                                     * mDistanceMatrix[i][j]
+                                                     / maxDistance
+                                                     + 0.5);
         }
     }
     
@@ -955,54 +991,54 @@ float SampleGridClusterer::calculateDistance(std::vector<float> vector1, std::ve
     return sqrt(distance);
 }
 
-Array<int> SampleGridClusterer::computeAssignment(Array<Array<int>>& matrix, int numDimensions)
+std::vector<int> SampleGridClusterer::computeAssignment(std::vector<std::vector<int>>& matrix, int numDimensions)
 {
     int i, imin, i0, freerow;
     int j, j1, j2 = 0, endofpath = 0, last = 0, min = 0;
     
-    Array<int> inRow;
+    std::vector<int> inRow;
     inRow.resize(numDimensions);
-    Array<int> inCol;
+    std::vector<int> inCol;
     inCol.resize(numDimensions);
-    Array<int> v;
+    std::vector<int> v;
     v.resize(numDimensions);
-    Array<int> free;
+    std::vector<int> free;
     free.resize(numDimensions);
-    Array<int> collist;
+    std::vector<int> collist;
     collist.resize(numDimensions);
-    Array<int> matches;
+    std::vector<int> matches;
     matches.resize(numDimensions);
-    Array<int> pred;
+    std::vector<int> pred;
     pred.resize(numDimensions);
-    Array<int> d;
+    std::vector<int> d;
     d.resize(numDimensions);
     
     // Skipping L53-54
     for (j = numDimensions - 1; j >= 0; j--)
     {
-        min = matrix.getReference(0).getReference(j);
+        min = matrix[0][j];
         imin = 0;
         
         for (i = 1; i < numDimensions; i++)
         {
-            if (matrix.getReference(i).getReference(j) < min)
+            if (matrix[i][j] < min)
             {
-                min = matrix.getReference(i).getReference(j);
+                min = matrix[i][j];
                 imin = i;
             }
         }
         
-        v.set(j, min);
-        matches.getReference(imin)++;
+        v[j] = min;
+        matches[imin]++;
         
-        if (matches.getReference(imin) == 1)
+        if (matches[imin] == 1)
         {
-            inRow.set(imin, j);
-            inCol.set(j, imin);
+            inRow[imin] = j;
+            inCol[j] = imin;
         }
         else
         {
-            inCol.set(j, -1);
+            inCol[j] = -1;
         }
     }
     
@@ -1010,25 +1046,25 @@ Array<int> SampleGridClusterer::computeAssignment(Array<Array<int>>& matrix, int
     
     for (i = 0; i < numDimensions; i++)
     {
-        if (matches.getReference(i) == 0)
+        if (matches[i] == 0)
         {
-            free.set(numfree, i);
+            free[numfree] = i;
             numfree++;
         }
-        else if (matches.getReference(i) == 1)
+        else if (matches[i] == 1)
         {
-            j1 = inRow.getReference(i);
+            j1 = inRow[i];
             min = INT_MAX;
             
             for (j = 0; j < numDimensions; j++)
             {
-                if (j != j1 && matrix.getReference(i).getReference(j) - v.getReference(j) < min)
+                if (j != j1 && matrix[i][j] - v[j] < min)
                 {
-                    min = matrix.getReference(i).getReference(j) - v.getReference(j);
+                    min = matrix[i][j] - v[j];
                 }
             }
             
-            v.getReference(j1) -= min;
+            v[j1] -= min;
         }
     }
     
@@ -1040,15 +1076,15 @@ Array<int> SampleGridClusterer::computeAssignment(Array<Array<int>>& matrix, int
         
         while (k < prvnumfree)
         {
-            i = free.getReference(k);
+            i = free[k];
             k++;
-            int umin = matrix.getReference(i).getReference(0) - v.getReference(0);
+            int umin = matrix[i][0] - v[0];
             j1 = 0;
             int usubmin = INT_MAX;
             
             for (j = 1; j < numDimensions; j++)
             {
-                int h = matrix.getReference(i).getReference(j) - v.getReference(j);
+                int h = matrix[i][j] - v[j];
                 
                 if (h < usubmin)
                 {
@@ -1067,31 +1103,31 @@ Array<int> SampleGridClusterer::computeAssignment(Array<Array<int>>& matrix, int
                 }
             }
             
-            i0 = inCol.getReference(j1);
+            i0 = inCol[j1];
             
             if (umin < usubmin)
             {
-                v.set(j1, v.getReference(j1) - (usubmin - umin));
+                v[j1] = v[j1] - (usubmin - umin);
             }
             else if (i0 >= 0)
             {
                 j1 = j2;
-                i0 = inCol.getReference(j2);
+                i0 = inCol[j2];
             }
             
-            inRow.set(i, j1);
-            inCol.set(j1, i);
+            inRow[i] = j1;
+            inCol[j1] = i;
             
             if (i0 >= 0)
             {
                 if (umin < usubmin)
                 {
                     k--;
-                    free.set(k, i0);
+                    free[k] = i0;
                 }
                 else
                 {
-                    free.set(numfree, i0);
+                    free[numfree] = i0;
                     numfree++;
                 }
             }
@@ -1100,13 +1136,13 @@ Array<int> SampleGridClusterer::computeAssignment(Array<Array<int>>& matrix, int
     
     for (int f = 0; f < numfree; f++)
     {
-        freerow = free.getReference(f);
+        freerow = free[f];
         
         for (j = 0; j < numDimensions; j++)
         {
-            d.set(j, matrix.getReference(freerow).getReference(j) - v.getReference(j));
-            pred.set(j, freerow);
-            collist.set(j, j);
+            d[j] = matrix[freerow][j] - v[j];
+            pred[j] = freerow;
+            collist[j] = j;
         }
         
         int low = 0;
@@ -1118,13 +1154,13 @@ Array<int> SampleGridClusterer::computeAssignment(Array<Array<int>>& matrix, int
             if (up == low)
             {
                 last = low - 1;
-                min = d.getReference(collist.getReference(up));
+                min = d[collist[up]];
                 up++;
                 
                 for (int k = up; k < numDimensions; k++)
                 {
-                    j = collist.getReference(k);
-                    int h = d.getReference(j);
+                    j = collist[k];
+                    int h = d[j];
                     
                     if (h <= min)
                     {
@@ -1134,17 +1170,17 @@ Array<int> SampleGridClusterer::computeAssignment(Array<Array<int>>& matrix, int
                             min = h;
                         }
                         
-                        collist.set(k, collist.getReference(up));
-                        collist.set(up, j);
+                        collist[k] = collist[up];
+                        collist[up] = j;
                         up++;
                     }
                 }
                 
                 for (int k = low; k < up; k++)
                 {
-                    if (inCol.getReference(collist.getReference(k)) < 0)
+                    if (inCol[collist[k]] < 0)
                     {
-                        endofpath = collist.getReference(k);
+                        endofpath = collist[k];
                         unassignedfound = true;
                         break;
                     }
@@ -1153,23 +1189,23 @@ Array<int> SampleGridClusterer::computeAssignment(Array<Array<int>>& matrix, int
             
             if (!unassignedfound)
             {
-                j1 = collist.getReference(low);
+                j1 = collist[low];
                 low++;
-                i = inCol.getReference(j1);
-                int h = matrix.getReference(i).getReference(j1) - v.getReference(j1) - min;
+                i = inCol[j1];
+                int h = matrix[i][j1] - v[j1] - min;
                 
                 for (int k = up; k < numDimensions; k++)
                 {
-                    j = collist.getReference(k);
-                    int v2 = matrix.getReference(i).getReference(j) - v.getReference(j) - h;
+                    j = collist[k];
+                    int v2 = matrix[i][j] - v[j] - h;
                     
-                    if (v2 < d.getReference(j))
+                    if (v2 < d[j])
                     {
-                        pred.set(j, i);
+                        pred[j] = i;
                         
                         if (v2 == min)
                         {
-                            if (inCol.getReference(j) < 0)
+                            if (inCol[j] < 0)
                             {
                                 endofpath = j;
                                 unassignedfound = true;
@@ -1177,13 +1213,13 @@ Array<int> SampleGridClusterer::computeAssignment(Array<Array<int>>& matrix, int
                             }
                             else
                             {
-                                collist.set(k, collist.getReference(up));
-                                collist.set(up, j);
+                                collist[k] = collist[up];
+                                collist[up] = j;
                                 up++;
                             }
                         }
                         
-                        d.set(j, v2);
+                        d[j] = v2;
                     }
                 }
             }
@@ -1191,20 +1227,38 @@ Array<int> SampleGridClusterer::computeAssignment(Array<Array<int>>& matrix, int
         
         for (int k = 0; k <= last; k++)
         {
-            j1 = collist.getReference(k);
-            v.getReference(j1) += d.getReference(j1) - min;
+            j1 = collist[k];
+            v[j1] += d[j1] - min;
         }
         
         i = freerow + 1;
         while (i != freerow)
         {
-            i = pred.getReference(endofpath);
-            inCol.getReference(endofpath) = i;
+            i = pred[endofpath];
+            inCol[endofpath] = i;
             j1 = endofpath;
-            endofpath = inRow.getReference(i);
-            inRow.set(i, j1);
+            endofpath = inRow[i];
+            inRow[i] = j1;
         }
     }
     
     return inRow;
+}
+
+float SampleGridClusterer::getRadiusDecay(float inRadius)
+{
+    if (inRadius < 4)
+    {
+        return 0.95;
+    }
+    else if (inRadius > 100)
+    {
+        return 0.998;
+    }
+    
+    float radiusDecay = 1.001 / (1 + 0.03555 * exp(-0.02348 * inRadius)); // Logistic Regression
+    // float radiusDecay = 0.89901041667 + inRadius * 0.00098958333; // Linear
+    // float radiusDecay = 0.975; // Default fix value
+    
+    return radiusDecay;
 }

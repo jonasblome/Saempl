@@ -89,7 +89,7 @@ void BlomeSampleGridView::clusterGrid()
     }
     
     // Cluster sample item tiles with Fast Linear Assignment Sorting (FLAS)
-    if (sampleItems.size() > 3)
+    if (sampleItems.size() > 9)
     {
         if (currentProcessor.getFeatureWeightsChanged())
         {

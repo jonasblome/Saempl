@@ -97,20 +97,20 @@ static std::map<int, String> KEY_INDEX_TO_KEY_NAME
     { SAMPLE_TOO_LONG_INDEX, "Too long, analyse separately!" },
 };
 
-static Array<Array<int>> const KEY_PATTERNS = Array<Array<int>>
+static std::vector<std::vector<int>> const KEY_PATTERNS = std::vector<std::vector<int>>
 ({
-    Array<int>({ 6, 8, 10, 11, 1, 3, 5 }), // Gb
-    Array<int>({ 1, 3, 5, 6, 8, 10, 0 }),  // Db
-    Array<int>({ 8, 10, 0, 1, 3, 5, 7 }),  // Ab
-    Array<int>({ 3, 5, 7, 8, 10, 0, 2 }),  // Eb
-    Array<int>({ 10, 0, 2, 3, 5, 7, 9 }),  // Bb
-    Array<int>({ 5, 7, 9, 10, 0, 2, 4 }),  // F
-    Array<int>({ 0, 2, 4, 5, 7, 9, 11 }),  // C
-    Array<int>({ 7, 9, 11, 0, 2, 4, 6 }),  // G
-    Array<int>({ 2, 4, 6, 7, 9, 11, 1 }),  // D
-    Array<int>({ 9, 11, 1, 2, 4, 6, 8 }),  // A
-    Array<int>({ 4, 6, 8, 9, 11, 1, 3 }),  // E
-    Array<int>({ 11, 1, 3, 4, 6, 8, 10 }), // B
+    std::vector<int>({ 6, 8, 10, 11, 1, 3, 5 }), // Gb
+    std::vector<int>({ 1, 3, 5, 6, 8, 10, 0 }),  // Db
+    std::vector<int>({ 8, 10, 0, 1, 3, 5, 7 }),  // Ab
+    std::vector<int>({ 3, 5, 7, 8, 10, 0, 2 }),  // Eb
+    std::vector<int>({ 10, 0, 2, 3, 5, 7, 9 }),  // Bb
+    std::vector<int>({ 5, 7, 9, 10, 0, 2, 4 }),  // F
+    std::vector<int>({ 0, 2, 4, 5, 7, 9, 11 }),  // C
+    std::vector<int>({ 7, 9, 11, 0, 2, 4, 6 }),  // G
+    std::vector<int>({ 2, 4, 6, 7, 9, 11, 1 }),  // D
+    std::vector<int>({ 9, 11, 1, 2, 4, 6, 8 }),  // A
+    std::vector<int>({ 4, 6, 8, 9, 11, 1, 3 }),  // E
+    std::vector<int>({ 11, 1, 3, 4, 6, 8, 10 }), // B
 });
 
 // Grid options preset vectors
