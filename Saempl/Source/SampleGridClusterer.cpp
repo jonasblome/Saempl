@@ -718,7 +718,7 @@ std::vector<float> SampleGridClusterer::filterVerticallyMirror(std::vector<float
     return output;
 }
 
-void SampleGridClusterer::checkRandomSwaps(int radius, std::vector<std::vector<float>>& grid, int rows, int columns)
+void SampleGridClusterer::checkRandomSwaps(int radius, std::vector<std::vector<float>> & grid, int rows, int columns)
 {
     // Set swap size
     int swapAreaWidth = jmin<int>(2 * radius + 1, columns);
@@ -761,15 +761,31 @@ void SampleGridClusterer::checkRandomSwaps(int radius, std::vector<std::vector<f
     for (int n = 0; n < numSwapTries; n++)
     {
         addJob(new SampleSwapJob(sampleItems,
-                                 numSwapPositions,
-                                 applyWrap,
-                                 swapAreaIndices,
-                                 swapAreaWidth,
-                                 swapAreaHeight,
-                                 rows,
-                                 columns,
-                                 grid),
+                             numSwapPositions,
+                             applyWrap,
+                             swapAreaIndices,
+                             swapAreaWidth,
+                             swapAreaHeight,
+                             rows,
+                             columns,
+                             grid),
                true);
+        
+        // Don't do multithreading when radius is too small
+        float swapsPerThread = radius * radius / (numSwapPositions * SystemStats::getNumCpus());
+        
+        if (swapsPerThread < 1)
+        {
+            while (getNumJobs() > 0)
+            {
+                // Wait for jobs to finish
+            }
+        }
+    }
+    
+    while (getNumJobs() > 0)
+    {
+        // Wait for jobs to finish
     }
 }
 

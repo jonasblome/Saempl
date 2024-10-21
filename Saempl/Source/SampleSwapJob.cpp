@@ -27,6 +27,7 @@ swapAreaHeight(inSwapAreaHeight),
 rows(inRows),
 columns(inColumns),
 sampleItems(inSampleItems),
+swapAreaIndices(inSwapAreaIndices),
 grid(inGrid)
 {
     
@@ -50,7 +51,7 @@ ThreadPoolJob::JobStatus SampleSwapJob::runJob()
     mGridVectorsAtSwapPosition.resize(numSwapPositions);
     mDistanceMatrix.resize(numSwapPositions);
     mDistanceMatrixNormalised.resize(numSwapPositions);
-    for (int pos = 0; pos < mDistanceMatrix.size(); pos++)
+    for (int pos = 0; pos < (int) mDistanceMatrix.size(); pos++)
     {
         mDistanceMatrix[pos] = std::vector<float>(numDimensions);
         mDistanceMatrixNormalised[pos] = std::vector<int>(numDimensions);
@@ -93,12 +94,12 @@ int SampleSwapJob::findSwapPositionsWrap(std::vector<int>& swapAreaIndices,
     std::mt19937 generator(random());
     
     std::uniform_int_distribution<> distribution1(0, (int) swapAreaIndices.size() - (int) numSwapPositions);
-    int startIndex = (swapAreaIndices.size() - numSwapPositions > 0) ? distribution1(generator) : 0;
+    int startIndex = ((int) swapAreaIndices.size() - numSwapPositions > 0) ? distribution1(generator) : 0;
     
     std::uniform_int_distribution<> distribution2(0, rows * columns);
     int randomPosition = distribution2(generator);
     int numActualSwapPositions = 0;
-    for (int j = startIndex; j < swapAreaIndices.size() && numActualSwapPositions < numSwapPositions; j++)
+    for (int j = startIndex; j < (int) swapAreaIndices.size() && numActualSwapPositions < numSwapPositions; j++)
     {
         // Get wrapped position of random element to swap
         int d = randomPosition + swapAreaIndices[j];
@@ -144,10 +145,10 @@ int SampleSwapJob::findSwapPositions(std::vector<int>& swapAreaIndices,
     
     // Select random position in swap area
     std::uniform_int_distribution<> distribution2(0, (int) swapAreaIndices.size() - numSwapPositions);
-    int startIndex = (swapAreaIndices.size() - numSwapPositions > 0) ? distribution2(generator) : 0;
+    int startIndex = ((int) swapAreaIndices.size() - numSwapPositions > 0) ? distribution2(generator) : 0;
     int numActualSwapPositions = 0;
     
-    for (int sp = startIndex; sp < swapAreaIndices.size() && numActualSwapPositions < numSwapPositions; sp++)
+    for (int sp = startIndex; sp < (int) swapAreaIndices.size() && numActualSwapPositions < numSwapPositions; sp++)
     {
         // Get position of random element to swap
         int dx = swapAreaIndices[sp] % columns;
@@ -160,7 +161,7 @@ int SampleSwapJob::findSwapPositions(std::vector<int>& swapAreaIndices,
         swapPositions[numActualSwapPositions++] = pos;
     }
     
-    return numSwapPositions;
+    return numActualSwapPositions;
 }
 
 void SampleSwapJob::doSwaps(std::vector<int>& swapPositions,
