@@ -17,11 +17,14 @@ class SampleSwapJob
 :
 public ThreadPoolJob
 {
-    public:
+public:
     /**
      The sample swap job constructor.
      */
     SampleSwapJob(OwnedArray<SampleItem>& inSampleItems,
+                  std::set<int> & inStartIndicesInUse,
+                  std::set<int> & inSwapPositionsInUse,
+                  CriticalSection & inSwapLock,
                   int inNumSwapPositions,
                   bool inApplyWrap,
                   std::vector<int> inSwapAreaIndices,
@@ -32,7 +35,7 @@ public ThreadPoolJob
                   std::vector<std::vector<float>> & inGrid);
     ~SampleSwapJob();
     
-    private:
+private:
     static int const QUANT = 2048;
     int const numSwapPositions;
     bool const applyWrap;
@@ -40,7 +43,11 @@ public ThreadPoolJob
     int const swapAreaHeight;
     int const rows;
     int const columns;
-    OwnedArray<SampleItem>& sampleItems;
+    int startIndex;
+    OwnedArray<SampleItem> & sampleItems;
+    std::set<int> & swapPositionsInUse;
+    std::set<int> & startIndicesInUse;
+    CriticalSection & swapLock;
     std::vector<SampleItem*> swappedElements;
     std::vector<int> swapPositions;
     std::vector<int> swapAreaIndices;
@@ -73,7 +80,9 @@ public ThreadPoolJob
                               int swapAreaHeight,
                               int rows,
                               int columns);
-    /**
+    int getPosition(int columns, int rows, int sp, std::vector<int> &swapAreaIndices, int xStart, int yStart);
+    
+/**
      Chooses a random position on the grid and finds a set of random positions within a given area around that initial position,
      while mirroring the grid at the edges.
      

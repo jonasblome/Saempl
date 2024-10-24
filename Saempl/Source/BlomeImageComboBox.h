@@ -26,7 +26,7 @@ public ComboBox
     ~BlomeImageComboBox();
     
     private:
-    BlomeStyling::Ptr style;
+    BlomeStyling::StylingPtr style;
     Image comboBoxImage;
     
     void paint(Graphics & g) override;

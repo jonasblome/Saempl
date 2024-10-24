@@ -31,7 +31,7 @@ public:
     
 private:
     bool hasBackground;
-    BlomeStyling::Ptr style;
+    BlomeStyling::StylingPtr style;
     
     void paintButton(Graphics&, bool, bool) override;
     

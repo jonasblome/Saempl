@@ -38,7 +38,7 @@ public:
     
 private:
     std::unique_ptr<TextEditor> mCompareValueEditor;
-    BlomeStyling::Ptr style;
+    BlomeStyling::StylingPtr style;
     
     void paint(Graphics& g) override;
     void setComponents() override;

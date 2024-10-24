@@ -81,8 +81,9 @@ double SaemplAudioProcessor::getTailLengthSeconds() const
 
 int SaemplAudioProcessor::getNumPrograms()
 {
-    return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
+    // NB: some hosts don't cope very well if you tell them there are 0 programs,
     // so this should be at least 1, even if you're not really implementing programs.
+    return 1;
 }
 
 int SaemplAudioProcessor::getCurrentProgram()
@@ -90,21 +91,21 @@ int SaemplAudioProcessor::getCurrentProgram()
     return 0;
 }
 
-void SaemplAudioProcessor::setCurrentProgram (int index)
+void SaemplAudioProcessor::setCurrentProgram(int index)
 {
 }
 
-juce::String const SaemplAudioProcessor::getProgramName (int index)
+juce::String const SaemplAudioProcessor::getProgramName(int index)
 {
     return {};
 }
 
-void SaemplAudioProcessor::changeProgramName (int index, juce::String const & newName)
+void SaemplAudioProcessor::changeProgramName(int index, juce::String const & newName)
 {
 }
 
 //==============================================================================
-void SaemplAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void SaemplAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
@@ -117,7 +118,7 @@ void SaemplAudioProcessor::releaseResources()
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool SaemplAudioProcessor::isBusesLayoutSupported (BusesLayout const & layouts) const
+bool SaemplAudioProcessor::isBusesLayoutSupported(BusesLayout const & layouts) const
 {
 #if JucePlugin_IsMidiEffect
     juce::ignoreUnused (layouts);
@@ -142,7 +143,7 @@ bool SaemplAudioProcessor::isBusesLayoutSupported (BusesLayout const & layouts) 
 }
 #endif
 
-void SaemplAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void SaemplAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
 //    juce::ScopedNoDenormals noDenormals;
 //    auto totalNumInputChannels  = getTotalNumInputChannels();
@@ -184,7 +185,7 @@ juce::AudioProcessorEditor* SaemplAudioProcessor::createEditor()
 }
 
 //==============================================================================
-void SaemplAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
+void SaemplAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes

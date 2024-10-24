@@ -56,7 +56,7 @@ protected:
     std::unique_ptr<ComboBox> mCompareOperatorChooser;
     std::unique_ptr<ToggleButton> mActivateRuleButton;
     std::unique_ptr<BlomeImageButton> mDeleteRuleButton;
-    BlomeStyling::Ptr style;
+    BlomeStyling::StylingPtr style;
     
     /**
      Initialises the panel's components and adds them to the parent component.

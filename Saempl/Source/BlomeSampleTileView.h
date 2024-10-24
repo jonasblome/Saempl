@@ -55,7 +55,7 @@ private:
     SampleItemPanel& sampleItemPanel;
     AudioPlayer& audioPlayer;
     std::unique_ptr<BlomeImageButton> mStartStopButton;
-    BlomeStyling::Ptr style;
+    BlomeStyling::StylingPtr style;
     String sampleItemFilePath;
     bool isSelected;
     

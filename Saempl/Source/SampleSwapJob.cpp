@@ -9,7 +9,10 @@
 
 #include "SampleSwapJob.h"
 
-SampleSwapJob::SampleSwapJob(OwnedArray<SampleItem>& inSampleItems,
+SampleSwapJob::SampleSwapJob(OwnedArray<SampleItem> & inSampleItems,
+                             std::set<int> & inSwapPositionsInUse,
+                             std::set<int> & inStartIndicesInUse,
+                             CriticalSection & inSwapLock,
                              int inNumSwapPositions,
                              bool inApplyWrap,
                              std::vector<int> inSwapAreaIndices,
@@ -27,6 +30,9 @@ swapAreaHeight(inSwapAreaHeight),
 rows(inRows),
 columns(inColumns),
 sampleItems(inSampleItems),
+swapPositionsInUse(inSwapPositionsInUse),
+startIndicesInUse(inStartIndicesInUse),
+swapLock(inSwapLock),
 swapAreaIndices(inSwapAreaIndices),
 grid(inGrid)
 {
@@ -62,20 +68,20 @@ ThreadPoolJob::JobStatus SampleSwapJob::runJob()
     if (applyWrap)
     {
         numActualSwapPositions = findSwapPositionsWrap(swapAreaIndices,
-                                                     swapPositions,
-                                                     swapAreaWidth,
-                                                     swapAreaHeight,
-                                                     rows,
-                                                     columns);
+                                                       swapPositions,
+                                                       swapAreaWidth,
+                                                       swapAreaHeight,
+                                                       rows,
+                                                       columns);
     }
     else
     {
         numActualSwapPositions = findSwapPositions(swapAreaIndices,
-                                                 swapPositions,
-                                                 swapAreaWidth,
-                                                 swapAreaHeight,
-                                                 rows,
-                                                 columns);
+                                                   swapPositions,
+                                                   swapAreaWidth,
+                                                   swapAreaHeight,
+                                                   rows,
+                                                   columns);
     }
     
     doSwaps(swapPositions, numActualSwapPositions, grid);
@@ -113,6 +119,22 @@ int SampleSwapJob::findSwapPositionsWrap(std::vector<int>& swapAreaIndices,
     return numActualSwapPositions;
 }
 
+int SampleSwapJob::getPosition(int columns,
+                               int rows,
+                               int sp,
+                               std::vector<int> & swapAreaIndices,
+                               int xStart,
+                               int yStart) {
+    int dx = swapAreaIndices[sp] % columns;
+    int dy = swapAreaIndices[sp] / columns;
+    
+    int x = (xStart + dx) % columns;
+    int y = (yStart + dy) % rows;
+    int pos = y * columns + x;
+    
+    return pos;
+}
+
 int SampleSwapJob::findSwapPositions(std::vector<int>& swapAreaIndices,
                                      std::vector<int>& swapPositions,
                                      int swapAreaWidth,
@@ -143,30 +165,43 @@ int SampleSwapJob::findSwapPositions(std::vector<int>& swapAreaIndices,
         yStart = rows - swapAreaHeight;
     }
     
-    // Select random position in swap area
+    // Select random index in swap area
     std::uniform_int_distribution<> distribution2(0, (int) swapAreaIndices.size() - numSwapPositions);
-    int startIndex = ((int) swapAreaIndices.size() - numSwapPositions > 0) ? distribution2(generator) : 0;
     int numActualSwapPositions = 0;
+    CriticalSection::ScopedLockType const scopedLock(swapLock);
     
+    // Get the start index and look for a new one if it is already in use
+    startIndex = ((int) swapAreaIndices.size() - numSwapPositions > 0) ? distribution2(generator) : 0;
+    
+    while (startIndicesInUse.find(startIndex) != startIndicesInUse.end())
+    {
+        startIndex = ((int) swapAreaIndices.size() - numSwapPositions > 0) ? distribution2(generator) : 0;
+    }
+    
+    startIndicesInUse.insert(startIndex);
+    
+    // Get positions of random elements to swap
     for (int sp = startIndex; sp < (int) swapAreaIndices.size() && numActualSwapPositions < numSwapPositions; sp++)
     {
-        // Get position of random element to swap
-        int dx = swapAreaIndices[sp] % columns;
-        int dy = swapAreaIndices[sp] / columns;
+        // Get the position and look for a new one if it is already in use
+        int pos = getPosition(columns, rows, sp, swapAreaIndices, xStart, yStart);
         
-        int x = (xStart + dx) % columns;
-        int y = (yStart + dy) % rows;
-        int pos = y * columns + x;
+        while (swapPositionsInUse.find(pos) != swapPositionsInUse.end())
+        {
+            sp = (sp + 1) % (int) swapAreaIndices.size();
+            pos = getPosition(columns, rows, sp, swapAreaIndices, xStart, yStart);
+        }
         
+        swapPositionsInUse.insert(pos);
         swapPositions[numActualSwapPositions++] = pos;
     }
     
     return numActualSwapPositions;
 }
 
-void SampleSwapJob::doSwaps(std::vector<int>& swapPositions,
+void SampleSwapJob::doSwaps(std::vector<int> & swapPositions,
                             int numSwapPositions,
-                            std::vector<std::vector<float>>& grid)
+                            std::vector<std::vector<float>> & grid)
 {
     int numValid = 0;
     
@@ -193,7 +228,9 @@ void SampleSwapJob::doSwaps(std::vector<int>& swapPositions,
     
     if (numValid > 0)
     {
-        std::vector<std::vector<int>> distanceMatrix = calculateNormalisedDistanceMatrix(mSwappedFeatureVectors, mGridVectorsAtSwapPosition, numSwapPositions);
+        std::vector<std::vector<int>> distanceMatrix = calculateNormalisedDistanceMatrix(mSwappedFeatureVectors,
+                                                                                         mGridVectorsAtSwapPosition,
+                                                                                         numSwapPositions);
         std::vector<int> optimalPermutation = computeAssignment(distanceMatrix, numSwapPositions);
         
         for (int s = 0; s < numSwapPositions; s++)
@@ -201,6 +238,15 @@ void SampleSwapJob::doSwaps(std::vector<int>& swapPositions,
             sampleItems.set(swapPositions[optimalPermutation[s]],
                             swappedElements[s],
                             false);
+        }
+        
+        // Remove used start indices and swap positions
+        CriticalSection::ScopedLockType const scopedLock(swapLock);
+        startIndicesInUse.erase(startIndex);
+        
+        for (int sp : swapPositions)
+        {
+            swapPositionsInUse.erase(sp);
         }
     }
 }

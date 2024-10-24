@@ -19,7 +19,8 @@
 SampleGridClusterer::SampleGridClusterer(OwnedArray<SampleItem>& inSampleItems)
 :
 ThreadWithProgressWindow("Improving sample grid clustering quality", true, true, 10000, "Stop improving", nullptr),
-ThreadPool(SystemStats::getNumCpus()),
+ThreadPool(SystemStats::getNumCpus() * 1),
+numThreads(SystemStats::getNumCpus() * 1),
 sampleItems(inSampleItems)
 {
     
@@ -761,20 +762,23 @@ void SampleGridClusterer::checkRandomSwaps(int radius, std::vector<std::vector<f
     for (int n = 0; n < numSwapTries; n++)
     {
         addJob(new SampleSwapJob(sampleItems,
-                             numSwapPositions,
-                             applyWrap,
-                             swapAreaIndices,
-                             swapAreaWidth,
-                             swapAreaHeight,
-                             rows,
-                             columns,
-                             grid),
+                                 startIndicesInUse,
+                                 swapPositionsInUse,
+                                 mSwapLock,
+                                 numSwapPositions,
+                                 applyWrap,
+                                 swapAreaIndices,
+                                 swapAreaWidth,
+                                 swapAreaHeight,
+                                 rows,
+                                 columns,
+                                 grid),
                true);
         
         // Don't do multithreading when radius is too small
-        float swapsPerThread = radius * radius / (numSwapPositions * SystemStats::getNumCpus());
+        float swapTriesPerThread = radius * radius * 1.0 / (numSwapPositions * numThreads);
         
-        if (swapsPerThread < 1)
+        if (swapTriesPerThread < 0.1)
         {
             while (getNumJobs() > 0)
             {

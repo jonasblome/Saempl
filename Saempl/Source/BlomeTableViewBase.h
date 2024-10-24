@@ -52,7 +52,7 @@ protected:
     int numRows;
     std::unique_ptr<SampleItemComparator> mComparator;
     SampleItemCollectionScope mSampleItemCollectionType;
-    BlomeStyling::Ptr style;
+    BlomeStyling::StylingPtr style;
     
     void paint(Graphics& g) override;
     void paintRowBackground(Graphics& g,

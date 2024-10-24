@@ -28,7 +28,7 @@ static StringArray const PROPERTY_NAMES = StringArray({ "Title", "Length", "dB",
 static int const NUM_CHROMA = 12;
 static int const NUM_SPECTRAL_BANDS = 16;
 static int const NUM_FEATURES = 12;
-static int const LOWER_BPM_LIMIT = 70;
+static int const LOWER_BPM_LIMIT = 85;
 static int const UPPER_BPM_LIMIT = 180;
 
 enum CompareOperators
@@ -116,36 +116,36 @@ static std::vector<std::vector<int>> const KEY_PATTERNS = std::vector<std::vecto
 // Grid options preset vectors
 static std::vector<float> const GRID_PRESET_HARMONIC = std::vector<float>
 ({
-    1.0,  // Length
+    0.0,  // Length
     0.0,  // Loudness
     0.0,  // Dynamic Range
-    1.0,  // Zero Crossing Rate
-    0.5,  // Tempo
-    1.0,  // Key
-    1.0,  // Avg. Frequency
-    1.0,  // Freq. Spread
-    1.0,  // Upper Freq. Rolloff
-    1.0,  // Freq. Flux
-    1.0,  // Harmonic Flux
-    3.0,  // Freq. Distribution
-    4.0,  // Harmonic Distribution
+    0.0,  // Zero Crossing Rate
+    0.0,  // Tempo
+    0.0,  // Key
+    6.0,  // Avg. Frequency
+    10.0, // Freq. Spread
+    10.0, // Upper Freq. Rolloff
+    4.0,  // Freq. Flux
+    1.7,  // Harmonic Flux
+    2.0,  // Freq. Distribution
+    7.0,  // Harmonic Distribution
 });
 
 static std::vector<float> const GRID_PRESET_DRUMS = std::vector<float>
 ({
-    1.0,  // Length
+    0.0,  // Length
     0.0,  // Loudness
-    1.0,  // Dynamic Range
-    1.0,  // Zero Crossing Rate
+    0.0,  // Dynamic Range
+    0.0,  // Zero Crossing Rate
     0.0,  // Tempo
     0.0,  // Key
     10.0, // Avg. Frequency,
-    1.0,  // Freq. Spread
-    1.0,  // Upper Freq. Rolloff
-    1.0,  // Freq. Flux
-    0.2,  // Harmonic Flux
-    5.0,  // Freq. Distribution
-    0.2,  // Harmonic Distribution
+    10.0, // Freq. Spread
+    10.0, // Upper Freq. Rolloff
+    7.0,  // Freq. Flux
+    0.0,  // Harmonic Flux
+    2.0,  // Freq. Distribution
+    0.0,  // Harmonic Distribution
 });
 
 static std::vector<float> const GRID_PRESET_MONOPHONIC = std::vector<float>
@@ -167,18 +167,18 @@ static std::vector<float> const GRID_PRESET_MONOPHONIC = std::vector<float>
 
 static std::vector<float> const GRID_PRESET_FOLEY = std::vector<float>
 ({
-    1.0,  // Length
+    0.5,  // Length
     0.0,  // Loudness
-    1.0,  // Dynamic Range
-    1.0,  // Zero Crossing Rate
+    2.0,  // Dynamic Range
+    0.0,  // Zero Crossing Rate
     0.0,  // Tempo
     0.0,  // Key
-    1.0,  // Avg. Frequency
+    10.0, // Avg. Frequency
     1.0,  // Freq. Spread
-    1.0,  // Upper Freq. Rolloff
-    1.0,  // Freq. Flux
+    10.0, // Upper Freq. Rolloff
+    2.5,  // Freq. Flux
     0.0,  // Harmonic Flux
-    4.0,  // Freq. Distribution
+    3.5,  // Freq. Distribution
     0.0,  // Harmonic Distribution
 });
 
@@ -225,7 +225,7 @@ inline void drawDropShadow(Graphics& g,
                            int offsetX,
                            int offsetY,
                            int radius,
-                           BlomeStyling::Ptr const & style)
+                           BlomeStyling::StylingPtr const & style)
 {
     Image dropShadowImage(Image::ARGB, g.getClipBounds().getWidth(), g.getClipBounds().getHeight(), true);
     Graphics g2(dropShadowImage);

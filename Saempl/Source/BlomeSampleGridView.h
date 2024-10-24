@@ -114,7 +114,7 @@ private:
     SaemplAudioProcessor& currentProcessor;
     SampleLibrary& sampleLibrary;
     AudioPlayer& audioPlayer;
-    BlomeStyling::Ptr style;
+    BlomeStyling::StylingPtr style;
     std::unique_ptr<Grid> mSampleGrid;
     SampleItemPanel& sampleItemPanel;
     OwnedArray<BlomeSampleTileView> mSampleTiles;

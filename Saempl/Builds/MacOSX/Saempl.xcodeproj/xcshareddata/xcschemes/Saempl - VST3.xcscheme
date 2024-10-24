@@ -41,7 +41,7 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
-         FilePath = "/Applications/Ableton Live 11 Suite.app">
+         FilePath = "/Applications/Ableton Live 12 Suite.app">
       </PathRunnable>
    </LaunchAction>
    <ProfileAction

@@ -19,11 +19,11 @@
 class SaemplAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
-    SaemplAudioProcessorEditor (SaemplAudioProcessor& inProcessor);
+    SaemplAudioProcessorEditor(SaemplAudioProcessor& inProcessor);
     ~SaemplAudioProcessorEditor() override;
     
     //==============================================================================
-    void paint (juce::Graphics&) override;
+    void paint(juce::Graphics&) override;
     void resized() override;
     
 private:
@@ -35,5 +35,5 @@ private:
     std::unique_ptr<MainPanel> mMainPanel;
     std::unique_ptr<BlomeLookAndFeel> mLookAndFeel;
     SharedResourcePointer<TooltipWindow> tooltipWindow;
-    BlomeStyling::Ptr style;
+    BlomeStyling::StylingPtr style;
 };

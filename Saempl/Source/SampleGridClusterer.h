@@ -51,9 +51,12 @@ private:
     constexpr static float const endRadius = 1.0;
     constexpr static float const weightHole = 0.01;
     constexpr static float const weightTile = 1.0;
-    constexpr static float const sampleFactor = 2.0; // How often some tiles are swapped per radius reduction
+    constexpr static float const sampleFactor = 2.0; // How often all tiles in the swap area are swapped per radius reduction
     static int const maxSwapPositions = 9;
-    Array<int> currentlyUsedSwapPositions;
+    int const numThreads;
+    std::set<int> swapPositionsInUse;
+    std::set<int> startIndicesInUse;
+    CriticalSection mSwapLock;
     OwnedArray<SampleItem>& sampleItems;
     std::vector<float> mFeatureWeights;
     int rows;
