@@ -33,6 +33,7 @@ SaemplAudioProcessor::SaemplAudioProcessor()
     mFeatureWeightsChanged = true;
     mVolumeIsNormalised = false;
     mSampleGridZoomFactor = 0.0;
+    mOutputGain = 1.0;
     mFeatureWeights = GRID_PRESET_HARMONIC;
 }
 
@@ -202,6 +203,7 @@ void SaemplAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
     stateInfoBody->setAttribute("SampleGridZoomFactor", mSampleGridZoomFactor);
     stateInfoBody->setAttribute("LastOpenedLibraryPath", mLastOpenedLibraryPath);
     stateInfoBody->setAttribute("VolumeIsNormalised", mVolumeIsNormalised);
+    stateInfoBody->setAttribute("OutputGain", mOutputGain);
     
     // Storing feature weights
     for (int fw = 0; fw < mFeatureWeights.size(); fw++)
@@ -305,6 +307,7 @@ void SaemplAudioProcessor::setStateInformation(void const * data, int sizeInByte
             mSampleGridZoomFactor = stateInfoBody->getDoubleAttribute("SampleGridZoomFactor");
             mLastOpenedLibraryPath = stateInfoBody->getStringAttribute("LastOpenedLibraryPath");
             mVolumeIsNormalised = stateInfoBody->getBoolAttribute("VolumeIsNormalised");
+            mOutputGain = stateInfoBody->getDoubleAttribute("OutputGain");
             
             for (int fw = 0; fw < mFeatureWeights.size(); fw++)
             {
@@ -496,6 +499,16 @@ float SaemplAudioProcessor::getSampleGridZoomFactor()
 void SaemplAudioProcessor::setSampleGridZoomFactor(float inZoomFactor)
 {
     mSampleGridZoomFactor = inZoomFactor;
+}
+
+float SaemplAudioProcessor::getOutputGain()
+{
+    return mOutputGain;
+}
+
+void SaemplAudioProcessor::setOutputGain(float inGain)
+{
+    mOutputGain = inGain;
 }
 
 std::vector<float> SaemplAudioProcessor::getFeatureWeights()

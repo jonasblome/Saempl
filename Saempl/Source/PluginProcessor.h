@@ -141,6 +141,16 @@ public:
      */
     void setSampleGridZoomFactor(float inZoomFactor);
     /**
+     @returns the current output gain.
+     */
+    float getOutputGain();
+    /**
+     Sets the current output gain.
+     
+     @param inGain the output gain.
+     */
+    void setOutputGain(float inGain);
+    /**
      @returns the feature weights for the grid clusterer.
      */
     std::vector<float> getFeatureWeights();
@@ -194,5 +204,6 @@ private:
     bool mFeatureWeightsChanged;
     bool mVolumeIsNormalised;
     float mSampleGridZoomFactor;
+    float mOutputGain;
     std::vector<float> mFeatureWeights;
 };

@@ -163,6 +163,7 @@ bool CentrePanel::keyPressed(KeyPress const & key)
 
 void CentrePanel::setGain(float inGain)
 {
+    currentProcessor.setOutputGain(inGain);
     mAudioPlayer->setGain(inGain);
     mSampleItemPanel->setGain(inGain);
 }

@@ -575,7 +575,7 @@ void HeaderPanel::setGainSlider()
     // Add zoom slider
     mGainSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::NoTextBox);
     mGainSlider->setRange(0, 1, 0);
-    mGainSlider->setValue(1.0, NotificationType::dontSendNotification);
+    mGainSlider->setValue(currentProcessor.getOutputGain(), NotificationType::sendNotification);
     mGainSlider->onValueChange = [this]
     {
         centrePanel.setGain(mGainSlider->getValue());
