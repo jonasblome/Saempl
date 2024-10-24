@@ -39,7 +39,7 @@ SampleLibrary::~SampleLibrary()
     
     if (mLibraryWasAltered)
     {
-        mSampleLibraryManager->updateSampleLibraryFile();
+        mSampleLibraryManager->updateSampleLibraryFiles();
     }
     
     clearSampleItemCollections();
@@ -131,7 +131,7 @@ void SampleLibrary::setDirectory(String inDirectoryPath)
     // If a library is currently loaded, store it
     if (mCurrentLibraryPath != "" && mLibraryWasAltered)
     {
-        mSampleLibraryManager->updateSampleLibraryFile();
+        mSampleLibraryManager->updateSampleLibraryFiles();
     }
     
     mCurrentLibraryPath = inDirectoryPath;

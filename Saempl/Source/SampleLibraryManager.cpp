@@ -31,7 +31,7 @@ SampleLibraryManager::~SampleLibraryManager()
     
 }
 
-void SampleLibraryManager::updateSampleLibraryFile()
+void SampleLibraryManager::updateSampleLibraryFiles()
 {
     for (int i = 0; i < addedFilePaths.size() - 1; ++i)
     {
@@ -282,7 +282,7 @@ void SampleLibraryManager::run()
     
     if (deletedSampleItems.size() + addedSampleItems.size() != 0)
     {
-        updateSampleLibraryFile();
+        updateSampleLibraryFiles();
     }
     
     if (threadShouldExit())

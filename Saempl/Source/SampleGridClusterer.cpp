@@ -778,7 +778,7 @@ void SampleGridClusterer::checkRandomSwaps(int radius, std::vector<std::vector<f
         // Don't do multithreading when radius is too small
         float swapTriesPerThread = radius * radius * 1.0 / (numSwapPositions * numThreads);
         
-        if (swapTriesPerThread < 0.1)
+        if (swapTriesPerThread < 0.2)
         {
             while (getNumJobs() > 0)
             {

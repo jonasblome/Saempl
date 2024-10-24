@@ -44,7 +44,7 @@ public:
     /**
      Adds meta-information of all sample items to an analysis file and updates their information if needed.
      */
-    void updateSampleLibraryFile();
+    void updateSampleLibraryFiles();
     /**
      Deletes all sample items where the files have been externally deleted
      and adds sample items for each new detected file.

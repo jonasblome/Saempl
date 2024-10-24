@@ -27,15 +27,15 @@ int SampleItemComparator::compareElements(SampleItem* first, SampleItem* second)
     }
     else if (mComparePropertyName == PROPERTY_NAMES[1])
     {
-        return compareElements<double>(first->getLength(), second->getLength());
+        return compareElements<float>(first->getLength(), second->getLength());
     }
     else if (mComparePropertyName == PROPERTY_NAMES[2])
     {
-        return compareElements<double>(first->getLoudnessDecibel(), second->getLoudnessDecibel());
+        return compareElements<float>(first->getLoudnessDecibel(), second->getLoudnessDecibel());
     }
     else if (mComparePropertyName == PROPERTY_NAMES[3])
     {
-        return compareElements<double>(first->getLoudnessLUFS(), second->getLoudnessLUFS());
+        return compareElements<float>(first->getLoudnessLUFS(), second->getLoudnessLUFS());
     }
     else if (mComparePropertyName == PROPERTY_NAMES[4])
     {
@@ -51,7 +51,7 @@ int SampleItemComparator::compareElements(SampleItem* first, SampleItem* second)
 
 template <typename T> int SampleItemComparator::compareElements(T first, T second)
 {
-    int result = first < second ? -1 : first > second ? 1 : 0;
+    int result = first < second ? -1 : (first > second ? 1 : 0);
     
     if (!mIsForwards)
     {

@@ -91,7 +91,7 @@ void BlomeTableViewNavigation::addToFavourites()
 
 void BlomeTableViewNavigation::changeListenerCallback(ChangeBroadcaster *source)
 {
-    if (source == &sampleLibrary)
+    if (source == &sampleLibrary && isShowing())
     {
         resortTable();
     }
