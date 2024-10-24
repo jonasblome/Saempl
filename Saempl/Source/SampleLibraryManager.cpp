@@ -33,6 +33,10 @@ SampleLibraryManager::~SampleLibraryManager()
 
 void SampleLibraryManager::updateSampleLibraryFiles()
 {
+    setProgress(0.0);
+    setStatusMessage("Removing faulty duplicates");
+    
+    // Removing duplicates from library
     for (int i = 0; i < addedFilePaths.size() - 1; ++i)
     {
         String s = addedFilePaths.getReference(i);
@@ -41,7 +45,7 @@ void SampleLibraryManager::updateSampleLibraryFiles()
         {
             nextIndex = addedFilePaths.indexOf(s, false, nextIndex);
             
-            if (nextIndex < 0)
+            if (nextIndex == -1)
             {
                 break;
             }
@@ -49,7 +53,12 @@ void SampleLibraryManager::updateSampleLibraryFiles()
             deletedSampleItems.add(getSampleItemWithFilePath(s));
             addedFilePaths.remove(nextIndex);
         }
+        
+        setProgress(i / ((double) addedFilePaths.size() - 1));
     }
+    
+    setProgress(0.0);
+    setStatusMessage("Writing data to library files");
     
     int numItemsToUpdate = deletedSampleItems.size() + addedSampleItems.size() + alteredSampleItems.size();
     int numUpdatedItems = 0;
@@ -69,7 +78,6 @@ void SampleLibraryManager::updateSampleLibraryFiles()
     {
         libraryFileDirectory.createDirectory();
     }
-    
     
     for (File libraryFile : allDirectories)
     {
@@ -120,6 +128,7 @@ void SampleLibraryManager::updateSampleLibraryFiles()
                 sampleItemsXml->removeChildElement(sampleItemsXml->getChildByName(encodeForXml(sampleItem->getFilePath())),
                                                    true);
                 numUpdatedItems++;
+                setProgress(numUpdatedItems / (double) numItemsToUpdate);
             }
         }
         
@@ -132,6 +141,7 @@ void SampleLibraryManager::updateSampleLibraryFiles()
                 writeSampleItemToXml(sampleItem, sampleItemXml);
                 sampleItemsXml->prependChildElement(sampleItemXml);
                 numUpdatedItems++;
+                setProgress(numUpdatedItems / (double) numItemsToUpdate);
             }
         }
         
@@ -143,6 +153,7 @@ void SampleLibraryManager::updateSampleLibraryFiles()
                 XmlElement* sampleItemXml = sampleItemsXml->getChildByName(encodeForXml(sampleItem->getFilePath()));
                 writeSampleItemToXml(sampleItem, sampleItemXml);
                 numUpdatedItems++;
+                setProgress(numUpdatedItems / (double) numItemsToUpdate);
             }
         }
         
@@ -162,16 +173,10 @@ void SampleLibraryManager::synchWithLibraryDirectory()
 
 void SampleLibraryManager::setProgressAndStatus(int numItemsToProcess, int64 startTime)
 {
-    if (numItemsToProcess == 0 || numProcessedItems == 0)
-    {
-        setStatusMessage("Loading...");
-        return;
-    }
-    
     setProgress(numProcessedItems / (double) numItemsToProcess);
     String statusMessage = String(std::to_string(numProcessedItems) + "/" + std::to_string(numItemsToProcess) + " Samples analysed" + "\n" + "Est. time remaining: ");
     int64 msSinceStart = Time::currentTimeMillis() - startTime;
-    int64 estimatedSecondsRemaining = ((msSinceStart / numProcessedItems) * (numItemsToProcess - numProcessedItems)) / 1000;
+    float estimatedSecondsRemaining = ((msSinceStart / numProcessedItems) * (numItemsToProcess - numProcessedItems)) / 1000;
     
     if (estimatedSecondsRemaining < 60)
     {
@@ -193,17 +198,17 @@ void SampleLibraryManager::run()
 {
     // Go through all files in directory, check if a corresponding sample item
     // already exists in the sample item list, if not add it
-    setProgress(0.0);
     int64 startTime = Time::currentTimeMillis();
-    setProgressAndStatus(0, startTime);
+    setProgress(0.0);
+    setStatusMessage("Loading...");
     Array<File> allSampleFiles = libraryDirectory.findChildFiles(File::findFiles,
                                                                  true,
                                                                  SUPPORTED_AUDIO_FORMATS_WILDCARD);
     
     // Go through all current sample items,
-    // check if corresponding audio file still exists
-    // and if not, delete sample item
-    // from all items and favourites collection
+    // check if corresponding audio file still exists...
+    setStatusMessage("Looking for deleted samples");
+    int si = 0;
     for (SampleItem* sampleItem : allSampleItems)
     {
         if (threadShouldExit())
@@ -215,8 +220,16 @@ void SampleLibraryManager::run()
         {
             deletedSampleItems.add(sampleItem);
         }
+        
+        si++;
+        setProgress(si / (double) allSampleItems.size());
     }
     
+    // ...and if not, delete sample item
+    // from all items and favourites collection
+    setProgress(0.0);
+    setStatusMessage("Removing deleted samples from library file");
+    int dsi = 0;
     for (SampleItem* sampleItem : deletedSampleItems)
     {
         addedFilePaths.removeString(sampleItem->getFilePath());
@@ -224,6 +237,9 @@ void SampleLibraryManager::run()
         allSampleItems.removeObject(sampleItem, false);
         addedSampleItems.removeObject(sampleItem, false);
         alteredSampleItems.removeObject(sampleItem, false);
+        
+        dsi++;
+        setProgress(dsi / (double) deletedSampleItems.size());
     }
     
     // All files have already been loaded
@@ -238,6 +254,7 @@ void SampleLibraryManager::run()
     bool isLoadingNewLibrary = allSampleItems.size() == 0;
     int numItemsToProcess = jmax<int>(0, allSampleFiles.size() - allSampleItems.size());
     numProcessedItems = 0;
+    setProgress(0.0);
     
     for (File const & sampleFile : allSampleFiles)
     {

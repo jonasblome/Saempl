@@ -47,7 +47,8 @@ void SampleGridClusterer::setFeatureWeights(std::vector<float> inFeatureWeights)
 
 void SampleGridClusterer::run()
 {
-    setProgress(0.0);
+    int64 startTime = Time::currentTimeMillis();
+    setProgressAndStatus(0.0, startTime);
     
     // Assign input vectors to random grid positions
     unsigned seed = (unsigned) std::chrono::system_clock::now().time_since_epoch().count();
@@ -130,7 +131,7 @@ void SampleGridClusterer::run()
             break;
         }
         
-        setProgress(progressCounter++ * 1.0 / numRadiusReductions);
+        setProgressAndStatus(progressCounter++ * 1.0 / numRadiusReductions, startTime);
         
         int radius = jmax<int>(1, std::round(rad));
         int radiusX = jmax<int>(1, jmin<int>(columns / 2, radius));
@@ -809,4 +810,27 @@ float SampleGridClusterer::getRadiusDecay(float inRadius)
     // float radiusDecay = 0.975; // Default fix value
     
     return radiusDecay;
+}
+
+void SampleGridClusterer::setProgressAndStatus(double inProgress, int64 startTime)
+{
+    setProgress(inProgress);
+    String statusMessage = "Est. time remaining: ";
+    int64 msSinceStart = Time::currentTimeMillis() - startTime;
+    float estimatedSecondsRemaining = ((msSinceStart / inProgress) * (1.0 - inProgress)) / 1000;
+    
+    if (estimatedSecondsRemaining < 60)
+    {
+        statusMessage = statusMessage + String::toDecimalStringWithSignificantFigures(estimatedSecondsRemaining, 2) + " second(s)";
+    }
+    else if (estimatedSecondsRemaining < 3600)
+    {
+        statusMessage = statusMessage + String::toDecimalStringWithSignificantFigures(estimatedSecondsRemaining * 1.0 / 60, 2) + " minute(s)";
+    }
+    else
+    {
+        statusMessage = statusMessage + String::toDecimalStringWithSignificantFigures(estimatedSecondsRemaining * 1.0 / 3600, 2) + " hour(s)";
+    }
+    
+    setStatusMessage(statusMessage);
 }

@@ -215,6 +215,10 @@ private:
      @returns the new radius decay.
      */
     float getRadiusDecay(float inRadius);
+    /**
+     Sets the threads progress bar and status message.
+     */
+    void setProgressAndStatus(double inProgress, int64 startTime);
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleGridClusterer);
 };
