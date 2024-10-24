@@ -18,7 +18,7 @@ class BlomeLookAndFeel
 :
 public LookAndFeel_V4
 {
-public:
+    public:
     BlomeLookAndFeel(SampleLibrary& inSampleDatabase)
     :   sampleLibrary(inSampleDatabase)
     {
@@ -133,22 +133,22 @@ public:
     }
     
     void drawPopupMenuItem(Graphics& g,
-                            Rectangle<int> const & area,
-                            bool isSeparator,
-                            bool isActive,
-                            bool isHighlighted,
-                            bool isTicked,
-                            bool hasSubMenu,
-                            String const & text,
-                            String const & shortcutKeyText,
-                            Drawable const * icon,
-                            Colour const * textColour) override
+                           Rectangle<int> const & area,
+                           bool isSeparator,
+                           bool isActive,
+                           bool isHighlighted,
+                           bool isTicked,
+                           bool hasSubMenu,
+                           String const & text,
+                           String const & shortcutKeyText,
+                           Drawable const * icon,
+                           Colour const * textColour) override
     {
         Rectangle<int> r(area);
         
         if (isHighlighted || isTicked)
         {
-            g.setColour(isHighlighted ? style->COLOUR_BLACK_SUPERLIGHT_TRANSPARENT : style->COLOUR_BLACK_LIGHT_TRANSPARENT);
+            g.setColour(isHighlighted ? style->COLOUR_BLACK_LIGHT_TRANSPARENT : style->COLOUR_BLACK_MEDIUM_TRANSPARENT);
             g.fillRoundedRectangle(r.reduced(1).toFloat(), style->CORNER_SIZE_MEDIUM);
         }
         
@@ -233,7 +233,7 @@ public:
                           float minSliderPos,
                           float maxSliderPos,
                           Slider::SliderStyle const sliderStyle,
-                          Slider& slider) override
+                          Slider & slider) override
     {
         if (slider.isBar())
         {
@@ -333,6 +333,47 @@ public:
     {
         return jmin(10, slider.isHorizontal() ? static_cast<int>((float) slider.getHeight() * 0.5f)
                     : static_cast<int>((float) slider.getWidth() * 0.5f));
+    }
+    
+    Label* createSliderTextBox(Slider & slider) override
+    {
+        Label* label = new Label();
+        label->setJustificationType(Justification::centred);
+        label->setKeyboardType(TextInputTarget::decimalKeyboard);
+        
+        // Set slider textbox colours
+        label->setColour(Label::textColourId, style->COLOUR_ACCENT_LIGHT);
+        label->setColour(Label::backgroundColourId, style->COLOUR_ACCENT_DARK);
+        label->setColour(Label::outlineColourId, style->COLOUR_ACCENT_LIGHT);
+        label->setColour(TextEditor::textColourId, style->COLOUR_ACCENT_DARK);
+        label->setColour(TextEditor::backgroundColourId, style->COLOUR_ACCENT_DARK);
+        label->setColour(TextEditor::outlineColourId, style->COLOUR_ACCENT_LIGHT);
+        label->setColour(TextEditor::highlightColourId, style->COLOUR_ACCENT_MEDIUM);
+        
+        return label;
+    }
+    
+    void drawLabel(Graphics & g, Label & label) override
+    {
+        if (!label.isBeingEdited())
+        {
+            float alpha = label.isEnabled() ? 1.0f : 0.5f;
+            
+            g.setColour(style->COLOUR_ACCENT_LIGHT.withMultipliedAlpha(alpha));
+            g.setFont(style->FONT_SMALL_BOLD);
+            
+            auto textArea = getLabelBorderSize(label).subtractedFrom(label.getLocalBounds());
+            
+            g.drawFittedText(label.getText(), textArea, label.getJustificationType(),
+                             jmax(1, (int) ((float) textArea.getHeight() / style->FONT_SMALL_BOLD.getHeight())),
+                             label.getMinimumHorizontalScale());
+            
+            g.setColour(style->COLOUR_ACCENT_LIGHT.withMultipliedAlpha(alpha));
+        }
+        else if (label.isEnabled())
+        {
+            g.setColour(style->COLOUR_ACCENT_LIGHT);
+        }
     }
     
     void drawScrollbar(Graphics& g,
@@ -543,7 +584,7 @@ public:
     void drawTextEditorOutline(Graphics& g,
                                int width,
                                int height,
-                               TextEditor& textEditor) override
+                               TextEditor & textEditor) override
     {
         if (dynamic_cast<AlertWindow*>(textEditor.getParentComponent()) == nullptr)
         {
@@ -566,7 +607,7 @@ public:
     void fillTextEditorBackground(Graphics& g,
                                   int width,
                                   int height,
-                                  TextEditor& textEditor) override
+                                  TextEditor & textEditor) override
     {
         g.setColour(style->COLOUR_ACCENT_DARK);
         g.fillRoundedRectangle(0, 0, width, height, style->CORNER_SIZE_MEDIUM);
@@ -714,7 +755,7 @@ public:
         }
     }
     
-private:
+    private:
     SampleLibrary& sampleLibrary;
     BlomeStyling::StylingPtr style;
     

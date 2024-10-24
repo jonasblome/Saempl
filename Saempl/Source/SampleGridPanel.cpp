@@ -117,9 +117,10 @@ void SampleGridPanel::setPanelComponents()
     addAndMakeVisible(*mChangeGridClusteringOptionsButton);
     
     // Add zoom slider
+    int x = style->PANEL_MARGIN;
     int sliderWidth = 150;
     mZoomSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::NoTextBox);
-    mZoomSlider->setBounds(style->PANEL_MARGIN,
+    mZoomSlider->setBounds(x,
                            style->PANEL_MARGIN * 0.25 + style->PANEL_TITLE_HEIGHT,
                            sliderWidth,
                            style->PANEL_TITLE_HEIGHT * 0.5);
@@ -157,6 +158,77 @@ void SampleGridPanel::setPanelComponents()
     };
     mZoomSlider->setTooltip("Scales the size of the grid tiles (+/-)");
     addAndMakeVisible(*mZoomSlider);
+    x += sliderWidth + style->PANEL_MARGIN * 0.5;
+    
+    // Add preset buttons
+    int buttonWidth = 65;
+    
+    // Adds harmonic preset button
+    mHarmonicPresetButton = std::make_unique<TextButton>("Harmonic");
+    mHarmonicPresetButton->setBounds(x,
+                                     style->PANEL_MARGIN * 0.25 + style->PANEL_TITLE_HEIGHT,
+                                     buttonWidth,
+                                     style->PANEL_TITLE_HEIGHT * 0.5);
+    mHarmonicPresetButton->onClick = [this]
+    {
+        if (currentProcessor.getFeatureWeights() != GRID_PRESET_HARMONIC)
+        {
+            currentProcessor.setFeatureWeights(GRID_PRESET_HARMONIC);
+        }
+    };
+    mHarmonicPresetButton->setTooltip("A preset to optimise clustering for harmonic loops");
+    addAndMakeVisible(*mHarmonicPresetButton);
+    x += buttonWidth + style->PANEL_MARGIN * 0.5;
+    
+    // Adds drums preset button
+    mDrumsPresetButton = std::make_unique<TextButton>("Drums");
+    mDrumsPresetButton->setBounds(x,
+                                  style->PANEL_MARGIN * 0.25 + style->PANEL_TITLE_HEIGHT,
+                                  buttonWidth,
+                                  style->PANEL_TITLE_HEIGHT * 0.5);
+    mDrumsPresetButton->onClick = [this]
+    {
+        if (currentProcessor.getFeatureWeights() != GRID_PRESET_DRUMS)
+        {
+            currentProcessor.setFeatureWeights(GRID_PRESET_DRUMS);
+        }
+    };
+    mDrumsPresetButton->setTooltip("A preset to optimise clustering for drum one-shots");
+    addAndMakeVisible(*mDrumsPresetButton);
+    x += buttonWidth + style->PANEL_MARGIN * 0.5;
+    
+    // Adds monophonic instrument preset button
+    mMonophonicPresetButton = std::make_unique<TextButton>("Monoph.");
+    mMonophonicPresetButton->setBounds(x,
+                                       style->PANEL_MARGIN * 0.25 + style->PANEL_TITLE_HEIGHT,
+                                       buttonWidth,
+                                       style->PANEL_TITLE_HEIGHT * 0.5);
+    mMonophonicPresetButton->onClick = [this]
+    {
+        if (currentProcessor.getFeatureWeights() != GRID_PRESET_MONOPHONIC)
+        {
+            currentProcessor.setFeatureWeights(GRID_PRESET_MONOPHONIC);
+        }
+    };
+    mMonophonicPresetButton->setTooltip("A preset to optimise clustering for monophonic samples");
+    addAndMakeVisible(*mMonophonicPresetButton);
+    x += buttonWidth + style->PANEL_MARGIN * 0.5;
+    
+    // Adds foley preset button
+    mFoleyPresetButton = std::make_unique<TextButton>("Foley");
+    mFoleyPresetButton->setBounds(x,
+                                  style->PANEL_MARGIN * 0.25 + style->PANEL_TITLE_HEIGHT,
+                                  buttonWidth,
+                                  style->PANEL_TITLE_HEIGHT * 0.5);
+    mFoleyPresetButton->onClick = [this]
+    {
+        if (currentProcessor.getFeatureWeights() != GRID_PRESET_FOLEY)
+        {
+            currentProcessor.setFeatureWeights(GRID_PRESET_FOLEY);
+        }
+    };
+    mFoleyPresetButton->setTooltip("A preset to optimise clustering for foley samples");
+    addAndMakeVisible(*mFoleyPresetButton);
     
     // Add grid viewport
     mGridViewport = std::make_unique<Viewport>();

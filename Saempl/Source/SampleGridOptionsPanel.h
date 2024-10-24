@@ -25,10 +25,6 @@ public:
     ~SampleGridOptionsPanel();
     
 private:
-    std::unique_ptr<TextButton> mHarmonicPresetButton;
-    std::unique_ptr<TextButton> mDrumsPresetButton;
-    std::unique_ptr<TextButton> mMonophonicPresetButton;
-    std::unique_ptr<TextButton> mFoleyPresetButton;
     std::unique_ptr<Slider> mLengthSlider;
     std::unique_ptr<Label> mLengthLabel;
     std::unique_ptr<Slider> mLoudnessSlider;
@@ -55,11 +51,10 @@ private:
     std::unique_ptr<Label> mSpectralDistributionLabel;
     std::unique_ptr<Slider> mChromaDistributionSlider;
     std::unique_ptr<Label> mChromaDistributionLabel;
-    static int const labelWidth = 70;
+    static int const labelWidth = 115;
     static int const introTextHeight = 70;
     
     void paint(Graphics& g) override;
-    void applyPresetToSliders(std::vector<float> inPresetValues);
     
 void setPanelComponents() override;
     

@@ -46,6 +46,10 @@ private:
     std::unique_ptr<Viewport> mGridViewport;
     std::unique_ptr<BlomeImageButton> mChangeGridClusteringOptionsButton;
     std::unique_ptr<Slider> mZoomSlider;
+    std::unique_ptr<TextButton> mHarmonicPresetButton;
+    std::unique_ptr<TextButton> mDrumsPresetButton;
+    std::unique_ptr<TextButton> mMonophonicPresetButton;
+    std::unique_ptr<TextButton> mFoleyPresetButton;
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;

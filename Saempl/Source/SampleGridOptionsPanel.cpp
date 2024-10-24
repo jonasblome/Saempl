@@ -65,85 +65,13 @@ void SampleGridOptionsPanel::paint(Graphics& g)
                introTextHeight + 5);
 }
 
-void SampleGridOptionsPanel::applyPresetToSliders(std::vector<float> inPresetValues)
-{
-    mLengthSlider->setValue(inPresetValues[0]);
-    mLoudnessSlider->setValue(inPresetValues[1]);
-    mDynamicRangeSlider->setValue(inPresetValues[2]);
-    mZeroCrossingRateSlider->setValue(inPresetValues[3]);
-    mTempoSlider->setValue(inPresetValues[4]);
-    mKeySlider->setValue(inPresetValues[5]);
-    mSpectralCentroidSlider->setValue(inPresetValues[6]);
-    mSpectralSpreadSlider->setValue(inPresetValues[7]);
-    mSpectralRolloffSlider->setValue(inPresetValues[8]);
-    mSpectralFluxSlider->setValue(inPresetValues[9]);
-    mChromaFluxSlider->setValue(inPresetValues[10]);
-    mSpectralDistributionSlider->setValue(inPresetValues[11]);
-    mChromaDistributionSlider->setValue(inPresetValues[12]);
-}
-
 void SampleGridOptionsPanel::setPanelComponents()
 {
     std::vector<float> initialWeights = currentProcessor.getFeatureWeights();
     
-    // Add preset buttons
-    int buttonWidth = 60;
-    int y = style->PANEL_MARGIN * 2.0 + introTextHeight;
-    
-    // Adds harmonic preset button
-    mHarmonicPresetButton = std::make_unique<TextButton>("Harmonic");
-    mHarmonicPresetButton->setBounds(style->PANEL_MARGIN * 0.5,
-                                     y,
-                                     buttonWidth,
-                                     style->PANEL_TITLE_HEIGHT * 0.5);
-    mHarmonicPresetButton->onClick = [this]
-    {
-        applyPresetToSliders(GRID_PRESET_HARMONIC);
-    };
-    mHarmonicPresetButton->setTooltip("A preset to optimise clustering for harmonic loops");
-    addAndMakeVisible(*mHarmonicPresetButton);
-    
-    // Adds drums preset button
-    mDrumsPresetButton = std::make_unique<TextButton>("Drums");
-    mDrumsPresetButton->setBounds(style->PANEL_MARGIN * 1.0 + buttonWidth,
-                                  y,
-                                  buttonWidth,
-                                  style->PANEL_TITLE_HEIGHT * 0.5);
-    mDrumsPresetButton->onClick = [this]
-    {
-        applyPresetToSliders(GRID_PRESET_DRUMS);
-    };
-    mDrumsPresetButton->setTooltip("A preset to optimise clustering for drum one-shots");
-    addAndMakeVisible(*mDrumsPresetButton);
-    
-    // Adds monophonic instrument preset button
-    mMonophonicPresetButton = std::make_unique<TextButton>("Monoph.");
-    mMonophonicPresetButton->setBounds(style->PANEL_MARGIN * 1.5 + buttonWidth * 2,
-                                       y,
-                                       buttonWidth,
-                                       style->PANEL_TITLE_HEIGHT * 0.5);
-    mMonophonicPresetButton->onClick = [this]
-    {
-        applyPresetToSliders(GRID_PRESET_MONOPHONIC);
-    };
-    mMonophonicPresetButton->setTooltip("A preset to optimise clustering for monophonic samples");
-    addAndMakeVisible(*mMonophonicPresetButton);
-    
-    // Adds foley preset button
-    mFoleyPresetButton = std::make_unique<TextButton>("Foley");
-    mFoleyPresetButton->setBounds(style->PANEL_MARGIN * 2.0 + buttonWidth * 3,
-                                  y,
-                                  buttonWidth,
-                                  style->PANEL_TITLE_HEIGHT * 0.5);
-    mFoleyPresetButton->onClick = [this]
-    {
-        applyPresetToSliders(GRID_PRESET_FOLEY);
-    };
-    mFoleyPresetButton->setTooltip("A preset to optimise clustering for foley samples");
-    addAndMakeVisible(*mFoleyPresetButton);
-    
     // Add sliders
-    y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
+    int textBoxWidth = 40;
+    int y = style->PANEL_MARGIN * 2.0 + introTextHeight;
     
     // Adds length slider
     mLengthSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::TextBoxLeft);
@@ -151,218 +79,217 @@ void SampleGridOptionsPanel::setPanelComponents()
                              y,
                              getWidth() - style->PANEL_MARGIN * 2.0 - labelWidth,
                              style->PANEL_TITLE_HEIGHT * 0.5);
-    mLengthSlider->setTextBoxStyle(Slider::TextBoxLeft, false, 50, style->PANEL_TITLE_HEIGHT * 0.5);
-    mLengthSlider->setRange(0, 10, 0);
+    mLengthSlider->setTextBoxStyle(Slider::TextBoxLeft, false, textBoxWidth, style->PANEL_TITLE_HEIGHT * 0.5);
+    mLengthSlider->setRange(0, 10, 0.1);
     mLengthSlider->setDoubleClickReturnValue(true, 1.0);
-    mLengthSlider->setSkewFactorFromMidPoint(1.0);
     mLengthSlider->setValue(initialWeights[0], NotificationType::dontSendNotification);
     mLengthSlider->setTooltip("Change focus on sample length");
     addAndMakeVisible(*mLengthSlider);
-    mLengthLabel = std::make_unique<Label>(String(), "Length");
+    mLengthLabel = std::make_unique<Label>(String(), "Length:");
     mLengthLabel->attachToComponent(&*mLengthSlider, true);
     addAndMakeVisible(*mLengthLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds loudness slider
-    mLoudnessSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::NoTextBox);
+    mLoudnessSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::TextBoxLeft);
     mLoudnessSlider->setBounds(style->PANEL_MARGIN + labelWidth,
                                y,
                                getWidth() - style->PANEL_MARGIN * 2.0 - labelWidth,
                                style->PANEL_TITLE_HEIGHT * 0.5);
-    mLoudnessSlider->setRange(0, 10, 0);
+    mLoudnessSlider->setTextBoxStyle(Slider::TextBoxLeft, false, textBoxWidth, style->PANEL_TITLE_HEIGHT * 0.5);
+    mLoudnessSlider->setRange(0, 10, 0.1);
     mLoudnessSlider->setDoubleClickReturnValue(true, 1.0);
-    mLoudnessSlider->setSkewFactorFromMidPoint(1.0);
     mLoudnessSlider->setValue(initialWeights[1], NotificationType::dontSendNotification);
     mLoudnessSlider->setTooltip("Change focus on sample loudness");
     addAndMakeVisible(*mLoudnessSlider);
-    mLoudnessLabel = std::make_unique<Label>(String(), "Loudness");
+    mLoudnessLabel = std::make_unique<Label>(String(), "Loudness:");
     mLoudnessLabel->attachToComponent(&*mLoudnessSlider, true);
     addAndMakeVisible(*mLoudnessLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds dynamic range slider
-    mDynamicRangeSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::NoTextBox);
+    mDynamicRangeSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::TextBoxLeft);
     mDynamicRangeSlider->setBounds(style->PANEL_MARGIN + labelWidth,
                                    y,
                                    getWidth() - style->PANEL_MARGIN * 2.0 - labelWidth,
                                    style->PANEL_TITLE_HEIGHT * 0.5);
-    mDynamicRangeSlider->setRange(0, 10, 0);
+    mDynamicRangeSlider->setTextBoxStyle(Slider::TextBoxLeft, false, textBoxWidth, style->PANEL_TITLE_HEIGHT * 0.5);
+    mDynamicRangeSlider->setRange(0, 10, 0.1);
     mDynamicRangeSlider->setDoubleClickReturnValue(true, 1.0);
-    mDynamicRangeSlider->setSkewFactorFromMidPoint(1.0);
     mDynamicRangeSlider->setValue(initialWeights[2], NotificationType::dontSendNotification);
     mDynamicRangeSlider->setTooltip("Change focus on dynamic range");
     addAndMakeVisible(*mDynamicRangeSlider);
-    mDynamicRangeLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mDynamicRangeLabel = std::make_unique<Label>(String(), "Dynamic Range:");
     mDynamicRangeLabel->attachToComponent(&*mDynamicRangeSlider, true);
     addAndMakeVisible(*mDynamicRangeLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds zero crossing rate slider
-    mZeroCrossingRateSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::NoTextBox);
+    mZeroCrossingRateSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::TextBoxLeft);
     mZeroCrossingRateSlider->setBounds(style->PANEL_MARGIN + labelWidth,
                                        y,
                                        getWidth() - style->PANEL_MARGIN * 2.0 - labelWidth,
                                        style->PANEL_TITLE_HEIGHT * 0.5);
-    mZeroCrossingRateSlider->setRange(0, 10, 0);
+    mZeroCrossingRateSlider->setTextBoxStyle(Slider::TextBoxLeft, false, textBoxWidth, style->PANEL_TITLE_HEIGHT * 0.5);
+    mZeroCrossingRateSlider->setRange(0, 10, 0.1);
     mZeroCrossingRateSlider->setDoubleClickReturnValue(true, 1.0);
-    mZeroCrossingRateSlider->setSkewFactorFromMidPoint(1.0);
     mZeroCrossingRateSlider->setValue(initialWeights[3], NotificationType::dontSendNotification);
     mZeroCrossingRateSlider->setTooltip("Change focus on zero crossing rate");
     addAndMakeVisible(*mZeroCrossingRateSlider);
-    mZeroCrossingRateLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mZeroCrossingRateLabel = std::make_unique<Label>(String(), "Zero Crossing Rate:");
     mZeroCrossingRateLabel->attachToComponent(&*mZeroCrossingRateSlider, true);
     addAndMakeVisible(*mZeroCrossingRateLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds tempo slider
-    mTempoSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::NoTextBox);
+    mTempoSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::TextBoxLeft);
     mTempoSlider->setBounds(style->PANEL_MARGIN + labelWidth,
                             y,
                             getWidth() - style->PANEL_MARGIN * 2.0 - labelWidth,
                             style->PANEL_TITLE_HEIGHT * 0.5);
-    mTempoSlider->setRange(0, 10, 0);
+    mTempoSlider->setTextBoxStyle(Slider::TextBoxLeft, false, textBoxWidth, style->PANEL_TITLE_HEIGHT * 0.5);
+    mTempoSlider->setRange(0, 10, 0.1);
     mTempoSlider->setDoubleClickReturnValue(true, 1.0);
-    mTempoSlider->setSkewFactorFromMidPoint(1.0);
     mTempoSlider->setValue(initialWeights[4], NotificationType::dontSendNotification);
     mTempoSlider->setTooltip("Change focus on sample tempo");
     addAndMakeVisible(*mTempoSlider);
-    mTempoLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mTempoLabel = std::make_unique<Label>(String(), "Tempo:");
     mTempoLabel->attachToComponent(&*mTempoSlider, true);
     addAndMakeVisible(*mTempoLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds key slider
-    mKeySlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::NoTextBox);
+    mKeySlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::TextBoxLeft);
     mKeySlider->setBounds(style->PANEL_MARGIN + labelWidth,
                           y,
                           getWidth() - style->PANEL_MARGIN * 2.0 - labelWidth,
                           style->PANEL_TITLE_HEIGHT * 0.5);
-    mKeySlider->setRange(0, 10, 0);
+    mKeySlider->setTextBoxStyle(Slider::TextBoxLeft, false, textBoxWidth, style->PANEL_TITLE_HEIGHT * 0.5);
+    mKeySlider->setRange(0, 10, 0.1);
     mKeySlider->setDoubleClickReturnValue(true, 1.0);
-    mKeySlider->setSkewFactorFromMidPoint(1.0);
     mKeySlider->setValue(initialWeights[5], NotificationType::dontSendNotification);
     mKeySlider->setTooltip("Change focus on sample key");
     addAndMakeVisible(*mKeySlider);
-    mKeyLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mKeyLabel = std::make_unique<Label>(String(), "Key:");
     mKeyLabel->attachToComponent(&*mKeySlider, true);
     addAndMakeVisible(*mKeyLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds spectral centroid slider
-    mSpectralCentroidSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::NoTextBox);
+    mSpectralCentroidSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::TextBoxLeft);
     mSpectralCentroidSlider->setBounds(style->PANEL_MARGIN + labelWidth,
                                        y,
                                        getWidth() - style->PANEL_MARGIN * 2.0 - labelWidth,
                                        style->PANEL_TITLE_HEIGHT * 0.5);
-    mSpectralCentroidSlider->setRange(0, 10, 0);
+    mSpectralCentroidSlider->setTextBoxStyle(Slider::TextBoxLeft, false, textBoxWidth, style->PANEL_TITLE_HEIGHT * 0.5);
+    mSpectralCentroidSlider->setRange(0, 10, 0.1);
     mSpectralCentroidSlider->setDoubleClickReturnValue(true, 1.0);
-    mSpectralCentroidSlider->setSkewFactorFromMidPoint(1.0);
     mSpectralCentroidSlider->setValue(initialWeights[6], NotificationType::dontSendNotification);
-    mSpectralCentroidSlider->setTooltip("Change focus on avg. freq.");
+    mSpectralCentroidSlider->setTooltip("Change focus on average freq.");
     addAndMakeVisible(*mSpectralCentroidSlider);
-    mSpectralCentroidLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mSpectralCentroidLabel = std::make_unique<Label>(String(), "Spectral Centroid:");
     mSpectralCentroidLabel->attachToComponent(&*mSpectralCentroidSlider, true);
     addAndMakeVisible(*mSpectralCentroidLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds spectral spread slider
-    mSpectralSpreadSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::NoTextBox);
+    mSpectralSpreadSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::TextBoxLeft);
     mSpectralSpreadSlider->setBounds(style->PANEL_MARGIN + labelWidth,
                                      y,
                                      getWidth() - style->PANEL_MARGIN * 2.0 - labelWidth,
                                      style->PANEL_TITLE_HEIGHT * 0.5);
-    mSpectralSpreadSlider->setRange(0, 10, 0);
+    mSpectralSpreadSlider->setTextBoxStyle(Slider::TextBoxLeft, false, textBoxWidth, style->PANEL_TITLE_HEIGHT * 0.5);
+    mSpectralSpreadSlider->setRange(0, 10, 0.1);
     mSpectralSpreadSlider->setDoubleClickReturnValue(true, 1.0);
-    mSpectralSpreadSlider->setSkewFactorFromMidPoint(1.0);
     mSpectralSpreadSlider->setValue(initialWeights[7], NotificationType::dontSendNotification);
     mSpectralSpreadSlider->setTooltip("Change focus on freq. spread");
     addAndMakeVisible(*mSpectralSpreadSlider);
-    mSpectralSpreadLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mSpectralSpreadLabel = std::make_unique<Label>(String(), "Spectral Spread:");
     mSpectralSpreadLabel->attachToComponent(&*mSpectralSpreadSlider, true);
     addAndMakeVisible(*mSpectralSpreadLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds spectral rolloff slider
-    mSpectralRolloffSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::NoTextBox);
+    mSpectralRolloffSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::TextBoxLeft);
     mSpectralRolloffSlider->setBounds(style->PANEL_MARGIN + labelWidth,
                                       y,
                                       getWidth() - style->PANEL_MARGIN * 2.0 - labelWidth,
                                       style->PANEL_TITLE_HEIGHT * 0.5);
-    mSpectralRolloffSlider->setRange(0, 10, 0);
+    mSpectralRolloffSlider->setTextBoxStyle(Slider::TextBoxLeft, false, textBoxWidth, style->PANEL_TITLE_HEIGHT * 0.5);
+    mSpectralRolloffSlider->setRange(0, 10, 0.1);
     mSpectralRolloffSlider->setDoubleClickReturnValue(true, 1.0);
-    mSpectralRolloffSlider->setSkewFactorFromMidPoint(1.0);
     mSpectralRolloffSlider->setValue(initialWeights[8], NotificationType::dontSendNotification);
-    mSpectralRolloffSlider->setTooltip("Change focus on upper freq. rolloff");
+    mSpectralRolloffSlider->setTooltip("Change focus on upper frequency rolloff");
     addAndMakeVisible(*mSpectralRolloffSlider);
-    mSpectralRolloffLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mSpectralRolloffLabel = std::make_unique<Label>(String(), "Spectral Rolloff:");
     mSpectralRolloffLabel->attachToComponent(&*mSpectralRolloffSlider, true);
     addAndMakeVisible(*mSpectralRolloffLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds spectral flux slider
-    mSpectralFluxSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::NoTextBox);
+    mSpectralFluxSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::TextBoxLeft);
     mSpectralFluxSlider->setBounds(style->PANEL_MARGIN + labelWidth,
                                    y,
                                    getWidth() - style->PANEL_MARGIN * 2.0 - labelWidth,
                                    style->PANEL_TITLE_HEIGHT * 0.5);
-    mSpectralFluxSlider->setRange(0, 10, 0);
+    mSpectralFluxSlider->setTextBoxStyle(Slider::TextBoxLeft, false, textBoxWidth, style->PANEL_TITLE_HEIGHT * 0.5);
+    mSpectralFluxSlider->setRange(0, 10, 0.1);
     mSpectralFluxSlider->setDoubleClickReturnValue(true, 1.0);
-    mSpectralFluxSlider->setSkewFactorFromMidPoint(1.0);
     mSpectralFluxSlider->setValue(initialWeights[9], NotificationType::dontSendNotification);
-    mSpectralFluxSlider->setTooltip("Change focus on freq. flux");
+    mSpectralFluxSlider->setTooltip("Change focus on frequency fluctuation");
     addAndMakeVisible(*mSpectralFluxSlider);
-    mSpectralFluxLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mSpectralFluxLabel = std::make_unique<Label>(String(), "Spectral Flux:");
     mSpectralFluxLabel->attachToComponent(&*mSpectralFluxSlider, true);
     addAndMakeVisible(*mSpectralFluxLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds chroma flux slider
-    mChromaFluxSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::NoTextBox);
+    mChromaFluxSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::TextBoxLeft);
     mChromaFluxSlider->setBounds(style->PANEL_MARGIN + labelWidth,
                                  y,
                                  getWidth() - style->PANEL_MARGIN * 2.0 - labelWidth,
                                  style->PANEL_TITLE_HEIGHT * 0.5);
-    mChromaFluxSlider->setRange(0, 10, 0);
+    mChromaFluxSlider->setTextBoxStyle(Slider::TextBoxLeft, false, textBoxWidth, style->PANEL_TITLE_HEIGHT * 0.5);
+    mChromaFluxSlider->setRange(0, 10, 0.1);
     mChromaFluxSlider->setDoubleClickReturnValue(true, 1.0);
-    mChromaFluxSlider->setSkewFactorFromMidPoint(1.0);
     mChromaFluxSlider->setValue(initialWeights[10], NotificationType::dontSendNotification);
-    mChromaFluxSlider->setTooltip("Change focus on harm. flux");
+    mChromaFluxSlider->setTooltip("Change focus on harmonic fluctuation");
     addAndMakeVisible(*mChromaFluxSlider);
-    mChromaFluxLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mChromaFluxLabel = std::make_unique<Label>(String(), "Chroma Flux:");
     mChromaFluxLabel->attachToComponent(&*mChromaFluxSlider, true);
     addAndMakeVisible(*mChromaFluxLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds spectral distribution slider
-    mSpectralDistributionSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::NoTextBox);
+    mSpectralDistributionSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::TextBoxLeft);
     mSpectralDistributionSlider->setBounds(style->PANEL_MARGIN + labelWidth,
                                            y,
                                            getWidth() - style->PANEL_MARGIN * 2.0 - labelWidth,
                                            style->PANEL_TITLE_HEIGHT * 0.5);
-    mSpectralDistributionSlider->setRange(0, 10, 0);
+    mSpectralDistributionSlider->setTextBoxStyle(Slider::TextBoxLeft, false, textBoxWidth, style->PANEL_TITLE_HEIGHT * 0.5);
+    mSpectralDistributionSlider->setRange(0, 10, 0.1);
     mSpectralDistributionSlider->setDoubleClickReturnValue(true, 1.0);
-    mSpectralDistributionSlider->setSkewFactorFromMidPoint(1.0);
     mSpectralDistributionSlider->setValue(initialWeights[11], NotificationType::dontSendNotification);
-    mSpectralDistributionSlider->setTooltip("Change focus on freq. distribution");
+    mSpectralDistributionSlider->setTooltip("Change focus on frequency distribution");
     addAndMakeVisible(*mSpectralDistributionSlider);
-    mSpectralDistributionLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mSpectralDistributionLabel = std::make_unique<Label>(String(), "Spectral Distribution:");
     mSpectralDistributionLabel->attachToComponent(&*mSpectralDistributionSlider, true);
     addAndMakeVisible(*mSpectralDistributionLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds chroma distribution slider
-    mChromaDistributionSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::NoTextBox);
+    mChromaDistributionSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::TextBoxLeft);
     mChromaDistributionSlider->setBounds(style->PANEL_MARGIN + labelWidth,
                                          y,
                                          getWidth() - style->PANEL_MARGIN * 2.0 - labelWidth,
                                          style->PANEL_TITLE_HEIGHT * 0.5);
-    mChromaDistributionSlider->setRange(0, 10, 0);
+    mChromaDistributionSlider->setTextBoxStyle(Slider::TextBoxLeft, false, textBoxWidth, style->PANEL_TITLE_HEIGHT * 0.5);
+    mChromaDistributionSlider->setRange(0, 10, 0.1);
     mChromaDistributionSlider->setDoubleClickReturnValue(true, 1.0);
-    mChromaDistributionSlider->setSkewFactorFromMidPoint(1.0);
     mChromaDistributionSlider->setValue(initialWeights[12], NotificationType::dontSendNotification);
-    mChromaDistributionSlider->setTooltip("Change focus on harm. distribution");
+    mChromaDistributionSlider->setTooltip("Change focus on harmonic distribution");
     addAndMakeVisible(*mChromaDistributionSlider);
-    mChromaDistributionLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mChromaDistributionLabel = std::make_unique<Label>(String(), "Chroma Distribution:");
     mChromaDistributionLabel->attachToComponent(&*mChromaDistributionSlider, true);
     addAndMakeVisible(*mChromaDistributionLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
