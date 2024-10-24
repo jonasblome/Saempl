@@ -63,115 +63,6 @@ void SampleGridOptionsPanel::paint(Graphics& g)
                introTextHeight + 5,
                getWidth() - style->PANEL_MARGIN,
                introTextHeight + 5);
-    
-    // Draw slider annotations
-    g.setColour(style->COLOUR_ACCENT_LIGHT);
-    int y = style->PANEL_MARGIN * 3.0 + introTextHeight + style->PANEL_TITLE_HEIGHT * 0.5;
-    
-    g.drawFittedText("Length:",
-                     style->PANEL_MARGIN,
-                     y,
-                     labelWidth - style->PANEL_MARGIN,
-                     style->PANEL_TITLE_HEIGHT * 0.5,
-                     Justification::centredLeft,
-                     1);
-    y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
-    g.drawFittedText("Loudness:",
-                     style->PANEL_MARGIN,
-                     y,
-                     labelWidth - style->PANEL_MARGIN,
-                     style->PANEL_TITLE_HEIGHT * 0.5,
-                     Justification::centredLeft,
-                     1);
-    y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
-    g.drawFittedText("Dynamic Range:",
-                     style->PANEL_MARGIN,
-                     y,
-                     labelWidth - style->PANEL_MARGIN,
-                     style->PANEL_TITLE_HEIGHT * 0.5,
-                     Justification::centredLeft,
-                     1);
-    y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
-    g.drawFittedText("Zero Crossing Rate:",
-                     style->PANEL_MARGIN,
-                     y,
-                     labelWidth - style->PANEL_MARGIN,
-                     style->PANEL_TITLE_HEIGHT * 0.5,
-                     Justification::centredLeft,
-                     1);
-    y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
-    g.drawFittedText("Tempo:",
-                     style->PANEL_MARGIN,
-                     y,
-                     labelWidth - style->PANEL_MARGIN,
-                     style->PANEL_TITLE_HEIGHT * 0.5,
-                     Justification::centredLeft,
-                     1);
-    y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
-    g.drawFittedText("Key:",
-                     style->PANEL_MARGIN,
-                     y,
-                     labelWidth - style->PANEL_MARGIN,
-                     style->PANEL_TITLE_HEIGHT * 0.5,
-                     Justification::centredLeft,
-                     1);
-    y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
-    g.drawFittedText("Avg. Frequency:",
-                     style->PANEL_MARGIN,
-                     y,
-                     labelWidth - style->PANEL_MARGIN,
-                     style->PANEL_TITLE_HEIGHT * 0.5,
-                     Justification::centredLeft,
-                     1);
-    y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
-    g.drawFittedText("Frequency Spread:",
-                     style->PANEL_MARGIN,
-                     y,
-                     labelWidth - style->PANEL_MARGIN,
-                     style->PANEL_TITLE_HEIGHT * 0.5,
-                     Justification::centredLeft,
-                     1);
-    y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
-    g.drawFittedText("Upper Freq. Rolloff:",
-                     style->PANEL_MARGIN,
-                     y,
-                     labelWidth - style->PANEL_MARGIN,
-                     style->PANEL_TITLE_HEIGHT * 0.5,
-                     Justification::centredLeft,
-                     1);
-    y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
-    g.drawFittedText("Freq. Flux:",
-                     style->PANEL_MARGIN,
-                     y,
-                     labelWidth - style->PANEL_MARGIN,
-                     style->PANEL_TITLE_HEIGHT * 0.5,
-                     Justification::centredLeft,
-                     1);
-    y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
-    g.drawFittedText("Harmonic Flux:",
-                     style->PANEL_MARGIN,
-                     y,
-                     labelWidth - style->PANEL_MARGIN,
-                     style->PANEL_TITLE_HEIGHT * 0.5,
-                     Justification::centredLeft,
-                     1);
-    y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
-    g.drawFittedText("Freq. Distribution:",
-                     style->PANEL_MARGIN,
-                     y,
-                     labelWidth - style->PANEL_MARGIN,
-                     style->PANEL_TITLE_HEIGHT * 0.5,
-                     Justification::centredLeft,
-                     1);
-    y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
-    g.drawFittedText("Harm. Distribution:",
-                     style->PANEL_MARGIN,
-                     y,
-                     labelWidth - style->PANEL_MARGIN,
-                     style->PANEL_TITLE_HEIGHT * 0.5,
-                     Justification::centredLeft,
-                     1);
-    y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
 }
 
 void SampleGridOptionsPanel::applyPresetToSliders(std::vector<float> inPresetValues)
@@ -225,7 +116,7 @@ void SampleGridOptionsPanel::setPanelComponents()
     mDrumsPresetButton->setTooltip("A preset to optimise clustering for drum one-shots");
     addAndMakeVisible(*mDrumsPresetButton);
     
-    // Adds solo instrument preset button
+    // Adds monophonic instrument preset button
     mMonophonicPresetButton = std::make_unique<TextButton>("Monoph.");
     mMonophonicPresetButton->setBounds(style->PANEL_MARGIN * 1.5 + buttonWidth * 2,
                                        y,
@@ -255,17 +146,21 @@ void SampleGridOptionsPanel::setPanelComponents()
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds length slider
-    mLengthSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::NoTextBox);
+    mLengthSlider = std::make_unique<Slider>(Slider::LinearHorizontal, Slider::TextBoxLeft);
     mLengthSlider->setBounds(style->PANEL_MARGIN + labelWidth,
                              y,
                              getWidth() - style->PANEL_MARGIN * 2.0 - labelWidth,
                              style->PANEL_TITLE_HEIGHT * 0.5);
+    mLengthSlider->setTextBoxStyle(Slider::TextBoxLeft, false, 50, style->PANEL_TITLE_HEIGHT * 0.5);
     mLengthSlider->setRange(0, 10, 0);
     mLengthSlider->setDoubleClickReturnValue(true, 1.0);
     mLengthSlider->setSkewFactorFromMidPoint(1.0);
     mLengthSlider->setValue(initialWeights[0], NotificationType::dontSendNotification);
     mLengthSlider->setTooltip("Change focus on sample length");
     addAndMakeVisible(*mLengthSlider);
+    mLengthLabel = std::make_unique<Label>(String(), "Length");
+    mLengthLabel->attachToComponent(&*mLengthSlider, true);
+    addAndMakeVisible(*mLengthLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds loudness slider
@@ -280,6 +175,9 @@ void SampleGridOptionsPanel::setPanelComponents()
     mLoudnessSlider->setValue(initialWeights[1], NotificationType::dontSendNotification);
     mLoudnessSlider->setTooltip("Change focus on sample loudness");
     addAndMakeVisible(*mLoudnessSlider);
+    mLoudnessLabel = std::make_unique<Label>(String(), "Loudness");
+    mLoudnessLabel->attachToComponent(&*mLoudnessSlider, true);
+    addAndMakeVisible(*mLoudnessLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds dynamic range slider
@@ -294,6 +192,9 @@ void SampleGridOptionsPanel::setPanelComponents()
     mDynamicRangeSlider->setValue(initialWeights[2], NotificationType::dontSendNotification);
     mDynamicRangeSlider->setTooltip("Change focus on dynamic range");
     addAndMakeVisible(*mDynamicRangeSlider);
+    mDynamicRangeLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mDynamicRangeLabel->attachToComponent(&*mDynamicRangeSlider, true);
+    addAndMakeVisible(*mDynamicRangeLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds zero crossing rate slider
@@ -308,6 +209,9 @@ void SampleGridOptionsPanel::setPanelComponents()
     mZeroCrossingRateSlider->setValue(initialWeights[3], NotificationType::dontSendNotification);
     mZeroCrossingRateSlider->setTooltip("Change focus on zero crossing rate");
     addAndMakeVisible(*mZeroCrossingRateSlider);
+    mZeroCrossingRateLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mZeroCrossingRateLabel->attachToComponent(&*mZeroCrossingRateSlider, true);
+    addAndMakeVisible(*mZeroCrossingRateLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds tempo slider
@@ -322,6 +226,9 @@ void SampleGridOptionsPanel::setPanelComponents()
     mTempoSlider->setValue(initialWeights[4], NotificationType::dontSendNotification);
     mTempoSlider->setTooltip("Change focus on sample tempo");
     addAndMakeVisible(*mTempoSlider);
+    mTempoLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mTempoLabel->attachToComponent(&*mTempoSlider, true);
+    addAndMakeVisible(*mTempoLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds key slider
@@ -336,6 +243,9 @@ void SampleGridOptionsPanel::setPanelComponents()
     mKeySlider->setValue(initialWeights[5], NotificationType::dontSendNotification);
     mKeySlider->setTooltip("Change focus on sample key");
     addAndMakeVisible(*mKeySlider);
+    mKeyLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mKeyLabel->attachToComponent(&*mKeySlider, true);
+    addAndMakeVisible(*mKeyLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds spectral centroid slider
@@ -350,6 +260,9 @@ void SampleGridOptionsPanel::setPanelComponents()
     mSpectralCentroidSlider->setValue(initialWeights[6], NotificationType::dontSendNotification);
     mSpectralCentroidSlider->setTooltip("Change focus on avg. freq.");
     addAndMakeVisible(*mSpectralCentroidSlider);
+    mSpectralCentroidLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mSpectralCentroidLabel->attachToComponent(&*mSpectralCentroidSlider, true);
+    addAndMakeVisible(*mSpectralCentroidLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds spectral spread slider
@@ -364,6 +277,9 @@ void SampleGridOptionsPanel::setPanelComponents()
     mSpectralSpreadSlider->setValue(initialWeights[7], NotificationType::dontSendNotification);
     mSpectralSpreadSlider->setTooltip("Change focus on freq. spread");
     addAndMakeVisible(*mSpectralSpreadSlider);
+    mSpectralSpreadLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mSpectralSpreadLabel->attachToComponent(&*mSpectralSpreadSlider, true);
+    addAndMakeVisible(*mSpectralSpreadLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds spectral rolloff slider
@@ -378,6 +294,9 @@ void SampleGridOptionsPanel::setPanelComponents()
     mSpectralRolloffSlider->setValue(initialWeights[8], NotificationType::dontSendNotification);
     mSpectralRolloffSlider->setTooltip("Change focus on upper freq. rolloff");
     addAndMakeVisible(*mSpectralRolloffSlider);
+    mSpectralRolloffLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mSpectralRolloffLabel->attachToComponent(&*mSpectralRolloffSlider, true);
+    addAndMakeVisible(*mSpectralRolloffLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds spectral flux slider
@@ -392,6 +311,9 @@ void SampleGridOptionsPanel::setPanelComponents()
     mSpectralFluxSlider->setValue(initialWeights[9], NotificationType::dontSendNotification);
     mSpectralFluxSlider->setTooltip("Change focus on freq. flux");
     addAndMakeVisible(*mSpectralFluxSlider);
+    mSpectralFluxLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mSpectralFluxLabel->attachToComponent(&*mSpectralFluxSlider, true);
+    addAndMakeVisible(*mSpectralFluxLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds chroma flux slider
@@ -406,6 +328,9 @@ void SampleGridOptionsPanel::setPanelComponents()
     mChromaFluxSlider->setValue(initialWeights[10], NotificationType::dontSendNotification);
     mChromaFluxSlider->setTooltip("Change focus on harm. flux");
     addAndMakeVisible(*mChromaFluxSlider);
+    mChromaFluxLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mChromaFluxLabel->attachToComponent(&*mChromaFluxSlider, true);
+    addAndMakeVisible(*mChromaFluxLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds spectral distribution slider
@@ -420,6 +345,9 @@ void SampleGridOptionsPanel::setPanelComponents()
     mSpectralDistributionSlider->setValue(initialWeights[11], NotificationType::dontSendNotification);
     mSpectralDistributionSlider->setTooltip("Change focus on freq. distribution");
     addAndMakeVisible(*mSpectralDistributionSlider);
+    mSpectralDistributionLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mSpectralDistributionLabel->attachToComponent(&*mSpectralDistributionSlider, true);
+    addAndMakeVisible(*mSpectralDistributionLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
     
     // Adds chroma distribution slider
@@ -434,5 +362,8 @@ void SampleGridOptionsPanel::setPanelComponents()
     mChromaDistributionSlider->setValue(initialWeights[12], NotificationType::dontSendNotification);
     mChromaDistributionSlider->setTooltip("Change focus on harm. distribution");
     addAndMakeVisible(*mChromaDistributionSlider);
+    mChromaDistributionLabel = std::make_unique<Label>(String(), "Dynamic Range");
+    mChromaDistributionLabel->attachToComponent(&*mChromaDistributionSlider, true);
+    addAndMakeVisible(*mChromaDistributionLabel);
     y += style->PANEL_TITLE_HEIGHT * 0.5 + style->PANEL_MARGIN;
 }
