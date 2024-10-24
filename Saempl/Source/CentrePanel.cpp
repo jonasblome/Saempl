@@ -41,6 +41,7 @@ void CentrePanel::setPanelComponents()
 {
     // Add audio player
     mAudioPlayer = std::make_unique<AudioPlayer>();
+    mAudioPlayer->selectOutputDevice(currentProcessor.getOutputDevice());
     mAudioPlayer->setVolumeIsNormalised(currentProcessor.getVolumeIsNormalised());
     
     // Add panel for sample item view
@@ -178,6 +179,7 @@ void CentrePanel::toggleVolumeIsNormalised()
 
 void CentrePanel::selectOutputDevice(String inDeviceName)
 {
+    currentProcessor.setOutputDevice(inDeviceName);
     mAudioPlayer->selectOutputDevice(inDeviceName);
     mSampleItemPanel->selectOutputDevice(inDeviceName);
 }

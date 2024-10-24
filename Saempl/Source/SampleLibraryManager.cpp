@@ -363,7 +363,7 @@ void SampleLibraryManager::loadSampleLibrary(File const & inLibraryDirectory)
         AlertWindow::showAsync(MessageBoxOptions()
                                .withIconType(MessageBoxIconType::NoIcon)
                                .withTitle("Sample analysis updated!")
-                               .withMessage("We have updated our sample analysis. Unfortunately this means that all samples in this library  that were last used in an older version have to be reanalysed. But the analysis is now better, so don't be sad.")
+                               .withMessage("The sample analysis was updated. Unfortunately this means that all samples in this library  that were last used in an older version have to be reanalysed. But the analysis is now better, so don't be sad.")
                                .withButton("OK"),
                                nullptr);
         

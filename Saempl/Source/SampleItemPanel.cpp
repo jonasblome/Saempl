@@ -39,6 +39,7 @@ void SampleItemPanel::setPanelComponents()
 {
     // Add audio player component
     mAudioPlayer = std::make_unique<AudioPlayer>();
+    mAudioPlayer->selectOutputDevice(currentProcessor.getOutputDevice());
     mAudioPlayer->setVolumeIsNormalised(currentProcessor.getVolumeIsNormalised());
     
     int followTransportButtonHeight = 34;

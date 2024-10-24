@@ -202,6 +202,7 @@ void SaemplAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
     stateInfoBody->setAttribute("FollowAudioPlayhead", mFollowAudioPlayhead);
     stateInfoBody->setAttribute("SampleGridZoomFactor", mSampleGridZoomFactor);
     stateInfoBody->setAttribute("LastOpenedLibraryPath", mLastOpenedLibraryPath);
+    stateInfoBody->setAttribute("OutputDevice", mOutputDevice);
     stateInfoBody->setAttribute("VolumeIsNormalised", mVolumeIsNormalised);
     stateInfoBody->setAttribute("OutputGain", mOutputGain);
     
@@ -306,6 +307,7 @@ void SaemplAudioProcessor::setStateInformation(void const * data, int sizeInByte
             mFollowAudioPlayhead = stateInfoBody->getBoolAttribute("FollowAudioPlayhead");
             mSampleGridZoomFactor = stateInfoBody->getDoubleAttribute("SampleGridZoomFactor");
             mLastOpenedLibraryPath = stateInfoBody->getStringAttribute("LastOpenedLibraryPath");
+            mOutputDevice = stateInfoBody->getStringAttribute("OutputDevice");
             mVolumeIsNormalised = stateInfoBody->getBoolAttribute("VolumeIsNormalised");
             mOutputGain = stateInfoBody->getDoubleAttribute("OutputGain");
             
@@ -449,6 +451,16 @@ void SaemplAudioProcessor::setSortingColumnTitle(String inColumnTitle)
 void SaemplAudioProcessor::setLastOpenedLibraryPath(String inLastOpenedLibraryPath)
 {
     mLastOpenedLibraryPath = inLastOpenedLibraryPath;
+}
+
+String SaemplAudioProcessor::getOutputDevice()
+{
+    return mOutputDevice;
+}
+
+void SaemplAudioProcessor::setOutputDevice(String inOutputDevice)
+{
+    mOutputDevice = inOutputDevice;
 }
 
 bool SaemplAudioProcessor::getSortingDirection()

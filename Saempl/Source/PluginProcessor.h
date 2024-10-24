@@ -83,13 +83,17 @@ public:
      */
     void setSortingColumnTitle(String inColumnTitle);
     /**
-     @returns the path of the last opened library directory.
-     */
-    String getLastOpenedLibraryPath();
-    /**
      Sets the path of the last opened library directory.
      */
     void setLastOpenedLibraryPath(String inLastOpenedLibraryPath);
+    /**
+     @returns the name of the current output device.
+     */
+    String getOutputDevice();
+    /**
+     Sets the name of the current output device.
+     */
+    void setOutputDevice(String inOutputdevice);
     /**
      @returns the current sorting direction of the sample item table.
      */
@@ -197,6 +201,7 @@ private:
     + "DefaultSampleLibrary";
     String mSortingColumnTitle;
     String mLastOpenedLibraryPath;
+    String mOutputDevice;
     bool mSortingDirection;
     bool mSampleItemPanelIsVisible;
     bool mFollowAudioPlayhead;
