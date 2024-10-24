@@ -141,7 +141,7 @@ int BlomeTableViewBase::getColumnAutoSizeWidth(int columnId)
         if (SampleItem* sampleItem = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(r))
         {
             String text = sampleItem->getFilePath();
-            widest = jmax(widest, style->FONT_SMALL_BOLD.getStringWidth(text));
+            widest = jmax(widest, (int) TextLayout().getStringWidth(style->FONT_SMALL_BOLD, text));
         }
     }
     
@@ -151,7 +151,6 @@ int BlomeTableViewBase::getColumnAutoSizeWidth(int columnId)
 void BlomeTableViewBase::loadSelectedRowIntoAudioPlayer(int rowNumber)
 {
     File inFile = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(rowNumber)->getFilePath();
-    
     sampleItemPanel.tryShowAudioResource(inFile);
 }
 

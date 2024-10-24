@@ -113,18 +113,18 @@ struct BlomeStyling
     
     
     // Fonts
-    Font const FONT_EXTRA_SMALL_BOLD = Font("Helvetica Neue", 8.00f, Font::bold);
+    Font const FONT_EXTRA_SMALL_BOLD = Font(FontOptions("Helvetica Neue", 8.00f, Font::bold));
     
-    Font const FONT_SMALL = Font("Helvetica Neue", 12.00f, Font::plain);
-    Font const FONT_SMALL_BOLD = Font("Helvetica Neue", 12.00f, Font::bold);
-    Font const FONT_SMALL_BOLD_ACCENTUATED = Font("Helvetica Neue", 13.00f, Font::bold);
+    Font const FONT_SMALL = Font(FontOptions("Helvetica Neue", 12.00f, Font::plain));
+    Font const FONT_SMALL_BOLD = Font(FontOptions("Helvetica Neue", 12.00f, Font::bold));
+    Font const FONT_SMALL_BOLD_ACCENTUATED = Font(FontOptions("Helvetica Neue", 13.00f, Font::bold));
     
-    Font const FONT_MEDIUM_SMALL = Font("Helvetica Neue", 16.00f, Font::plain);
-    Font const FONT_MEDIUM_SMALL_BOLD = Font("Helvetica Neue", 16.00f, Font::bold);
+    Font const FONT_MEDIUM_SMALL = Font(FontOptions("Helvetica Neue", 16.00f, Font::plain));
+    Font const FONT_MEDIUM_SMALL_BOLD = Font(FontOptions("Helvetica Neue", 16.00f, Font::bold));
     
-    Font const FONT_MEDIUM = Font("Helvetica Neue", 22.00f, Font::plain);
-    Font const FONT_MEDIUM_BOLD = Font("Helvetica Neue", 22.00f, Font::bold);
+    Font const FONT_MEDIUM = Font(FontOptions("Helvetica Neue", 22.00f, Font::plain));
+    Font const FONT_MEDIUM_BOLD = Font(FontOptions("Helvetica Neue", 22.00f, Font::bold));
     
-    Font const FONT_LARGE = Font("Helvetica Neue", 48.00f, Font::plain);
-    Font const FONT_LARGE_BOLD = Font("Helvetica Neue", 48.00f, Font::bold);
+    Font const FONT_LARGE = Font(FontOptions("Helvetica Neue", 48.00f, Font::plain));
+    Font const FONT_LARGE_BOLD = Font(FontOptions("Helvetica Neue", 48.00f, Font::bold));
 };
