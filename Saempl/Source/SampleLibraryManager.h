@@ -177,6 +177,10 @@ private:
      @param title the sample's title containing the actual key.
      */
     void evaluateKeyDetection(int key, const String& title);
+    /**
+     Checks for all library files if their directory still exists. If not it deletes the library file.
+     */
+    void checkValidityOfLibraryFiles();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleLibraryManager);
 };

@@ -23,7 +23,7 @@ deletedSampleItems(inDeletedSampleItems),
 addedSampleItems(inAddedSampleItems),
 alteredSampleItems(inAlteredSampleItems)
 {
-    
+    checkValidityOfLibraryFiles();
 }
 
 SampleLibraryManager::~SampleLibraryManager()
@@ -34,14 +34,14 @@ SampleLibraryManager::~SampleLibraryManager()
 void SampleLibraryManager::updateSampleLibraryFiles()
 {
     setProgress(0.0);
-    setStatusMessage("Removing faulty duplicates");
+    setStatusMessage("Removing duplicate sample references");
     
     // Removing duplicates from library
     for (int i = 0; i < addedFilePaths.size() - 1; ++i)
     {
         String s = addedFilePaths.getReference(i);
         
-        for (int nextIndex = i + 1;;)
+        for (int nextIndex = i + 1; ; )
         {
             nextIndex = addedFilePaths.indexOf(s, false, nextIndex);
             
@@ -1250,5 +1250,31 @@ void SampleLibraryManager::evaluateKeyDetection(int key, const String& title)
         {
             numFalseKeyDetected++;
         }
+    }
+}
+
+void SampleLibraryManager::checkValidityOfLibraryFiles()
+{
+    Array<File> libraryFiles = File(mLibraryFilesDirectoryPath).findChildFiles(File::findFiles, false);
+    Array<File> libraryFilesToDelete;
+    
+    for (File libraryFile : libraryFiles)
+    {
+        if (libraryFile.getFileExtension() != ".bslf")
+        {
+            continue;
+        }
+        
+        XmlElement libraryFileXml = loadFileAsXml(libraryFile);
+        
+        if (!File(libraryFileXml.getStringAttribute("LibraryPath")).exists())
+        {
+            libraryFilesToDelete.add(libraryFile);
+        }
+    }
+    
+    for (File libraryFileToDelete : libraryFilesToDelete)
+    {
+        libraryFileToDelete.deleteFile();
     }
 }
