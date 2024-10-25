@@ -9,11 +9,13 @@
 
 #include "BlomeTableViewFavourites.h"
 
-BlomeTableViewFavourites::BlomeTableViewFavourites(SaemplAudioProcessor& inProcessor,
-                                                   SampleItemPanel& inSampleItemPanel,
-                                                   AudioPlayer& inAudioPlayer)
+BlomeTableViewFavourites::BlomeTableViewFavourites(SaemplAudioProcessor & inProcessor,
+                                                   SampleNavigationPanel & inSampleNavigationPanel,
+                                                   SampleItemPanel & inSampleItemPanel,
+                                                   AudioPlayer & inAudioPlayer)
 :
-BlomeTableViewBase(inProcessor, inSampleItemPanel, inAudioPlayer)
+BlomeTableViewBase(inProcessor, inSampleItemPanel, inAudioPlayer),
+sampleNavigationPanel(inSampleNavigationPanel)
 {
     mSampleItemCollectionType = FAVOURITE_SAMPLES;
     
@@ -40,7 +42,8 @@ void BlomeTableViewFavourites::cellClicked(int rowNumber, int columnId, MouseEve
     {
         PopupMenu popupMenu;
         popupMenu.addItem("Remove Sample(s) from Favourites", [this] { removeSampleItemFromFavourites(); } );
-        popupMenu.addItem("Show in Finder", [this] { showSampleInFinder(); });
+        popupMenu.addItem("Show Sample in Finder", [this] { showSampleInFinder(); });
+        popupMenu.addItem("Show Sample in Navigation View", [this] { showSampleInNavigation(); });
         popupMenu.addItem("(Re-)analyse Sample(s)", [this] { reanalyseSamples(); });
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
     }
@@ -70,10 +73,9 @@ void BlomeTableViewFavourites::removeSampleItemFromFavourites()
     sampleLibrary.removeAllFromFavourites(sampleItems);
 }
 
-void BlomeTableViewFavourites::showSampleInFinder()
+void BlomeTableViewFavourites::showSampleInNavigation()
 {
-    File(sampleLibrary
-         .getSampleItems(mSampleItemCollectionType)
-         .getUnchecked(getLastRowSelected())->getFilePath())
-    .revealToUser();
+    sampleNavigationPanel.showSample(sampleLibrary
+                                     .getSampleItems(mSampleItemCollectionType)
+                                     .getUnchecked(getLastRowSelected())->getFilePath());
 }

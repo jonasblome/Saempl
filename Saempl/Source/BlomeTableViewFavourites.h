@@ -10,6 +10,7 @@
 #pragma once
 
 #include "BlomeTableViewBase.h"
+#include "SampleNavigationPanel.h"
 
 /**
  Implements BlomeTableViewBase for the SampleFavouritesPanel.
@@ -28,11 +29,13 @@ public:
      @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
     BlomeTableViewFavourites(SaemplAudioProcessor& inProcessor,
+                             SampleNavigationPanel & inSampleNavigationPanel,
                              SampleItemPanel& inSampleItemPanel,
                              AudioPlayer& inAudioPlayer);
     ~BlomeTableViewFavourites();
     
 private:
+    SampleNavigationPanel & sampleNavigationPanel;
     void cellClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent) override;
     void filesDropped(StringArray const & files, int x, int y) override;
     /**
@@ -40,9 +43,9 @@ private:
      */
     void removeSampleItemFromFavourites();
     /**
-     Opens the finder at the location of the chosen sample.
+     Opens the grid view at the location of the chosen sample.
      */
-    void showSampleInFinder();
+    void showSampleInNavigation();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeTableViewFavourites);
 };

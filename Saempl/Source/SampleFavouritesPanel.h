@@ -11,6 +11,7 @@
 
 #include "PanelBase.h"
 #include "BlomeTableViewFavourites.h"
+#include "SampleNavigationPanel.h"
 
 /**
  Holds the table for displaying the sample favourites collection.
@@ -26,15 +27,17 @@ public:
      @param inSampleLibrary the library object of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
      */
-    SampleFavouritesPanel(SaemplAudioProcessor& inProcessor,
-                          SampleItemPanel& inSampleItemPanel,
+    SampleFavouritesPanel(SaemplAudioProcessor & inProcessor,
+                          SampleNavigationPanel & inSampleNavigationPanel,
+                          SampleItemPanel & inSampleItemPanel,
                           AudioPlayer& inAudioPlayer);
     ~SampleFavouritesPanel();
     bool keyPressed(KeyPress const & key) override;
     
 private:
-    SampleLibrary& sampleLibrary;
-    SampleItemPanel& sampleItemPanel;
+    SampleLibrary & sampleLibrary;
+    SampleItemPanel & sampleItemPanel;
+    SampleNavigationPanel & sampleNavigationPanel;
     AudioPlayer& audioPlayer;
     std::unique_ptr<BlomeTableViewFavourites> mSampleTable;
     

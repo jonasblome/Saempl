@@ -254,7 +254,7 @@ void BlomeTableViewBase::playSelectedSample()
     if (!sampleFile.exists())
     {
         audioPlayer.emptyTransport();
-        sampleLibrary.refresh();
+        sampleLibrary.refreshLibrary();
         AlertWindow::showAsync(MessageBoxOptions()
                                .withIconType(MessageBoxIconType::NoIcon)
                                .withTitle("File not available!")
@@ -262,4 +262,12 @@ void BlomeTableViewBase::playSelectedSample()
                                .withButton("OK"),
                                nullptr);
     }
+}
+
+void BlomeTableViewBase::showSampleInFinder()
+{
+    File(sampleLibrary
+         .getSampleItems(mSampleItemCollectionType)
+         .getUnchecked(getLastRowSelected())->getFilePath())
+    .revealToUser();
 }

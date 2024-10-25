@@ -292,25 +292,25 @@ bool SampleGridPanel::keyPressed(KeyPress const & key)
     }
     else if (keyCode == KeyPress::leftKey)
     {
-        Point<int > newPosition = mSampleGrid->selectLeft();
+        Point<int> newPosition = mSampleGrid->selectLeft();
         centrePositionInGridViewport(newPosition);
         return true;
     }
     else if (keyCode == KeyPress::upKey)
     {
-        Point<int > newPosition = mSampleGrid->selectUp();
+        Point<int> newPosition = mSampleGrid->selectUp();
         centrePositionInGridViewport(newPosition);
         return true;
     }
     else if (keyCode == KeyPress::rightKey)
     {
-        Point<int > newPosition = mSampleGrid->selectRight();
+        Point<int> newPosition = mSampleGrid->selectRight();
         centrePositionInGridViewport(newPosition);
         return true;
     }
     else if (keyCode == KeyPress::downKey)
     {
-        Point<int > newPosition = mSampleGrid->selectDown();
+        Point<int> newPosition = mSampleGrid->selectDown();
         centrePositionInGridViewport(newPosition);
         return true;
     }
@@ -335,4 +335,10 @@ bool SampleGridPanel::keyPressed(KeyPress const & key)
     }
     
     return false;
+}
+
+void SampleGridPanel::showSample(String inFilePath)
+{
+    Point<int> newPosition = mSampleGrid->showSample(inFilePath);
+    centrePositionInGridViewport(newPosition);
 }

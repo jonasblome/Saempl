@@ -199,3 +199,8 @@ void SampleFolderPanel::showSampleInFinder()
 {
     mFileTree->getSelectedFile(mFileTree->getNumSelectedFiles() - 1).revealToUser();
 }
+
+void SampleFolderPanel::showSample(String inFilePath)
+{
+    mFileTree->setSelectedFile(inFilePath);
+}

@@ -103,10 +103,14 @@ void BlomeTableViewNavigation::resortTable()
     getHeader().reSortTable();
 }
 
-void BlomeTableViewNavigation::showSampleInFinder()
+void BlomeTableViewNavigation::showSample(String inFilePath)
 {
-    File(sampleLibrary
-         .getSampleItems(mSampleItemCollectionType)
-         .getUnchecked(getLastRowSelected())->getFilePath())
-    .revealToUser();
+    for (int r = 0; r < getNumRows(); r++)
+    {
+        if (sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(r)->getFilePath() == inFilePath)
+        {
+            selectRow(r);
+            return;
+        }
+    }
 }

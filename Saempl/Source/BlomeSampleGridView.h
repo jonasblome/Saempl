@@ -109,6 +109,14 @@ public:
      Starts playback of the first of all selected samples.
      */
     void playSelectedSample();
+    /**
+     Shows the sample on the grid.
+     
+     @param inFilePath the path to the sample file.
+     
+     @returns the centre position of the newly selected tile.
+     */
+    Point<int> showSample(String inFilePath);
     
 private:
     SaemplAudioProcessor& currentProcessor;

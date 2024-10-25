@@ -181,7 +181,7 @@ void FileFilterPanel::addFilterRuleView()
     
     if (libraryFileFilter.canHaveEffect() && newRule->canHaveEffect())
     {
-        sampleLibrary.refresh();
+        sampleLibrary.refreshLibrary();
     }
 }
 
@@ -269,7 +269,7 @@ void FileFilterPanel::buttonClicked(Button* button)
         
         if (ruleCouldHaveEffect && filterCouldHaveEffect)
         {
-            sampleLibrary.refresh();
+            sampleLibrary.refreshLibrary();
         }
         
         // Remove leftover space

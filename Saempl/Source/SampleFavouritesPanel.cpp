@@ -9,13 +9,15 @@
 
 #include "SampleFavouritesPanel.h"
 
-SampleFavouritesPanel::SampleFavouritesPanel(SaemplAudioProcessor& inProcessor,
-                                             SampleItemPanel& inSampleItemPanel,
+SampleFavouritesPanel::SampleFavouritesPanel(SaemplAudioProcessor & inProcessor,
+                                             SampleNavigationPanel & inSampleNavigationPanel,
+                                             SampleItemPanel & inSampleItemPanel,
                                              AudioPlayer& inAudioPlayer)
 :
 PanelBase(inProcessor),
 sampleLibrary(currentProcessor.getSampleLibrary()),
 sampleItemPanel(inSampleItemPanel),
+sampleNavigationPanel(inSampleNavigationPanel),
 audioPlayer(inAudioPlayer)
 {
     setSize(style->SAMPLE_FAVOURITES_PANEL_WIDTH, style->SAMPLE_FAVOURITES_PANEL_HEIGHT);
@@ -71,7 +73,7 @@ void SampleFavouritesPanel::paint(Graphics& g)
 void SampleFavouritesPanel::setPanelComponents()
 {
     // Set sample table component
-    mSampleTable = std::make_unique<BlomeTableViewFavourites>(currentProcessor, sampleItemPanel, audioPlayer);
+    mSampleTable = std::make_unique<BlomeTableViewFavourites>(currentProcessor, sampleNavigationPanel, sampleItemPanel, audioPlayer);
     addAndMakeVisible(*mSampleTable);
     
     resizePanelComponents();

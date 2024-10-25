@@ -46,6 +46,12 @@ public:
      */
     void selectRandomSample();
     bool keyPressed(KeyPress const & key) override;
+    /**
+     Show the sample in the current navigation view.
+     
+     @param inFilePath the path to the sample file.
+     */
+    void showSample(String inFilePath);
     
 private:
     AudioPlayer& audioPlayer;

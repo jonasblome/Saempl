@@ -51,7 +51,7 @@ void BlomeFileFilterRuleViewBase::setComponents()
         
         if (sampleLibrary.getFileFilter().canHaveEffect() || couldHaveEffect)
         {
-            sampleLibrary.refresh();
+            sampleLibrary.refreshLibrary();
         }
     };
     addAndMakeVisible(*mActivateRuleButton);

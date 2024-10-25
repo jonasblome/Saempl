@@ -38,8 +38,8 @@ public:
     bool keyPressed(KeyPress const & key) override;
     
 private:
-    SampleLibrary& sampleLibrary;
-    CentrePanel& centrePanel;
+    SampleLibrary & sampleLibrary;
+    CentrePanel & centrePanel;
     std::unique_ptr<BlomeImageButton> mRefreshLibraryButton;
     std::unique_ptr<BlomeImageButton> mChooseLibraryDirectoryButton;
     std::unique_ptr<FileChooser> mFileChooser;

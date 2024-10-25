@@ -391,7 +391,7 @@ void SaemplAudioProcessor::setStateInformation(void const * data, int sizeInByte
         
         if (mSampleLibrary->getFileFilter().canHaveEffect())
         {
-            mSampleLibrary->refresh();
+            mSampleLibrary->refreshLibrary();
         }
         
         // Restoring favourite samples
@@ -532,7 +532,7 @@ void SaemplAudioProcessor::setFeatureWeights(std::vector<float> inFeatureWeights
 {
     mFeatureWeights = inFeatureWeights;
     mFeatureWeightsChanged = true;
-    mSampleLibrary->refresh();
+    mSampleLibrary->refreshLibrary();
 }
 
 bool SaemplAudioProcessor::getFeatureWeightsChanged()

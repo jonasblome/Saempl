@@ -36,6 +36,12 @@ public:
      Resorts the table with the currently chosen column and direction.
      */
     void resortTable();
+    /**
+     Shows the sample in the table.
+     
+     @param inFilePath the path to the sample file.
+     */
+    void showSample(String inFilePath);
     
 private:
     void cellClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent) override;
@@ -51,10 +57,6 @@ private:
      */
     void addToFavourites();
     void changeListenerCallback(ChangeBroadcaster* source) override;
-    /**
-     Opens the finder at the location of the chosen sample.
-     */
-    void showSampleInFinder();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeTableViewNavigation);
 };

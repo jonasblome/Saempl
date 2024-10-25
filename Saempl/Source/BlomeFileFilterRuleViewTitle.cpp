@@ -79,7 +79,7 @@ void BlomeFileFilterRuleViewTitle::textEditorFocusLost(TextEditor& textEditor)
     
     if (newCompareValue != oldCompareValue && sampleLibrary.getFileFilter().canHaveEffect())
     {
-        sampleLibrary.refresh();
+        sampleLibrary.refreshLibrary();
     }
 }
 
@@ -97,6 +97,6 @@ void BlomeFileFilterRuleViewTitle::comboBoxChanged(ComboBox* comboBoxThatHasChan
     
     if (newOperator != oldOperator && sampleLibrary.getFileFilter().canHaveEffect())
     {
-        sampleLibrary.refresh();
+        sampleLibrary.refreshLibrary();
     }
 }

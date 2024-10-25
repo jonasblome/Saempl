@@ -409,7 +409,7 @@ void HeaderPanel::setToggleFilterButton(int buttonWidth, int x)
         
         if (sampleLibrary.getFileFilter().canHaveEffect() || couldHaveEffect)
         {
-            sampleLibrary.refresh();
+            sampleLibrary.refreshLibrary();
         }
         
         mChangeFilterButton->setImages(false,

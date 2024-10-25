@@ -81,7 +81,7 @@ void BlomeSampleTileView::startPlayback()
     if (!sampleFile.exists())
     {
         audioPlayer.emptyTransport();
-        sampleLibrary.refresh();
+        sampleLibrary.refreshLibrary();
         AlertWindow::showAsync(MessageBoxOptions()
                                .withIconType(MessageBoxIconType::NoIcon)
                                .withTitle("File not available!")

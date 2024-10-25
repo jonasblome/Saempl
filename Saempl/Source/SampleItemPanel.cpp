@@ -163,7 +163,7 @@ bool SampleItemPanel::tryShowAudioResource(File const & inFile)
     if (!inFile.exists())
     {
         mAudioPreviewPanel->emptyAudioResource();
-        sampleLibrary.refresh();
+        sampleLibrary.refreshLibrary();
     }
     
     AlertWindow::showAsync(MessageBoxOptions()

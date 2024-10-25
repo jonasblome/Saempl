@@ -80,7 +80,7 @@ void BlomeFileFilterRuleViewLoudnessDecibel::textEditorFocusLost(TextEditor& tex
     
     if (newCompareValue != oldCompareValue && sampleLibrary.getFileFilter().canHaveEffect())
     {
-        sampleLibrary.refresh();
+        sampleLibrary.refreshLibrary();
     }
 }
 
@@ -98,6 +98,6 @@ void BlomeFileFilterRuleViewLoudnessDecibel::comboBoxChanged(ComboBox* comboBoxT
     
     if (newOperator != oldOperator && sampleLibrary.getFileFilter().canHaveEffect())
     {
-        sampleLibrary.refresh();
+        sampleLibrary.refreshLibrary();
     }
 }

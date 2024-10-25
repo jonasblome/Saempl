@@ -70,7 +70,7 @@ void SampleGridOptionsPanel::setPanelComponents()
     std::vector<float> initialWeights = currentProcessor.getFeatureWeights();
     
     // Add sliders
-    int textBoxWidth = 40;
+    int textBoxWidth = 30;
     int y = style->PANEL_MARGIN * 2.0 + introTextHeight;
     
     // Adds length slider

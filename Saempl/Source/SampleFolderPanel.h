@@ -36,6 +36,12 @@ public:
                       AudioPlayer& inAudioPlayer);
     ~SampleFolderPanel();
     bool keyPressed(const KeyPress& key) override;
+    /**
+     Show the sample in the folder view.
+     
+     @param inFilePath the path to the sample file.
+     */
+    void showSample(String inFilePath);
     
 private:
     SampleLibrary& sampleLibrary;

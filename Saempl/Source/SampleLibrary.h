@@ -69,7 +69,7 @@ public:
     /**
      Applies filter and refreshes directory list.
      */
-    void refresh();
+    void refreshLibrary();
     /**
      Sets the library directory to the given path.
      

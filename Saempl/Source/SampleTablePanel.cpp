@@ -126,3 +126,8 @@ bool SampleTablePanel::keyPressed(KeyPress const & key)
     
     return mSampleTable->keyPressed(key);
 }
+
+void SampleTablePanel::showSample(String inFilePath)
+{
+    mSampleTable->showSample(inFilePath);
+}

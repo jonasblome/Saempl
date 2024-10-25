@@ -49,11 +49,16 @@ void CentrePanel::setPanelComponents()
     addAndMakeVisible(*mSampleItemPanel);
     
     // Add panel for sample library views
-    mSampleNavigationPanel = std::make_unique<SampleNavigationPanel>(currentProcessor, *mSampleItemPanel, *mAudioPlayer);
+    mSampleNavigationPanel = std::make_unique<SampleNavigationPanel>(currentProcessor,
+                                                                     *mSampleItemPanel,
+                                                                     *mAudioPlayer);
     addAndMakeVisible(*mSampleNavigationPanel);
     
     // Add panel for sample favourites view
-    mSampleFavouritesPanel = std::make_unique<SampleFavouritesPanel>(currentProcessor, *mSampleItemPanel, *mAudioPlayer);
+    mSampleFavouritesPanel = std::make_unique<SampleFavouritesPanel>(currentProcessor,
+                                                                     *mSampleNavigationPanel,
+                                                                     *mSampleItemPanel,
+                                                                     *mAudioPlayer);
     addAndMakeVisible(*mSampleFavouritesPanel);
     
     // Add toggle panel button

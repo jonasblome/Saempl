@@ -80,7 +80,7 @@ void BlomeFileFilterRuleViewTempo::textEditorFocusLost(TextEditor& textEditor)
     
     if (newCompareValue != oldCompareValue && sampleLibrary.getFileFilter().canHaveEffect())
     {
-        sampleLibrary.refresh();
+        sampleLibrary.refreshLibrary();
     }
 }
 
@@ -98,6 +98,6 @@ void BlomeFileFilterRuleViewTempo::comboBoxChanged(ComboBox* comboBoxThatHasChan
     
     if (newOperator != oldOperator && sampleLibrary.getFileFilter().canHaveEffect())
     {
-        sampleLibrary.refresh();
+        sampleLibrary.refreshLibrary();
     }
 }

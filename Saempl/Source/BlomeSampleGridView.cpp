@@ -357,7 +357,7 @@ bool BlomeSampleGridView::isInterestedInFileDrag(StringArray const & files)
     return true;
 }
 
-BlomeSampleTileView* BlomeSampleGridView::selectTile(int inTileIndex)
+BlomeSampleTileView * BlomeSampleGridView::selectTile(int inTileIndex)
 {
     mSelectedSampleTileIndices.add(inTileIndex);
     BlomeSampleTileView* tile = mSampleTiles.getUnchecked(inTileIndex);
@@ -580,4 +580,21 @@ void BlomeSampleGridView::showSampleInFinder()
          .getSampleItems(mSampleItemCollectionType)
          .getUnchecked(mSelectedSampleTileIndices.getLast())->getFilePath())
     .revealToUser();
+}
+
+Point<int> BlomeSampleGridView::showSample(String inFilePath)
+{
+    deselectAll();
+    
+    for (int t = 0; t < mSampleTiles.size(); t++)
+    {
+        BlomeSampleTileView * tile = mSampleTiles.getUnchecked(t);
+        
+        if (tile->getSampleItemFilePath() == inFilePath)
+        {
+            return getTileCentre(selectTile(t));
+        }
+    }
+    
+    return Point<int>();
 }

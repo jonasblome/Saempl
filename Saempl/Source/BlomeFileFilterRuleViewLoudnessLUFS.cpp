@@ -80,7 +80,7 @@ void BlomeFileFilterRuleViewLoudnessLUFS::textEditorFocusLost(TextEditor& textEd
     
     if (newCompareValue != oldCompareValue && sampleLibrary.getFileFilter().canHaveEffect())
     {
-        sampleLibrary.refresh();
+        sampleLibrary.refreshLibrary();
     }
 }
 
@@ -98,6 +98,6 @@ void BlomeFileFilterRuleViewLoudnessLUFS::comboBoxChanged(ComboBox* comboBoxThat
     
     if (newOperator != oldOperator && sampleLibrary.getFileFilter().canHaveEffect())
     {
-        sampleLibrary.refresh();
+        sampleLibrary.refreshLibrary();
     }
 }

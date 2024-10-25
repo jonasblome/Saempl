@@ -144,3 +144,10 @@ bool SampleNavigationPanel::keyPressed(KeyPress const & key)
     
     return pressWasHandled;
 }
+
+void SampleNavigationPanel::showSample(String inFilePath)
+{
+    mSampleFolderPanel->showSample(inFilePath);
+    mSampleTablePanel->showSample(inFilePath);
+    mSampleGridPanel->showSample(inFilePath);
+}

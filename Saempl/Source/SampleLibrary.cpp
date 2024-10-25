@@ -60,7 +60,7 @@ void SampleLibrary::addAllToSampleItems(StringArray const & inFilePaths)
     
     if (anySampleWasAdded)
     {
-        refresh();
+        refreshLibrary();
     }
 }
 
@@ -71,7 +71,7 @@ void SampleLibrary::removeSampleItems(StringArray const & inFilePaths, bool dele
         removeSampleItem(path, deletePermanently);
     }
     
-    refresh();
+    refreshLibrary();
 }
 
 void SampleLibrary::addAllToFavourites(StringArray const & inFilePaths)
@@ -88,7 +88,7 @@ void SampleLibrary::addAllToFavourites(StringArray const & inFilePaths)
     
     if (newItemCreated)
     {
-        refresh();
+        refreshLibrary();
     }
 }
 
@@ -107,7 +107,7 @@ void SampleLibrary::reanalyseSampleItems(StringArray const & inFilePaths)
         reanalyseSampleItem(path);
     }
     
-    refresh();
+    refreshLibrary();
 }
 
 DirectoryContentsList& SampleLibrary::getDirectoryList()
@@ -120,7 +120,7 @@ SampleFileFilter& SampleLibrary::getFileFilter()
     return *mFileFilter;
 }
 
-void SampleLibrary::refresh()
+void SampleLibrary::refreshLibrary()
 {
     applyFilter();
     mDirectoryContentsList->refresh();
@@ -202,7 +202,7 @@ void SampleLibrary::changeListenerCallback(ChangeBroadcaster* inSource)
         
         // Refresh library
         mLibraryWasLoaded = true;
-        refresh();
+        refreshLibrary();
     }
 }
 
