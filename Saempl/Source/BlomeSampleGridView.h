@@ -118,6 +118,7 @@ private:
     std::unique_ptr<Grid> mSampleGrid;
     SampleItemPanel& sampleItemPanel;
     OwnedArray<BlomeSampleTileView> mSampleTiles;
+    SampleItemCollectionScope mSampleItemCollectionType;
     Array<int> mSelectedSampleTileIndices;
     OwnedArray<SampleItem> emptySquares;
     StringArray mAddedSampleFilePaths;
@@ -179,6 +180,10 @@ private:
      @returns the point of the tile's centre.
      */
     Point<int> getTileCentre(BlomeSampleTileView* inTile);
+    /**
+     Opens the finder at the location of the chosen sample.
+     */
+    void showSampleInFinder();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeSampleGridView);
 };

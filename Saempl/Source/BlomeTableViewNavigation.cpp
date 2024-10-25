@@ -42,12 +42,13 @@ BlomeTableViewNavigation::~BlomeTableViewNavigation()
 
 void BlomeTableViewNavigation::cellClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent)
 {
-    // Show delete options pop up menu
+    // Show sample options pop up menu
     if (mouseEvent.mods.isRightButtonDown())
     {
         PopupMenu popupMenu;
         popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
         popupMenu.addItem("Add Sample(s) to Favourites", [this] { addToFavourites(); });
+        popupMenu.addItem("Show in Finder", [this] { showSampleInFinder(); });
         popupMenu.addItem("(Re-)analyse Sample(s)", [this] { reanalyseSamples(); });
         popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
@@ -100,4 +101,12 @@ void BlomeTableViewNavigation::changeListenerCallback(ChangeBroadcaster *source)
 void BlomeTableViewNavigation::resortTable()
 {
     getHeader().reSortTable();
+}
+
+void BlomeTableViewNavigation::showSampleInFinder()
+{
+    File(sampleLibrary
+         .getSampleItems(mSampleItemCollectionType)
+         .getUnchecked(getLastRowSelected())->getFilePath())
+    .revealToUser();
 }

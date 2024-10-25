@@ -19,6 +19,7 @@ sampleItemPanel(inSampleItemPanel),
 audioPlayer(inAudioPlayer)
 {
     setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH, style->SAMPLE_NAVIGATION_PANEL_HEIGHT);
+    mSampleItemCollectionType = FILTERED_SAMPLES;
     setPanelComponents();
 }
 
@@ -60,7 +61,7 @@ void SampleFolderPanel::paint(Graphics& g)
     g.setColour(style->COLOUR_PANEL_TITLE_FONT);
     g.drawFittedText("Folder View - "
                      + sampleLibrary.getCurrentLibraryPath()
-                     + " - " + std::to_string(sampleLibrary.getSampleItems(FILTERED_SAMPLES).size()) + " Samples",
+                     + " - " + std::to_string(sampleLibrary.getSampleItems(mSampleItemCollectionType).size()) + " Samples",
                      style->PANEL_MARGIN * 1.5,
                      0,
                      getWidth() - style->PANEL_MARGIN * 3,
@@ -101,12 +102,13 @@ void SampleFolderPanel::selectionChanged()
 
 void SampleFolderPanel::fileClicked(File const & file, MouseEvent const & mouseEvent)
 {
-    // Show options pop up menu
+    // Show sample options pop up menu
     if (mouseEvent.mods.isRightButtonDown())
     {
         PopupMenu popupMenu;
         popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
         popupMenu.addItem("Add Sample(s) to Favourites", [this] { addToFavourites(); });
+        popupMenu.addItem("Show in Finder", [this] { showSampleInFinder(); });
         popupMenu.addItem("(Re-)analyse Sample(s)", [this] { reanalyseSamples(); });
         popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
@@ -191,4 +193,9 @@ bool SampleFolderPanel::keyPressed(KeyPress const & key)
     {
         return mFileTree->keyPressed(key);
     }
+}
+
+void SampleFolderPanel::showSampleInFinder()
+{
+    mFileTree->getSelectedFile(mFileTree->getNumSelectedFiles() - 1).revealToUser();
 }

@@ -42,6 +42,7 @@ private:
     SampleItemPanel& sampleItemPanel;
     AudioPlayer& audioPlayer;
     std::unique_ptr<BlomeFileTreeView> mFileTree;
+    SampleItemCollectionScope mSampleItemCollectionType;
     
     void selectionChanged() override;
     void fileClicked(File const & file, MouseEvent const & mouseEvent) override;
@@ -65,6 +66,10 @@ private:
     void paint(Graphics& g) override;
     void setPanelComponents() override;
     void resizePanelComponents() override;
+    /**
+     Opens the finder at the location of the chosen sample.
+     */
+    void showSampleInFinder();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleFolderPanel);
 };

@@ -51,6 +51,10 @@ private:
      */
     void addToFavourites();
     void changeListenerCallback(ChangeBroadcaster* source) override;
+    /**
+     Opens the finder at the location of the chosen sample.
+     */
+    void showSampleInFinder();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeTableViewNavigation);
 };

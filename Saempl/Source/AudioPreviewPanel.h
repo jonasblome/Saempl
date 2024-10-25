@@ -102,8 +102,8 @@ public:
     void emptyAudioResource();
     
 private:
-    AudioPlayer& audioPlayer;
-    Slider& zoomSlider;
+    AudioPlayer & audioPlayer;
+    Slider & zoomSlider;
     std::unique_ptr<ScrollBar> mAudioPreviewScrollbar;
     std::unique_ptr<AudioThumbnailCache> mThumbnailCache;
     std::unique_ptr<AudioThumbnail> mAudioPreview;
@@ -148,6 +148,10 @@ private:
      */
     void updateCursorPosition();
     void resizePanelComponents() override;
+    /**
+     Opens the finder at the location of the chosen sample.
+     */
+    void showSampleInFinder();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPreviewPanel);
 };

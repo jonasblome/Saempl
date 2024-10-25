@@ -19,11 +19,12 @@ audioPlayer(inAudioPlayer),
 sampleItemPanel(inSampleItemPanel)
 {
     sampleLibrary.addChangeListener(this);
+    mSampleItemCollectionType = FILTERED_SAMPLES;
     sampleItemCollectionChanged = false;
     addMouseListener(this, true);
     
     // Add grid clusterer
-    mGridClusterer = std::make_unique<SampleGridClusterer>(sampleLibrary.getSampleItems(FILTERED_SAMPLES));
+    mGridClusterer = std::make_unique<SampleGridClusterer>(sampleLibrary.getSampleItems(mSampleItemCollectionType));
     mGridClusterer->addChangeListener(this);
 }
 
@@ -42,7 +43,7 @@ void BlomeSampleGridView::clusterGrid()
     }
     
     // Retrieve sample items
-    OwnedArray<SampleItem>& sampleItems = sampleLibrary.getSampleItems(FILTERED_SAMPLES);
+    OwnedArray<SampleItem>& sampleItems = sampleLibrary.getSampleItems(mSampleItemCollectionType);
     mSelectedSampleTileIndices.clear();
     
     // Calculate optimal rectangle side lengths to minimise empty tiles,
@@ -275,7 +276,7 @@ void BlomeSampleGridView::setupGrid()
 {
     // Setup tile grid
     mSampleTiles.clear();
-    OwnedArray<SampleItem>& sampleItems = sampleLibrary.getSampleItems(FILTERED_SAMPLES);
+    OwnedArray<SampleItem>& sampleItems = sampleLibrary.getSampleItems(mSampleItemCollectionType);
     mSampleGrid = std::make_unique<Grid>();
     setVisible(true);
     
@@ -516,6 +517,7 @@ void BlomeSampleGridView::showPopupMenu()
     PopupMenu popupMenu;
     popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
     popupMenu.addItem("Add Sample(s) to Favourites", [this] { addToFavourites(); });
+    popupMenu.addItem("Show in Finder", [this] { showSampleInFinder(); });
     popupMenu.addItem("(Re-)analyse Sample(s)", [this] { reanalyseSamples(); });
     popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
     popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
@@ -570,4 +572,12 @@ void BlomeSampleGridView::playSelectedSample()
     }
     
     mSampleTiles.getUnchecked(mSelectedSampleTileIndices.getReference(0))->startPlayback();
+}
+
+void BlomeSampleGridView::showSampleInFinder()
+{
+    File(sampleLibrary
+         .getSampleItems(mSampleItemCollectionType)
+         .getUnchecked(mSelectedSampleTileIndices.getLast())->getFilePath())
+    .revealToUser();
 }

@@ -190,9 +190,19 @@ void AudioPreviewPanel::mouseDrag(MouseEvent const & e)
     }
 }
 
-void AudioPreviewPanel::mouseUp(MouseEvent const &)
+void AudioPreviewPanel::mouseUp(MouseEvent const & mouseEvent)
 {
-    audioPlayer.start();
+    // Show sample options pop up menu
+    if (mouseEvent.mods.isRightButtonDown())
+    {
+        PopupMenu popupMenu;
+        popupMenu.addItem("Show in Finder", [this] { showSampleInFinder(); });
+        popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
+    }
+    else
+    {
+        audioPlayer.start();
+    }
 }
 
 void AudioPreviewPanel::mouseWheelMove(MouseEvent const &, MouseWheelDetails const & wheel)
@@ -328,4 +338,9 @@ void AudioPreviewPanel::resizePanelComponents()
                                           .removeFromBottom(11)
                                           .reduced(2));
     }
+}
+
+void AudioPreviewPanel::showSampleInFinder()
+{
+    File(mCurrentAudioFile.getLocalFile()).revealToUser();
 }

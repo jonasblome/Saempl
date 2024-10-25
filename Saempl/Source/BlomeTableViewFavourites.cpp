@@ -35,11 +35,12 @@ BlomeTableViewFavourites::~BlomeTableViewFavourites()
 
 void BlomeTableViewFavourites::cellClicked(int rowNumber, int columnId, MouseEvent const &mouseEvent)
 {
-    // Show options pop up menu
+    // Show sample options pop up menu
     if (mouseEvent.mods.isRightButtonDown())
     {
         PopupMenu popupMenu;
         popupMenu.addItem("Remove Sample(s) from Favourites", [this] { removeSampleItemFromFavourites(); } );
+        popupMenu.addItem("Show in Finder", [this] { showSampleInFinder(); });
         popupMenu.addItem("(Re-)analyse Sample(s)", [this] { reanalyseSamples(); });
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
     }
@@ -67,4 +68,12 @@ void BlomeTableViewFavourites::removeSampleItemFromFavourites()
     }
     
     sampleLibrary.removeAllFromFavourites(sampleItems);
+}
+
+void BlomeTableViewFavourites::showSampleInFinder()
+{
+    File(sampleLibrary
+         .getSampleItems(mSampleItemCollectionType)
+         .getUnchecked(getLastRowSelected())->getFilePath())
+    .revealToUser();
 }

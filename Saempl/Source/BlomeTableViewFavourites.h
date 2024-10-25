@@ -39,6 +39,10 @@ private:
      Removes the SampleItem object of the selected rows from the sample favourites collection collection.
      */
     void removeSampleItemFromFavourites();
+    /**
+     Opens the finder at the location of the chosen sample.
+     */
+    void showSampleInFinder();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeTableViewFavourites);
 };
