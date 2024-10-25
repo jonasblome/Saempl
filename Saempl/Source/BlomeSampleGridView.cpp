@@ -152,11 +152,18 @@ Point<int> BlomeSampleGridView::selectRandomTile()
         return Point<int>();
     }
     
-    int randomTileIndex = Random::getSystemRandom().nextInt(numTiles);
-    deselectAll();
-    BlomeSampleTileView* randomTile = mSampleTiles.getUnchecked(randomTileIndex);
-    selectTile(randomTileIndex);
+    int randomTileIndex = 0;
+    BlomeSampleTileView * randomTile;
     
+    do
+    {
+        randomTileIndex = Random::getSystemRandom().nextInt(numTiles);
+        deselectAll();
+        randomTile = mSampleTiles.getUnchecked(randomTileIndex);
+    }
+    while (randomTile->getSampleItemFilePath() == EMPTY_TILE_PATH);
+        
+    selectTile(randomTileIndex);
     return getTileCentre(randomTile);
 }
 
@@ -197,36 +204,66 @@ Point<int> BlomeSampleGridView::selectLeft()
 {
     int lastSelectedIndex = mSelectedSampleTileIndices.getLast();
     deselectAll();
-    int newIndex = lastSelectedIndex % optimalWidth == 0 ? lastSelectedIndex : lastSelectedIndex - 1;
+    BlomeSampleTileView * tile;
+    int newIndex = lastSelectedIndex;
     
-    return getTileCentre(selectTile(newIndex));
+    do
+    {
+        tile = selectTile(newIndex % optimalWidth == 0 ? lastSelectedIndex : --newIndex);
+    }
+    while (tile->getSampleItemFilePath() == EMPTY_TILE_PATH);
+    
+    return getTileCentre(tile);
 }
 
 Point<int> BlomeSampleGridView::selectUp()
 {
     int lastSelectedIndex = mSelectedSampleTileIndices.getLast();
-    int newIndex = lastSelectedIndex - optimalWidth;
     deselectAll();
+    BlomeSampleTileView * tile;
+    int newIndex = lastSelectedIndex;
     
-    return getTileCentre(selectTile(newIndex < 0 ? lastSelectedIndex : newIndex));
+    do
+    {
+        newIndex -= optimalWidth;
+        tile = selectTile(newIndex < 0 ? lastSelectedIndex : newIndex);
+    }
+    while (tile->getSampleItemFilePath() == EMPTY_TILE_PATH);
+    
+    return getTileCentre(tile);
 }
 
 Point<int> BlomeSampleGridView::selectRight()
 {
     int lastSelectedIndex = mSelectedSampleTileIndices.getLast();
     deselectAll();
-    int newIndex = lastSelectedIndex % optimalWidth == optimalWidth - 1 ? lastSelectedIndex : lastSelectedIndex + 1;
+    BlomeSampleTileView * tile;
+    int newIndex = lastSelectedIndex;
     
-    return getTileCentre(selectTile(newIndex));
+    do
+    {
+        tile = selectTile(newIndex % optimalWidth == optimalWidth - 1 ? lastSelectedIndex : ++newIndex);
+    }
+    while (tile->getSampleItemFilePath() == EMPTY_TILE_PATH);
+    
+    return getTileCentre(tile);
 }
 
 Point<int> BlomeSampleGridView::selectDown()
 {
     int lastSelectedIndex = mSelectedSampleTileIndices.getLast();
-    int newIndex = lastSelectedIndex + optimalWidth;
     deselectAll();
+    BlomeSampleTileView * tile;
+    int newIndex = lastSelectedIndex;
     
-    return getTileCentre(selectTile(newIndex >= mSampleTiles.size() ? lastSelectedIndex : newIndex));
+    do
+    {
+        newIndex += optimalWidth;
+        tile = selectTile(newIndex >= mSampleTiles.size() ? lastSelectedIndex : newIndex);
+    }
+    while (tile->getSampleItemFilePath() == EMPTY_TILE_PATH);
+    
+    return getTileCentre(tile);
 }
 
 void BlomeSampleGridView::setReadyForClustering()
