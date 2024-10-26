@@ -19,8 +19,7 @@
  */
 class BlomeFileFilterRuleViewKey
 :
-public BlomeFileFilterRuleViewBase,
-public TextEditor::Listener
+public BlomeFileFilterRuleViewBase
 {
 public:
     /**
@@ -37,14 +36,11 @@ public:
     SampleFileFilterRuleKey& getFilterRule();
     
 private:
-    std::unique_ptr<TextEditor> mCompareValueEditor;
+    std::unique_ptr<ComboBox> mCompareValueComboBox;
     
     void paint(Graphics& g) override;
     void setComponents() override;
     void resized() override;
-    void textEditorReturnKeyPressed(TextEditor&) override;
-    void textEditorEscapeKeyPressed(TextEditor&) override;
-    void textEditorFocusLost(TextEditor&) override;
     void comboBoxChanged(ComboBox* comboBoxThatHasChanged) override;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeFileFilterRuleViewKey);

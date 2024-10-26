@@ -206,7 +206,7 @@ void FileFilterPanel::setAddFilterRuleButton()
                                     Image(),
                                     style->BUTTON_IS_DOWN_ALPHA,
                                     style->COLOUR_SYMBOL_BUTTON);
-    mAddFilterRuleButton->setBounds(style->COMBO_BOX_WIDTH_MEDIUM + style->PANEL_MARGIN * 0.75,
+    mAddFilterRuleButton->setBounds(style->COMBO_BOX_WIDTH_LARGE + style->PANEL_MARGIN * 0.75,
                                     style->PANEL_MARGIN / 2.0,
                                     style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN / 2.0,
                                     style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN / 2.0);
@@ -222,7 +222,7 @@ void FileFilterPanel::setNewRuleTypeChooser() {
     mNewRuleTypeChooser = std::make_unique<ComboBox>("NewRuleTypeChooser");
     mNewRuleTypeChooser->setBounds(style->PANEL_MARGIN / 2.0,
                                    style->PANEL_MARGIN / 2.0,
-                                   style->COMBO_BOX_WIDTH_MEDIUM - style->PANEL_MARGIN / 4.0,
+                                   style->COMBO_BOX_WIDTH_LARGE - style->PANEL_MARGIN / 4.0,
                                    style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN / 2.0);
     mNewRuleTypeChooser->addItem("New title rule", 1);
     mNewRuleTypeChooser->addItem("New length rule", 2);
