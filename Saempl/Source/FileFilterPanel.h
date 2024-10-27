@@ -17,6 +17,13 @@
 #include "BlomeFileFilterRuleViewLoudnessLUFS.h"
 #include "BlomeFileFilterRuleViewTempo.h"
 #include "BlomeFileFilterRuleViewKey.h"
+#include "BlomeFileFilterRuleViewDynamicRange.h"
+#include "BlomeFileFilterRuleViewCentroid.h"
+#include "BlomeFileFilterRuleViewRolloff.h"
+#include "BlomeFileFilterRuleViewSpectralSpread.h"
+#include "BlomeFileFilterRuleViewSpectralFlux.h"
+#include "BlomeFileFilterRuleViewChromaFlux.h"
+#include "BlomeFileFilterRuleViewZeroCrossingRate.h"
 
 /**
  Holds the BlomeFileFilterRuleViewBase components.

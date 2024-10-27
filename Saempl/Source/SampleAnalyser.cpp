@@ -41,8 +41,7 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
     analyseSampleLoudness();
     inSampleItem->setLoudnessDecibel(decibel);
     inSampleItem->setLoudnessLUFS(integratedLUFS);
-    inSampleItem->setLoudnessLUFSStart(lufsRangeStart + 300 / (3 + 300));
-    inSampleItem->setLoudnessLUFSEnd(lufsRangeEnd + 300 / (3 + 300));
+    inSampleItem->setDynamicRange((lufsRangeEnd + 300 / (3 + 300)) - (lufsRangeStart + 300 / (3 + 300)));
     
     // Set zero crossing rate
     inSampleItem->setZeroCrossingRate(zeroCrossingRate);

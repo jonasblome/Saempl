@@ -75,26 +75,15 @@ void SampleItem::setLoudnessLUFS(float inLUFS)
     mLoudnessLUFS = inLUFS;
 }
 
-float SampleItem::getLoudnessLUFSStart() const
+float SampleItem::getDynamicRange() const
 {
     return mLoudnessLUFSStart;
 }
 
-void SampleItem::setLoudnessLUFSStart(float inLUFSStart)
+void SampleItem::setDynamicRange(float inLUFSStart)
 {
     mLoudnessLUFSStart = inLUFSStart;
 }
-
-float SampleItem::getLoudnessLUFSEnd() const
-{
-    return mLoudnessLUFSEnd;
-}
-
-void SampleItem::setLoudnessLUFSEnd(float inLUFSEnd)
-{
-    mLoudnessLUFSEnd = inLUFSEnd;
-}
-
 float SampleItem::getZeroCrossingRate() const
 {
     return mZeroCrossingRate;

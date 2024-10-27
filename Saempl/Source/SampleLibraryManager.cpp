@@ -410,44 +410,39 @@ void SampleLibraryManager::writeSampleItemToXml(SampleItem *sampleItem, XmlEleme
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getKey());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
-    // Adding LUFS range start property
-    samplePropertyXml = new XmlElement("LUFSStart");
-    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLoudnessLUFSStart());
-    samplePropertiesXml->prependChildElement(samplePropertyXml);
-    
-    // Adding LUFS range end property
-    samplePropertyXml = new XmlElement("LUFSEnd");
-    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLoudnessLUFSEnd());
-    samplePropertiesXml->prependChildElement(samplePropertyXml);
-    
-    // Adding Zero Crossing Rate property
-    samplePropertyXml = new XmlElement("ZCR");
-    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getZeroCrossingRate());
+    // Adding LUFS dynamic range property
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[6]);
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getDynamicRange());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding spectral centroid property
-    samplePropertyXml = new XmlElement("Centroid");
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[7]);
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getSpectralCentroid());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding spectral spread property
-    samplePropertyXml = new XmlElement("Spread");
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[8]);
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getSpectralSpread());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding spectral rolloff property
-    samplePropertyXml = new XmlElement("Rolloff");
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[9]);
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getSpectralRolloff());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding spectral flux property
-    samplePropertyXml = new XmlElement("SpectralFlux");
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[10]);
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getSpectralFlux());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding chroma flux property
-    samplePropertyXml = new XmlElement("ChromaFlux");
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[11]);
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getChromaFlux());
+    samplePropertiesXml->prependChildElement(samplePropertyXml);
+    
+    // Adding Zero Crossing Rate property
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[12]);
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getZeroCrossingRate());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding feature vector
@@ -522,45 +517,40 @@ void SampleLibraryManager::createSampleItemFromXml(const XmlElement * sampleItem
 //        evaluateKeyDetection(key, title);
 //    }
     
-    // Adding LUFS Start to item
-    samplePropertyXml = samplePropertiesXml->getChildByName("LUFSStart");
-    float lufsStart = samplePropertyXml->getDoubleAttribute("PropertyValue");
-    sampleItem->setLoudnessLUFSStart(lufsStart);
-    
-    // Adding LUFS End to item
-    samplePropertyXml = samplePropertiesXml->getChildByName("LUFSEnd");
-    float lufsEnd = samplePropertyXml->getDoubleAttribute("PropertyValue");
-    sampleItem->setLoudnessLUFSStart(lufsEnd);
-    
-    // Adding Zero Crossing Rate to item
-    samplePropertyXml = samplePropertiesXml->getChildByName("ZCR");
-    float zcr = samplePropertyXml->getDoubleAttribute("PropertyValue");
-    sampleItem->setLoudnessLUFSStart(zcr);
+    // Adding dynamic range to item
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[6]);
+    float dynamicRange = samplePropertyXml->getDoubleAttribute("PropertyValue");
+    sampleItem->setDynamicRange(dynamicRange);
     
     // Adding spectral centroid to item
-    samplePropertyXml = samplePropertiesXml->getChildByName("Centroid");
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[7]);
     float centroid = samplePropertyXml->getDoubleAttribute("PropertyValue");
-    sampleItem->setLoudnessLUFSStart(centroid);
+    sampleItem->setSpectralCentroid(centroid);
     
     // Adding spectral spread to item
-    samplePropertyXml = samplePropertiesXml->getChildByName("Spread");
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[8]);
     float spread = samplePropertyXml->getDoubleAttribute("PropertyValue");
-    sampleItem->setLoudnessLUFSStart(spread);
+    sampleItem->setSpectralSpread(spread);
     
     // Adding spectral rolloff to item
-    samplePropertyXml = samplePropertiesXml->getChildByName("Rolloff");
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[9]);
     float rolloff = samplePropertyXml->getDoubleAttribute("PropertyValue");
-    sampleItem->setLoudnessLUFSStart(rolloff);
+    sampleItem->setSpectralRolloff(rolloff);
     
     // Adding spectral flux to item
-    samplePropertyXml = samplePropertiesXml->getChildByName("SpectralFlux");
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[10]);
     float spectralFlux = samplePropertyXml->getDoubleAttribute("PropertyValue");
-    sampleItem->setLoudnessLUFSStart(spectralFlux);
+    sampleItem->setSpectralFlux(spectralFlux);
     
     // Adding chroma flux to item
-    samplePropertyXml = samplePropertiesXml->getChildByName("ChromaFlux");
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[11]);
     float chromaFlux = samplePropertyXml->getDoubleAttribute("PropertyValue");
-    sampleItem->setLoudnessLUFSStart(chromaFlux);
+    sampleItem->setChromaFlux(chromaFlux);
+    
+    // Adding Zero Crossing Rate to item
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[12]);
+    float zcr = samplePropertyXml->getDoubleAttribute("PropertyValue");
+    sampleItem->setZeroCrossingRate(zcr);
     
     // Adding spectral distribution to item
     std::vector<float> spectralDistribution(NUM_SPECTRAL_BANDS);

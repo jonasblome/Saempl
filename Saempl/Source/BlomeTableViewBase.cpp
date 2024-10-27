@@ -125,6 +125,34 @@ String BlomeTableViewBase::getCellText(SampleItem* inSampleItem, String columnNa
     {
         return KEY_INDEX_TO_KEY_NAME[inSampleItem->getKey()];
     }
+    else if (columnName == PROPERTY_NAMES[6])
+    {
+        return std::to_string(inSampleItem->getDynamicRange());
+    }
+    else if (columnName == PROPERTY_NAMES[7])
+    {
+        return std::to_string(inSampleItem->getSpectralCentroid());
+    }
+    else if (columnName == PROPERTY_NAMES[8])
+    {
+        return std::to_string(inSampleItem->getSpectralRolloff());
+    }
+    else if (columnName == PROPERTY_NAMES[9])
+    {
+        return std::to_string(inSampleItem->getSpectralSpread());
+    }
+    else if (columnName == PROPERTY_NAMES[10])
+    {
+        return std::to_string(inSampleItem->getSpectralFlux());
+    }
+    else if (columnName == PROPERTY_NAMES[11])
+    {
+        return std::to_string(inSampleItem->getChromaFlux());
+    }
+    else if (columnName == PROPERTY_NAMES[12])
+    {
+        return std::to_string(inSampleItem->getZeroCrossingRate());
+    }
     else
     {
         return "unknown";

@@ -65,7 +65,7 @@ void SampleGridClusterer::run()
             
             featureVector[0] = sample->getLength() / 60 * mFeatureWeights[0];
             featureVector[1] = (sample->getLoudnessLUFS() + 300) / (3 + 300) * mFeatureWeights[1];
-            featureVector[2] = (sample->getLoudnessLUFSEnd() - sample->getLoudnessLUFSStart()) * mFeatureWeights[2];
+            featureVector[2] = (sample->getDynamicRange()) * mFeatureWeights[2];
             featureVector[3] = sample->getZeroCrossingRate() * mFeatureWeights[3];
             featureVector[4] = (sample->getTempo() + LOWER_BPM_LIMIT) / (UPPER_BPM_LIMIT - LOWER_BPM_LIMIT) * mFeatureWeights[4];
             featureVector[5] = sample->getKey() * 1.0 / NUM_CHROMA * mFeatureWeights[5];

@@ -23,7 +23,7 @@ SampleLibrary::SampleLibrary()
     mSampleLibraryManager->addChangeListener(this);
     
     // Create thread for scanning the sample library directory
-    mDirectoryScannerThread = std::make_unique<TimeSliceThread>("DirectoryReaderThread");
+    mDirectoryScannerThread = std::make_unique<TimeSliceThread>("DirectoryScannerThread");
     mDirectoryScannerThread->startThread(Thread::Priority::normal);
     
     // Set file filter

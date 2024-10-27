@@ -170,7 +170,7 @@ void BlomeSampleTileView::paint(Graphics& g)
     {
         other = other + "\n" + " - Length: " + String::toDecimalStringWithSignificantFigures(sampleItem->getLength(), 2);
         other = other + "\n" + " - LUFS: " + String::toDecimalStringWithSignificantFigures(sampleItem->getLoudnessLUFS(), 2);
-        other = other + "\n" + " - dB: " + String::toDecimalStringWithSignificantFigures(sampleItem->getLoudnessDecibel(), 2);
+        other = other + "\n" + " - Dyn. Range: " + String::toDecimalStringWithSignificantFigures(sampleItem->getDynamicRange(), 2);
     }
     
     g.drawFittedText(other,

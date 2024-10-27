@@ -24,7 +24,7 @@ SampleFileFilter::~SampleFileFilter()
 
 bool SampleFileFilter::isFileSuitable(File const & file) const
 {
-    for (SampleItem* sampleItem: filteredSampleItems)
+    for (SampleItem * sampleItem: filteredSampleItems)
     {
         if (sampleItem == nullptr)
         {

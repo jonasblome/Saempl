@@ -84,6 +84,34 @@
             resource="0" file="Source/BlomeFileFilterRuleViewKey.cpp"/>
       <FILE id="cSeHFd" name="BlomeFileFilterRuleViewKey.h" compile="0" resource="0"
             file="Source/BlomeFileFilterRuleViewKey.h"/>
+      <FILE id="DT2xDS" name="BlomeFileFilterRuleViewDynamicRange.cpp" compile="1"
+            resource="0" file="Source/BlomeFileFilterRuleViewDynamicRange.cpp"/>
+      <FILE id="tVp9hv" name="BlomeFileFilterRuleViewDynamicRange.h" compile="0"
+            resource="0" file="Source/BlomeFileFilterRuleViewDynamicRange.h"/>
+      <FILE id="NLZdLE" name="BlomeFileFilterRuleViewCentroid.cpp" compile="1"
+            resource="0" file="Source/BlomeFileFilterRuleViewCentroid.cpp"/>
+      <FILE id="rfpXPn" name="BlomeFileFilterRuleViewCentroid.h" compile="0"
+            resource="0" file="Source/BlomeFileFilterRuleViewCentroid.h"/>
+      <FILE id="YStMfI" name="BlomeFileFilterRuleViewRolloff.cpp" compile="1"
+            resource="0" file="Source/BlomeFileFilterRuleViewRolloff.cpp"/>
+      <FILE id="C08In2" name="BlomeFileFilterRuleViewRolloff.h" compile="0"
+            resource="0" file="Source/BlomeFileFilterRuleViewRolloff.h"/>
+      <FILE id="znhHNj" name="BlomeFileFilterRuleViewSpectralSpread.cpp"
+            compile="1" resource="0" file="Source/BlomeFileFilterRuleViewSpectralSpread.cpp"/>
+      <FILE id="VKIqrw" name="BlomeFileFilterRuleViewSpectralSpread.h" compile="0"
+            resource="0" file="Source/BlomeFileFilterRuleViewSpectralSpread.h"/>
+      <FILE id="Z9pQd4" name="BlomeFileFilterRuleViewSpectralFlux.cpp" compile="1"
+            resource="0" file="Source/BlomeFileFilterRuleViewSpectralFlux.cpp"/>
+      <FILE id="dM2BZB" name="BlomeFileFilterRuleViewSpectralFlux.h" compile="0"
+            resource="0" file="Source/BlomeFileFilterRuleViewSpectralFlux.h"/>
+      <FILE id="mjQF8n" name="BlomeFileFilterRuleViewChromaFlux.cpp" compile="1"
+            resource="0" file="Source/BlomeFileFilterRuleViewChromaFlux.cpp"/>
+      <FILE id="ysABgf" name="BlomeFileFilterRuleViewChromaFlux.h" compile="0"
+            resource="0" file="Source/BlomeFileFilterRuleViewChromaFlux.h"/>
+      <FILE id="fwBnXl" name="BlomeFileFilterRuleViewZeroCrossingRate.cpp"
+            compile="1" resource="0" file="Source/BlomeFileFilterRuleViewZeroCrossingRate.cpp"/>
+      <FILE id="lp8s2c" name="BlomeFileFilterRuleViewZeroCrossingRate.h"
+            compile="0" resource="0" file="Source/BlomeFileFilterRuleViewZeroCrossingRate.h"/>
       <FILE id="V9Z3KI" name="BlomeFileTreeView.cpp" compile="1" resource="0"
             file="Source/BlomeFileTreeView.cpp"/>
       <FILE id="jx3afv" name="BlomeFileTreeView.h" compile="0" resource="0"
@@ -223,6 +251,34 @@
             file="Source/SampleFileFilterRuleKey.cpp"/>
       <FILE id="IER5T6" name="SampleFileFilterRuleKey.h" compile="0" resource="0"
             file="Source/SampleFileFilterRuleKey.h"/>
+      <FILE id="F34dZy" name="SampleFileFilterRuleDynamicRange.cpp" compile="1"
+            resource="0" file="Source/SampleFileFilterRuleDynamicRange.cpp"/>
+      <FILE id="PQmIOu" name="SampleFileFilterRuleDynamicRange.h" compile="0"
+            resource="0" file="Source/SampleFileFilterRuleDynamicRange.h"/>
+      <FILE id="SBFKPc" name="SampleFileFilterRuleCentroid.cpp" compile="1"
+            resource="0" file="Source/SampleFileFilterRuleCentroid.cpp"/>
+      <FILE id="idj8kX" name="SampleFileFilterRuleCentroid.h" compile="0"
+            resource="0" file="Source/SampleFileFilterRuleCentroid.h"/>
+      <FILE id="fEuSwi" name="SampleFileFilterRuleRolloff.cpp" compile="1"
+            resource="0" file="Source/SampleFileFilterRuleRolloff.cpp"/>
+      <FILE id="s66X8W" name="SampleFileFilterRuleRolloff.h" compile="0"
+            resource="0" file="Source/SampleFileFilterRuleRolloff.h"/>
+      <FILE id="WBXkgS" name="SampleFileFilterRuleSpectralSpread.cpp" compile="1"
+            resource="0" file="Source/SampleFileFilterRuleSpectralSpread.cpp"/>
+      <FILE id="Sfkgfe" name="SampleFileFilterRuleSpectralSpread.h" compile="0"
+            resource="0" file="Source/SampleFileFilterRuleSpectralSpread.h"/>
+      <FILE id="BqAyvn" name="SampleFileFilterRuleSpectralFlux.cpp" compile="1"
+            resource="0" file="Source/SampleFileFilterRuleSpectralFlux.cpp"/>
+      <FILE id="ARmmD3" name="SampleFileFilterRuleSpectralFlux.h" compile="0"
+            resource="0" file="Source/SampleFileFilterRuleSpectralFlux.h"/>
+      <FILE id="JS8Z6Y" name="SampleFileFilterRuleChromaFlux.cpp" compile="1"
+            resource="0" file="Source/SampleFileFilterRuleChromaFlux.cpp"/>
+      <FILE id="Z0kVlV" name="SampleFileFilterRuleChromaFlux.h" compile="0"
+            resource="0" file="Source/SampleFileFilterRuleChromaFlux.h"/>
+      <FILE id="RNt3OJ" name="SampleFileFilterRuleZeroCrossingRate.cpp" compile="1"
+            resource="0" file="Source/SampleFileFilterRuleZeroCrossingRate.cpp"/>
+      <FILE id="ggSfwg" name="SampleFileFilterRuleZeroCrossingRate.h" compile="0"
+            resource="0" file="Source/SampleFileFilterRuleZeroCrossingRate.h"/>
       <FILE id="dlIPH8" name="SampleItem.cpp" compile="1" resource="0" file="Source/SampleItem.cpp"/>
       <FILE id="QPDhPJ" name="SampleItem.h" compile="0" resource="0" file="Source/SampleItem.h"/>
       <FILE id="UlKa0R" name="SampleItemComparator.cpp" compile="1" resource="0"

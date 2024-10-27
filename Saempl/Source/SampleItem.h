@@ -73,23 +73,13 @@ public:
     /**
      @returns the sample's loudness range start in LUFS.
      */
-    float getLoudnessLUFSStart() const;
+    float getDynamicRange() const;
     /**
-     Sets the loudness range start of the sample item in LUFS.
+     Sets the dynamic range start of the sample item in LUFS.
      
-     @param inLUFSStart the loudness to set.
+     @param inDynamicRange the dynamic range to set.
      */
-    void setLoudnessLUFSStart(float inLUFSStart);
-    /**
-     @returns the sample's loudness range end in LUFS.
-     */
-    float getLoudnessLUFSEnd() const;
-    /**
-     Sets the loudness range end of the sample item in LUFS.
-     
-     @param inLUFSEnd the loudness to set.
-     */
-    void setLoudnessLUFSEnd(float inLUFSEnd);
+    void setDynamicRange(float inDynamicRange);
     /**
      @returns the sample's zero crossing rate.
      */

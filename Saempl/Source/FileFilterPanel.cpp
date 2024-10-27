@@ -111,6 +111,55 @@ void FileFilterPanel::generateRuleView(SampleFileFilterRuleBase *rule)
                                                                   sampleLibrary));
             break;
         }
+        case 6:
+        {
+            newRuleView = mFilterRuleViews
+                .add(std::make_unique<BlomeFileFilterRuleViewDynamicRange>(*dynamic_cast<SampleFileFilterRuleDynamicRange*>(rule),
+                                                                  sampleLibrary));
+            break;
+        }
+        case 7:
+        {
+            newRuleView = mFilterRuleViews
+                .add(std::make_unique<BlomeFileFilterRuleViewCentroid>(*dynamic_cast<SampleFileFilterRuleCentroid*>(rule),
+                                                                  sampleLibrary));
+            break;
+        }
+        case 8:
+        {
+            newRuleView = mFilterRuleViews
+                .add(std::make_unique<BlomeFileFilterRuleViewRolloff>(*dynamic_cast<SampleFileFilterRuleRolloff*>(rule),
+                                                                  sampleLibrary));
+            break;
+        }
+        case 9:
+        {
+            newRuleView = mFilterRuleViews
+                .add(std::make_unique<BlomeFileFilterRuleViewSpectralSpread>(*dynamic_cast<SampleFileFilterRuleSpectralSpread*>(rule),
+                                                                  sampleLibrary));
+            break;
+        }
+        case 10:
+        {
+            newRuleView = mFilterRuleViews
+                .add(std::make_unique<BlomeFileFilterRuleViewSpectralFlux>(*dynamic_cast<SampleFileFilterRuleSpectralFlux*>(rule),
+                                                                  sampleLibrary));
+            break;
+        }
+        case 11:
+        {
+            newRuleView = mFilterRuleViews
+                .add(std::make_unique<BlomeFileFilterRuleViewChromaFlux>(*dynamic_cast<SampleFileFilterRuleChromaFlux*>(rule),
+                                                                  sampleLibrary));
+            break;
+        }
+        case 12:
+        {
+            newRuleView = mFilterRuleViews
+                .add(std::make_unique<BlomeFileFilterRuleViewZeroCrossingRate>(*dynamic_cast<SampleFileFilterRuleZeroCrossingRate*>(rule),
+                                                                  sampleLibrary));
+            break;
+        }
         default:
         {
             jassertfalse;
@@ -163,6 +212,41 @@ void FileFilterPanel::addFilterRuleView()
         case 5:
         {
             newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleKey(PROPERTY_NAMES[5]));
+            break;
+        }
+        case 6:
+        {
+            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleDynamicRange(PROPERTY_NAMES[6]));
+            break;
+        }
+        case 7:
+        {
+            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleCentroid(PROPERTY_NAMES[7]));
+            break;
+        }
+        case 8:
+        {
+            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleRolloff(PROPERTY_NAMES[8]));
+            break;
+        }
+        case 9:
+        {
+            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleSpectralSpread(PROPERTY_NAMES[9]));
+            break;
+        }
+        case 10:
+        {
+            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleSpectralFlux(PROPERTY_NAMES[10]));
+            break;
+        }
+        case 11:
+        {
+            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleChromaFlux(PROPERTY_NAMES[11]));
+            break;
+        }
+        case 12:
+        {
+            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleZeroCrossingRate(PROPERTY_NAMES[12]));
             break;
         }
         default:
@@ -230,6 +314,13 @@ void FileFilterPanel::setNewRuleTypeChooser() {
     mNewRuleTypeChooser->addItem("New loudness(LUFS) rule", 4);
     mNewRuleTypeChooser->addItem("New tempo rule", 5);
     mNewRuleTypeChooser->addItem("New key rule", 6);
+    mNewRuleTypeChooser->addItem("New dynamic range rule", 7);
+    mNewRuleTypeChooser->addItem("New frequency average rule", 8);
+    mNewRuleTypeChooser->addItem("New frequency rolloff rule", 9);
+    mNewRuleTypeChooser->addItem("New frequency spread rule", 10);
+    mNewRuleTypeChooser->addItem("New frequency fluctuation rule", 11);
+    mNewRuleTypeChooser->addItem("New harmonic fluctuation rule", 12);
+    mNewRuleTypeChooser->addItem("New zero crossing rate rule", 13);
     mNewRuleTypeChooser->setTextWhenNothingSelected("Choose new rule type");
     addAndMakeVisible(*mNewRuleTypeChooser);
 }

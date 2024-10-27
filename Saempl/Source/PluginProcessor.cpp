@@ -260,6 +260,41 @@ void SaemplAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
                 stateInfoFilterRule->setAttribute("CompareValue", dynamic_cast<SampleFileFilterRuleKey*>(rule)->getCompareValue());
                 break;
             }
+            case 6:
+            {
+                stateInfoFilterRule->setAttribute("CompareValue", dynamic_cast<SampleFileFilterRuleDynamicRange*>(rule)->getCompareValue());
+                break;
+            }
+            case 7:
+            {
+                stateInfoFilterRule->setAttribute("CompareValue", dynamic_cast<SampleFileFilterRuleCentroid*>(rule)->getCompareValue());
+                break;
+            }
+            case 8:
+            {
+                stateInfoFilterRule->setAttribute("CompareValue", dynamic_cast<SampleFileFilterRuleRolloff*>(rule)->getCompareValue());
+                break;
+            }
+            case 9:
+            {
+                stateInfoFilterRule->setAttribute("CompareValue", dynamic_cast<SampleFileFilterRuleSpectralSpread*>(rule)->getCompareValue());
+                break;
+            }
+            case 10:
+            {
+                stateInfoFilterRule->setAttribute("CompareValue", dynamic_cast<SampleFileFilterRuleSpectralFlux*>(rule)->getCompareValue());
+                break;
+            }
+            case 11:
+            {
+                stateInfoFilterRule->setAttribute("CompareValue", dynamic_cast<SampleFileFilterRuleChromaFlux*>(rule)->getCompareValue());
+                break;
+            }
+            case 12:
+            {
+                stateInfoFilterRule->setAttribute("CompareValue", dynamic_cast<SampleFileFilterRuleZeroCrossingRate*>(rule)->getCompareValue());
+                break;
+            }
             default:
             {
                 jassertfalse;
@@ -372,6 +407,48 @@ void SaemplAudioProcessor::setStateInformation(void const * data, int sizeInByte
                         break;
                     }
                     case 5:
+                    {
+                        newRule = mSampleLibrary->getFileFilter().addFilterRule(new SampleFileFilterRuleKey(propertyName));
+                        dynamic_cast<SampleFileFilterRuleKey*>(newRule)->setCompareValue(filterRule->getStringAttribute("CompareValue"));
+                        break;
+                    }
+                    case 6:
+                    {
+                        newRule = mSampleLibrary->getFileFilter().addFilterRule(new SampleFileFilterRuleKey(propertyName));
+                        dynamic_cast<SampleFileFilterRuleKey*>(newRule)->setCompareValue(filterRule->getStringAttribute("CompareValue"));
+                        break;
+                    }
+                    case 7:
+                    {
+                        newRule = mSampleLibrary->getFileFilter().addFilterRule(new SampleFileFilterRuleKey(propertyName));
+                        dynamic_cast<SampleFileFilterRuleKey*>(newRule)->setCompareValue(filterRule->getStringAttribute("CompareValue"));
+                        break;
+                    }
+                    case 8:
+                    {
+                        newRule = mSampleLibrary->getFileFilter().addFilterRule(new SampleFileFilterRuleKey(propertyName));
+                        dynamic_cast<SampleFileFilterRuleKey*>(newRule)->setCompareValue(filterRule->getStringAttribute("CompareValue"));
+                        break;
+                    }
+                    case 9:
+                    {
+                        newRule = mSampleLibrary->getFileFilter().addFilterRule(new SampleFileFilterRuleKey(propertyName));
+                        dynamic_cast<SampleFileFilterRuleKey*>(newRule)->setCompareValue(filterRule->getStringAttribute("CompareValue"));
+                        break;
+                    }
+                    case 10:
+                    {
+                        newRule = mSampleLibrary->getFileFilter().addFilterRule(new SampleFileFilterRuleKey(propertyName));
+                        dynamic_cast<SampleFileFilterRuleKey*>(newRule)->setCompareValue(filterRule->getStringAttribute("CompareValue"));
+                        break;
+                    }
+                    case 11:
+                    {
+                        newRule = mSampleLibrary->getFileFilter().addFilterRule(new SampleFileFilterRuleKey(propertyName));
+                        dynamic_cast<SampleFileFilterRuleKey*>(newRule)->setCompareValue(filterRule->getStringAttribute("CompareValue"));
+                        break;
+                    }
+                    case 12:
                     {
                         newRule = mSampleLibrary->getFileFilter().addFilterRule(new SampleFileFilterRuleKey(propertyName));
                         dynamic_cast<SampleFileFilterRuleKey*>(newRule)->setCompareValue(filterRule->getStringAttribute("CompareValue"));
