@@ -14,6 +14,7 @@
 #include "SampleLibrary.h"
 #include "BlomeSampleTileView.h"
 #include "SampleGridClusterer.h"
+#include "SampleFileRenamingPanel.h"
 
 /**
  The view class for the sample grid.
@@ -192,6 +193,10 @@ private:
      Opens the finder at the location of the chosen sample.
      */
     void showSampleInFinder();
+    /**
+     Opens a callout dialog to allow renaming the file.
+     */
+    void renameSampleFile();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeSampleGridView);
 };

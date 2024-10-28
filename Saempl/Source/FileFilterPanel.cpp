@@ -321,7 +321,7 @@ void FileFilterPanel::setNewRuleTypeChooser() {
     mNewRuleTypeChooser->addItem("New frequency fluctuation rule", 11);
     mNewRuleTypeChooser->addItem("New harmonic fluctuation rule", 12);
     mNewRuleTypeChooser->addItem("New zero crossing rate rule", 13);
-    mNewRuleTypeChooser->setTextWhenNothingSelected("Choose new rule type");
+    mNewRuleTypeChooser->setTextWhenNothingSelected("Choose new filter rule type");
     addAndMakeVisible(*mNewRuleTypeChooser);
 }
 

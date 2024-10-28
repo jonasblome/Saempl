@@ -342,5 +342,10 @@ void AudioPreviewPanel::resizePanelComponents()
 
 void AudioPreviewPanel::showSampleInFinder()
 {
+    if (mCurrentAudioFile.isEmpty())
+    {
+        return;
+    }
+    
     File(mCurrentAudioFile.getLocalFile()).revealToUser();
 }

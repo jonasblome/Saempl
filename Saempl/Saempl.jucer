@@ -176,6 +176,10 @@
             file="Source/SampleFavouritesPanel.cpp"/>
       <FILE id="vfREHk" name="SampleFavouritesPanel.h" compile="0" resource="0"
             file="Source/SampleFavouritesPanel.h"/>
+      <FILE id="qcY0N4" name="SampleFileRenamingPanel.cpp" compile="1" resource="0"
+            file="Source/SampleFileRenamingPanel.cpp"/>
+      <FILE id="ZQFo0F" name="SampleFileRenamingPanel.h" compile="0" resource="0"
+            file="Source/SampleFileRenamingPanel.h"/>
       <FILE id="kq53i4" name="SampleItemPanel.cpp" compile="1" resource="0"
             file="Source/SampleItemPanel.cpp"/>
       <FILE id="K4zE0N" name="SampleItemPanel.h" compile="0" resource="0"

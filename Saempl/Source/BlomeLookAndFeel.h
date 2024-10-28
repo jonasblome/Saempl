@@ -650,12 +650,12 @@ public LookAndFeel_V4
         auto cornerSize = 5.0f;
         
         // Draw border
-        g.setColour(style->COLOUR_ACCENT_MEDIUM);
-        g.fillRoundedRectangle(bounds.toFloat(), cornerSize);
+        g.setColour(style->COLOUR_ACCENT_DARK);
+        g.drawRoundedRectangle(bounds.toFloat().reduced(0.5f, 0.5f), cornerSize, 1.0f);
         
         // Draw background
         g.setColour(style->COLOUR_ACCENT_DARK);
-        g.drawRoundedRectangle(bounds.toFloat().reduced(0.5f, 0.5f), cornerSize, 1.0f);
+        g.fillRoundedRectangle(bounds.toFloat(), cornerSize);
         
         // Draw text
         int const maxToolTipWidth = 400;

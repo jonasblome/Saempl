@@ -32,34 +32,49 @@ void AboutPanel::mouseExit(MouseEvent const & event)
 void AboutPanel::paint(Graphics& g)
 {
     // Draw background
-    g.setColour(style->COLOUR_ACCENT_MEDIUM);
+    g.setColour(style->COLOUR_ACCENT_LIGHT);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), style->CORNER_SIZE_MEDIUM);
+    
+    // Draw title bar
+    int titleHeight = 40;
+    g.setColour(style->COLOUR_ACCENT_DARK);
+    Rectangle<int> titleBounds = getLocalBounds().reduced(style->PANEL_MARGIN * 0.5).removeFromTop(titleHeight);
+    g.fillRoundedRectangle(titleBounds.toFloat(), style->CORNER_SIZE_MEDIUM);
+    g.setFont(style->FONT_MEDIUM_BOLD);
+    g.setColour(style->COLOUR_ACCENT_LIGHT);
+    g.drawFittedText("Saempl - Sample Manager", titleBounds.reduced(style->PANEL_MARGIN * 0.5), Justification::centred, 1);
     
     // Draw line
     g.setColour(style->COLOUR_ACCENT_DARK);
     g.drawLine(style->PANEL_MARGIN,
-               40,
+               style->PANEL_MARGIN + titleHeight,
                getWidth() - style->PANEL_MARGIN,
-               40);
+               style->PANEL_MARGIN + titleHeight);
     
-    // Draw text
+    // Draw info text
+    g.setColour(style->COLOUR_ACCENT_DARK);
+    Rectangle<int> infoTextBounds = getLocalBounds()
+        .reduced(style->PANEL_MARGIN * 0.5)
+        .removeFromBottom(getHeight() - titleHeight - style->PANEL_MARGIN * 2);
+    g.fillRoundedRectangle(infoTextBounds.toFloat(), style->CORNER_SIZE_MEDIUM);
+    g.setFont(style->FONT_MEDIUM_SMALL_BOLD);
     g.setColour(style->COLOUR_ACCENT_LIGHT);
-    g.setFont(style->FONT_MEDIUM_BOLD);
-    Rectangle<int> textBounds = getLocalBounds().reduced(style->PANEL_MARGIN);
-    g.drawFittedText("Saempl - Sample Manager", textBounds.removeFromTop(30), Justification::topLeft, 1);
-    g.setColour(style->COLOUR_ACCENT_LIGHT);
-    g.setFont(style->FONT_SMALL_BOLD);
-    g.drawFittedText(String("\n")
-                     + "Developed by Jonas Blome"
+    g.drawFittedText("Developed by Jonas Blome"
                      + String("\n") + "Copyleft @Saempl 2024"
-                  // + String("\n") + "Email: jonas.blome@gmx.de"
-                  // + String("\n") + "GitHub: https://github.com/jonasblome"
+                     + String("\n") + "Email: jonas.blome@gmx.de"
+                     + String("\n") + "GitHub: https://github.com/jonasblome"
                      + String("\n")
                      + String("\n") + "Short Intructions:"
+                     + String("\n") + " - Choose a directory at the top left or press (D)"
                      + String("\n") + " - Hover over buttons and sliders to get explanations"
+                     + String("\n") + " - Press (K) to start and (L) to stop quick pre-listen of a selected sample"
+                     + String("\n") + "OR"
                      + String("\n") + " - Press Enter to load selected samples into the preview"
-                     + String("\n") + " - Press K to start and L to stop quick preview of a selected sample"
-                     + String("\n") + " - Drag and drop samples into \"Favourites\" or into your DAW",
-                     textBounds.removeFromBottom(getHeight() - 60),
-                     Justification::left, 10);
+                     + String("\n") + " - Right click on samples to access a popup menu"
+                     + String("\n") + " - Drag and drop samples into \"Favourites\" or into your DAW"
+                     + String("\n") + " - Select a random sample with the shuffle button at the top or press (S)"
+                     + String("\n") + " - Switch between folder, table and grid view with (1), (2), (3)"
+                     + String("\n") + " - Filter through your samples by adding rules in the filter menu at the top",
+                     infoTextBounds.reduced(style->PANEL_MARGIN * 1.0),
+                     Justification::topLeft, 10);
 }

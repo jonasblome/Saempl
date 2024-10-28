@@ -518,6 +518,7 @@ void BlomeSampleGridView::showPopupMenu()
     popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
     popupMenu.addItem("Add Sample(s) to Favourites", [this] { addToFavourites(); });
     popupMenu.addItem("Show in Finder", [this] { showSampleInFinder(); });
+    popupMenu.addItem("Rename file", [this] { renameSampleFile(); });
     popupMenu.addItem("(Re-)analyse Sample(s)", [this] { reanalyseSamples(); });
     popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
     popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
@@ -576,10 +577,18 @@ void BlomeSampleGridView::playSelectedSample()
 
 void BlomeSampleGridView::showSampleInFinder()
 {
-    File(sampleLibrary
-         .getSampleItems(mSampleItemCollectionType)
-         .getUnchecked(mSelectedSampleTileIndices.getLast())->getFilePath())
+    File(mSampleTiles
+         .getUnchecked(mSelectedSampleTileIndices.getLast())
+         ->getSampleItemFilePath())
     .revealToUser();
+}
+
+void BlomeSampleGridView::renameSampleFile()
+{
+    BlomeSampleTileView * tile = mSampleTiles.getUnchecked(mSelectedSampleTileIndices.getLast());
+    String filePath = tile->getSampleItemFilePath();
+    std::unique_ptr<SampleFileRenamingPanel> renamingPanel = std::make_unique<SampleFileRenamingPanel>(currentProcessor, filePath);
+    CallOutBox::launchAsynchronously(std::move(renamingPanel), tile->getScreenBounds(), nullptr);
 }
 
 Point<int> BlomeSampleGridView::showSample(String inFilePath)

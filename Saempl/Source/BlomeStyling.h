@@ -45,16 +45,19 @@ struct BlomeStyling
     int const HEADER_PANEL_WIDTH = MAIN_PANEL_WIDTH;
     int const HEADER_PANEL_HEIGHT = 50;
     
-    int const FILTER_PANEL_WIDTH = 400;
+    int const FILTER_PANEL_WIDTH = 500;
     int const FILTER_PANEL_HEIGHT = 50;
     
     int const FILTER_RULE_WIDTH = FILTER_PANEL_WIDTH;
     int const FILTER_RULE_HEIGHT = 35;
     
-    int const FILTER_RULE_TITLE_WIDTH = 80;
+    int const FILTER_RULE_TITLE_WIDTH = 120;
     
-    int const ABOUT_PANEL_WIDTH = 300;
-    int const ABOUT_PANEL_HEIGHT = 180;
+    int const ABOUT_PANEL_WIDTH = 350;
+    int const ABOUT_PANEL_HEIGHT = 550;
+    
+    int const RENAMING_PANEL_WIDTH = 300;
+    int const RENAMING_PANEL_HEIGHT = 180;
     
     int const CENTRE_PANEL_WIDTH = MAIN_PANEL_WIDTH;
     int const CENTRE_PANEL_HEIGHT = MAIN_PANEL_HEIGHT - HEADER_PANEL_HEIGHT;
