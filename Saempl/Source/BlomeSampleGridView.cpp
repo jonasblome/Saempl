@@ -204,12 +204,12 @@ void BlomeSampleGridView::deselectAll()
 Point<int> BlomeSampleGridView::selectLeft()
 {
     int lastSelectedIndex = mSelectedSampleTileIndices.getLast();
-    deselectAll();
     BlomeSampleTileView * tile;
     int newIndex = lastSelectedIndex;
     
     do
     {
+        deselectAll();
         tile = selectTile(newIndex % optimalWidth == 0 ? lastSelectedIndex : --newIndex);
     }
     while (tile->getSampleItemFilePath() == EMPTY_TILE_PATH);
@@ -220,12 +220,12 @@ Point<int> BlomeSampleGridView::selectLeft()
 Point<int> BlomeSampleGridView::selectUp()
 {
     int lastSelectedIndex = mSelectedSampleTileIndices.getLast();
-    deselectAll();
     BlomeSampleTileView * tile;
     int newIndex = lastSelectedIndex;
     
     do
     {
+        deselectAll();
         newIndex -= optimalWidth;
         tile = selectTile(newIndex < 0 ? lastSelectedIndex : newIndex);
     }
@@ -237,12 +237,12 @@ Point<int> BlomeSampleGridView::selectUp()
 Point<int> BlomeSampleGridView::selectRight()
 {
     int lastSelectedIndex = mSelectedSampleTileIndices.getLast();
-    deselectAll();
     BlomeSampleTileView * tile;
     int newIndex = lastSelectedIndex;
     
     do
     {
+        deselectAll();
         tile = selectTile(newIndex % optimalWidth == optimalWidth - 1 ? lastSelectedIndex : ++newIndex);
     }
     while (tile->getSampleItemFilePath() == EMPTY_TILE_PATH);
@@ -253,12 +253,12 @@ Point<int> BlomeSampleGridView::selectRight()
 Point<int> BlomeSampleGridView::selectDown()
 {
     int lastSelectedIndex = mSelectedSampleTileIndices.getLast();
-    deselectAll();
     BlomeSampleTileView * tile;
     int newIndex = lastSelectedIndex;
     
     do
     {
+        deselectAll();
         newIndex += optimalWidth;
         tile = selectTile(newIndex >= mSampleTiles.size() ? lastSelectedIndex : newIndex);
     }

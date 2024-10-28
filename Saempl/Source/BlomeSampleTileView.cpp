@@ -158,23 +158,69 @@ void BlomeSampleTileView::paint(Graphics& g)
     String other = "";
     int currentWidth = getWidth();
     
-    if (currentWidth > 95)
+    if (currentWidth > 90)
     {
-        other = other + "\n\n" + " - Key: " + KEY_INDEX_TO_KEY_NAME[sampleItem->getKey()];
+        other = other
+        + "\n\n"
+        + " - Key: "
+        + KEY_INDEX_TO_KEY_NAME[sampleItem->getKey()];
+        other = other
+        + "\n"
+        + " - Tempo: "
+        + std::to_string(sampleItem->getTempo())
+        + "bpm";
+        other = other
+        + "\n"
+        + " - Dyn. Range: "
+        + String::toDecimalStringWithSignificantFigures(sampleItem->getDynamicRange(), 2)
+        + "LUFS";
+        other = other
+        + "\n"
+        + " - Avg. Freq: "
+        + String::toDecimalStringWithSignificantFigures(sampleItem->getSpectralCentroid(), 2)
+        + "Hz";
+        other = other
+        + "\n"
+        + " - Rolloff: "
+        + String::toDecimalStringWithSignificantFigures(sampleItem->getSpectralRolloff(), 2)
+        + "%";
+        other = other
+        + "\n"
+        + " - Freq. Spread: "
+        + String::toDecimalStringWithSignificantFigures(sampleItem->getSpectralSpread(), 2)
+        + "%";
     }
-    if (currentWidth > 115)
+    if (currentWidth > 150)
     {
-        other = other + "\n" + " - Tempo: " + std::to_string(sampleItem->getTempo());
-    }
-    if (currentWidth > 135)
-    {
-        other = other + "\n" + " - Length: " + String::toDecimalStringWithSignificantFigures(sampleItem->getLength(), 2);
-        other = other + "\n" + " - LUFS: " + String::toDecimalStringWithSignificantFigures(sampleItem->getLoudnessLUFS(), 2);
-        other = other + "\n" + " - Dyn. Range: " + String::toDecimalStringWithSignificantFigures(sampleItem->getDynamicRange(), 2);
+        other = other
+        + "\n"
+        + " - Freq. Flux: "
+        + String::toDecimalStringWithSignificantFigures(sampleItem->getSpectralFlux(), 2)
+        + "%";
+        other = other
+        + "\n"
+        + " - Harm. Flux: "
+        + String::toDecimalStringWithSignificantFigures(sampleItem->getChromaFlux(), 2)
+        + "%";
+        other = other
+        + "\n"
+        + " - Length: "
+        + String::toDecimalStringWithSignificantFigures(sampleItem->getLength(), 2)
+        + "s";
+        other = other
+        + "\n"
+        + " - Loudness: "
+        + String::toDecimalStringWithSignificantFigures(sampleItem->getLoudnessLUFS(), 2)
+        + "LUFS";
+        other = other
+        + "\n"
+        + " - ZCR: "
+        + String::toDecimalStringWithSignificantFigures(sampleItem->getZeroCrossingRate(), 2)
+        + "Hz";
     }
     
     g.drawFittedText(other,
-                     bounds.reduced(style->PANEL_MARGIN).removeFromBottom(getHeight() - 65).removeFromTop(getHeight() - 65 - style->BUTTON_SIZE_MEDIUM - style->PANEL_MARGIN).toNearestInt(),
+                     bounds.reduced(style->PANEL_MARGIN).removeFromBottom(getHeight() - 25).removeFromTop(getHeight() - 25 - style->BUTTON_SIZE_MEDIUM - style->PANEL_MARGIN).toNearestInt(),
                      Justification::topLeft,
                      5);
 }

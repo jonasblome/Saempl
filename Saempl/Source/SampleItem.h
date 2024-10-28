@@ -71,7 +71,7 @@ public:
      */
     void setLoudnessLUFS(float inLUFS);
     /**
-     @returns the sample's loudness range start in LUFS.
+     @returns the sample's dynamic range in LUFS.
      */
     float getDynamicRange() const;
     /**
@@ -161,6 +161,16 @@ public:
      */
     void setKey(int inKey);
     /**
+     @returns the sample's sample rate.
+     */
+    int getSampleRate() const;
+    /**
+     Sets the sample rate of the sample item.
+     
+     @param inSampleRate the key to set.
+     */
+    void setSampleRate(int inSampleRate);
+    /**
      @returns the sample's spectral distribution.
      */
     std::vector<float> getSpectralDistribution() const;
@@ -197,14 +207,14 @@ private:
     float mLength;
     float mLoudnessDecibel;
     float mLoudnessLUFS;
-    float mLoudnessLUFSStart;
-    float mLoudnessLUFSEnd;
+    float mDynamicRangeLUFS;
     float mZeroCrossingRate;
     float mSpectralCentroid;
     float mSpectralSpread;
     float mSpectralRolloff;
     float mSpectralFlux;
     float mChromaFlux;
+    int mSampleRate;
     int mTempo;
     int mKey;
     std::vector<float> mSpectralDistribution;

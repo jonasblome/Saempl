@@ -381,68 +381,73 @@ void SampleLibraryManager::writeSampleItemToXml(SampleItem *sampleItem, XmlEleme
     XmlElement* samplePropertiesXml = new XmlElement("SampleProperties");
     
     // Adding title property
-    XmlElement* samplePropertyXml = new XmlElement(PROPERTY_NAMES[0]);
+    XmlElement* samplePropertyXml = new XmlElement(PROPERTY_NAMES[0].removeCharacters(" "));
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getTitle());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding length property
-    samplePropertyXml = new XmlElement(PROPERTY_NAMES[1]);
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[1].removeCharacters(" "));
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLength());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding decibel loudness property
-    samplePropertyXml = new XmlElement(PROPERTY_NAMES[2]);
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[2].removeCharacters(" "));
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLoudnessDecibel());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding LUFS loudness property
-    samplePropertyXml = new XmlElement(PROPERTY_NAMES[3]);
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[3].removeCharacters(" "));
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getLoudnessLUFS());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding tempo property
-    samplePropertyXml = new XmlElement(PROPERTY_NAMES[4]);
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[4].removeCharacters(" "));
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getTempo());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding key property
-    samplePropertyXml = new XmlElement(PROPERTY_NAMES[5]);
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[5].removeCharacters(" "));
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getKey());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding LUFS dynamic range property
-    samplePropertyXml = new XmlElement(PROPERTY_NAMES[6]);
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[6].removeCharacters(" "));
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getDynamicRange());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding spectral centroid property
-    samplePropertyXml = new XmlElement(PROPERTY_NAMES[7]);
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[7].removeCharacters(" "));
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getSpectralCentroid());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding spectral spread property
-    samplePropertyXml = new XmlElement(PROPERTY_NAMES[8]);
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[8].removeCharacters(" "));
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getSpectralSpread());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding spectral rolloff property
-    samplePropertyXml = new XmlElement(PROPERTY_NAMES[9]);
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[9].removeCharacters(" "));
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getSpectralRolloff());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding spectral flux property
-    samplePropertyXml = new XmlElement(PROPERTY_NAMES[10]);
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[10].removeCharacters(" "));
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getSpectralFlux());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding chroma flux property
-    samplePropertyXml = new XmlElement(PROPERTY_NAMES[11]);
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[11].removeCharacters(" "));
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getChromaFlux());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding Zero Crossing Rate property
-    samplePropertyXml = new XmlElement(PROPERTY_NAMES[12]);
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[12].removeCharacters(" "));
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getZeroCrossingRate());
+    samplePropertiesXml->prependChildElement(samplePropertyXml);
+    
+    // Adding Zero Crossing Rate property
+    samplePropertyXml = new XmlElement("Sample-Rate");
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getSampleRate());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding feature vector
@@ -480,27 +485,27 @@ void SampleLibraryManager::createSampleItemFromXml(const XmlElement * sampleItem
     XmlElement* samplePropertiesXml = sampleItemXml->getChildByName("SampleProperties");
     
     // Adding title property to item
-    XmlElement* samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[0]);
+    XmlElement* samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[0].removeCharacters(" "));
     String title = samplePropertyXml->getStringAttribute("PropertyValue");
     sampleItem->setTitle(title);
     
     // Adding length property to item
-    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[1]);
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[1].removeCharacters(" "));
     double length = samplePropertyXml->getDoubleAttribute("PropertyValue");
     sampleItem->setLength(length);
     
     // Adding decibel property to item
-    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[2]);
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[2].removeCharacters(" "));
     double loudnessDecibel = samplePropertyXml->getDoubleAttribute("PropertyValue");
     sampleItem->setLoudnessDecibel(loudnessDecibel);
     
     // Adding LUFS property to item
-    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[3]);
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[3].removeCharacters(" "));
     double loudnessLUFS = samplePropertyXml->getDoubleAttribute("PropertyValue");
     sampleItem->setLoudnessLUFS(loudnessLUFS);
     
     // Adding tempo property to item
-    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[4]);
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[4].removeCharacters(" "));
     int tempo = samplePropertyXml->getIntAttribute("PropertyValue");
     sampleItem->setTempo(tempo);
 //    if (tempo != 0)
@@ -509,7 +514,7 @@ void SampleLibraryManager::createSampleItemFromXml(const XmlElement * sampleItem
 //    }
     
     // Adding key property to item
-    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[5]);
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[5].removeCharacters(" "));
     int key = samplePropertyXml->getIntAttribute("PropertyValue");
     sampleItem->setKey(key);
 //    if (key != SAMPLE_TOO_LONG_INDEX)
@@ -518,39 +523,44 @@ void SampleLibraryManager::createSampleItemFromXml(const XmlElement * sampleItem
 //    }
     
     // Adding dynamic range to item
-    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[6]);
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[6].removeCharacters(" "));
     float dynamicRange = samplePropertyXml->getDoubleAttribute("PropertyValue");
     sampleItem->setDynamicRange(dynamicRange);
     
     // Adding spectral centroid to item
-    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[7]);
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[7].removeCharacters(" "));
     float centroid = samplePropertyXml->getDoubleAttribute("PropertyValue");
     sampleItem->setSpectralCentroid(centroid);
     
     // Adding spectral spread to item
-    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[8]);
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[8].removeCharacters(" "));
     float spread = samplePropertyXml->getDoubleAttribute("PropertyValue");
     sampleItem->setSpectralSpread(spread);
     
     // Adding spectral rolloff to item
-    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[9]);
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[9].removeCharacters(" "));
     float rolloff = samplePropertyXml->getDoubleAttribute("PropertyValue");
     sampleItem->setSpectralRolloff(rolloff);
     
     // Adding spectral flux to item
-    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[10]);
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[10].removeCharacters(" "));
     float spectralFlux = samplePropertyXml->getDoubleAttribute("PropertyValue");
     sampleItem->setSpectralFlux(spectralFlux);
     
     // Adding chroma flux to item
-    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[11]);
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[11].removeCharacters(" "));
     float chromaFlux = samplePropertyXml->getDoubleAttribute("PropertyValue");
     sampleItem->setChromaFlux(chromaFlux);
     
     // Adding Zero Crossing Rate to item
-    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[12]);
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[12].removeCharacters(" "));
     float zcr = samplePropertyXml->getDoubleAttribute("PropertyValue");
     sampleItem->setZeroCrossingRate(zcr);
+    
+    // Adding Zero Crossing Rate to item
+    samplePropertyXml = samplePropertiesXml->getChildByName("Sample-Rate");
+    float sampleRate = samplePropertyXml->getIntAttribute("PropertyValue");
+    sampleItem->setSampleRate(sampleRate);
     
     // Adding spectral distribution to item
     std::vector<float> spectralDistribution(NUM_SPECTRAL_BANDS);

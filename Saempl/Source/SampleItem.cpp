@@ -77,12 +77,12 @@ void SampleItem::setLoudnessLUFS(float inLUFS)
 
 float SampleItem::getDynamicRange() const
 {
-    return mLoudnessLUFSStart;
+    return mDynamicRangeLUFS;
 }
 
-void SampleItem::setDynamicRange(float inLUFSStart)
+void SampleItem::setDynamicRange(float inDynamicRange)
 {
-    mLoudnessLUFSStart = inLUFSStart;
+    mDynamicRangeLUFS = inDynamicRange;
 }
 float SampleItem::getZeroCrossingRate() const
 {
@@ -182,6 +182,16 @@ int SampleItem::getKey() const
 void SampleItem::setKey(int inKey)
 {
     mKey = inKey;
+}
+
+int SampleItem::getSampleRate() const
+{
+    return mSampleRate;
+}
+
+void SampleItem::setSampleRate(int inSampleRate)
+{
+    mSampleRate = inSampleRate;
 }
 
 std::vector<float> SampleItem::getFeatureVector() const

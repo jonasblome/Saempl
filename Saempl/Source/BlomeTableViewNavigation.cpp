@@ -31,9 +31,6 @@ BlomeTableViewBase(inProcessor, inSampleItemPanel, inAudioPlayer)
     }
     
     getHeader().setColumnVisible(3, false);
-    getHeader().setColumnVisible(10, false);
-    getHeader().setColumnVisible(11, false);
-    getHeader().setColumnVisible(12, false);
     getHeader().setColumnVisible(13, false);
     getHeader().setSortColumnId(PROPERTY_NAMES.indexOf(currentProcessor.getSortingColumnTitle()) + 1,
                                 currentProcessor.getSortingDirection());

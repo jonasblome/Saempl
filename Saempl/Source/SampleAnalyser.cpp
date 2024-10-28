@@ -33,15 +33,18 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
         return;
     }
     
+    // Set sample rate
+    inSampleItem->setSampleRate(sampleRate);
+    
     // Set sample length
     float length = totalNumSamples * 1.0 / sampleRate;
     inSampleItem->setLength(length);
     
-    // Set sample loudness and loudness range
+    // Set sample loudness and dynamic range
     analyseSampleLoudness();
     inSampleItem->setLoudnessDecibel(decibel);
     inSampleItem->setLoudnessLUFS(integratedLUFS);
-    inSampleItem->setDynamicRange((lufsRangeEnd + 300 / (3 + 300)) - (lufsRangeStart + 300 / (3 + 300)));
+    inSampleItem->setDynamicRange(lufsRangeEnd - lufsRangeStart);
     
     // Set zero crossing rate
     inSampleItem->setZeroCrossingRate(zeroCrossingRate);
@@ -59,11 +62,11 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
         
         int key = analyseSampleKey();
         inSampleItem->setKey(key);
-        inSampleItem->setSpectralCentroid(spectralCentroid / 20000);
-        inSampleItem->setSpectralSpread(spectralSpread / 100);
-        inSampleItem->setSpectralRolloff(spectralRollOffBandIndex * 1.0 / NUM_SPECTRAL_BANDS);
+        inSampleItem->setSpectralCentroid(spectralCentroid);
+        inSampleItem->setSpectralRolloff(spectralRollOffBandIndex * 1.0 / NUM_SPECTRAL_BANDS * 100);
+        inSampleItem->setSpectralSpread(spectralSpread);
         inSampleItem->setSpectralFlux(spectralFlux);
-        inSampleItem->setChromaFlux(chromaFlux / 1000);
+        inSampleItem->setChromaFlux(chromaFlux * 100);
         inSampleItem->setSpectralDistribution(mSpectralDistribution);
         inSampleItem->setChromaDistribution(mChromaDistribution);
     }
@@ -120,7 +123,7 @@ void SampleAnalyser::analyseSampleLoudness()
     lufsRangeEnd = mEbuLoudnessMeter.getLoudnessRangeEnd();
     
     // Calculate zero crossing rate
-    zeroCrossingRate = (numZeroCrossings * 1.0 / numChannels) * 1.0 / totalNumSamples;
+    zeroCrossingRate = (numZeroCrossings * 1.0 / numChannels) * 1.0 / totalNumSamples * sampleRate;
 }
 
 void SampleAnalyser::calculateSTFTSpectrum(int inFFTOrder,
@@ -221,7 +224,7 @@ std::vector<float> SampleAnalyser::calculateNoveltyFunction()
     // Calculate spectral flux and spectral centroid
     if (coefficientSum != 0)
     {
-        spectralFlux = spectralFlux / coefficientSum;
+        spectralFlux /= coefficientSum;
         spectralCentroid = spectralCentroid / coefficientSum;
     }
     
@@ -447,7 +450,7 @@ std::vector<std::vector<float>> SampleAnalyser::calculateLogSpectrogram(float& c
     
     // Calculate spectral spread
     spectralSpread /= coefficientSum;
-    spectralSpread /= spectralCentroid;
+    spectralSpread /= sampleRate / 2.0;
     spectralSpread = sqrt(spectralSpread);
     
     return logSpectrogram;
@@ -457,6 +460,7 @@ void SampleAnalyser::calculateChromaDistribution(std::vector<std::vector<float>>
 {
     std::memset(mChromaDistribution.data(), 0, sizeof(mChromaDistribution));
     chromaFlux = 0.0;
+    float coefficientSum = 0.0;
     
     // Loop over all pitches
     for (int p = 0; p < logSpectrogram.size(); p++)
@@ -464,6 +468,7 @@ void SampleAnalyser::calculateChromaDistribution(std::vector<std::vector<float>>
         for (int w = 0; w < numFFTWindows; w++)
         {
             float currentCoefficient = logSpectrogram[p][w];
+            coefficientSum += currentCoefficient;
             mChromaDistribution[p % NUM_CHROMA] += currentCoefficient;
             
             if (w >= 1)
@@ -474,7 +479,10 @@ void SampleAnalyser::calculateChromaDistribution(std::vector<std::vector<float>>
         }
     }
     
-    chromaFlux = (chromaFlux / numFFTWindows) / logSpectrogram.size();
+    if (coefficientSum != 0)
+    {
+        chromaFlux /= coefficientSum;
+    }
     
     // Normalise chroma distribution
     float maxChroma = *std::max_element(mChromaDistribution.begin(),

@@ -32,7 +32,7 @@ void BlomeFileFilterRuleViewSpectralFlux::setComponents()
     mCompareValueEditor = std::make_unique<TextEditor>("CompareValueEditor");
     mCompareValueEditor->setFont(style->FONT_SMALL_BOLD);
     mCompareValueEditor->setJustification(Justification::centredLeft);
-    mCompareValueEditor->setText(String::toDecimalStringWithSignificantFigures(getFilterRule().getCompareValue(), 1));
+    mCompareValueEditor->setText(String::toDecimalStringWithSignificantFigures(getFilterRule().getCompareValue(), 2));
     mCompareValueEditor->addListener(this);
     addAndMakeVisible(*mCompareValueEditor);
     
@@ -74,8 +74,8 @@ void BlomeFileFilterRuleViewSpectralFlux::textEditorFocusLost(TextEditor& textEd
 {
     // Lose focus, set compare value and refresh library
     mCompareValueEditor->giveAwayKeyboardFocus();
-    int newCompareValue = textEditor.getText().getIntValue();
-    int oldCompareValue = getFilterRule().getCompareValue();
+    double newCompareValue = textEditor.getText().getDoubleValue();
+    double oldCompareValue = getFilterRule().getCompareValue();
     getFilterRule().setCompareValue(newCompareValue);
     
     if (newCompareValue != oldCompareValue && sampleLibrary.getFileFilter().canHaveEffect())

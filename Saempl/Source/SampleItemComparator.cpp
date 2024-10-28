@@ -47,31 +47,31 @@ int SampleItemComparator::compareElements(SampleItem* first, SampleItem* second)
     }
     else if (mComparePropertyName == PROPERTY_NAMES[6])
     {
-        return compareElements<int>(first->getDynamicRange(), second->getDynamicRange());
+        return compareElements<float>(first->getDynamicRange(), second->getDynamicRange());
     }
     else if (mComparePropertyName == PROPERTY_NAMES[7])
     {
-        return compareElements<int>(first->getSpectralCentroid(), second->getSpectralCentroid());
+        return compareElements<float>(first->getSpectralCentroid(), second->getSpectralCentroid());
     }
     else if (mComparePropertyName == PROPERTY_NAMES[8])
     {
-        return compareElements<int>(first->getSpectralRolloff(), second->getSpectralRolloff());
+        return compareElements<float>(first->getSpectralRolloff(), second->getSpectralRolloff());
     }
     else if (mComparePropertyName == PROPERTY_NAMES[9])
     {
-        return compareElements<int>(first->getSpectralSpread(), second->getSpectralSpread());
+        return compareElements<float>(first->getSpectralSpread(), second->getSpectralSpread());
     }
     else if (mComparePropertyName == PROPERTY_NAMES[10])
     {
-        return compareElements<int>(first->getSpectralFlux(), second->getSpectralFlux());
+        return compareElements<float>(first->getSpectralFlux(), second->getSpectralFlux());
     }
     else if (mComparePropertyName == PROPERTY_NAMES[11])
     {
-        return compareElements<int>(first->getChromaFlux(), second->getChromaFlux());
+        return compareElements<float>(first->getChromaFlux(), second->getChromaFlux());
     }
     else if (mComparePropertyName == PROPERTY_NAMES[12])
     {
-        return compareElements<int>(first->getZeroCrossingRate(), second->getZeroCrossingRate());
+        return compareElements<float>(first->getZeroCrossingRate(), second->getZeroCrossingRate());
     }
     
     return 0;

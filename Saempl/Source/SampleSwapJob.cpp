@@ -303,7 +303,7 @@ float SampleSwapJob::calculateDistance(std::vector<float> vector1, std::vector<f
         float dist = vector1[d] - vector2[d];
         
         // Wrap it around for the dimension that represents the key
-        if (d == 6)
+        if (d == 5)
         {
             dist = abs(dist);
             

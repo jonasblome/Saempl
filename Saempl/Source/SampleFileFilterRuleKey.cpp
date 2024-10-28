@@ -35,21 +35,7 @@ bool SampleFileFilterRuleKey::matches(SampleItem const & inSampleItem)
         }
         case EQUAL_TO:
         {
-            String formattedCompareValue = mCompareValue.removeCharacters(" ");
-            
-            if (formattedCompareValue.equalsIgnoreCase("bmaj") || formattedCompareValue.equalsIgnoreCase("bmajor"))
-            {
-                return propertyValue == KEY_INDEX_TO_KEY_NAME[11];
-            }
-            else if (formattedCompareValue.equalsIgnoreCase("no"))
-            {
-                return propertyValue == KEY_INDEX_TO_KEY_NAME[NO_KEY_INDEX];
-            }
-            else
-            {
-                return propertyValue.removeCharacters(" ").containsIgnoreCase(formattedCompareValue);
-            }
-            
+            return propertyValue == mCompareValue;
             break;
         }
         case GREATER_THAN:

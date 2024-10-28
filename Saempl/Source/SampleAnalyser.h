@@ -54,7 +54,7 @@ private:
     static int const upperBPMLimitExpanded = UPPER_BPM_LIMIT + ignoreTopAndBottomTempi;
     static int const numTempi = upperBPMLimitExpanded - lowerBPMLimitExpanded;
     // Higher values increase frequency resolution of the STFT spectrum
-    static int const keyFFTOrder = 16;
+    static int const keyFFTOrder = 14;
     static int const keyFFTSize = 1 << keyFFTOrder;
     static int const keyWindowLength = keyFFTSize;
     static int const keyFFTHopLength = keyWindowLength / 2;

@@ -310,13 +310,13 @@ void FileFilterPanel::setNewRuleTypeChooser() {
                                    style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN / 2.0);
     mNewRuleTypeChooser->addItem("New title rule", 1);
     mNewRuleTypeChooser->addItem("New length rule", 2);
-    mNewRuleTypeChooser->addItem("New loudness(dB) rule", 3);
-    mNewRuleTypeChooser->addItem("New loudness(LUFS) rule", 4);
+    mNewRuleTypeChooser->addItem("New dB loudness rule", 3);
+    mNewRuleTypeChooser->addItem("New LUFS loudness rule", 4);
     mNewRuleTypeChooser->addItem("New tempo rule", 5);
     mNewRuleTypeChooser->addItem("New key rule", 6);
     mNewRuleTypeChooser->addItem("New dynamic range rule", 7);
-    mNewRuleTypeChooser->addItem("New frequency average rule", 8);
-    mNewRuleTypeChooser->addItem("New frequency rolloff rule", 9);
+    mNewRuleTypeChooser->addItem("New average frequency rule", 8);
+    mNewRuleTypeChooser->addItem("New rolloff frequency rule", 9);
     mNewRuleTypeChooser->addItem("New frequency spread rule", 10);
     mNewRuleTypeChooser->addItem("New frequency fluctuation rule", 11);
     mNewRuleTypeChooser->addItem("New harmonic fluctuation rule", 12);

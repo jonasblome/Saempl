@@ -135,8 +135,8 @@ private:
     int optimalWidth;
     int optimalHeight;
     float currentZoomFactor;
-    int minTileWidth = 85;
-    int maxTileWidth = 150;
+    int minTileWidth = 90;
+    int maxTileWidth = 200;
     
     /**
      Creates tile components for each sample item and adds them to a square grid.
