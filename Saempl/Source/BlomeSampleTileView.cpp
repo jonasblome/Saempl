@@ -19,7 +19,7 @@ sampleLibrary(inSampleLibrary),
 sampleItemPanel(inSampleItemPanel),
 audioPlayer(inAudioPlayer)
 {
-    sampleItemFilePath = sampleItem->getFilePath();
+    sampleItemFilePath = sampleItem->getCurrentFilePath();
     isSelected = false;
     
     if (sampleItemFilePath == EMPTY_TILE_PATH)
@@ -93,7 +93,14 @@ void BlomeSampleTileView::startPlayback()
 
 String BlomeSampleTileView::getSampleItemFilePath()
 {
-    return sampleItemFilePath;
+    if (sampleItemFilePath == EMPTY_TILE_PATH)
+    {
+        return sampleItemFilePath;
+    }
+    else
+    {
+        return sampleItem->getCurrentFilePath();
+    }
 }
 
 void BlomeSampleTileView::setSelected(bool inIsSelected)
@@ -110,7 +117,7 @@ void BlomeSampleTileView::loadIntoAudioPlayer()
 {
     if (sampleItemFilePath != EMPTY_TILE_PATH)
     {
-        File inFile = sampleItem->getFilePath();
+        File inFile = sampleItem->getCurrentFilePath();
         
         sampleItemPanel.tryShowAudioResource(inFile);
     }

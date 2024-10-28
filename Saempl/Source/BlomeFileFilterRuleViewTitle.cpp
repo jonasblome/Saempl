@@ -32,6 +32,7 @@ void BlomeFileFilterRuleViewTitle::setComponents()
     mCompareValueEditor = std::make_unique<TextEditor>("CompareValueEditor");
     mCompareValueEditor->setFont(style->FONT_SMALL_BOLD);
     mCompareValueEditor->setJustification(Justification::centredLeft);
+    mCompareValueEditor->setIndents(mCompareValueEditor->getLeftIndent(), 0);
     mCompareValueEditor->setText(getFilterRule().getCompareValue());
     mCompareValueEditor->addListener(this);
     addAndMakeVisible(*mCompareValueEditor);

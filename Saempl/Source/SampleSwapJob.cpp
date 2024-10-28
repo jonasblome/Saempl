@@ -212,7 +212,7 @@ void SampleSwapJob::doSwaps(std::vector<int> & swapPositions,
         swappedElements[s] = swappedElement;
         
         // Handle holes
-        if (swappedElement->getFilePath() != EMPTY_TILE_PATH)
+        if (swappedElement->getCurrentFilePath() != EMPTY_TILE_PATH)
         {
             mSwappedFeatureVectors[s] = swappedElement->getFeatureVector();
             numValid++;

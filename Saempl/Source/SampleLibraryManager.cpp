@@ -120,24 +120,13 @@ void SampleLibraryManager::updateSampleLibraryFiles()
             sampleLibraryXml.prependChildElement(sampleItemsXml);
         }
         
-        // Delete all sample items that are in this directory
-        for (SampleItem* sampleItem : deletedSampleItems)
-        {
-            if (File(sampleItem->getFilePath()).getParentDirectory() == libraryPath)
-            {
-                sampleItemsXml->removeChildElement(sampleItemsXml->getChildByName(encodeForXml(sampleItem->getFilePath())),
-                                                   true);
-                numUpdatedItems++;
-                setProgress(numUpdatedItems / (double) numItemsToUpdate);
-            }
-        }
-        
         // Add all new sample items that are in this directory
         for (SampleItem* sampleItem : addedSampleItems)
         {
-            if (File(sampleItem->getFilePath()).getParentDirectory() == libraryPath)
+            if (File(sampleItem->getCurrentFilePath()).getParentDirectory() == libraryPath)
             {
-                XmlElement* sampleItemXml = new XmlElement(encodeForXml(sampleItem->getFilePath()));
+                String encodedFilePath = encodeForXml(sampleItem->getCurrentFilePath());
+                XmlElement* sampleItemXml = new XmlElement(encodedFilePath);
                 writeSampleItemToXml(sampleItem, sampleItemXml);
                 sampleItemsXml->prependChildElement(sampleItemXml);
                 numUpdatedItems++;
@@ -148,10 +137,23 @@ void SampleLibraryManager::updateSampleLibraryFiles()
         // Alter all sample items that are in this directory
         for (SampleItem* sampleItem : alteredSampleItems)
         {
-            if (File(sampleItem->getFilePath()).getParentDirectory() == libraryPath)
+            if (File(sampleItem->getCurrentFilePath()).getParentDirectory() == libraryPath)
             {
-                XmlElement* sampleItemXml = sampleItemsXml->getChildByName(encodeForXml(sampleItem->getFilePath()));
+                String encodedFilePath = encodeForXml(sampleItem->getOldFilePath());
+                XmlElement* sampleItemXml = sampleItemsXml->getChildByName(encodedFilePath);
                 writeSampleItemToXml(sampleItem, sampleItemXml);
+                numUpdatedItems++;
+                setProgress(numUpdatedItems / (double) numItemsToUpdate);
+            }
+        }
+        
+        // Delete all sample items that are in this directory
+        for (SampleItem* sampleItem : deletedSampleItems)
+        {
+            if (File(sampleItem->getCurrentFilePath()).getParentDirectory() == libraryPath)
+            {
+                sampleItemsXml->removeChildElement(sampleItemsXml->getChildByName(encodeForXml(sampleItem->getCurrentFilePath())),
+                                                   true);
                 numUpdatedItems++;
                 setProgress(numUpdatedItems / (double) numItemsToUpdate);
             }
@@ -216,7 +218,7 @@ void SampleLibraryManager::run()
             break;
         }
         
-        if (!File(sampleItem->getFilePath()).exists())
+        if (!File(sampleItem->getCurrentFilePath()).exists())
         {
             deletedSampleItems.add(sampleItem);
         }
@@ -232,7 +234,7 @@ void SampleLibraryManager::run()
     int dsi = 0;
     for (SampleItem* sampleItem : deletedSampleItems)
     {
-        addedFilePaths.removeString(sampleItem->getFilePath());
+        addedFilePaths.removeString(sampleItem->getCurrentFilePath());
         favouriteSampleItems.removeObject(sampleItem, false);
         allSampleItems.removeObject(sampleItem, false);
         addedSampleItems.removeObject(sampleItem, false);
@@ -373,9 +375,10 @@ void SampleLibraryManager::loadSampleLibrary(File const & inLibraryDirectory)
     synchWithLibraryDirectory();
 }
 
-void SampleLibraryManager::writeSampleItemToXml(SampleItem *sampleItem, XmlElement *sampleItemXml)
+void SampleLibraryManager::writeSampleItemToXml(SampleItem * sampleItem, XmlElement * sampleItemXml)
 {
-    sampleItemXml->setAttribute("FilePath", sampleItem->getFilePath());
+    sampleItemXml->setTagName(encodeForXml(sampleItem->getCurrentFilePath()));
+    sampleItemXml->setAttribute("FilePath", sampleItem->getCurrentFilePath());
     
     // Adding sample properties xml to sample item xml
     XmlElement* samplePropertiesXml = new XmlElement("SampleProperties");
@@ -478,7 +481,8 @@ void SampleLibraryManager::createSampleItemFromXml(const XmlElement * sampleItem
     filePath = filePath.convertToPrecomposedUnicode();
 #endif
     SampleItem* sampleItem = allSampleItems.add(new SampleItem());
-    sampleItem->setFilePath(filePath);
+    sampleItem->setCurrentFilePath(filePath);
+    sampleItem->setOldFilePath(filePath);
     addedFilePaths.add(filePath);
     
     // Adding properties to item
@@ -660,10 +664,11 @@ SampleItem* SampleLibraryManager::createSampleItem(File const & inFile)
     filePath = filePath.convertToPrecomposedUnicode();
     sampleTitle = sampleTitle.convertToPrecomposedUnicode();
 #endif
-    newItem->setFilePath(filePath);
+    newItem->setCurrentFilePath(filePath);
+    newItem->setOldFilePath(filePath);
     newItem->setTitle(sampleTitle);
     analyseSampleItem(newItem, inFile, false);
-    addedFilePaths.add(newItem->getFilePath());
+    addedFilePaths.add(newItem->getCurrentFilePath());
     
     return newItem;
 }
@@ -672,7 +677,7 @@ SampleItem* SampleLibraryManager::getSampleItemWithFilePath(String const & inFil
 {
     for (SampleItem* sampleItem : allSampleItems)
     {
-        String sampleItemFilePath = sampleItem->getFilePath();
+        String sampleItemFilePath = sampleItem->getCurrentFilePath();
         String fileName = inFileName;
 #if JUCE_MAC
         sampleItemFilePath = sampleItemFilePath.convertToPrecomposedUnicode();

@@ -10,6 +10,7 @@
 #pragma once
 
 #include "BlomeTableViewBase.h"
+#include "SampleFileRenamingPanel.h"
 
 /**
  Implements BlomeTableViewBase for the SampleTablePanel.
@@ -57,6 +58,10 @@ private:
      */
     void addToFavourites();
     void changeListenerCallback(ChangeBroadcaster* source) override;
+    /**
+     Opens a callout dialog to allow renaming the file.
+     */
+    void renameSampleFile();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeTableViewNavigation);
 };

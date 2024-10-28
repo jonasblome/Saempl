@@ -49,7 +49,7 @@ void SampleGridOptionsPanel::paint(Graphics& g)
     // Draw explanation text
     g.setFont(style->FONT_SMALL_BOLD);
     g.setColour(style->COLOUR_ACCENT_LIGHT);
-    g.drawFittedText(String("Change how much the clustering focuses on each property or choose a preset:\n\n")
+    g.drawFittedText(String("Change how much the clustering focuses on each property:\n\n")
                      + String("(Double click sliders to reset to default value)"),
                      style->PANEL_MARGIN,
                      style->PANEL_MARGIN,

@@ -25,11 +25,19 @@ public:
     /**
      @returns the sample's file path.
      */
-    String getFilePath() const;
+    String getCurrentFilePath() const;
     /**
      Sets the file path of the corresponding audio file.
      */
-    void setFilePath(String const & inFilePath);
+    void setCurrentFilePath(String const & inFilePath);
+    /**
+     @returns the sample's old file path.
+     */
+    String getOldFilePath() const;
+    /**
+     Sets the old file path of the sample.
+     */
+    void setOldFilePath(String const & inFilePath);
     /**
      @returns the sample's title.
      */
@@ -202,7 +210,8 @@ public:
     void setFeatureVector(std::vector<float> inFeatureVector);
     
 private:
-    String mFilePath;
+    String mCurrentFilePath;
+    String mOldFilePath;
     String mTitle;
     float mLength;
     float mLoudnessDecibel;

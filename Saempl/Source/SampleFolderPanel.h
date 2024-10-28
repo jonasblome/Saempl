@@ -12,6 +12,7 @@
 #include "PanelBase.h"
 #include "BlomeFileTreeView.h"
 #include "SampleItemPanel.h"
+#include "SampleFileRenamingPanel.h"
 
 /**
  Holds the BlomeFileTreeView and controls the SampleLibrary.
@@ -76,6 +77,10 @@ private:
      Opens the finder at the location of the chosen sample.
      */
     void showSampleInFinder();
+    /**
+     Opens a callout dialog to allow renaming the file.
+     */
+    void renameSampleFile();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleFolderPanel);
 };

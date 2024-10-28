@@ -168,7 +168,7 @@ int BlomeTableViewBase::getColumnAutoSizeWidth(int columnId)
     {
         if (SampleItem* sampleItem = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(r))
         {
-            String text = sampleItem->getFilePath();
+            String text = sampleItem->getCurrentFilePath();
             widest = jmax(widest, (int) TextLayout().getStringWidth(style->FONT_SMALL_BOLD, text));
         }
     }
@@ -178,7 +178,7 @@ int BlomeTableViewBase::getColumnAutoSizeWidth(int columnId)
 
 void BlomeTableViewBase::loadSelectedRowIntoAudioPlayer(int rowNumber)
 {
-    File inFile = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(rowNumber)->getFilePath();
+    File inFile = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(rowNumber)->getCurrentFilePath();
     sampleItemPanel.tryShowAudioResource(inFile);
 }
 
@@ -207,7 +207,7 @@ void BlomeTableViewBase::mouseDrag(MouseEvent const & mouseEvent)
                 // Add all selected rows to external drag
                 for (int r = 0; r < getNumSelectedRows(); r++)
                 {
-                    selectedFilePaths.add(sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(getSelectedRow(r))->getFilePath());
+                    selectedFilePaths.add(sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(getSelectedRow(r))->getCurrentFilePath());
                 }
                 
                 DragAndDropContainer* dragContainer = DragAndDropContainer::findParentDragContainerFor(this);
@@ -254,7 +254,7 @@ void BlomeTableViewBase::reanalyseSamples()
     {
         filePaths.add(sampleLibrary
                       .getSampleItems(mSampleItemCollectionType)
-                      .getUnchecked(getSelectedRow(r))->getFilePath());
+                      .getUnchecked(getSelectedRow(r))->getCurrentFilePath());
     }
     
     sampleLibrary.reanalyseSampleItems(filePaths);
@@ -269,7 +269,7 @@ void BlomeTableViewBase::playSelectedSample()
         return;
     }
     
-    File sampleFile = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(selectedRowIndex)->getFilePath();
+    File sampleFile = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(selectedRowIndex)->getCurrentFilePath();
     
     // Load file into source
     if (sampleFile.exists() && !sampleFile.isDirectory() && isSupportedAudioFileFormat(sampleFile.getFileExtension()))
@@ -296,6 +296,6 @@ void BlomeTableViewBase::showSampleInFinder()
 {
     File(sampleLibrary
          .getSampleItems(mSampleItemCollectionType)
-         .getUnchecked(getLastRowSelected())->getFilePath())
+         .getUnchecked(getLastRowSelected())->getCurrentFilePath())
     .revealToUser();
 }

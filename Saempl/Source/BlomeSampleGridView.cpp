@@ -515,11 +515,11 @@ void BlomeSampleGridView::mouseDrag(MouseEvent const & mouseEvent)
 void BlomeSampleGridView::showPopupMenu()
 {
     PopupMenu popupMenu;
-    popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
     popupMenu.addItem("Add Sample(s) to Favourites", [this] { addToFavourites(); });
     popupMenu.addItem("Show in Finder", [this] { showSampleInFinder(); });
     popupMenu.addItem("Rename file", [this] { renameSampleFile(); });
     popupMenu.addItem("(Re-)analyse Sample(s)", [this] { reanalyseSamples(); });
+    popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
     popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
     popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
 }

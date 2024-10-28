@@ -235,7 +235,7 @@ void SampleLibrary::applyFilter()
         if (mFileFilter->matchesRules(*sampleItem))
         {
             mFilteredSampleItems.add(sampleItem);
-            mFilteredFilePaths.add(sampleItem->getFilePath());
+            mFilteredFilePaths.add(sampleItem->getCurrentFilePath());
         }
     }
     
@@ -360,6 +360,8 @@ void SampleLibrary::removeSampleItem(String const & inFilePath, bool deletePerma
     SampleItem* itemToDelete = mSampleLibraryManager->getSampleItemWithFilePath(fileToDelete.getFullPathName());
     mDeletedSampleItems.add(itemToDelete);
     removeFromFavourites(*itemToDelete);
+    mAlteredSampleItems.removeObject(itemToDelete, false);
+    mAddedSampleItems.removeObject(itemToDelete, false);
     mAllSampleItems.removeObject(itemToDelete, false);
     
     // Delete audio file
@@ -405,4 +407,27 @@ bool SampleLibrary::getLibraryWasLoaded()
 void SampleLibrary::setRestoredFavouritesPaths(StringArray inRestoredFavouritesPaths)
 {
     mRestoredFavouritesPaths = inRestoredFavouritesPaths;
+}
+
+void SampleLibrary::renameSampleItem(String inOriginalPath, String inNewPath)
+{
+    SampleItem * sample = mSampleLibraryManager->getSampleItemWithFilePath(inOriginalPath);
+    String filePath = inNewPath;
+    String sampleTitle = File(inNewPath).getFileNameWithoutExtension();
+#if JUCE_MAC
+    filePath = filePath.convertToPrecomposedUnicode();
+    sampleTitle = sampleTitle.convertToPrecomposedUnicode();
+#endif
+    sample->setCurrentFilePath(filePath);
+    sample->setTitle(sampleTitle);
+    
+    // Handle library state
+    mAlteredSampleItems.add(sample);
+    mLibraryWasAltered = true;
+    mDirectoryContentsList->refresh();
+    
+    if (mFileFilter->canHaveEffect())
+    {
+        applyFilter();
+    }
 }

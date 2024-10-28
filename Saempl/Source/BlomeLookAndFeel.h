@@ -650,7 +650,7 @@ public LookAndFeel_V4
         auto cornerSize = 5.0f;
         
         // Draw border
-        g.setColour(style->COLOUR_ACCENT_DARK);
+        g.setColour(style->COLOUR_BLACK);
         g.drawRoundedRectangle(bounds.toFloat().reduced(0.5f, 0.5f), cornerSize, 1.0f);
         
         // Draw background

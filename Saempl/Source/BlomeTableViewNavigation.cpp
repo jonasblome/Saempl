@@ -48,10 +48,11 @@ void BlomeTableViewNavigation::cellClicked(int rowNumber, int columnId, MouseEve
     if (mouseEvent.mods.isRightButtonDown())
     {
         PopupMenu popupMenu;
-        popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
         popupMenu.addItem("Add Sample(s) to Favourites", [this] { addToFavourites(); });
         popupMenu.addItem("Show in Finder", [this] { showSampleInFinder(); });
+        popupMenu.addItem("Rename file", [this] { renameSampleFile(); });
         popupMenu.addItem("(Re-)analyse Sample(s)", [this] { reanalyseSamples(); });
+        popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
         popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
     }
@@ -72,7 +73,7 @@ void BlomeTableViewNavigation::deleteFiles(bool deletePermanently = false)
     {
         filePaths.add(sampleLibrary
                       .getSampleItems(mSampleItemCollectionType)
-                      .getUnchecked(getSelectedRow(r))->getFilePath());
+                      .getUnchecked(getSelectedRow(r))->getCurrentFilePath());
     }
     
     sampleLibrary.removeSampleItems(filePaths, deletePermanently);
@@ -86,7 +87,7 @@ void BlomeTableViewNavigation::addToFavourites()
     {
         filePaths.add(sampleLibrary
                       .getSampleItems(mSampleItemCollectionType)
-                      .getUnchecked(getSelectedRow(r))->getFilePath());
+                      .getUnchecked(getSelectedRow(r))->getCurrentFilePath());
     }
     
     sampleLibrary.addAllToFavourites(filePaths);
@@ -105,11 +106,20 @@ void BlomeTableViewNavigation::resortTable()
     getHeader().reSortTable();
 }
 
+void BlomeTableViewNavigation::renameSampleFile()
+{
+    String filePath = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(getLastRowSelected())->getCurrentFilePath();
+    std::unique_ptr<SampleFileRenamingPanel> renamingPanel = std::make_unique<SampleFileRenamingPanel>(currentProcessor, filePath);
+    CallOutBox::launchAsynchronously(std::move(renamingPanel),
+                                     getComponentForRowNumber(getLastRowSelected())->getScreenBounds(),
+                                     nullptr);
+}
+
 void BlomeTableViewNavigation::showSample(String inFilePath)
 {
     for (int r = 0; r < getNumRows(); r++)
     {
-        if (sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(r)->getFilePath() == inFilePath)
+        if (sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(r)->getCurrentFilePath() == inFilePath)
         {
             selectRow(r);
             return;

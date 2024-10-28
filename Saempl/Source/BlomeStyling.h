@@ -53,11 +53,11 @@ struct BlomeStyling
     
     int const FILTER_RULE_TITLE_WIDTH = 120;
     
-    int const ABOUT_PANEL_WIDTH = 350;
-    int const ABOUT_PANEL_HEIGHT = 550;
+    int const ABOUT_PANEL_WIDTH = 400;
+    int const ABOUT_PANEL_HEIGHT = 350;
     
-    int const RENAMING_PANEL_WIDTH = 300;
-    int const RENAMING_PANEL_HEIGHT = 180;
+    int const RENAMING_PANEL_WIDTH = 450;
+    int const RENAMING_PANEL_HEIGHT = FILTER_RULE_HEIGHT;
     
     int const CENTRE_PANEL_WIDTH = MAIN_PANEL_WIDTH;
     int const CENTRE_PANEL_HEIGHT = MAIN_PANEL_HEIGHT - HEADER_PANEL_HEIGHT;
@@ -106,6 +106,8 @@ struct BlomeStyling
     Colour const COLOUR_ACCENT_MEDIUM_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_MEDIUM).withAlpha(0.99f);
     
     Colour const COLOUR_ACCENT_DARK = Colour(14, 30, 35);  // 33, 16, 15 // 15, 25, 31 // 19, 41, 47 // 41, 43, 34
+    Colour const COLOUR_ACCENT_DARK_MEDIUM_TRANSPARENT = Colour(COLOUR_ACCENT_DARK).withAlpha(0.78f);
+    Colour const COLOUR_ACCENT_DARK_MEDIUM_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_DARK).withAlpha(0.96f);
     Colour const COLOUR_ACCENT_DARK_STRONG_TRANSPARENT = Colour(COLOUR_ACCENT_DARK).withAlpha(0.99f);
     
     Colour const COLOUR_HEADER_BUTTONS = COLOUR_ACCENT_DARK;

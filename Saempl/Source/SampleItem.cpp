@@ -12,7 +12,7 @@
 SampleItem::SampleItem()
 {
     mTitle = EMPTY_TILE_PATH;
-    mFilePath = EMPTY_TILE_PATH;
+    mCurrentFilePath = EMPTY_TILE_PATH;
     mKey = NO_KEY_INDEX;
     mTempo = 0;
     mFeatureVector = std::vector<float>(NUM_CHROMA + NUM_SPECTRAL_BANDS + NUM_FEATURES);
@@ -25,14 +25,24 @@ SampleItem::~SampleItem()
     
 }
 
-String SampleItem::getFilePath() const
+String SampleItem::getCurrentFilePath() const
 {
-    return mFilePath;
+    return mCurrentFilePath;
 }
 
-void SampleItem::setFilePath(String const & inFilePath)
+void SampleItem::setCurrentFilePath(String const & inFilePath)
 {
-    mFilePath = inFilePath;
+    mCurrentFilePath = inFilePath;
+}
+
+String SampleItem::getOldFilePath() const
+{
+    return mOldFilePath;
+}
+
+void SampleItem::setOldFilePath(String const & inFilePath)
+{
+    mOldFilePath = inFilePath;
 }
 
 String SampleItem::getTitle() const

@@ -77,5 +77,5 @@ void BlomeTableViewFavourites::showSampleInNavigation()
 {
     sampleNavigationPanel.showSample(sampleLibrary
                                      .getSampleItems(mSampleItemCollectionType)
-                                     .getUnchecked(getLastRowSelected())->getFilePath());
+                                     .getUnchecked(getLastRowSelected())->getCurrentFilePath());
 }

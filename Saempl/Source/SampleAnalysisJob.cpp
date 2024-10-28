@@ -46,9 +46,10 @@ ThreadPoolJob::JobStatus SampleAnalysisJob::runJob()
         filePath = filePath.convertToPrecomposedUnicode();
         sampleTitle = sampleTitle.convertToPrecomposedUnicode();
 #endif
-        sampleItem->setFilePath(filePath);
+        sampleItem->setCurrentFilePath(filePath);
+        sampleItem->setOldFilePath(filePath);
         sampleItem->setTitle(sampleTitle);
-        addedFilePaths.add(sampleItem->getFilePath());
+        addedFilePaths.add(sampleItem->getCurrentFilePath());
         addedSampleItems.add(sampleItem);
         mSampleAnalyser->analyseSample(sampleItem, mForceAnalysis);
         numProcessedItems++;

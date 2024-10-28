@@ -106,10 +106,14 @@ void SampleFolderPanel::fileClicked(File const & file, MouseEvent const & mouseE
     if (mouseEvent.mods.isRightButtonDown())
     {
         PopupMenu popupMenu;
-        popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
         popupMenu.addItem("Add Sample(s) to Favourites", [this] { addToFavourites(); });
         popupMenu.addItem("Show in Finder", [this] { showSampleInFinder(); });
+        if (!file.isDirectory())
+        {
+            popupMenu.addItem("Rename file", [this] { renameSampleFile(); });
+        }
         popupMenu.addItem("(Re-)analyse Sample(s)", [this] { reanalyseSamples(); });
+        popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
         popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
         popupMenu.showMenuAsync(PopupMenu::Options{}.withMousePosition());
     }
@@ -198,6 +202,17 @@ bool SampleFolderPanel::keyPressed(KeyPress const & key)
 void SampleFolderPanel::showSampleInFinder()
 {
     mFileTree->getSelectedFile(mFileTree->getNumSelectedFiles() - 1).revealToUser();
+}
+
+void SampleFolderPanel::renameSampleFile()
+{
+    String filePath = mFileTree->getSelectedFile(mFileTree->getNumSelectedFiles() - 1).getFullPathName();
+    std::unique_ptr<SampleFileRenamingPanel> renamingPanel = std::make_unique<SampleFileRenamingPanel>(currentProcessor, filePath);
+    CallOutBox::launchAsynchronously(std::move(renamingPanel),
+                                     mFileTree
+                                     ->getItemComponent(mFileTree->getSelectedItem(mFileTree->getNumSelectedFiles() - 1))
+                                     ->getScreenBounds(),
+                                     nullptr);
 }
 
 void SampleFolderPanel::showSample(String inFilePath)

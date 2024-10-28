@@ -26,7 +26,7 @@ SampleAnalyser::~SampleAnalyser()
 void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
 {
     // Load audio file
-    loadAudioFileSource(inSampleItem->getFilePath());
+    loadAudioFileSource(inSampleItem->getCurrentFilePath());
     
     if (sampleRate == 0 || numChannels == 0 || totalNumSamples == 0 || numBlocks == 0)
     {

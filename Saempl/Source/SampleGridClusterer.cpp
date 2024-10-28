@@ -198,7 +198,7 @@ void SampleGridClusterer::copyFeatureVectorsToGrid(std::vector<std::vector<float
         std::vector<float>& gridCell = grid[pos];
         SampleItem* sampleItem = sampleItems.getUnchecked(pos);
         
-        if (sampleItem->getFilePath() != EMPTY_TILE_PATH)
+        if (sampleItem->getCurrentFilePath() != EMPTY_TILE_PATH)
         {
             for (int d = 0; d < numDimensions; d++)
             {

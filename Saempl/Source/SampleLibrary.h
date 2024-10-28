@@ -105,6 +105,10 @@ public:
      Sets a collection of restored paths to add to the favourites after the library was loaded.
      */
     void setRestoredFavouritesPaths(StringArray inRestoredFavouritesPaths);
+    /**
+     Renames a sample item.
+     */
+    void renameSampleItem(String inOriginalPath, String inNewPath);
     
 private:
     std::unique_ptr<TimeSliceThread> mDirectoryScannerThread;

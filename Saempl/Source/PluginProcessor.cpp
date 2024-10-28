@@ -311,7 +311,7 @@ void SaemplAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
     for (SampleItem* sample : mSampleLibrary->getSampleItems(FAVOURITE_SAMPLES))
     {
         XmlElement* stateInfoFavouritesItem = new XmlElement("FavouritesItem");
-        stateInfoFavouritesItem->setAttribute("FilePath", sample->getFilePath());
+        stateInfoFavouritesItem->setAttribute("FilePath", sample->getCurrentFilePath());
         stateInfoSampleFavourites->prependChildElement(stateInfoFavouritesItem);
     }
     

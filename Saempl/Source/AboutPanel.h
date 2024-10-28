@@ -11,6 +11,7 @@
 
 #include "JuceHeader.h"
 #include "BlomeStyling.h"
+#include "BlomeHelpers.h"
 
 class AboutPanel
 :

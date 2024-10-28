@@ -31,7 +31,7 @@ bool SampleFileFilter::isFileSuitable(File const & file) const
             return false;
         }
         
-        if (sampleItem->getFilePath() == file.getFullPathName())
+        if (sampleItem->getCurrentFilePath() == file.getFullPathName())
         {
             return true;
         }
