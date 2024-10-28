@@ -137,13 +137,13 @@ static std::vector<float> const GRID_PRESET_HARMONIC = std::vector<float>
     0.0,  // Zero Crossing Rate
     0.0,  // Tempo
     0.0,  // Key
-    6.0,  // Avg. Frequency
+    10.0, // Avg. Frequency
     10.0, // Freq. Spread
     10.0, // Upper Freq. Rolloff
     4.0,  // Freq. Flux
-    1.7,  // Harmonic Flux
-    2.0,  // Freq. Distribution
-    7.0,  // Harmonic Distribution
+    1.0,  // Harmonic Flux
+    1.0,  // Freq. Distribution
+    6.0,  // Harmonic Distribution
 });
 
 static std::vector<float> const GRID_PRESET_DRUMS = std::vector<float>

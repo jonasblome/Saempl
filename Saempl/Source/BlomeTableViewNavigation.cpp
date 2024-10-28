@@ -23,9 +23,9 @@ BlomeTableViewBase(inProcessor, inSampleItemPanel, inAudioPlayer)
     {
         getHeader().addColumn(PROPERTY_NAMES[c],
                               c + 1,
-                              200,
-                              50,
-                              400,
+                              100,
+                              25,
+                              250,
                               TableHeaderComponent::defaultFlags,
                               0);
     }
