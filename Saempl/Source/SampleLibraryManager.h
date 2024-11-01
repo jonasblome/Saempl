@@ -162,7 +162,7 @@ private:
      https://stackoverflow.com/questions/5665231/most-efficient-way-to-escape-xml-html-in-c-string
      by Giovanni Funchal
      */
-    String encodeForXml(String inString);
+    String replaceSpecialChars(String inString);
     /**
      Evaluates whether the detected tempo matches the actual tempo of the sample.
      

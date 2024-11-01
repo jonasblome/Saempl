@@ -59,6 +59,7 @@ private:
     static int const keyWindowLength = keyFFTSize;
     static int const keyFFTHopLength = keyWindowLength / 2;
     static int const loudnessBufferSize = 1024;
+    static int const numPitches = 128;
     std::vector<float> mSpectralDistribution = std::vector<float>(NUM_SPECTRAL_BANDS);
     std::vector<float> mChromaDistribution = std::vector<float>(NUM_CHROMA);
     // Change to only count local tempo optima that are above the local average
@@ -149,11 +150,9 @@ private:
     /**
      Calculates a spectrogram with a logarithmic frequency axis, representing the MIDI pitches.
      
-     @param coefficientSum the sum of all coefficient amplitudes in the spectrogram.
-     
      @returns the log-spectrogram.
      */
-    std::vector<std::vector<float>> calculateLogSpectrogram(float& coefficientSum);
+    std::vector<std::vector<float>> calculateLogSpectrogram();
     /**
      Calculates the distribution of chroma in the given spectrogram.
      

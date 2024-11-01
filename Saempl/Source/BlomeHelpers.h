@@ -35,9 +35,9 @@ static StringArray const PROPERTY_NAMES = StringArray
     "Dynamic Range",
     "Average Frequency",
     "Rolloff",
-    "Frequency Spread",
-    "Frequency Fluctuation",
-    "Harmonic Fluctuation",
+    "Spread (Freq.)",
+    "Freq. Flux",
+    "Harm. Flux",
     "Zero Crossing Rate",
 });
 static int const NUM_CHROMA = 12;

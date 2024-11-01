@@ -66,7 +66,7 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
         inSampleItem->setSpectralRolloff(spectralRollOffBandIndex * 1.0 / NUM_SPECTRAL_BANDS * 100);
         inSampleItem->setSpectralSpread(spectralSpread);
         inSampleItem->setSpectralFlux(spectralFlux);
-        inSampleItem->setChromaFlux(chromaFlux * 100);
+        inSampleItem->setChromaFlux(chromaFlux);
         inSampleItem->setSpectralDistribution(mSpectralDistribution);
         inSampleItem->setChromaDistribution(mChromaDistribution);
     }
@@ -114,8 +114,11 @@ void SampleAnalyser::analyseSampleLoudness()
     
     // Calculate Decibel
     decibel /= numBlocks;
-    decibel = jmax<float>(decibel, 0.00000001);
-    decibel = 20 * log10(decibel);
+    
+    if (decibel != 0)
+    {
+        decibel = 20 * log10(decibel);
+    }
     
     // Retrieve LUFS values
     integratedLUFS = mEbuLoudnessMeter.getIntegratedLoudness();
@@ -189,7 +192,7 @@ void SampleAnalyser::calculateSTFTSpectrum(int inFFTOrder,
 std::vector<float> SampleAnalyser::calculateNoveltyFunction()
 {
     std::vector<float> noveltyFunction;
-    noveltyFunction.resize(numFFTWindows);
+    noveltyFunction.resize(numFFTWindows - 1);
     int numCoefficients = (tempoWindowLength / 2) + 1;
     float coefficientSum = 0.0;
     spectralFlux = 0.0;
@@ -209,7 +212,7 @@ std::vector<float> SampleAnalyser::calculateNoveltyFunction()
             coefficientSum += currentCoefficient;
             
             // Calculate spectral flux
-            spectralFlux += abs(localDerivative);
+            spectralFlux += pow(localDerivative, 2);
             
             // Calculate spectral centroid
             spectralCentroid += fc * currentCoefficient;
@@ -224,11 +227,12 @@ std::vector<float> SampleAnalyser::calculateNoveltyFunction()
     // Calculate spectral flux and spectral centroid
     if (coefficientSum != 0)
     {
-        spectralFlux /= coefficientSum;
-        spectralCentroid = spectralCentroid / coefficientSum;
+        spectralCentroid /= coefficientSum;
     }
     
     spectralCentroid = (spectralCentroid * sampleRate) / tempoWindowLength;
+    spectralFlux /= (numCoefficients * (numFFTWindows - 1));
+    spectralFlux = sqrt(spectralFlux);
     
     return noveltyFunction;
 }
@@ -397,10 +401,9 @@ int SampleAnalyser::analyseSampleTempo()
     return bestTempoEstimation;
 }
 
-std::vector<std::vector<float>> SampleAnalyser::calculateLogSpectrogram(float& coefficientSum)
+std::vector<std::vector<float>> SampleAnalyser::calculateLogSpectrogram()
 {
     // Apply logarithmic frequency pooling
-    int numPitches = 128;
     int numPitchesPerBand = numPitches / NUM_SPECTRAL_BANDS;
     std::vector<std::vector<float>> logSpectrogram;
     logSpectrogram.resize(numPitches);
@@ -434,8 +437,7 @@ std::vector<std::vector<float>> SampleAnalyser::calculateLogSpectrogram(float& c
                 // Calculate spectral spread
                 float currentFrequency = (fc * sampleRate) * 1.0 / keyWindowLength;
                 float meanError = currentFrequency - spectralCentroid;
-                spectralSpread += (meanError * meanError) * currentCoefficient;
-                coefficientSum += currentCoefficient;
+                spectralSpread += pow(meanError, 2) * currentCoefficient;
             }
         }
         
@@ -449,39 +451,39 @@ std::vector<std::vector<float>> SampleAnalyser::calculateLogSpectrogram(float& c
     }
     
     // Calculate spectral spread
-    spectralSpread /= coefficientSum;
-    spectralSpread /= sampleRate / 2.0;
+    spectralSpread /= (numPitches * numFFTWindows);
     spectralSpread = sqrt(spectralSpread);
+    spectralSpread /= (sampleRate / 2.0);
     
     return logSpectrogram;
 }
 
-void SampleAnalyser::calculateChromaDistribution(std::vector<std::vector<float>> &logSpectrogram)
+void SampleAnalyser::calculateChromaDistribution(std::vector<std::vector<float>> & logSpectrogram)
 {
     std::memset(mChromaDistribution.data(), 0, sizeof(mChromaDistribution));
     chromaFlux = 0.0;
-    float coefficientSum = 0.0;
     
     // Loop over all pitches
-    for (int p = 0; p < logSpectrogram.size(); p++)
+    for (int p = 0; p < numPitches; p++)
     {
         for (int w = 0; w < numFFTWindows; w++)
         {
             float currentCoefficient = logSpectrogram[p][w];
-            coefficientSum += currentCoefficient;
             mChromaDistribution[p % NUM_CHROMA] += currentCoefficient;
             
             if (w >= 1)
             {
                 float previousCoefficient = logSpectrogram[p][w - 1];
-                chromaFlux += abs(currentCoefficient - previousCoefficient);
+                float localDerivative = currentCoefficient - previousCoefficient;
+                chromaFlux += pow(localDerivative, 2);
             }
         }
     }
     
-    if (coefficientSum != 0)
+    if (numFFTWindows - 1 > 0)
     {
-        chromaFlux /= coefficientSum;
+        chromaFlux /= (numPitches * (numFFTWindows - 1));
+        chromaFlux = sqrt(chromaFlux);
     }
     
     // Normalise chroma distribution
@@ -527,8 +529,7 @@ int SampleAnalyser::analyseSampleKey()
     
     // Calculate logarithmic spectrogram
     spectralSpread = 0.0;
-    float coefficientSum = 0.0;
-    std::vector<std::vector<float>> logSpectrogram = calculateLogSpectrogram(coefficientSum);
+    std::vector<std::vector<float>> logSpectrogram = calculateLogSpectrogram();
     
     // Normalise spectral distribution
     float maxSpectral = *std::max_element(mSpectralDistribution.begin(),

@@ -89,7 +89,7 @@ void SampleLibraryManager::updateSampleLibraryFiles()
         // Check if library file exists
         File sampleLibraryFile = File(mLibraryFilesDirectoryPath
                                       + DIRECTORY_SEPARATOR
-                                      + encodeForXml(libraryFile.getFullPathName())
+                                      + String::fromUTF8(libraryFile.getFullPathName().replaceCharacter('/', '_').getCharPointer())
                                       + SAMPLE_LIBRARY_FILE_EXTENSION);
         XmlElement sampleLibraryXml("EMPTY");
         XmlElement* sampleItemsXml;
@@ -111,8 +111,8 @@ void SampleLibraryManager::updateSampleLibraryFiles()
 #endif
             
             // Create sample library file as xml and store path to library
-            sampleLibraryXml = XmlElement(encodeForXml(libraryFile.getFileNameWithoutExtension()));
-            sampleLibraryXml.setAttribute("LibraryPath", libraryPath);
+            sampleLibraryXml = XmlElement("LibraryFile");
+            sampleLibraryXml.setAttribute("LibraryPath", String::fromUTF8(libraryPath.getCharPointer()));
             sampleLibraryXml.setAttribute("CurrentVersion", currentVersion);
             
             // Adding sample items xml to sample library xml
@@ -125,8 +125,7 @@ void SampleLibraryManager::updateSampleLibraryFiles()
         {
             if (File(sampleItem->getCurrentFilePath()).getParentDirectory() == libraryPath)
             {
-                String encodedFilePath = encodeForXml(sampleItem->getCurrentFilePath());
-                XmlElement* sampleItemXml = new XmlElement(encodedFilePath);
+                XmlElement* sampleItemXml = new XmlElement("SampleItem");
                 writeSampleItemToXml(sampleItem, sampleItemXml);
                 sampleItemsXml->prependChildElement(sampleItemXml);
                 numUpdatedItems++;
@@ -139,8 +138,8 @@ void SampleLibraryManager::updateSampleLibraryFiles()
         {
             if (File(sampleItem->getCurrentFilePath()).getParentDirectory() == libraryPath)
             {
-                String encodedFilePath = encodeForXml(sampleItem->getOldFilePath());
-                XmlElement* sampleItemXml = sampleItemsXml->getChildByName(encodedFilePath);
+                String encodedFilePath = String::fromUTF8(sampleItem->getOldFilePath().getCharPointer());
+                XmlElement* sampleItemXml = sampleItemsXml->getChildByAttribute("FilePath", encodedFilePath);
                 writeSampleItemToXml(sampleItem, sampleItemXml);
                 numUpdatedItems++;
                 setProgress(numUpdatedItems / (double) numItemsToUpdate);
@@ -152,7 +151,7 @@ void SampleLibraryManager::updateSampleLibraryFiles()
         {
             if (File(sampleItem->getCurrentFilePath()).getParentDirectory() == libraryPath)
             {
-                sampleItemsXml->removeChildElement(sampleItemsXml->getChildByName(encodeForXml(sampleItem->getCurrentFilePath())),
+                sampleItemsXml->removeChildElement(sampleItemsXml->getChildByAttribute("FilePath", String::fromUTF8(sampleItem->getCurrentFilePath().getCharPointer())),
                                                    true);
                 numUpdatedItems++;
                 setProgress(numUpdatedItems / (double) numItemsToUpdate);
@@ -163,9 +162,9 @@ void SampleLibraryManager::updateSampleLibraryFiles()
         writeXmlToFile(sampleLibraryXml, sampleLibraryFile);
     }
     
-    deletedSampleItems.clear();
     addedSampleItems.clear(false);
     alteredSampleItems.clear(false);
+    deletedSampleItems.clear(true);
 }
 
 void SampleLibraryManager::synchWithLibraryDirectory()
@@ -178,7 +177,7 @@ void SampleLibraryManager::setProgressAndStatus(int numItemsToProcess, int64 sta
     setProgress(numProcessedItems / (double) numItemsToProcess);
     String statusMessage = String(std::to_string(numProcessedItems) + "/" + std::to_string(numItemsToProcess) + " Samples analysed" + "\n" + "Est. time remaining: ");
     int64 msSinceStart = Time::currentTimeMillis() - startTime;
-    float estimatedSecondsRemaining = ((msSinceStart / numProcessedItems) * (numItemsToProcess - numProcessedItems)) / 1000;
+    float estimatedSecondsRemaining = ((msSinceStart / numProcessedItems) * (numItemsToProcess - numProcessedItems)) / 1000.0;
     
     if (estimatedSecondsRemaining < 60)
     {
@@ -377,8 +376,8 @@ void SampleLibraryManager::loadSampleLibrary(File const & inLibraryDirectory)
 
 void SampleLibraryManager::writeSampleItemToXml(SampleItem * sampleItem, XmlElement * sampleItemXml)
 {
-    sampleItemXml->setTagName(encodeForXml(sampleItem->getCurrentFilePath()));
-    sampleItemXml->setAttribute("FilePath", sampleItem->getCurrentFilePath());
+    // Setting file path
+    sampleItemXml->setAttribute("FilePath", String::fromUTF8(sampleItem->getCurrentFilePath().getCharPointer()));
     
     // Adding sample properties xml to sample item xml
     XmlElement* samplePropertiesXml = new XmlElement("SampleProperties");
@@ -423,14 +422,14 @@ void SampleLibraryManager::writeSampleItemToXml(SampleItem * sampleItem, XmlElem
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getSpectralCentroid());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
-    // Adding spectral spread property
+    // Adding spectral rolloff property
     samplePropertyXml = new XmlElement(PROPERTY_NAMES[8].removeCharacters(" "));
-    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getSpectralSpread());
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getSpectralRolloff());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
-    // Adding spectral rolloff property
-    samplePropertyXml = new XmlElement(PROPERTY_NAMES[9].removeCharacters(" "));
-    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getSpectralRolloff());
+    // Adding spectral spread property
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[9].removeCharacters(" ()"));
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getSpectralSpread());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding spectral flux property
@@ -536,15 +535,15 @@ void SampleLibraryManager::createSampleItemFromXml(const XmlElement * sampleItem
     float centroid = samplePropertyXml->getDoubleAttribute("PropertyValue");
     sampleItem->setSpectralCentroid(centroid);
     
-    // Adding spectral spread to item
-    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[8].removeCharacters(" "));
-    float spread = samplePropertyXml->getDoubleAttribute("PropertyValue");
-    sampleItem->setSpectralSpread(spread);
-    
     // Adding spectral rolloff to item
-    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[9].removeCharacters(" "));
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[8].removeCharacters(" "));
     float rolloff = samplePropertyXml->getDoubleAttribute("PropertyValue");
     sampleItem->setSpectralRolloff(rolloff);
+    
+    // Adding spectral spread to item
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[9].removeCharacters(" ()"));
+    float spread = samplePropertyXml->getDoubleAttribute("PropertyValue");
+    sampleItem->setSpectralSpread(spread);
     
     // Adding spectral flux to item
     samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[10].removeCharacters(" "));
@@ -592,9 +591,9 @@ void SampleLibraryManager::createSampleItemFromXml(const XmlElement * sampleItem
 void SampleLibraryManager::loadSampleLibraryFile(File const & inLibraryDirectory)
 {
     File libraryFile = File(mLibraryFilesDirectoryPath
-                            + DIRECTORY_SEPARATOR
-                            + encodeForXml(inLibraryDirectory.getFullPathName())
-                            + SAMPLE_LIBRARY_FILE_EXTENSION);
+                                  + DIRECTORY_SEPARATOR
+                                  + String::fromUTF8(inLibraryDirectory.getFullPathName().replaceCharacter('/', '_').getCharPointer())
+                                  + SAMPLE_LIBRARY_FILE_EXTENSION);
     
     // Check if sample library file exists
     if (libraryFile.exists())
@@ -710,9 +709,9 @@ void SampleLibraryManager::analyseSampleItem(SampleItem* inSampleItem, File cons
            true);
 }
 
-String SampleLibraryManager::encodeForXml(String inString)
+String SampleLibraryManager::replaceSpecialChars(String inString)
 {
-    inString = String("_" + inString);
+    // inString = String("_" + inString);
     inString = inString.replaceCharacters("äàáâæãåāöôòóõœøōüûùúūßśšçćčéèêëėîïíīìñńÿΛ°§´`’…",
                                           "aaaaaaaaoooooooouuuuusssccceeeeeiiiiinny_______");
     std::string data = inString.toStdString();
@@ -764,7 +763,7 @@ void SampleLibraryManager::evaluateTempoDetection(int detectedTempo, const Strin
     if (title.containsIgnoreCase("bpm"))
     {
         String bpmString = title.upToFirstOccurrenceOf("bpm", false, true);
-        bpmString = encodeForXml(bpmString);
+        bpmString = replaceSpecialChars(bpmString);
         
         if (bpmString.getLastCharacter() == '_')
         {
