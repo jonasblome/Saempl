@@ -206,6 +206,12 @@ void SampleLibraryManager::run()
                                                                  true,
                                                                  SUPPORTED_AUDIO_FORMATS_WILDCARD);
     
+    // Shuffle files to make loading speed more even
+    unsigned seed = (unsigned) std::chrono::system_clock::now().time_since_epoch().count();
+    std::shuffle(allSampleFiles.getRawDataPointer(),
+                 allSampleFiles.getRawDataPointer() + allSampleFiles.size(),
+                 std::default_random_engine(seed));
+    
     // Go through all current sample items,
     // check if corresponding audio file still exists...
     setStatusMessage("Looking for deleted samples");

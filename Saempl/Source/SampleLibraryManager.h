@@ -13,6 +13,7 @@
 #include "SampleItem.h"
 #include "BlomeHelpers.h"
 #include "SampleAnalysisJob.h"
+#include <random>
 
 /**
  Handles updating and creating of directory meta-analysis files.

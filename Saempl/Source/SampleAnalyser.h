@@ -45,6 +45,7 @@ private:
     static int const tempoFFTSize = 1 << tempoFFTOrder;
     static int const tempoWindowLength = tempoFFTSize;
     static int const tempoFFTHopLength = tempoWindowLength / 2;
+    static int const numTempoCoefficients = (tempoWindowLength / 2) + 1;
     // Higher values to decrease temporal resolution in tempogram calculation
     static int const tempogramHopLength = 1;
     // Higher values require more periodicity to trigger tempo detection
@@ -71,6 +72,7 @@ private:
     constexpr static float const keyCompressionFactor = 0.0;
     // Higher values remove more of the smallest local novelty peaks
     constexpr static float const noveltyAveragingWindowLengthInSeconds = 60.0f / upperBPMLimitExpanded;
+    float currentMaxCoefficient;
     float decibel;
     float integratedLUFS;
     float lufsRangeStart;
@@ -186,6 +188,26 @@ private:
      @returns the frequency of that pitch.
      */
     float pitchToFrequency(float inPitchIndex, int referenceIndex = 69, float referenceFrequency = 440.0);
+    /**
+     Calculates the corresponding pitch to a frequency according to the MIDI protocol.
+     
+     Reference pitch is A4 at index 69 with a reference frequency of 440 Hz.
+     
+     @param inFrequency the frequency to convert.
+     @param referenceIndex the index of the reference pitch.
+     @param referenceFrequency the frequency of the reference pitch in Hertz.
+     
+     @returns the pitch index of that frequency.
+     */
+    float frequencyToPitch(float inFrequency, int referenceIndex = 69, float referenceFrequency = 440.0);
+    /**
+     Returns the maximum coefficient from a given spectrum.
+     
+     @param inSpectrum the spectrum to find the max for.
+     
+     @returns the max value of the spectrum.
+     */
+    float getMaxCoefficient(std::vector<std::vector<float>> inSpectrum);
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleAnalyser);
 };
