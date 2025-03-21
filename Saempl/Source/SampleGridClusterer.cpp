@@ -63,6 +63,7 @@ void SampleGridClusterer::run()
         {
             std::vector<float> featureVector = std::vector<float>(NUM_FEATURES + NUM_SPECTRAL_BANDS + NUM_CHROMA);
             
+            // Normalise values between 0 and 1
             featureVector[0] = sample->getLength() / 60 * mFeatureWeights[0];
             featureVector[1] = (sample->getLoudnessLUFS() + 300) / (3 + 300) * mFeatureWeights[1];
             featureVector[2] = (sample->getDynamicRange() - 0) / (303 - 0) * mFeatureWeights[2];

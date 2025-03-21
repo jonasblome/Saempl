@@ -55,10 +55,11 @@ private:
     static int const upperBPMLimitExpanded = UPPER_BPM_LIMIT + ignoreTopAndBottomTempi;
     static int const numTempi = upperBPMLimitExpanded - lowerBPMLimitExpanded;
     // Higher values increase frequency resolution of the STFT spectrum
-    static int const keyFFTOrder = 14;
+    static int const keyFFTOrder = 13;
     static int const keyFFTSize = 1 << keyFFTOrder;
     static int const keyWindowLength = keyFFTSize;
     static int const keyFFTHopLength = keyWindowLength / 2;
+    int numKeyCoefficients = keyWindowLength / 2;
     static int const loudnessBufferSize = 1024;
     static int const numPitches = 128;
     std::vector<float> mSpectralDistribution = std::vector<float>(NUM_SPECTRAL_BANDS);
@@ -200,14 +201,6 @@ private:
      @returns the pitch index of that frequency.
      */
     float frequencyToPitch(float inFrequency, int referenceIndex = 69, float referenceFrequency = 440.0);
-    /**
-     Returns the maximum coefficient from a given spectrum.
-     
-     @param inSpectrum the spectrum to find the max for.
-     
-     @returns the max value of the spectrum.
-     */
-    float getMaxCoefficient(std::vector<std::vector<float>> inSpectrum);
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleAnalyser);
 };
