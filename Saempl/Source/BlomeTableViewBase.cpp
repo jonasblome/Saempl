@@ -139,15 +139,15 @@ String BlomeTableViewBase::getCellText(SampleItem* inSampleItem, String columnNa
     }
     else if (columnName == PROPERTY_NAMES[9])
     {
-        return String::toDecimalStringWithSignificantFigures(inSampleItem->getSpectralSpread(), 2) + "%";
+        return String::toDecimalStringWithSignificantFigures(inSampleItem->getSpectralSpread() * 100, 2) + "%";
     }
     else if (columnName == PROPERTY_NAMES[10])
     {
-        return String::toDecimalStringWithSignificantFigures(inSampleItem->getSpectralFlux(), 2) + "%";
+        return String::toDecimalStringWithSignificantFigures(inSampleItem->getSpectralFlux() * 100, 2) + "%";
     }
     else if (columnName == PROPERTY_NAMES[11])
     {
-        return String::toDecimalStringWithSignificantFigures(inSampleItem->getChromaFlux(), 2) + "%";
+        return String::toDecimalStringWithSignificantFigures(inSampleItem->getChromaFlux() * 100, 2) + "%";
     }
     else if (columnName == PROPERTY_NAMES[12])
     {

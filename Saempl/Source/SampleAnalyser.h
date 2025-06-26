@@ -50,10 +50,10 @@ private:
     static int const tempogramHopLength = 1;
     // Higher values require more periodicity to trigger tempo detection
     static int const tempogramWindowLengthInSeconds = 25;
-    static int const ignoreTopAndBottomTempi = 10;
-    static int const lowerBPMLimitExpanded = LOWER_BPM_LIMIT - ignoreTopAndBottomTempi;
-    static int const upperBPMLimitExpanded = UPPER_BPM_LIMIT + ignoreTopAndBottomTempi;
-    static int const numTempi = upperBPMLimitExpanded - lowerBPMLimitExpanded;
+    // static int const ignoreTopAndBottomTempi = 10;
+    static int const lowerCyclicBPMLimit = 30; // LOWER_BPM_LIMIT - ignoreTopAndBottomTempi;
+    static int const upperCyclicBPMLimit = 480; // UPPER_BPM_LIMIT + ignoreTopAndBottomTempi;
+    static int const numCyclicTempi = upperCyclicBPMLimit - lowerCyclicBPMLimit;
     // Higher values increase frequency resolution of the STFT spectrum
     static int const keyFFTOrder = 13;
     static int const keyFFTSize = 1 << keyFFTOrder;
@@ -72,7 +72,7 @@ private:
     constexpr static float const tempoCompressionFactor = 0.0;
     constexpr static float const keyCompressionFactor = 0.0;
     // Higher values remove more of the smallest local novelty peaks
-    constexpr static float const noveltyAveragingWindowLengthInSeconds = 60.0f / upperBPMLimitExpanded;
+    constexpr static float const noveltyAveragingWindowLengthInSeconds = 60.0f / upperCyclicBPMLimit;
     float currentMaxCoefficient;
     float decibel;
     float integratedLUFS;

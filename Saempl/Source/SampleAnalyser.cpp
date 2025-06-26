@@ -55,7 +55,7 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
         // Set properties
         float tempo = analyseSampleTempo();
         
-        if (length >= 60.0f / upperBPMLimitExpanded * 5)
+        if (length >= 60.0f / upperCyclicBPMLimit * 5)
         {
             inSampleItem->setTempo(tempo);
         }
@@ -210,7 +210,7 @@ std::vector<float> SampleAnalyser::calculateNoveltyFunction()
             float currentCoefficient = mSTFTSpectrum[w][fc];
             float previousCoefficient = mSTFTSpectrum[w - 1][fc];
             float localDerivative = currentCoefficient - previousCoefficient;
-            coefficientSum += currentCoefficient;
+            coefficientSum += pow(currentCoefficient, 2);
             
             // Calculate spectral flux
             float absDerivative = abs(localDerivative);
@@ -223,7 +223,7 @@ std::vector<float> SampleAnalyser::calculateNoveltyFunction()
             }
             
             // Calculate spectral centroid
-            spectralCentroid += fc * currentCoefficient;
+            spectralCentroid += fc * pow(currentCoefficient, 2);
             
             // Apply half-wave rectification and accumulate bin values for each window
             localNovelty += jmax<float>(localDerivative, 0);
@@ -243,17 +243,17 @@ std::vector<float> SampleAnalyser::calculateNoveltyFunction()
     if (numFFTWindows - 1 > 0)
     {
         averageFlux /= (numTempoCoefficients * (numFFTWindows - 1));
-        float averageMaxRatio = pow(averageFlux / maxFlux, 1.0 / 8);
+        float averageMaxRatio = pow(averageFlux / maxFlux, 1.0 / 10);
         float maxAverageDifference = maxFlux - averageFlux;
         spectralFlux /= averageFlux + averageMaxRatio * maxAverageDifference;
         spectralFlux /= (numTempoCoefficients * (numFFTWindows - 1));
-        spectralFlux *= 100;
+        spectralFlux *= 10;
     }
     
     return noveltyFunction;
 }
 
-void SampleAnalyser::noveltyFunctionSubtractAverage(std::vector<float>& noveltyFunction)
+void SampleAnalyser::noveltyFunctionSubtractAverage(std::vector<float> & noveltyFunction)
 {
     noveltyFunctionSampleRate = sampleRate / tempoFFTHopLength;
     int noveltyAveragingWindowLength = noveltyFunctionSampleRate * noveltyAveragingWindowLengthInSeconds;
@@ -279,7 +279,9 @@ std::vector<std::vector<float>> SampleAnalyser::calculateTempogram(std::vector<f
                                                                    int & numTempogramWindows)
 {
     std::vector<std::vector<float>> spectralTempogram;
-    spectralTempogram.resize(numTempi);
+    spectralTempogram.resize(numCyclicTempi);
+    
+    // Padding novelty function to apply a centred windowing function at position t = 0
     int tempogramWindowLength = jmin(noveltyFunctionSampleRate * tempogramWindowLengthInSeconds,
                                      (int) noveltyFunction.size());
     int paddingLength = tempogramWindowLength / 2;
@@ -295,11 +297,11 @@ std::vector<std::vector<float>> SampleAnalyser::calculateTempogram(std::vector<f
     std::complex<float> i(0.0, 1.0);
     
     // Project novelty function onto each tempo sinusoid
-    for (int t = 0; t < numTempi; t++)
+    for (int t = 0; t < numCyclicTempi; t++)
     {
         std::vector<float> localEstimationsForCurrentTempo;
         localEstimationsForCurrentTempo.resize(numTempogramWindows);
-        float beatsPerSample = ((t + lowerBPMLimitExpanded) * 1.0 / 60) / noveltyFunctionSampleRate;
+        float beatsPerSample = ((t + lowerCyclicBPMLimit) * 1.0 / 60) / noveltyFunctionSampleRate;
         float noveltyFunctionProjection[noveltyFunction.size()];
         
         for (int s = 0; s < noveltyFunction.size(); s++)
@@ -328,7 +330,7 @@ std::vector<std::vector<float>> SampleAnalyser::calculateTempogram(std::vector<f
             }
         }
         
-        spectralTempogram[t] =localEstimationsForCurrentTempo;
+        spectralTempogram[t] = localEstimationsForCurrentTempo;
     }
     
     return spectralTempogram;
@@ -337,7 +339,7 @@ std::vector<std::vector<float>> SampleAnalyser::calculateTempogram(std::vector<f
 std::vector<int> SampleAnalyser::calculateTempoHistogram(int numTempogramWindows, std::vector<std::vector<float>> & spectralTempogram)
 {
     std::vector<int> tempoEstimationsHistogram;
-    tempoEstimationsHistogram.resize(numTempi);
+    tempoEstimationsHistogram.resize(numCyclicTempi);
     
     for (int w = 0; w < numTempogramWindows; w++)
     {
@@ -346,7 +348,7 @@ std::vector<int> SampleAnalyser::calculateTempoHistogram(int numTempogramWindows
         float optimalTempoBinHeight = 0.0;
         float localAverageBinHeight = 0.0;
         
-        for (int t = 0; t < numTempi; t++)
+        for (int t = 0; t < numCyclicTempi; t++)
         {
             float currentTempoBinHeight = spectralTempogram[t][w];
             localAverageBinHeight += currentTempoBinHeight;
@@ -359,7 +361,7 @@ std::vector<int> SampleAnalyser::calculateTempoHistogram(int numTempogramWindows
         }
         
         // Assemble histogram of all tempo estimations
-        localAverageBinHeight /= numTempi;
+        localAverageBinHeight /= numCyclicTempi;
         
         // Check if optimal is above local average
         if (optimalTempoBinHeight > localAverageBinHeight * tempoAverageBinHeightThresholdFactor)
@@ -397,7 +399,6 @@ int SampleAnalyser::analyseSampleTempo()
         noveltyFunction[w] /= max;
     }
     
-    // Padding novelty function to apply a centred windowing function at position t = 0
     int numTempogramWindows;
     std::vector<std::vector<float>> spectralTempogram = calculateTempogram(noveltyFunction, numTempogramWindows);
     
@@ -406,13 +407,10 @@ int SampleAnalyser::analyseSampleTempo()
     
     // Find the most prominent tempo in the histogram
     int bestTempoIndex = (int) std::distance(tempoEstimationsHistogram.begin(),
-                                             std::max_element(tempoEstimationsHistogram.begin()
-                                                              + ignoreTopAndBottomTempi,
-                                                              tempoEstimationsHistogram.begin()
-                                                              + numTempi
-                                                              - ignoreTopAndBottomTempi));
+                                             std::max_element(tempoEstimationsHistogram.begin(),
+                                                              tempoEstimationsHistogram.end()));
     
-    int bestTempoEstimation = bestTempoIndex + lowerBPMLimitExpanded;
+    int bestTempoEstimation = bestTempoIndex + lowerCyclicBPMLimit;
     
     return bestTempoEstimation;
 }
@@ -455,7 +453,7 @@ std::vector<std::vector<float>> SampleAnalyser::calculateLogSpectrogram()
             // Calculate spectral spread
             float currentFrequency = (fc * sampleRate) * 1.0 / keyWindowLength;
             float meanError = abs(currentFrequency - spectralCentroid);
-            spectralSpread += meanError * currentCoefficient;
+            spectralSpread += pow(meanError, 2) * currentCoefficient;
             averageCoefficient += currentCoefficient;
             
             if (currentCoefficient > maxCoefficient)
@@ -467,11 +465,11 @@ std::vector<std::vector<float>> SampleAnalyser::calculateLogSpectrogram()
     
     // Calculate spectral spread
     averageCoefficient /= numKeyCoefficients * numFFTWindows;
-    float averageMaxRatio = pow(averageCoefficient / maxCoefficient, 1.0 / 0.125);
+    float averageMaxRatio = pow(averageCoefficient / maxCoefficient, 1.0 / 8);
     float maxAverageDifference = maxCoefficient - averageCoefficient;
     spectralSpread /= averageCoefficient + averageMaxRatio * maxAverageDifference;
     spectralSpread /= (numKeyCoefficients * numFFTWindows);
-    spectralSpread *= 100;
+    spectralSpread /= 100;
     spectralSpread /= 20000;
     
     return logSpectrogram;
@@ -512,7 +510,6 @@ void SampleAnalyser::calculateChromaDistribution(std::vector<std::vector<float>>
         float maxAverageDifference = maxFlux - averageFlux;
         chromaFlux /= averageFlux + averageMaxRatio * maxAverageDifference;
         chromaFlux /= (numPitches * (numFFTWindows - 1));
-        chromaFlux *= 100;
     }
     
     // Normalise chroma distribution
