@@ -61,31 +61,108 @@ void SampleGridClusterer::run()
     {
         for (SampleItem* sample : sampleItems)
         {
-            std::vector<float> featureVector = std::vector<float>(NUM_FEATURES + NUM_SPECTRAL_BANDS + NUM_CHROMA);
-            
-            // Normalise values between 0 and 1
-            featureVector[0] = sample->getLength() / 60 * mFeatureWeights[0];
-            featureVector[1] = (sample->getLoudnessLUFS() + 300) / (3 + 300) * mFeatureWeights[1];
-            featureVector[2] = (sample->getDynamicRange() - 0) / (303 - 0) * mFeatureWeights[2];
-            featureVector[3] = sample->getZeroCrossingRate() / sample->getSampleRate() * mFeatureWeights[3];
-            featureVector[4] = (sample->getTempo() - LOWER_BPM_LIMIT) / (UPPER_BPM_LIMIT - LOWER_BPM_LIMIT) * mFeatureWeights[4];
-            featureVector[5] = sample->getKey() * 1.0 / NUM_CHROMA * mFeatureWeights[5];
-            featureVector[6] = sample->getSpectralCentroid() / 20000 * mFeatureWeights[6];
-            featureVector[7] = sample->getSpectralSpread() * mFeatureWeights[7];
-            featureVector[8] = sample->getSpectralRolloff() / 100 * mFeatureWeights[8];
-            featureVector[9] = sample->getSpectralFlux() * mFeatureWeights[9];
-            featureVector[10] = sample->getChromaFlux() * mFeatureWeights[10];
-            
-            std::vector<float> spectralDistribution = sample->getSpectralDistribution();
-            for (int sb = 0; sb < NUM_SPECTRAL_BANDS; sb++)
+            int numUsedFeatures = 0;
+            for (int i = 0; i < NUM_FEATURES; i++)
             {
-                featureVector[NUM_FEATURES + sb] = spectralDistribution[sb] * mFeatureWeights[11];
+                if (mFeatureWeights[i] == 0)
+                {
+                    continue;
+                }
+                
+                if (i < NUM_FEATURES - 2)
+                {
+                    numUsedFeatures++;
+                }
+                else if (i == NUM_FEATURES - 2)
+                {
+                    numUsedFeatures+= NUM_SPECTRAL_BANDS;
+                }
+                else if (i == NUM_FEATURES - 1)
+                {
+                    numUsedFeatures += NUM_CHROMA;
+                }
             }
             
-            std::vector<float> chromaDistribution = sample->getChromaDistribution();
-            for (int c = 0; c < NUM_CHROMA; c++)
+            if (numUsedFeatures == 0)
             {
-                featureVector[NUM_FEATURES + NUM_SPECTRAL_BANDS + c] = chromaDistribution[c] * mFeatureWeights[12];
+                return;
+            }
+                
+            std::vector<float> featureVector = std::vector<float>(numUsedFeatures);
+            indexOfKeyFeature = -1;
+            
+            numUsedFeatures = 0;
+            for (int i = 0; i < NUM_FEATURES; i++)
+            {
+                if (mFeatureWeights[i] == 0)
+                {
+                    continue;
+                }
+                
+                if (i < NUM_FEATURES - 2)
+                {
+                    // Normalise values between 0 and 1
+                    switch (i)
+                    {
+                        case 0:
+                            featureVector[numUsedFeatures] = sample->getLength() / 60 * mFeatureWeights[0];
+                            break;
+                        case 1:
+                            featureVector[numUsedFeatures] = (sample->getLoudnessLUFS() + 300) / (3 + 300) * mFeatureWeights[1];
+                            break;
+                        case 2:
+                            featureVector[numUsedFeatures] = (sample->getDynamicRange() - 0) / (303 - 0) * mFeatureWeights[2];
+                            break;
+                        case 3:
+                            featureVector[numUsedFeatures] = sample->getZeroCrossingRate() / sample->getSampleRate() * mFeatureWeights[3];
+                            break;
+                        case 4:
+                            featureVector[numUsedFeatures] = (sample->getTempo() - LOWER_BPM_LIMIT)
+                            / (UPPER_BPM_LIMIT - LOWER_BPM_LIMIT) * mFeatureWeights[4];
+                            break;
+                        case 5:
+                            featureVector[numUsedFeatures] = sample->getKey() * 1.0 / NUM_CHROMA * mFeatureWeights[5];
+                            indexOfKeyFeature = numUsedFeatures;
+                            break;
+                        case 6:
+                            featureVector[numUsedFeatures] = sample->getSpectralCentroid() / 20000 * mFeatureWeights[6];
+                            break;
+                        case 7:
+                            featureVector[numUsedFeatures] = sample->getSpectralSpread() * mFeatureWeights[7];
+                            break;
+                        case 8:
+                            featureVector[numUsedFeatures] = sample->getSpectralRolloff() / 100 * mFeatureWeights[8];
+                            break;
+                        case 9:
+                            featureVector[numUsedFeatures] = sample->getSpectralFlux() * mFeatureWeights[9];
+                            break;
+                        case 10:
+                            featureVector[numUsedFeatures] = sample->getChromaFlux() * mFeatureWeights[10];
+                            break;
+                        default:
+                            break;
+                    }
+                    
+                    numUsedFeatures++;
+                }
+                else if (i == NUM_FEATURES - 2)
+                {
+                    std::vector<float> spectralDistribution = sample->getSpectralDistribution();
+                    for (int sb = 0; sb < NUM_SPECTRAL_BANDS; sb++)
+                    {
+                        featureVector[numUsedFeatures + sb] = spectralDistribution[sb] * mFeatureWeights[11];
+                    }
+                    
+                    numUsedFeatures += NUM_SPECTRAL_BANDS;
+                }
+                else if (i == NUM_FEATURES - 1)
+                {
+                    std::vector<float> chromaDistribution = sample->getChromaDistribution();
+                    for (int c = 0; c < NUM_CHROMA; c++)
+                    {
+                        featureVector[numUsedFeatures + c] = chromaDistribution[c] * mFeatureWeights[12];
+                    }
+                }
             }
             
             sample->setFeatureVector(featureVector);
@@ -96,6 +173,12 @@ void SampleGridClusterer::run()
     
     // Initialise vectors
     int numDimensions = (int) sampleItems.getFirst()->getFeatureVector().size();
+    
+    if (numDimensions == 0)
+    {
+        return;
+    }
+    
     int gridSize = columns * rows;
     std::vector<std::vector<float>> grid;
     grid.resize(gridSize);
@@ -772,6 +855,7 @@ void SampleGridClusterer::checkRandomSwaps(int radius, std::vector<std::vector<f
                                  swapAreaIndices,
                                  swapAreaWidth,
                                  swapAreaHeight,
+                                 indexOfKeyFeature,
                                  rows,
                                  columns,
                                  grid),

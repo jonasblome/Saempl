@@ -30,6 +30,7 @@ public:
                   std::vector<int> inSwapAreaIndices,
                   int inSwapAreaWidth,
                   int inSwapAreaHeight,
+                  int inIndexOfKeyFeature,
                   int inRows,
                   int inColumns,
                   std::vector<std::vector<float>> & inGrid);
@@ -41,6 +42,7 @@ private:
     bool const applyWrap;
     int const swapAreaWidth;
     int const swapAreaHeight;
+    int indexOfKeyFeature;
     int const rows;
     int const columns;
     int startIndex;

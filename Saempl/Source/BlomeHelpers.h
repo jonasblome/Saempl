@@ -42,9 +42,9 @@ static StringArray const PROPERTY_NAMES = StringArray
 });
 static int const NUM_CHROMA = 12;
 static int const NUM_SPECTRAL_BANDS = 16;
-static int const NUM_FEATURES = 12;
+static int const NUM_FEATURES = 13;
 static int const LOWER_BPM_LIMIT = 85;
-static int const UPPER_BPM_LIMIT = 169;
+static int const UPPER_BPM_LIMIT = 170;
 
 enum CompareOperators
 {

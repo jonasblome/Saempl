@@ -19,7 +19,7 @@ PanelBase(inProcessor)
 
 SampleGridOptionsPanel::~SampleGridOptionsPanel()
 {
-    std::vector<float> newWeights = std::vector<float>(NUM_FEATURES + 1);
+    std::vector<float> newWeights = std::vector<float>(NUM_FEATURES);
     newWeights[0] = mLengthSlider->getValue();
     newWeights[1] = mLoudnessSlider->getValue();
     newWeights[2] = mDynamicRangeSlider->getValue();

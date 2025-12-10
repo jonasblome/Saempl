@@ -14,6 +14,7 @@
 #include "SampleItemComparator.h"
 #include "SampleItem.h"
 #include "SampleItemPanel.h"
+#include "SampleEditorPanel.h"
 
 /**
  The base class for displaying SampleItem collections in a table.
@@ -93,6 +94,10 @@ protected:
      Opens the finder at the location of the chosen sample.
      */
     void showSampleInFinder();
+    /**
+     Opens a sample property editor popup window.
+     */
+    void editSampleProperties();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeTableViewBase);
 };

@@ -22,22 +22,23 @@
 
 #include "JucePluginDefines.h"
 
-#define JUCE_PROJUCER_VERSION 0x80006
+#define JUCE_PROJUCER_VERSION 0x8000b
 
 //==============================================================================
-#define JUCE_MODULE_AVAILABLE_juce_audio_basics             1
-#define JUCE_MODULE_AVAILABLE_juce_audio_devices            1
-#define JUCE_MODULE_AVAILABLE_juce_audio_formats            1
-#define JUCE_MODULE_AVAILABLE_juce_audio_plugin_client      1
-#define JUCE_MODULE_AVAILABLE_juce_audio_processors         1
-#define JUCE_MODULE_AVAILABLE_juce_audio_utils              1
-#define JUCE_MODULE_AVAILABLE_juce_core                     1
-#define JUCE_MODULE_AVAILABLE_juce_data_structures          1
-#define JUCE_MODULE_AVAILABLE_juce_dsp                      1
-#define JUCE_MODULE_AVAILABLE_juce_events                   1
-#define JUCE_MODULE_AVAILABLE_juce_graphics                 1
-#define JUCE_MODULE_AVAILABLE_juce_gui_basics               1
-#define JUCE_MODULE_AVAILABLE_juce_gui_extra                1
+#define JUCE_MODULE_AVAILABLE_juce_audio_basics                   1
+#define JUCE_MODULE_AVAILABLE_juce_audio_devices                  1
+#define JUCE_MODULE_AVAILABLE_juce_audio_formats                  1
+#define JUCE_MODULE_AVAILABLE_juce_audio_plugin_client            1
+#define JUCE_MODULE_AVAILABLE_juce_audio_processors               1
+#define JUCE_MODULE_AVAILABLE_juce_audio_processors_headless      1
+#define JUCE_MODULE_AVAILABLE_juce_audio_utils                    1
+#define JUCE_MODULE_AVAILABLE_juce_core                           1
+#define JUCE_MODULE_AVAILABLE_juce_data_structures                1
+#define JUCE_MODULE_AVAILABLE_juce_dsp                            1
+#define JUCE_MODULE_AVAILABLE_juce_events                         1
+#define JUCE_MODULE_AVAILABLE_juce_graphics                       1
+#define JUCE_MODULE_AVAILABLE_juce_gui_basics                     1
+#define JUCE_MODULE_AVAILABLE_juce_gui_extra                      1
 
 #define JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED 1
 
@@ -48,8 +49,16 @@
  //#define JUCE_USE_WINRT_MIDI 0
 #endif
 
+#ifndef    JUCE_USE_WINDOWS_MIDI_SERVICES
+ //#define JUCE_USE_WINDOWS_MIDI_SERVICES 0
+#endif
+
 #ifndef    JUCE_ASIO
  //#define JUCE_ASIO 0
+#endif
+
+#ifndef    JUCE_ASIO_USE_EXTERNAL_SDK
+ //#define JUCE_ASIO_USE_EXTERNAL_SDK 0
 #endif
 
 #ifndef    JUCE_WASAPI
@@ -66,10 +75,6 @@
 
 #ifndef    JUCE_JACK
  //#define JUCE_JACK 0
-#endif
-
-#ifndef    JUCE_BELA
- //#define JUCE_BELA 0
 #endif
 
 #ifndef    JUCE_USE_ANDROID_OBOE
@@ -135,11 +140,15 @@
 #endif
 
 #ifndef    JUCE_STANDALONE_FILTER_WINDOW_USE_KIOSK_MODE
- //#define JUCE_STANDALONE_FILTER_WINDOW_USE_KIOSK_MODE 0
+ //#define JUCE_STANDALONE_FILTER_WINDOW_USE_KIOSK_MODE 1
+#endif
+
+#ifndef    JUCE_IGNORE_VST3_MISMATCHED_PARAMETER_ID_WARNING
+ //#define JUCE_IGNORE_VST3_MISMATCHED_PARAMETER_ID_WARNING 0
 #endif
 
 //==============================================================================
-// juce_audio_processors flags:
+// juce_audio_processors_headless flags:
 
 #ifndef    JUCE_PLUGINHOST_VST
  //#define JUCE_PLUGINHOST_VST 0

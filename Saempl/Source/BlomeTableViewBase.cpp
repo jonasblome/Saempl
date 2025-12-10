@@ -260,6 +260,18 @@ void BlomeTableViewBase::reanalyseSamples()
     sampleLibrary.reanalyseSampleItems(filePaths);
 }
 
+void BlomeTableViewBase::editSampleProperties()
+{
+    SampleItem* sample = sampleLibrary
+        .getSampleItems(mSampleItemCollectionType)
+        .getUnchecked(getLastRowSelected());
+    std::unique_ptr<SampleEditorPanel> sampleEditorPanel = std::make_unique<SampleEditorPanel>(currentProcessor, sample);
+    
+    CallOutBox::launchAsynchronously(std::move(sampleEditorPanel),
+                                     getComponentForRowNumber(getLastRowSelected())->getScreenBounds(),
+                                     nullptr);
+}
+
 void BlomeTableViewBase::playSelectedSample()
 {
     int selectedRowIndex = getLastRowSelected();

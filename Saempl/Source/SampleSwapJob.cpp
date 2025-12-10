@@ -18,6 +18,7 @@ SampleSwapJob::SampleSwapJob(OwnedArray<SampleItem> & inSampleItems,
                              std::vector<int> inSwapAreaIndices,
                              int inSwapAreaWidth,
                              int inSwapAreaHeight,
+                             int inIndexOfKeyFeature,
                              int inRows,
                              int inColumns,
                              std::vector<std::vector<float>> & inGrid)
@@ -27,6 +28,7 @@ numSwapPositions(inNumSwapPositions),
 applyWrap(inApplyWrap),
 swapAreaWidth(inSwapAreaWidth),
 swapAreaHeight(inSwapAreaHeight),
+indexOfKeyFeature(inIndexOfKeyFeature),
 rows(inRows),
 columns(inColumns),
 sampleItems(inSampleItems),
@@ -59,8 +61,8 @@ ThreadPoolJob::JobStatus SampleSwapJob::runJob()
     mDistanceMatrixNormalised.resize(numSwapPositions);
     for (int pos = 0; pos < (int) mDistanceMatrix.size(); pos++)
     {
-        mDistanceMatrix[pos] = std::vector<float>(numDimensions);
-        mDistanceMatrixNormalised[pos] = std::vector<int>(numDimensions);
+        mDistanceMatrix[pos] = std::vector<float>(numSwapPositions);
+        mDistanceMatrixNormalised[pos] = std::vector<int>(numSwapPositions);
     }
     
     int numActualSwapPositions = 0;
@@ -303,7 +305,7 @@ float SampleSwapJob::calculateDistance(std::vector<float> vector1, std::vector<f
         float dist = vector1[d] - vector2[d];
         
         // Wrap it around for the dimension that represents the key
-        if (d == 5)
+        if (indexOfKeyFeature != -1 && d == indexOfKeyFeature)
         {
             dist = abs(dist);
             

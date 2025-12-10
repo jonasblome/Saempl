@@ -59,6 +59,7 @@ private:
     CriticalSection mSwapLock;
     OwnedArray<SampleItem>& sampleItems;
     std::vector<float> mFeatureWeights;
+    int indexOfKeyFeature;
     int rows;
     int columns;
     int numSwapPositions;

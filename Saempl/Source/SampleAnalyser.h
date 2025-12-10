@@ -54,6 +54,7 @@ private:
     static int const lowerCyclicBPMLimit = 30; // LOWER_BPM_LIMIT - ignoreTopAndBottomTempi;
     static int const upperCyclicBPMLimit = 480; // UPPER_BPM_LIMIT + ignoreTopAndBottomTempi;
     static int const numCyclicTempi = upperCyclicBPMLimit - lowerCyclicBPMLimit;
+    static int const numTempi = UPPER_BPM_LIMIT - LOWER_BPM_LIMIT;
     // Higher values increase frequency resolution of the STFT spectrum
     static int const keyFFTOrder = 13;
     static int const keyFFTSize = 1 << keyFFTOrder;

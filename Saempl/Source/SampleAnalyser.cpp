@@ -279,7 +279,7 @@ std::vector<std::vector<float>> SampleAnalyser::calculateTempogram(std::vector<f
                                                                    int & numTempogramWindows)
 {
     std::vector<std::vector<float>> spectralTempogram;
-    spectralTempogram.resize(numCyclicTempi);
+    spectralTempogram.resize(numTempi);
     
     // Padding novelty function to apply a centred windowing function at position t = 0
     int tempogramWindowLength = jmin(noveltyFunctionSampleRate * tempogramWindowLengthInSeconds,
@@ -330,7 +330,19 @@ std::vector<std::vector<float>> SampleAnalyser::calculateTempogram(std::vector<f
             }
         }
         
-        spectralTempogram[t] = localEstimationsForCurrentTempo;
+        int projectedTempo = t + lowerCyclicBPMLimit;
+        
+        while (projectedTempo < LOWER_BPM_LIMIT)
+        {
+            projectedTempo *= 2;
+        }
+        
+        while (projectedTempo >= UPPER_BPM_LIMIT)
+        {
+            projectedTempo /= 2;
+        }
+        
+        spectralTempogram[projectedTempo - LOWER_BPM_LIMIT] = localEstimationsForCurrentTempo;
     }
     
     return spectralTempogram;
@@ -339,7 +351,7 @@ std::vector<std::vector<float>> SampleAnalyser::calculateTempogram(std::vector<f
 std::vector<int> SampleAnalyser::calculateTempoHistogram(int numTempogramWindows, std::vector<std::vector<float>> & spectralTempogram)
 {
     std::vector<int> tempoEstimationsHistogram;
-    tempoEstimationsHistogram.resize(numCyclicTempi);
+    tempoEstimationsHistogram.resize(numTempi);
     
     for (int w = 0; w < numTempogramWindows; w++)
     {
@@ -348,7 +360,7 @@ std::vector<int> SampleAnalyser::calculateTempoHistogram(int numTempogramWindows
         float optimalTempoBinHeight = 0.0;
         float localAverageBinHeight = 0.0;
         
-        for (int t = 0; t < numCyclicTempi; t++)
+        for (int t = 0; t < numTempi; t++)
         {
             float currentTempoBinHeight = spectralTempogram[t][w];
             localAverageBinHeight += currentTempoBinHeight;
@@ -361,7 +373,7 @@ std::vector<int> SampleAnalyser::calculateTempoHistogram(int numTempogramWindows
         }
         
         // Assemble histogram of all tempo estimations
-        localAverageBinHeight /= numCyclicTempi;
+        localAverageBinHeight /= numTempi;
         
         // Check if optimal is above local average
         if (optimalTempoBinHeight > localAverageBinHeight * tempoAverageBinHeightThresholdFactor)
@@ -410,7 +422,7 @@ int SampleAnalyser::analyseSampleTempo()
                                              std::max_element(tempoEstimationsHistogram.begin(),
                                                               tempoEstimationsHistogram.end()));
     
-    int bestTempoEstimation = bestTempoIndex + lowerCyclicBPMLimit;
+    int bestTempoEstimation = bestTempoIndex + LOWER_BPM_LIMIT;
     
     return bestTempoEstimation;
 }
