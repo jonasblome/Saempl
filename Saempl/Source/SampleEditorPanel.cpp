@@ -15,13 +15,13 @@ SampleEditorPanel::SampleEditorPanel(SaemplAudioProcessor & inProcessor,
 PanelBase(inProcessor),
 sampleItem(inSampleItem)
 {
-    setSize(style->RENAMING_PANEL_WIDTH, style->RENAMING_PANEL_HEIGHT);
+    setSize(style->SAMPLE_EDITOR_PANEL_WIDTH, style->SAMPLE_EDITOR_PANEL_HEIGHT);
     setPanelComponents();
 }
 
 SampleEditorPanel::~SampleEditorPanel()
 {
-    
+    // Trigger reload/refilter if necessary
 }
 
 void SampleEditorPanel::paint(Graphics& g)
@@ -34,10 +34,16 @@ void SampleEditorPanel::paint(Graphics& g)
     // Draw info text
     g.setColour(style->COLOUR_ACCENT_DARK);
     g.setFont(style->FONT_SMALL_BOLD);
-    g.drawFittedText("New file name:",
-                     getLocalBounds()
-                     .reduced(style->PANEL_MARGIN * 0.5)
-                     .removeFromLeft(infoTextWidth),
+    Rectangle<int> textBounds = getLocalBounds().reduced(style->PANEL_MARGIN * 0.5).removeFromLeft(infoTextWidth);
+    
+    g.drawFittedText("Tempo:",
+                     textBounds.removeFromTop(style->FILTER_RULE_HEIGHT),
+                     Justification::centredRight,
+                     1);
+    
+    g.drawFittedText("Key:",
+                     textBounds
+                     .removeFromTop(style->FILTER_RULE_HEIGHT),
                      Justification::centredRight,
                      1);
 }
@@ -45,17 +51,32 @@ void SampleEditorPanel::paint(Graphics& g)
 void SampleEditorPanel::setPanelComponents()
 {
     // Add text editor for compare value
-    mFileNameEditor = std::make_unique<TextEditor>("FilePathEditor");
-    mFileNameEditor->setFont(style->FONT_SMALL_BOLD);
-    mFileNameEditor->setJustification(Justification::centredLeft);
-    mFileNameEditor->setIndents(mFileNameEditor->getLeftIndent(), 0);
-    mFileNameEditor->setText("TEST");
-    mFileNameEditor->setBounds(style->PANEL_MARGIN + infoTextWidth,
-                               style->PANEL_MARGIN * 0.5,
-                               getWidth() - infoTextWidth - style->PANEL_MARGIN * 1.5,
-                               getHeight() - style->PANEL_MARGIN);
-    mFileNameEditor->addListener(this);
-    addAndMakeVisible(*mFileNameEditor);
+    mSampleTempoEditor = std::make_unique<TextEditor>("TempoEditor");
+    mSampleTempoEditor->setFont(style->FONT_SMALL_BOLD);
+    mSampleTempoEditor->setJustification(Justification::centredLeft);
+    mSampleTempoEditor->setIndents(mSampleTempoEditor->getLeftIndent(), 0);
+    mSampleTempoEditor->setText(String::toDecimalStringWithSignificantFigures(sampleItem->getTempo(), 1));
+    mSampleTempoEditor->setBounds(style->PANEL_MARGIN + infoTextWidth,
+                                  style->PANEL_MARGIN * 0.5,
+                                  getWidth() - infoTextWidth - style->PANEL_MARGIN * 1.5,
+                                  style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN);
+    mSampleTempoEditor->addListener(this);
+    addAndMakeVisible(*mSampleTempoEditor);
+    
+    // Add combo box for key
+    mSampleKeyComboBox = std::make_unique<ComboBox>("KeyComboBox");
+    mSampleKeyComboBox->setBounds(style->PANEL_MARGIN + infoTextWidth,
+                                  style->PANEL_MARGIN * 0.5 + style->FILTER_RULE_HEIGHT,
+                                  getWidth() - infoTextWidth - style->PANEL_MARGIN * 1.5,
+                                  style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN);
+    mSampleKeyComboBox->addListener(this);
+    int k = 1;
+    for (auto const & key : KEY_INDEX_TO_KEY_NAME)
+    {
+        mSampleKeyComboBox->addItem(key.second, k++);
+    }
+    mSampleKeyComboBox->setSelectedItemIndex(sampleItem->getKey());
+    addAndMakeVisible(*mSampleKeyComboBox);
 }
 
 void SampleEditorPanel::textEditorReturnKeyPressed(TextEditor& textEditor)
@@ -65,12 +86,23 @@ void SampleEditorPanel::textEditorReturnKeyPressed(TextEditor& textEditor)
 
 void SampleEditorPanel::textEditorEscapeKeyPressed(TextEditor& textEditor)
 {
-    mFileNameEditor->setText("RESET");
-    mFileNameEditor->giveAwayKeyboardFocus();
+    textEditorFocusLost(textEditor);
 }
 
 void SampleEditorPanel::textEditorFocusLost(TextEditor& textEditor)
 {
     // Lose focus, set compare value and refresh library
-    mFileNameEditor->giveAwayKeyboardFocus();
+    mSampleTempoEditor->giveAwayKeyboardFocus();
+    sampleItem->setTempo(textEditor.getText().getIntValue());
+}
+
+void SampleEditorPanel::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
+{
+    int newKey = comboBoxThatHasChanged->getSelectedId() + 1;
+    int oldKey = sampleItem->getKey();
+    
+    if (newKey != oldKey)
+    {
+        sampleItem->setKey(newKey);
+    }
 }

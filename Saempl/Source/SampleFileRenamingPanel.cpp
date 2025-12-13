@@ -64,7 +64,7 @@ void SampleFileRenamingPanel::paint(Graphics& g)
 
 void SampleFileRenamingPanel::setPanelComponents()
 {
-    // Add text editor for compare value
+    // Add text editor for file path
     mFileNameEditor = std::make_unique<TextEditor>("FilePathEditor");
     mFileNameEditor->setFont(style->FONT_SMALL_BOLD);
     mFileNameEditor->setJustification(Justification::centredLeft);

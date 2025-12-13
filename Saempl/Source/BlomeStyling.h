@@ -31,7 +31,6 @@ struct BlomeStyling
     int const COMBO_BOX_WIDTH_LARGE = 180;
     int const COMBO_BOX_WIDTH_MEDIUM = 120;
     
-    
     // Panel dimensions
     int const MIN_WINDOW_WIDTH = 700;
     int const MIN_WINDOW_HEIGHT = 500;
@@ -39,8 +38,8 @@ struct BlomeStyling
     int const MAX_WINDOW_WIDTH = 1600;
     int const MAX_WINDOW_HEIGHT = 1000;
     
-    int const MAIN_PANEL_WIDTH = 900; // 1600;
-    int const MAIN_PANEL_HEIGHT = 750; // 1000;
+    int const MAIN_PANEL_WIDTH = 900;
+    int const MAIN_PANEL_HEIGHT = 750;
     
     int const HEADER_PANEL_WIDTH = MAIN_PANEL_WIDTH;
     int const HEADER_PANEL_HEIGHT = 50;
@@ -58,6 +57,9 @@ struct BlomeStyling
     
     int const RENAMING_PANEL_WIDTH = 450;
     int const RENAMING_PANEL_HEIGHT = FILTER_RULE_HEIGHT;
+    
+    int const SAMPLE_EDITOR_PANEL_WIDTH = RENAMING_PANEL_WIDTH;
+    int const SAMPLE_EDITOR_PANEL_HEIGHT = FILTER_RULE_HEIGHT * 2;
     
     int const CENTRE_PANEL_WIDTH = MAIN_PANEL_WIDTH;
     int const CENTRE_PANEL_HEIGHT = MAIN_PANEL_HEIGHT - HEADER_PANEL_HEIGHT;
@@ -79,7 +81,6 @@ struct BlomeStyling
     
     int const SAMPLE_PREVIEW_WIDTH = SAMPLE_ITEM_PANEL_WIDTH - SAMPLE_CONTROL_WIDTH;
     int const SAMPLE_PREVIEW_HEIGHT = SAMPLE_ITEM_PANEL_HEIGHT;
-    
     
     // Colour definitions
     Colour const COLOUR_LIGHT_GRAY = Colour(155, 155, 175);
@@ -113,7 +114,6 @@ struct BlomeStyling
     Colour const COLOUR_HEADER_BUTTONS = COLOUR_ACCENT_DARK;
     Colour const COLOUR_SYMBOL_BUTTON = COLOUR_ACCENT_LIGHT;
     Colour const COLOUR_PANEL_TITLE_FONT = COLOUR_ACCENT_MEDIUM;
-    
     
     // Fonts
     Font const FONT_EXTRA_SMALL_BOLD = Font(FontOptions("Helvetica Neue", 8.00f, Font::bold));
