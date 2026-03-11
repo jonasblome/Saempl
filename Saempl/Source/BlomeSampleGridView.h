@@ -15,6 +15,7 @@
 #include "BlomeSampleTileView.h"
 #include "SampleGridClusterer.h"
 #include "SampleFileRenamingPanel.h"
+#include "SampleEditorPanel.h"
 
 /**
  The view class for the sample grid.
@@ -197,6 +198,10 @@ private:
      Opens a callout dialog to allow renaming the file.
      */
     void renameSampleFile();
+    /**
+     Opens a sample property editor popup window.
+     */
+    void editSampleProperties();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlomeSampleGridView);
 };

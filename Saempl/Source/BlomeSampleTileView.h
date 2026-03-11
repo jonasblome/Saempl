@@ -48,6 +48,7 @@ public:
      Loads the sample into the grid's audio player and starts playback.
      */
     void startPlayback();
+    SampleItem * getSampleItem();
     
 private:
     SampleItem* sampleItem;

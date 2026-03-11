@@ -112,6 +112,7 @@ void SampleFolderPanel::fileClicked(File const & file, MouseEvent const & mouseE
         {
             popupMenu.addItem("Rename file", [this] { renameSampleFile(); });
         }
+        popupMenu.addItem("Edit properties", [this] { editSampleProperties(); });
         popupMenu.addItem("(Re-)analyse Sample(s)", [this] { reanalyseSamples(); });
         popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
         popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
@@ -218,4 +219,16 @@ void SampleFolderPanel::renameSampleFile()
 void SampleFolderPanel::showSample(String inFilePath)
 {
     mFileTree->setSelectedFile(inFilePath);
+}
+
+void SampleFolderPanel::editSampleProperties()
+{
+    String filePath = mFileTree->getSelectedFile(mFileTree->getNumSelectedFiles() - 1).getFullPathName();
+    SampleItem* sample = sampleLibrary.getSampleItemWithFilePath(filePath);
+    std::unique_ptr<SampleEditorPanel> sampleEditorPanel = std::make_unique<SampleEditorPanel>(currentProcessor, sample);
+    CallOutBox::launchAsynchronously(std::move(sampleEditorPanel),
+                                     mFileTree
+                                     ->getItemComponent(mFileTree->getSelectedItem(mFileTree->getNumSelectedFiles() - 1))
+                                     ->getScreenBounds(),
+                                     nullptr);
 }

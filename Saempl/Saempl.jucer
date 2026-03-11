@@ -112,6 +112,10 @@
             compile="1" resource="0" file="Source/BlomeFileFilterRuleViewZeroCrossingRate.cpp"/>
       <FILE id="lp8s2c" name="BlomeFileFilterRuleViewZeroCrossingRate.h"
             compile="0" resource="0" file="Source/BlomeFileFilterRuleViewZeroCrossingRate.h"/>
+      <FILE id="TzNg4g" name="BlomeFileFilterRuleViewComment.cpp" compile="1"
+            resource="0" file="Source/BlomeFileFilterRuleViewComment.cpp"/>
+      <FILE id="xOonaU" name="BlomeFileFilterRuleViewComment.h" compile="0"
+            resource="0" file="Source/BlomeFileFilterRuleViewComment.h"/>
       <FILE id="V9Z3KI" name="BlomeFileTreeView.cpp" compile="1" resource="0"
             file="Source/BlomeFileTreeView.cpp"/>
       <FILE id="jx3afv" name="BlomeFileTreeView.h" compile="0" resource="0"
@@ -287,6 +291,10 @@
             resource="0" file="Source/SampleFileFilterRuleZeroCrossingRate.cpp"/>
       <FILE id="ggSfwg" name="SampleFileFilterRuleZeroCrossingRate.h" compile="0"
             resource="0" file="Source/SampleFileFilterRuleZeroCrossingRate.h"/>
+      <FILE id="G6grPv" name="SampleFileFilterRuleComment.cpp" compile="1"
+            resource="0" file="Source/SampleFileFilterRuleComment.cpp"/>
+      <FILE id="v8vS0i" name="SampleFileFilterRuleComment.h" compile="0"
+            resource="0" file="Source/SampleFileFilterRuleComment.h"/>
       <FILE id="dlIPH8" name="SampleItem.cpp" compile="1" resource="0" file="Source/SampleItem.cpp"/>
       <FILE id="QPDhPJ" name="SampleItem.h" compile="0" resource="0" file="Source/SampleItem.h"/>
       <FILE id="UlKa0R" name="SampleItemComparator.cpp" compile="1" resource="0"

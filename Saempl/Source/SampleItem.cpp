@@ -204,6 +204,16 @@ void SampleItem::setSampleRate(int inSampleRate)
     mSampleRate = inSampleRate;
 }
 
+String SampleItem::getComment() const
+{
+    return mComment;
+}
+
+void SampleItem::setComment(String inComment)
+{
+    mComment = inComment;
+}
+
 std::vector<float> SampleItem::getFeatureVector() const
 {
     return mFeatureVector;
@@ -212,4 +222,19 @@ std::vector<float> SampleItem::getFeatureVector() const
 void SampleItem::setFeatureVector(std::vector<float> inFeatureVector)
 {
     mFeatureVector = inFeatureVector;
+}
+
+bool SampleItem::isLocked()
+{
+    return mLockedProperties.size() != 0;
+}
+
+void SampleItem::clearLockedProperties()
+{
+    mLockedProperties.clear();
+}
+
+void SampleItem::addLockedProperty(String inPropertyName)
+{
+    mLockedProperties.insert(inPropertyName);
 }

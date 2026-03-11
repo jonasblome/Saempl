@@ -109,6 +109,13 @@ public:
      Renames a sample item.
      */
     void renameSampleItem(String inOriginalPath, String inNewPath);
+    void editSampleItem(SampleItem* inSampleItem, bool inTempoChanged, bool inKeyChanged, bool inCommentChanged);
+    /**
+     @param inFilePath the file path for which to get the corresponding sample item.
+     
+     @returns the sample item with that file path.
+     */
+    SampleItem* getSampleItemWithFilePath(String const & inFilePath);
     
 private:
     std::unique_ptr<TimeSliceThread> mDirectoryScannerThread;

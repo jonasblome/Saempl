@@ -102,3 +102,42 @@ bool SampleFileFilter::canHaveEffect()
     
     return false;
 }
+
+bool SampleFileFilter::affectsTempo()
+{
+    for (SampleFileFilterRuleBase* rule : mFilterRules)
+    {
+        if (dynamic_cast<SampleFileFilterRuleTempo*>(rule) && rule->canHaveEffect())
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool SampleFileFilter::affectsKey()
+{
+    for (SampleFileFilterRuleBase* rule : mFilterRules)
+    {
+        if (dynamic_cast<SampleFileFilterRuleKey*>(rule) && rule->canHaveEffect())
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool SampleFileFilter::affectsComment()
+{
+    for (SampleFileFilterRuleBase* rule : mFilterRules)
+    {
+        if (dynamic_cast<SampleFileFilterRuleComment*>(rule) && rule->canHaveEffect())
+        {
+            return true;
+        }
+    }
+
+    return false;
+}

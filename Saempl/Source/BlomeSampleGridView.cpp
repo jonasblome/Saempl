@@ -518,6 +518,7 @@ void BlomeSampleGridView::showPopupMenu()
     popupMenu.addItem("Add Sample(s) to Favourites", [this] { addToFavourites(); });
     popupMenu.addItem("Show in Finder", [this] { showSampleInFinder(); });
     popupMenu.addItem("Rename file", [this] { renameSampleFile(); });
+    popupMenu.addItem("Edit properties", [this] { editSampleProperties(); });
     popupMenu.addItem("(Re-)analyse Sample(s)", [this] { reanalyseSamples(); });
     popupMenu.addItem("Move File(s) to Trash", [this] { deleteFiles(false); });
     popupMenu.addItem("Delete File(s) Permanently", [this] { deleteFiles(true); });
@@ -606,4 +607,12 @@ Point<int> BlomeSampleGridView::showSample(String inFilePath)
     }
     
     return Point<int>();
+}
+
+void BlomeSampleGridView::editSampleProperties()
+{
+    BlomeSampleTileView * tile = mSampleTiles.getUnchecked(mSelectedSampleTileIndices.getLast());
+    SampleItem * sample = tile->getSampleItem();
+    std::unique_ptr<SampleEditorPanel> sampleEditorPanel = std::make_unique<SampleEditorPanel>(currentProcessor, sample);
+    CallOutBox::launchAsynchronously(std::move(sampleEditorPanel), tile->getScreenBounds(), nullptr);
 }

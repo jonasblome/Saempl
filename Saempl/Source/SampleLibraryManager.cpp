@@ -476,6 +476,11 @@ void SampleLibraryManager::writeSampleItemToXml(SampleItem * sampleItem, XmlElem
         samplePropertiesXml->setAttribute(childName, chromaDistribution[d]);
     }
     
+    // Adding comment
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[13].removeCharacters(" "));
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getComment());
+    samplePropertiesXml->prependChildElement(samplePropertyXml);
+    
     sampleItemXml->prependChildElement(samplePropertiesXml);
 }
 
@@ -592,6 +597,11 @@ void SampleLibraryManager::createSampleItemFromXml(const XmlElement * sampleItem
     }
     
     sampleItem->setChromaDistribution(chromaDistribution);
+    
+    // Adding comment property to item
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[12].removeCharacters(" "));
+    String comment = samplePropertyXml->getStringAttribute("PropertyValue");
+    sampleItem->setTitle(title);
 }
 
 void SampleLibraryManager::loadSampleLibraryFile(File const & inLibraryDirectory)

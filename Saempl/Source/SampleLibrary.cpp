@@ -380,7 +380,6 @@ void SampleLibrary::removeFromFavourites(SampleItem& inSampleItem)
 
 void SampleLibrary::reanalyseSampleItem(File const & inFile)
 {
-    // Delete sample item
     if (inFile.isDirectory())
     {
         Array<File> sampleFiles = inFile.findChildFiles(File::findFiles, true, SUPPORTED_AUDIO_FORMATS_WILDCARD);
@@ -430,4 +429,22 @@ void SampleLibrary::renameSampleItem(String inOriginalPath, String inNewPath)
     {
         applyFilter();
     }
+}
+
+void SampleLibrary::editSampleItem(SampleItem* inSampleItem, bool inTempoChanged, bool inKeyChanged, bool inCommentChanged)
+{
+    mAlteredSampleItems.add(inSampleItem);
+    mLibraryWasAltered = true;
+    
+    if ((inTempoChanged   && mFileFilter->affectsTempo())
+    ||  (inKeyChanged     && mFileFilter->affectsKey())
+    ||  (inCommentChanged && mFileFilter->affectsComment()))
+    {
+        applyFilter();
+    }
+}
+
+SampleItem* SampleLibrary::getSampleItemWithFilePath(const String & inFilePath)
+{
+    return mSampleLibraryManager->getSampleItemWithFilePath(inFilePath);
 }

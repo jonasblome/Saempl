@@ -246,3 +246,8 @@ void BlomeSampleTileView::resized()
         mStartStopButton->setBounds(buttonBounds.toNearestInt());
     }
 }
+
+SampleItem * BlomeSampleTileView::getSampleItem()
+{
+    return sampleItem;
+}

@@ -153,6 +153,10 @@ String BlomeTableViewBase::getCellText(SampleItem* inSampleItem, String columnNa
     {
         return String::toDecimalStringWithSignificantFigures(inSampleItem->getZeroCrossingRate(), 2) + "Hz";
     }
+    else if (columnName == PROPERTY_NAMES[13])
+    {
+        return inSampleItem->getComment();
+    }
     else
     {
         return "unknown";

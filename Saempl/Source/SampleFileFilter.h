@@ -13,6 +13,9 @@
 #include "SampleItem.h"
 #include "BlomeHelpers.h"
 #include "SampleFileFilterRuleBase.h"
+#include "SampleFileFilterRuleTempo.h"
+#include "SampleFileFilterRuleKey.h"
+#include "SampleFileFilterRuleComment.h"
 
 /**
  The filter class to check if SampleItem objects and files are matching the filter rules.
@@ -64,6 +67,9 @@ public:
      @returns whether the filter is active and has any active rules that can have an effect on the sample collection.
      */
     bool canHaveEffect();
+    bool affectsTempo();
+    bool affectsKey();
+    bool affectsComment();
     
 private:
     OwnedArray<SampleFileFilterRuleBase> mFilterRules;

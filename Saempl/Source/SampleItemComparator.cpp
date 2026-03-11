@@ -73,6 +73,10 @@ int SampleItemComparator::compareElements(SampleItem* first, SampleItem* second)
     {
         return compareElements<float>(first->getZeroCrossingRate(), second->getZeroCrossingRate());
     }
+    else if (mComparePropertyName == PROPERTY_NAMES[13])
+    {
+        return compareElements<String>(first->getComment(), second->getComment());
+    }
     
     return 0;
 }

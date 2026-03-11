@@ -198,6 +198,8 @@ public:
      @param inChromaDistribution the vector to set.
      */
     void setChromaDistribution(std::vector<float> inChromaDistribution);
+    String getComment() const;
+    void setComment(String inComment);
     /**
      @returns the sample's feature vector.
      */
@@ -208,6 +210,9 @@ public:
      @param inFeatureVector the vector to set.
      */
     void setFeatureVector(std::vector<float> inFeatureVector);
+    bool isLocked();
+    void clearLockedProperties();
+    void addLockedProperty(String inPropertyName);
     
 private:
     String mCurrentFilePath;
@@ -229,6 +234,8 @@ private:
     std::vector<float> mSpectralDistribution;
     std::vector<float> mChromaDistribution;
     std::vector<float> mFeatureVector;
+    String mComment;
+    std::set<String> mLockedProperties;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleItem);
 };

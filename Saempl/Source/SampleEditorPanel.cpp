@@ -13,7 +13,11 @@ SampleEditorPanel::SampleEditorPanel(SaemplAudioProcessor & inProcessor,
                                      SampleItem * inSampleItem)
 :
 PanelBase(inProcessor),
-sampleItem(inSampleItem)
+sampleItem(inSampleItem),
+oldTempo(inSampleItem->getTempo()),
+oldKey(inSampleItem->getKey()),
+oldComment(inSampleItem->getComment()),
+sampleIsLocked(inSampleItem->isLocked())
 {
     setSize(style->SAMPLE_EDITOR_PANEL_WIDTH, style->SAMPLE_EDITOR_PANEL_HEIGHT);
     setPanelComponents();
@@ -21,7 +25,33 @@ sampleItem(inSampleItem)
 
 SampleEditorPanel::~SampleEditorPanel()
 {
-    // Trigger reload/refilter if necessary
+    bool tempoChanged = sampleItem->getTempo() != oldTempo;
+    bool keyChanged = sampleItem->getKey() != oldKey;
+    bool commentChanged = sampleItem->getComment() != oldComment;
+    
+    if (sampleIsLocked)
+    {
+        if (tempoChanged)
+        {
+            sampleItem->addLockedProperty(PROPERTY_NAMES[4]);
+        }
+        
+        if (keyChanged)
+        {
+            sampleItem->addLockedProperty(PROPERTY_NAMES[5]);
+        }
+        
+        if (commentChanged)
+        {
+            sampleItem->addLockedProperty(PROPERTY_NAMES[12]);
+        }
+    }
+    else
+    {
+        sampleItem->clearLockedProperties();
+    }
+    
+    currentProcessor.getSampleLibrary().editSampleItem(sampleItem, tempoChanged, keyChanged, commentChanged);
 }
 
 void SampleEditorPanel::paint(Graphics& g)
@@ -46,11 +76,21 @@ void SampleEditorPanel::paint(Graphics& g)
                      .removeFromTop(style->FILTER_RULE_HEIGHT),
                      Justification::centredRight,
                      1);
+    
+    g.drawFittedText("Comment:",
+                     textBounds.removeFromTop(style->FILTER_RULE_HEIGHT),
+                     Justification::centredRight,
+                     1);
+    
+    g.drawFittedText("Lock properties:",
+                     textBounds.removeFromTop(style->FILTER_RULE_HEIGHT),
+                     Justification::centredRight,
+                     1);
 }
 
 void SampleEditorPanel::setPanelComponents()
 {
-    // Add text editor for compare value
+    // Add text editor for tempo
     mSampleTempoEditor = std::make_unique<TextEditor>("TempoEditor");
     mSampleTempoEditor->setFont(style->FONT_SMALL_BOLD);
     mSampleTempoEditor->setJustification(Justification::centredLeft);
@@ -75,8 +115,35 @@ void SampleEditorPanel::setPanelComponents()
     {
         mSampleKeyComboBox->addItem(key.second, k++);
     }
-    mSampleKeyComboBox->setSelectedItemIndex(sampleItem->getKey());
+    mSampleKeyComboBox->setSelectedItemIndex(sampleItem->getKey(), NotificationType::dontSendNotification);
     addAndMakeVisible(*mSampleKeyComboBox);
+    
+    // Add text editor for comment
+    mSampleCommentEditor = std::make_unique<TextEditor>("CommentEditor");
+    mSampleCommentEditor->setFont(style->FONT_SMALL_BOLD);
+    mSampleCommentEditor->setJustification(Justification::centredLeft);
+    mSampleCommentEditor->setIndents(mSampleCommentEditor->getLeftIndent(), 0);
+    mSampleCommentEditor->setText(sampleItem->getComment());
+    mSampleCommentEditor->setBounds(style->PANEL_MARGIN + infoTextWidth,
+                                    style->PANEL_MARGIN * 0.5 + style->FILTER_RULE_HEIGHT * 2,
+                                    getWidth() - infoTextWidth - style->PANEL_MARGIN * 1.5,
+                                    style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN);
+    mSampleCommentEditor->addListener(this);
+    addAndMakeVisible(*mSampleCommentEditor);
+    
+    // Add button to lock sample properties
+    mLockPropertiesButton = std::make_unique<ToggleButton>("ActivateRuleButton");
+    mLockPropertiesButton->setToggleState(sampleItem->isLocked(), NotificationType::dontSendNotification);
+    mLockPropertiesButton->setTooltip("Lock/unlock the changed properties of this sample");
+    mLockPropertiesButton->onClick = [this]
+    {
+        sampleIsLocked = mLockPropertiesButton->getToggleState();
+    };
+    mLockPropertiesButton->setBounds(style->PANEL_MARGIN + infoTextWidth,
+                                     style->PANEL_MARGIN * 0.5 + style->FILTER_RULE_HEIGHT * 3,
+                                     style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN,
+                                     style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN);
+    addAndMakeVisible(*mLockPropertiesButton);
 }
 
 void SampleEditorPanel::textEditorReturnKeyPressed(TextEditor& textEditor)
@@ -91,14 +158,21 @@ void SampleEditorPanel::textEditorEscapeKeyPressed(TextEditor& textEditor)
 
 void SampleEditorPanel::textEditorFocusLost(TextEditor& textEditor)
 {
-    // Lose focus, set compare value and refresh library
-    mSampleTempoEditor->giveAwayKeyboardFocus();
-    sampleItem->setTempo(textEditor.getText().getIntValue());
+    textEditor.giveAwayKeyboardFocus();
+    
+    if (textEditor.getName() == "TempoEditor")
+    {
+        sampleItem->setTempo(textEditor.getText().getIntValue());
+    }
+    else if (textEditor.getName() == "CommentEditor")
+    {
+        sampleItem->setComment(textEditor.getText());
+    }
 }
 
 void SampleEditorPanel::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
 {
-    int newKey = comboBoxThatHasChanged->getSelectedId() + 1;
+    int newKey = comboBoxThatHasChanged->getSelectedId() - 1;
     int oldKey = sampleItem->getKey();
     
     if (newKey != oldKey)

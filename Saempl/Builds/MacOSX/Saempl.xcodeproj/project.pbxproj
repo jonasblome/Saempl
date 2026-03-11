@@ -58,6 +58,7 @@
 		49BA94814461A5DFED7ECE5B /* BlomeFileFilterRuleViewSpectralSpread.cpp */ = {isa = PBXBuildFile; fileRef = 70DF628A72C92E63DBC3FC64; };
 		4FEA54CD070C801FA2DC7FD3 /* SampleSwapJob.cpp */ = {isa = PBXBuildFile; fileRef = 4CC58708712914551BDE8AE7; };
 		510AFB4E81EE0CB98D4BC79D /* BlomeFileFilterRuleViewCentroid.cpp */ = {isa = PBXBuildFile; fileRef = 3E642E1678E592F371A0BE30; };
+		5BC86702E9B21CB4F00BAB16 /* BlomeFileFilterRuleViewComment.cpp */ = {isa = PBXBuildFile; fileRef = 58901F4B9D8AD417C669DBB0; };
 		5E163525E99E96C8EB8C1136 /* BlomeFileTreeView.cpp */ = {isa = PBXBuildFile; fileRef = F7FBEDC35CF3A822178278D9; };
 		60BBDF4F303CC3ABC7E5303F /* SampleItem.cpp */ = {isa = PBXBuildFile; fileRef = B13BF1F48C5F3E3A2773B3DF; };
 		6118E15171E19FA395AC9989 /* BlomeImageButton.cpp */ = {isa = PBXBuildFile; fileRef = BBCCF12BD9CFF9F88899E5FE; };
@@ -92,6 +93,7 @@
 		909B6E628A61B43B42C2BB02 /* SampleFileFilterRuleLoudnessLUFS.cpp */ = {isa = PBXBuildFile; fileRef = 22AE8D88C53245C092ED7216; };
 		94EDA149FCB266D7724AD098 /* BlomeFileFilterRuleViewDynamicRange.cpp */ = {isa = PBXBuildFile; fileRef = D8F77420C2EBD10FB42B4C33; };
 		9684DB9159B1730FAD855423 /* Accelerate.framework */ = {isa = PBXBuildFile; fileRef = 976C10C7DB0A52F32CF81756; };
+		968B1C6B1CA017672B0C5B05 /* SampleFileFilterRuleComment.cpp */ = {isa = PBXBuildFile; fileRef = AA87BBBB0097722E8393056C; };
 		9762EB4DAE324EE350EEED06 /* include_juce_audio_formats.mm */ = {isa = PBXBuildFile; fileRef = 23443936E29CF0E71CEA5213; };
 		9C2300D462D610BF1BA3A366 /* CoreMIDI.framework */ = {isa = PBXBuildFile; fileRef = 3697D40FB9FCA32796A99227; };
 		A21AD91C53494884A9C61F54 /* BlomeTableViewFavourites.cpp */ = {isa = PBXBuildFile; fileRef = 26239583371D46FF04246A3D; };
@@ -208,6 +210,7 @@
 		41ED2BD353A890475DC9BCF9 /* include_juce_core_CompilationTime.cpp */ /* include_juce_core_CompilationTime.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_core_CompilationTime.cpp; path = ../../JuceLibraryCode/include_juce_core_CompilationTime.cpp; sourceTree = SOURCE_ROOT; };
 		435710A06E190B170573C25E /* add_FILL0_wght400_GRAD0_opsz24.png */ /* add_FILL0_wght400_GRAD0_opsz24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = add_FILL0_wght400_GRAD0_opsz24.png; path = ../../Assets/add_FILL0_wght400_GRAD0_opsz24.png; sourceTree = SOURCE_ROOT; };
 		43C45433292255E8C3D7EA6D /* SampleAnalyser.h */ /* SampleAnalyser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleAnalyser.h; path = ../../Source/SampleAnalyser.h; sourceTree = SOURCE_ROOT; };
+		470536F17BDAC1FB31A5E5E6 /* BlomeFileFilterRuleViewComment.h */ /* BlomeFileFilterRuleViewComment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BlomeFileFilterRuleViewComment.h; path = ../../Source/BlomeFileFilterRuleViewComment.h; sourceTree = SOURCE_ROOT; };
 		472C93404BF276DD3635034F /* SampleNavigationPanel.h */ /* SampleNavigationPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleNavigationPanel.h; path = ../../Source/SampleNavigationPanel.h; sourceTree = SOURCE_ROOT; };
 		472CCDD2C1E9C9F670CFC042 /* BlomeFileFilterRuleViewChromaFlux.cpp */ /* BlomeFileFilterRuleViewChromaFlux.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BlomeFileFilterRuleViewChromaFlux.cpp; path = ../../Source/BlomeFileFilterRuleViewChromaFlux.cpp; sourceTree = SOURCE_ROOT; };
 		474B4B36B9BF691BBA940EE1 /* juce_events */ /* juce_events */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_events; path = /Users/jonasblome/Documents/JUCE/modules/juce_events; sourceTree = "<absolute>"; };
@@ -224,6 +227,7 @@
 		564AB2B79284ADE8C68B5401 /* SampleFileFilterRuleChromaFlux.h */ /* SampleFileFilterRuleChromaFlux.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleFileFilterRuleChromaFlux.h; path = ../../Source/SampleFileFilterRuleChromaFlux.h; sourceTree = SOURCE_ROOT; };
 		56A09E5C3518ACFBA02BA0C1 /* BlomeSampleTileView.cpp */ /* BlomeSampleTileView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BlomeSampleTileView.cpp; path = ../../Source/BlomeSampleTileView.cpp; sourceTree = SOURCE_ROOT; };
 		56F78C8856B0D403CCCBCC39 /* BlomeFileFilterRuleViewZeroCrossingRate.cpp */ /* BlomeFileFilterRuleViewZeroCrossingRate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BlomeFileFilterRuleViewZeroCrossingRate.cpp; path = ../../Source/BlomeFileFilterRuleViewZeroCrossingRate.cpp; sourceTree = SOURCE_ROOT; };
+		58901F4B9D8AD417C669DBB0 /* BlomeFileFilterRuleViewComment.cpp */ /* BlomeFileFilterRuleViewComment.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BlomeFileFilterRuleViewComment.cpp; path = ../../Source/BlomeFileFilterRuleViewComment.cpp; sourceTree = SOURCE_ROOT; };
 		5AA2B6918128FF296FD183DD /* SampleFileFilterRuleTitle.h */ /* SampleFileFilterRuleTitle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleFileFilterRuleTitle.h; path = ../../Source/SampleFileFilterRuleTitle.h; sourceTree = SOURCE_ROOT; };
 		5DB30B087E38C018BECF0855 /* BlomeFileFilterRuleViewBase.h */ /* BlomeFileFilterRuleViewBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BlomeFileFilterRuleViewBase.h; path = ../../Source/BlomeFileFilterRuleViewBase.h; sourceTree = SOURCE_ROOT; };
 		5DB92132E79DE0319F95D0E7 /* juce_data_structures */ /* juce_data_structures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_data_structures; path = /Users/jonasblome/Documents/JUCE/modules/juce_data_structures; sourceTree = "<absolute>"; };
@@ -236,6 +240,7 @@
 		66617BAD87409E18A405902B /* AboutPanel.h */ /* AboutPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AboutPanel.h; path = ../../Source/AboutPanel.h; sourceTree = SOURCE_ROOT; };
 		67F16FE71A6CADC8DA9D3DE7 /* delete_FILL0_wght400_GRAD0_opsz24.png */ /* delete_FILL0_wght400_GRAD0_opsz24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = delete_FILL0_wght400_GRAD0_opsz24.png; path = ../../Assets/delete_FILL0_wght400_GRAD0_opsz24.png; sourceTree = SOURCE_ROOT; };
 		680AC5592F8A3521C79587E4 /* SampleGridClusterer.cpp */ /* SampleGridClusterer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SampleGridClusterer.cpp; path = ../../Source/SampleGridClusterer.cpp; sourceTree = SOURCE_ROOT; };
+		6AD6EBE1058138106381B95F /* SampleFileFilterRuleComment.h */ /* SampleFileFilterRuleComment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleFileFilterRuleComment.h; path = ../../Source/SampleFileFilterRuleComment.h; sourceTree = SOURCE_ROOT; };
 		6B02564532B7EE4B398FF897 /* SampleFileFilterRuleLength.h */ /* SampleFileFilterRuleLength.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleFileFilterRuleLength.h; path = ../../Source/SampleFileFilterRuleLength.h; sourceTree = SOURCE_ROOT; };
 		6B3EE031B1BE1327C736357A /* include_juce_audio_devices.mm */ /* include_juce_audio_devices.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_devices.mm; path = ../../JuceLibraryCode/include_juce_audio_devices.mm; sourceTree = SOURCE_ROOT; };
 		6C6DC02039D5FC04AAF2F992 /* SampleItemComparator.h */ /* SampleItemComparator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleItemComparator.h; path = ../../Source/SampleItemComparator.h; sourceTree = SOURCE_ROOT; };
@@ -291,6 +296,7 @@
 		A8BC060EB2BDC58FE39D3AB9 /* SampleFileFilterRuleSpectralFlux.cpp */ /* SampleFileFilterRuleSpectralFlux.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SampleFileFilterRuleSpectralFlux.cpp; path = ../../Source/SampleFileFilterRuleSpectralFlux.cpp; sourceTree = SOURCE_ROOT; };
 		A925F657A45E9877BE0682A1 /* AudioPlayer.h */ /* AudioPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AudioPlayer.h; path = ../../Source/AudioPlayer.h; sourceTree = SOURCE_ROOT; };
 		A94D69667FF69CF894E497EB /* BlomeImageButton.h */ /* BlomeImageButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BlomeImageButton.h; path = ../../Source/BlomeImageButton.h; sourceTree = SOURCE_ROOT; };
+		AA87BBBB0097722E8393056C /* SampleFileFilterRuleComment.cpp */ /* SampleFileFilterRuleComment.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SampleFileFilterRuleComment.cpp; path = ../../Source/SampleFileFilterRuleComment.cpp; sourceTree = SOURCE_ROOT; };
 		AA8FA69291374C385DF08C7C /* BlomeFileFilterRuleViewCentroid.h */ /* BlomeFileFilterRuleViewCentroid.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BlomeFileFilterRuleViewCentroid.h; path = ../../Source/BlomeFileFilterRuleViewCentroid.h; sourceTree = SOURCE_ROOT; };
 		AAD08C3DFDC281491747CCC2 /* SampleFileFilter.cpp */ /* SampleFileFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SampleFileFilter.cpp; path = ../../Source/SampleFileFilter.cpp; sourceTree = SOURCE_ROOT; };
 		AB8E4185B4A5D66C62E76E02 /* SampleFileFilterRuleKey.h */ /* SampleFileFilterRuleKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleFileFilterRuleKey.h; path = ../../Source/SampleFileFilterRuleKey.h; sourceTree = SOURCE_ROOT; };
@@ -545,6 +551,8 @@
 				04DA8C5C77297E2BF15A0AF7,
 				56F78C8856B0D403CCCBCC39,
 				F8CB845EF8E43142C69DBDBF,
+				58901F4B9D8AD417C669DBB0,
+				470536F17BDAC1FB31A5E5E6,
 				F7FBEDC35CF3A822178278D9,
 				FAEF11548DD761DB3719A964,
 				8021C2119CF93043A4F40FEA,
@@ -698,6 +706,8 @@
 				564AB2B79284ADE8C68B5401,
 				DE4226496DA1E2EE43E34E44,
 				5E1EE67FE944BB6498D50C15,
+				AA87BBBB0097722E8393056C,
+				6AD6EBE1058138106381B95F,
 				B13BF1F48C5F3E3A2773B3DF,
 				2F29DA7A9ED659C1D384658B,
 				FE0CFA6631205B6961E39EE9,
@@ -1151,6 +1161,7 @@
 				BD514054340983E05A381498,
 				7A24657FA73E5FD917597140,
 				ACF56E9BC2DF98CE2714B8FF,
+				5BC86702E9B21CB4F00BAB16,
 				5E163525E99E96C8EB8C1136,
 				CB6FD8996B445255E129FD40,
 				2ED1BC12F2E4279BC81B9354,
@@ -1195,6 +1206,7 @@
 				EB1E29F71CF25C9791A1446A,
 				E422C13DC4ECA73B7D80DAD9,
 				2FFFD4A7EB541BBB3C9933C2,
+				968B1C6B1CA017672B0C5B05,
 				60BBDF4F303CC3ABC7E5303F,
 				B5A7C36824A6035265FB4932,
 				230B8FEC140662A975DE7A22,
