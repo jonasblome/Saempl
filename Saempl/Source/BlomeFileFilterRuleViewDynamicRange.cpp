@@ -34,7 +34,7 @@ void BlomeFileFilterRuleViewDynamicRange::setComponents()
     mCompareValueEditor->setFont(style->FONT_SMALL_BOLD);
     mCompareValueEditor->setJustification(Justification::centredLeft);
     mCompareValueEditor->setIndents(mCompareValueEditor->getLeftIndent(), 0);
-    mCompareValueEditor->setText(String::toDecimalStringWithSignificantFigures(getFilterRule().getCompareValue(), 2));
+    mCompareValueEditor->setText(std::to_string((int) getFilterRule().getCompareValue()));
     mCompareValueEditor->addListener(this);
     addAndMakeVisible(*mCompareValueEditor);
     

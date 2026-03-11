@@ -40,7 +40,7 @@ static StringArray const PROPERTY_NAMES = StringArray
     "Harm. Flux",
     "Zero Crossing Rate",
     "Comment",
-    "Is Locked",
+    "Property Lock",
 });
 static int const NUM_CHROMA = 12;
 static int const NUM_SPECTRAL_BANDS = 16;

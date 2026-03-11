@@ -431,14 +431,19 @@ void SampleLibrary::renameSampleItem(String inOriginalPath, String inNewPath)
     }
 }
 
-void SampleLibrary::editSampleItem(SampleItem* inSampleItem, bool inTempoChanged, bool inKeyChanged, bool inCommentChanged)
+void SampleLibrary::editSampleItem(SampleItem* inSampleItem,
+                                   bool inTempoChanged,
+                                   bool inKeyChanged,
+                                   bool inCommentChanged,
+                                   bool inPropertyLockChanged)
 {
     mAlteredSampleItems.add(inSampleItem);
     mLibraryWasAltered = true;
     
-    if ((inTempoChanged   && mFileFilter->affectsTempo())
-    ||  (inKeyChanged     && mFileFilter->affectsKey())
-    ||  (inCommentChanged && mFileFilter->affectsComment()))
+    if ((inTempoChanged    && mFileFilter->affectsTempo())
+    ||  (inKeyChanged      && mFileFilter->affectsKey())
+    ||  (inCommentChanged  && mFileFilter->affectsComment())
+    ||  (inPropertyLockChanged && mFileFilter->affectsPropertyLock()))
     {
         applyFilter();
     }

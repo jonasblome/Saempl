@@ -116,6 +116,10 @@
             resource="0" file="Source/BlomeFileFilterRuleViewComment.cpp"/>
       <FILE id="xOonaU" name="BlomeFileFilterRuleViewComment.h" compile="0"
             resource="0" file="Source/BlomeFileFilterRuleViewComment.h"/>
+      <FILE id="JaSQVM" name="BlomeFileFilterRuleViewPropertyLock.cpp" compile="1"
+            resource="0" file="Source/BlomeFileFilterRuleViewPropertyLock.cpp"/>
+      <FILE id="y67Iof" name="BlomeFileFilterRuleViewPropertyLock.h" compile="0"
+            resource="0" file="Source/BlomeFileFilterRuleViewPropertyLock.h"/>
       <FILE id="V9Z3KI" name="BlomeFileTreeView.cpp" compile="1" resource="0"
             file="Source/BlomeFileTreeView.cpp"/>
       <FILE id="jx3afv" name="BlomeFileTreeView.h" compile="0" resource="0"
@@ -295,6 +299,10 @@
             resource="0" file="Source/SampleFileFilterRuleComment.cpp"/>
       <FILE id="v8vS0i" name="SampleFileFilterRuleComment.h" compile="0"
             resource="0" file="Source/SampleFileFilterRuleComment.h"/>
+      <FILE id="VNfMGr" name="SampleFileFilterRulePropertyLock.cpp" compile="1"
+            resource="0" file="Source/SampleFileFilterRulePropertyLock.cpp"/>
+      <FILE id="h70jo3" name="SampleFileFilterRulePropertyLock.h" compile="0"
+            resource="0" file="Source/SampleFileFilterRulePropertyLock.h"/>
       <FILE id="dlIPH8" name="SampleItem.cpp" compile="1" resource="0" file="Source/SampleItem.cpp"/>
       <FILE id="QPDhPJ" name="SampleItem.h" compile="0" resource="0" file="Source/SampleItem.h"/>
       <FILE id="UlKa0R" name="SampleItemComparator.cpp" compile="1" resource="0"

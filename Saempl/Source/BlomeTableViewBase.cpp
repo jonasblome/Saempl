@@ -107,15 +107,15 @@ String BlomeTableViewBase::getCellText(SampleItem* inSampleItem, String columnNa
     }
     else if (columnName == PROPERTY_NAMES[1])
     {
-        return String::toDecimalStringWithSignificantFigures(inSampleItem->getLength(), 2) + "s";
+        return std::to_string((int) inSampleItem->getLength()) + "s";
     }
     else if (columnName == PROPERTY_NAMES[2])
     {
-        return String::toDecimalStringWithSignificantFigures(inSampleItem->getLoudnessDecibel(), 2) + "dB";
+        return std::to_string(inSampleItem->getLoudnessDecibel()) + "dB";
     }
     else if (columnName == PROPERTY_NAMES[3])
     {
-        return String::toDecimalStringWithSignificantFigures(inSampleItem->getLoudnessLUFS(), 2) + "LUFS";
+        return std::to_string(inSampleItem->getLoudnessLUFS()) + "LUFS";
     }
     else if (columnName == PROPERTY_NAMES[4])
     {
@@ -127,35 +127,39 @@ String BlomeTableViewBase::getCellText(SampleItem* inSampleItem, String columnNa
     }
     else if (columnName == PROPERTY_NAMES[6])
     {
-        return String::toDecimalStringWithSignificantFigures(inSampleItem->getDynamicRange(), 2) + "LUFS";
+        return std::to_string((int) inSampleItem->getDynamicRange()) + "LUFS";
     }
     else if (columnName == PROPERTY_NAMES[7])
     {
-        return String::toDecimalStringWithSignificantFigures(inSampleItem->getSpectralCentroid(), 2) + "Hz";
+        return std::to_string((int) inSampleItem->getSpectralCentroid()) + "Hz";
     }
     else if (columnName == PROPERTY_NAMES[8])
     {
-        return String::toDecimalStringWithSignificantFigures(inSampleItem->getSpectralRolloff(), 2) + "%";
+        return std::to_string((int) (inSampleItem->getSpectralRolloff() * 100)) + "%";
     }
     else if (columnName == PROPERTY_NAMES[9])
     {
-        return String::toDecimalStringWithSignificantFigures(inSampleItem->getSpectralSpread() * 100, 2) + "%";
+        return std::to_string((int) (inSampleItem->getSpectralSpread() * 100)) + "%";
     }
     else if (columnName == PROPERTY_NAMES[10])
     {
-        return String::toDecimalStringWithSignificantFigures(inSampleItem->getSpectralFlux() * 100, 2) + "%";
+        return std::to_string((int) (inSampleItem->getSpectralFlux() * 100)) + "%";
     }
     else if (columnName == PROPERTY_NAMES[11])
     {
-        return String::toDecimalStringWithSignificantFigures(inSampleItem->getChromaFlux() * 100, 2) + "%";
+        return std::to_string((int) (inSampleItem->getChromaFlux() * 100)) + "%";
     }
     else if (columnName == PROPERTY_NAMES[12])
     {
-        return String::toDecimalStringWithSignificantFigures(inSampleItem->getZeroCrossingRate(), 2) + "Hz";
+        return std::to_string((int) inSampleItem->getZeroCrossingRate()) + "Hz";
     }
     else if (columnName == PROPERTY_NAMES[13])
     {
         return inSampleItem->getComment();
+    }
+    else if (columnName == PROPERTY_NAMES[14])
+    {
+        return inSampleItem->getPropertiesAreLocked() ? "On" : "Off";
     }
     else
     {

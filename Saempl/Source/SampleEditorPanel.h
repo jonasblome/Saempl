@@ -33,8 +33,8 @@ private:
     int oldTempo;
     int oldKey;
     String oldComment;
+    bool oldPropertyLock;
     std::unique_ptr<ToggleButton> mLockPropertiesButton;
-    bool sampleIsLocked = false;
     
     void paint(Graphics & g) override;
     void setPanelComponents() override;

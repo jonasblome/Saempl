@@ -16,6 +16,7 @@
 #include "SampleFileFilterRuleTempo.h"
 #include "SampleFileFilterRuleKey.h"
 #include "SampleFileFilterRuleComment.h"
+#include "SampleFileFilterRulePropertyLock.h"
 
 /**
  The filter class to check if SampleItem objects and files are matching the filter rules.
@@ -70,6 +71,7 @@ public:
     bool affectsTempo();
     bool affectsKey();
     bool affectsComment();
+    bool affectsPropertyLock();
     
 private:
     OwnedArray<SampleFileFilterRuleBase> mFilterRules;

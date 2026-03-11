@@ -34,7 +34,7 @@ void BlomeFileFilterRuleViewSpectralSpread::setComponents()
     mCompareValueEditor->setFont(style->FONT_SMALL_BOLD);
     mCompareValueEditor->setJustification(Justification::centredLeft);
     mCompareValueEditor->setIndents(mCompareValueEditor->getLeftIndent(), 0);
-    mCompareValueEditor->setText(String::toDecimalStringWithSignificantFigures(getFilterRule().getCompareValue(), 2));
+    mCompareValueEditor->setText(std::to_string((int) (getFilterRule().getCompareValue() * 100)));
     mCompareValueEditor->addListener(this);
     addAndMakeVisible(*mCompareValueEditor);
     
@@ -76,7 +76,7 @@ void BlomeFileFilterRuleViewSpectralSpread::textEditorFocusLost(TextEditor& text
 {
     // Lose focus, set compare value and refresh library
     mCompareValueEditor->giveAwayKeyboardFocus();
-    double newCompareValue = textEditor.getText().getDoubleValue();
+    double newCompareValue = textEditor.getText().getDoubleValue() / 100;
     double oldCompareValue = getFilterRule().getCompareValue();
     getFilterRule().setCompareValue(newCompareValue);
     

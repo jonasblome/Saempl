@@ -24,6 +24,8 @@
 #include "BlomeFileFilterRuleViewSpectralFlux.h"
 #include "BlomeFileFilterRuleViewChromaFlux.h"
 #include "BlomeFileFilterRuleViewZeroCrossingRate.h"
+#include "BlomeFileFilterRuleViewComment.h"
+#include "BlomeFileFilterRuleViewPropertyLock.h"
 
 /**
  Holds the BlomeFileFilterRuleViewBase components.

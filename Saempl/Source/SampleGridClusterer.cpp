@@ -131,7 +131,7 @@ void SampleGridClusterer::run()
                             featureVector[numUsedFeatures] = sample->getSpectralSpread() * mFeatureWeights[7];
                             break;
                         case 8:
-                            featureVector[numUsedFeatures] = sample->getSpectralRolloff() / 100 * mFeatureWeights[8];
+                            featureVector[numUsedFeatures] = sample->getSpectralRolloff() * mFeatureWeights[8];
                             break;
                         case 9:
                             featureVector[numUsedFeatures] = sample->getSpectralFlux() * mFeatureWeights[9];
@@ -902,19 +902,19 @@ void SampleGridClusterer::setProgressAndStatus(double inProgress, int64 startTim
     setProgress(inProgress);
     String statusMessage = "Est. time remaining: ";
     int64 msSinceStart = Time::currentTimeMillis() - startTime;
-    float estimatedSecondsRemaining = ((msSinceStart / inProgress) * (1.0 - inProgress)) / 1000;
+    int estimatedSecondsRemaining = ((msSinceStart / inProgress) * (1.0 - inProgress)) / 1000;
     
     if (estimatedSecondsRemaining < 60)
     {
-        statusMessage = statusMessage + String::toDecimalStringWithSignificantFigures(estimatedSecondsRemaining, 2) + " second(s)";
+        statusMessage = statusMessage + std::to_string(estimatedSecondsRemaining) + " second(s)";
     }
     else if (estimatedSecondsRemaining < 3600)
     {
-        statusMessage = statusMessage + String::toDecimalStringWithSignificantFigures(estimatedSecondsRemaining * 1.0 / 60, 2) + " minute(s)";
+        statusMessage = statusMessage + std::to_string(estimatedSecondsRemaining * 1.0 / 60) + " minute(s)";
     }
     else
     {
-        statusMessage = statusMessage + String::toDecimalStringWithSignificantFigures(estimatedSecondsRemaining * 1.0 / 3600, 2) + " hour(s)";
+        statusMessage = statusMessage + std::to_string(estimatedSecondsRemaining * 1.0 / 3600) + " hour(s)";
     }
     
     setStatusMessage(statusMessage);

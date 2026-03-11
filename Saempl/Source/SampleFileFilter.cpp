@@ -141,3 +141,16 @@ bool SampleFileFilter::affectsComment()
 
     return false;
 }
+
+bool SampleFileFilter::affectsPropertyLock()
+{
+    for (SampleFileFilterRuleBase* rule : mFilterRules)
+    {
+        if (dynamic_cast<SampleFileFilterRulePropertyLock*>(rule) && rule->canHaveEffect())
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}

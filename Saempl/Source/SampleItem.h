@@ -200,6 +200,8 @@ public:
     void setChromaDistribution(std::vector<float> inChromaDistribution);
     String getComment() const;
     void setComment(String inComment);
+    bool getPropertiesAreLocked() const;
+    void setPropertyLock(bool inIsLocked);
     /**
      @returns the sample's feature vector.
      */
@@ -210,9 +212,9 @@ public:
      @param inFeatureVector the vector to set.
      */
     void setFeatureVector(std::vector<float> inFeatureVector);
-    bool isLocked();
     void clearLockedProperties();
     void addLockedProperty(String inPropertyName);
+    std::set<String> getLockedProperties();
     
 private:
     String mCurrentFilePath;
@@ -235,6 +237,7 @@ private:
     std::vector<float> mChromaDistribution;
     std::vector<float> mFeatureVector;
     String mComment;
+    bool mPropertyLock;
     std::set<String> mLockedProperties;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleItem);

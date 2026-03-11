@@ -1,49 +1,46 @@
 /*
  ==============================================================================
  
- BlomeFileFilterRuleViewKey.cpp
+ BlomeFileFilterRuleViewPropertyLock.cpp
  Author:  Jonas Blome
  
  ==============================================================================
  */
 
-#include "BlomeFileFilterRuleViewKey.h"
+#include "BlomeFileFilterRuleViewPropertyLock.h"
 
-BlomeFileFilterRuleViewKey::BlomeFileFilterRuleViewKey(SampleFileFilterRuleKey& inFilterRule, SampleLibrary& inSampleLibrary)
+BlomeFileFilterRuleViewPropertyLock::BlomeFileFilterRuleViewPropertyLock(SampleFileFilterRulePropertyLock& inFilterRule, SampleLibrary& inSampleLibrary)
 :
 BlomeFileFilterRuleViewBase(inFilterRule, inSampleLibrary)
 {
     setComponents();
 }
 
-BlomeFileFilterRuleViewKey::~BlomeFileFilterRuleViewKey()
+BlomeFileFilterRuleViewPropertyLock::~BlomeFileFilterRuleViewPropertyLock()
 {
-    mCompareValueComboBox->removeListener(this);
+    
 }
 
-void BlomeFileFilterRuleViewKey::paint(Graphics &g)
+void BlomeFileFilterRuleViewPropertyLock::paint(Graphics &g)
 {
     BlomeFileFilterRuleViewBase::paint(g);
 }
 
-void BlomeFileFilterRuleViewKey::setComponents()
+void BlomeFileFilterRuleViewPropertyLock::setComponents()
 {
     // Add combo box for compare value
     mCompareValueComboBox = std::make_unique<ComboBox>("CompareValueComboBox");
-    mCompareValueComboBox->setText(getFilterRule().getCompareValue());
+    mCompareValueComboBox->addItem("On", 1);
+    mCompareValueComboBox->addItem("Off", 2);
+    mCompareValueComboBox->setSelectedItemIndex(getFilterRule().getCompareValue() ? 0 : 1);
     mCompareValueComboBox->addListener(this);
-    int k = 1;
-    for (auto const & key : KEY_INDEX_TO_KEY_NAME)
-    {
-        mCompareValueComboBox->addItem(key.second, k++);
-    }
     addAndMakeVisible(*mCompareValueComboBox);
     
     mCompareOperatorChooser->addItem("is", 1);
     mCompareOperatorChooser->setSelectedItemIndex(0);
 }
 
-void BlomeFileFilterRuleViewKey::resized()
+void BlomeFileFilterRuleViewPropertyLock::resized()
 {
     BlomeFileFilterRuleViewBase::resized();
     
@@ -61,17 +58,17 @@ void BlomeFileFilterRuleViewKey::resized()
                                    getHeight());
 }
 
-SampleFileFilterRuleKey& BlomeFileFilterRuleViewKey::getFilterRule()
+SampleFileFilterRulePropertyLock& BlomeFileFilterRuleViewPropertyLock::getFilterRule()
 {
-    return *dynamic_cast<SampleFileFilterRuleKey*>(&filterRule);
+    return *dynamic_cast<SampleFileFilterRulePropertyLock*>(&filterRule);
 }
 
-void BlomeFileFilterRuleViewKey::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
+void BlomeFileFilterRuleViewPropertyLock::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
 {
     if (comboBoxThatHasChanged->getName() == "CompareOperatorChooser")
     {
         // Set rule to chosen compare operator
-        CompareOperators newOperator = static_cast<CompareOperators>(comboBoxThatHasChanged->getSelectedItemIndex() + 1);
+        CompareOperators newOperator = static_cast<CompareOperators>(comboBoxThatHasChanged->getSelectedItemIndex() == 0 ? 1 : 3);
         CompareOperators oldOperator = filterRule.getCompareOperator();
         filterRule.setCompareOperator(newOperator);
         
@@ -83,8 +80,8 @@ void BlomeFileFilterRuleViewKey::comboBoxChanged(ComboBox* comboBoxThatHasChange
     else if (comboBoxThatHasChanged->getName() == "CompareValueComboBox")
     {
         // Set compare value and refresh library
-        String newCompareValue = comboBoxThatHasChanged->getText();
-        String oldCompareValue = getFilterRule().getCompareValue();
+        bool newCompareValue = comboBoxThatHasChanged->getSelectedItemIndex() == 0;
+        bool oldCompareValue = getFilterRule().getCompareValue();
         getFilterRule().setCompareValue(newCompareValue);
         
         if (newCompareValue != oldCompareValue && sampleLibrary.getFileFilter().canHaveEffect())

@@ -214,6 +214,16 @@ void SampleItem::setComment(String inComment)
     mComment = inComment;
 }
 
+bool SampleItem::getPropertiesAreLocked() const
+{
+    return mPropertyLock;
+}
+
+void SampleItem::setPropertyLock(bool inIsLocked)
+{
+    mPropertyLock = inIsLocked;
+}
+
 std::vector<float> SampleItem::getFeatureVector() const
 {
     return mFeatureVector;
@@ -224,11 +234,6 @@ void SampleItem::setFeatureVector(std::vector<float> inFeatureVector)
     mFeatureVector = inFeatureVector;
 }
 
-bool SampleItem::isLocked()
-{
-    return mLockedProperties.size() != 0;
-}
-
 void SampleItem::clearLockedProperties()
 {
     mLockedProperties.clear();
@@ -237,4 +242,9 @@ void SampleItem::clearLockedProperties()
 void SampleItem::addLockedProperty(String inPropertyName)
 {
     mLockedProperties.insert(inPropertyName);
+}
+
+std::set<String> SampleItem::getLockedProperties()
+{
+    return mLockedProperties;
 }

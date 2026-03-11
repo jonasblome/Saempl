@@ -63,7 +63,7 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
         int key = analyseSampleKey();
         inSampleItem->setKey(key);
         inSampleItem->setSpectralCentroid(spectralCentroid);
-        inSampleItem->setSpectralRolloff(spectralRollOffBandIndex * 1.0 / NUM_SPECTRAL_BANDS * 100);
+        inSampleItem->setSpectralRolloff(spectralRollOffBandIndex * 1.0 / NUM_SPECTRAL_BANDS);
         inSampleItem->setSpectralSpread(spectralSpread);
         inSampleItem->setSpectralFlux(spectralFlux);
         inSampleItem->setChromaFlux(chromaFlux);

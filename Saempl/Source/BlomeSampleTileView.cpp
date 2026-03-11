@@ -179,22 +179,22 @@ void BlomeSampleTileView::paint(Graphics& g)
         other = other
         + "\n"
         + " - Dyn. Range: "
-        + String::toDecimalStringWithSignificantFigures(sampleItem->getDynamicRange(), 2)
+        + std::to_string((int) sampleItem->getDynamicRange())
         + "LUFS";
         other = other
         + "\n"
         + " - Avg. Freq: "
-        + String::toDecimalStringWithSignificantFigures(sampleItem->getSpectralCentroid(), 2)
+        + std::to_string((int) sampleItem->getSpectralCentroid())
         + "Hz";
         other = other
         + "\n"
         + " - Rolloff: "
-        + String::toDecimalStringWithSignificantFigures(sampleItem->getSpectralRolloff(), 2)
+        + std::to_string((int) (sampleItem->getSpectralRolloff() * 100))
         + "%";
         other = other
         + "\n"
         + " - Freq. Spread: "
-        + String::toDecimalStringWithSignificantFigures(sampleItem->getSpectralSpread(), 2)
+        + std::to_string((int) (sampleItem->getSpectralSpread() * 100))
         + "%";
     }
     if (currentWidth > 150)
@@ -202,27 +202,27 @@ void BlomeSampleTileView::paint(Graphics& g)
         other = other
         + "\n"
         + " - Freq. Flux: "
-        + String::toDecimalStringWithSignificantFigures(sampleItem->getSpectralFlux(), 2)
+        + std::to_string((int) (sampleItem->getSpectralFlux() * 100))
         + "%";
         other = other
         + "\n"
         + " - Harm. Flux: "
-        + String::toDecimalStringWithSignificantFigures(sampleItem->getChromaFlux(), 2)
+        + std::to_string((int) (sampleItem->getChromaFlux() * 100))
         + "%";
         other = other
         + "\n"
         + " - Length: "
-        + String::toDecimalStringWithSignificantFigures(sampleItem->getLength(), 2)
+        + std::to_string((int) sampleItem->getLength())
         + "s";
         other = other
         + "\n"
         + " - Loudness: "
-        + String::toDecimalStringWithSignificantFigures(sampleItem->getLoudnessLUFS(), 2)
+        + std::to_string((int) sampleItem->getLoudnessLUFS())
         + "LUFS";
         other = other
         + "\n"
         + " - ZCR: "
-        + String::toDecimalStringWithSignificantFigures(sampleItem->getZeroCrossingRate(), 2)
+        + std::to_string((int) sampleItem->getZeroCrossingRate())
         + "Hz";
     }
     

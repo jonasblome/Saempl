@@ -177,19 +177,19 @@ void SampleLibraryManager::setProgressAndStatus(int numItemsToProcess, int64 sta
     setProgress(numProcessedItems / (double) numItemsToProcess);
     String statusMessage = String(std::to_string(numProcessedItems) + "/" + std::to_string(numItemsToProcess) + " Samples analysed" + "\n" + "Est. time remaining: ");
     int64 msSinceStart = Time::currentTimeMillis() - startTime;
-    float estimatedSecondsRemaining = ((msSinceStart / numProcessedItems) * (numItemsToProcess - numProcessedItems)) / 1000.0;
+    double estimatedSecondsRemaining = ((msSinceStart / numProcessedItems) * (numItemsToProcess - numProcessedItems)) / 1000.0;
     
     if (estimatedSecondsRemaining < 60)
     {
-        statusMessage = statusMessage + String::toDecimalStringWithSignificantFigures(estimatedSecondsRemaining, 2) + " second(s)";
+        statusMessage = statusMessage + std::to_string((int) estimatedSecondsRemaining) + " second(s)";
     }
     else if (estimatedSecondsRemaining < 3600)
     {
-        statusMessage = statusMessage + String::toDecimalStringWithSignificantFigures(estimatedSecondsRemaining * 1.0 / 60, 2) + " minute(s)";
+        statusMessage = statusMessage + std::to_string((int) (estimatedSecondsRemaining * 1.0 / 60)) + " minute(s)";
     }
     else
     {
-        statusMessage = statusMessage + String::toDecimalStringWithSignificantFigures(estimatedSecondsRemaining * 1.0 / 3600, 2) + " hour(s)";
+        statusMessage = statusMessage + std::to_string((int) estimatedSecondsRemaining * 1.0 / 3600) + " hour(s)";
     }
     
     setStatusMessage(statusMessage);
@@ -481,6 +481,20 @@ void SampleLibraryManager::writeSampleItemToXml(SampleItem * sampleItem, XmlElem
     samplePropertyXml->setAttribute("PropertyValue", sampleItem->getComment());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
+    // Adding PropertyLock
+    samplePropertyXml = new XmlElement(PROPERTY_NAMES[14].removeCharacters(" "));
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getPropertiesAreLocked());
+    samplePropertiesXml->prependChildElement(samplePropertyXml);
+    
+    // Adding locked properties
+    std::set<String> lockedProperties = sampleItem->getLockedProperties();
+    
+    for (int p = 0; p < lockedProperties.size(); p++)
+    {
+        String childName = "LP" + std::to_string(p);
+        samplePropertiesXml->setAttribute(childName, *std::next(lockedProperties.begin(), p));
+    }
+    
     sampleItemXml->prependChildElement(samplePropertiesXml);
 }
 
@@ -566,12 +580,12 @@ void SampleLibraryManager::createSampleItemFromXml(const XmlElement * sampleItem
     float chromaFlux = samplePropertyXml->getDoubleAttribute("PropertyValue");
     sampleItem->setChromaFlux(chromaFlux);
     
-    // Adding Zero Crossing Rate to item
+    // Adding zero crossing rate to item
     samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[12].removeCharacters(" "));
     float zcr = samplePropertyXml->getDoubleAttribute("PropertyValue");
     sampleItem->setZeroCrossingRate(zcr);
     
-    // Adding Zero Crossing Rate to item
+    // Adding sample rate to item
     samplePropertyXml = samplePropertiesXml->getChildByName("Sample-Rate");
     float sampleRate = samplePropertyXml->getIntAttribute("PropertyValue");
     sampleItem->setSampleRate(sampleRate);
@@ -598,10 +612,28 @@ void SampleLibraryManager::createSampleItemFromXml(const XmlElement * sampleItem
     
     sampleItem->setChromaDistribution(chromaDistribution);
     
-    // Adding comment property to item
-    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[12].removeCharacters(" "));
+    // Adding comment to item
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[13].removeCharacters(" "));
     String comment = samplePropertyXml->getStringAttribute("PropertyValue");
-    sampleItem->setTitle(title);
+    sampleItem->setComment(comment);
+    
+    // Adding property lock to item
+    samplePropertyXml = samplePropertiesXml->getChildByName(PROPERTY_NAMES[14].removeCharacters(" "));
+    bool propertyLock = samplePropertyXml->getBoolAttribute("PropertyValue");
+    sampleItem->setPropertyLock(propertyLock);
+    
+    // Adding locked properties to item
+    std::set<String> lockedProperties;
+    for (int p = 0; p < PROPERTY_NAMES.size(); p++)
+    {
+        String attributeName = "LP" + std::to_string(p);
+        String propertyName = samplePropertiesXml->getStringAttribute(attributeName, "UNKNOWN");
+        
+        if (propertyName != "UNKNOWN")
+        {
+            sampleItem->addLockedProperty(propertyName);
+        }
+    }
 }
 
 void SampleLibraryManager::loadSampleLibraryFile(File const & inLibraryDirectory)

@@ -17,7 +17,7 @@ sampleItem(inSampleItem),
 oldTempo(inSampleItem->getTempo()),
 oldKey(inSampleItem->getKey()),
 oldComment(inSampleItem->getComment()),
-sampleIsLocked(inSampleItem->isLocked())
+oldPropertyLock(inSampleItem->getPropertiesAreLocked())
 {
     setSize(style->SAMPLE_EDITOR_PANEL_WIDTH, style->SAMPLE_EDITOR_PANEL_HEIGHT);
     setPanelComponents();
@@ -25,11 +25,15 @@ sampleIsLocked(inSampleItem->isLocked())
 
 SampleEditorPanel::~SampleEditorPanel()
 {
+    textEditorFocusLost(*mSampleTempoEditor);
+    textEditorFocusLost(*mSampleCommentEditor);
+    
     bool tempoChanged = sampleItem->getTempo() != oldTempo;
     bool keyChanged = sampleItem->getKey() != oldKey;
     bool commentChanged = sampleItem->getComment() != oldComment;
+    bool propertyLockChanged = sampleItem->getPropertiesAreLocked() != oldPropertyLock;
     
-    if (sampleIsLocked)
+    if (sampleItem->getPropertiesAreLocked())
     {
         if (tempoChanged)
         {
@@ -43,7 +47,7 @@ SampleEditorPanel::~SampleEditorPanel()
         
         if (commentChanged)
         {
-            sampleItem->addLockedProperty(PROPERTY_NAMES[12]);
+            sampleItem->addLockedProperty(PROPERTY_NAMES[13]);
         }
     }
     else
@@ -51,7 +55,11 @@ SampleEditorPanel::~SampleEditorPanel()
         sampleItem->clearLockedProperties();
     }
     
-    currentProcessor.getSampleLibrary().editSampleItem(sampleItem, tempoChanged, keyChanged, commentChanged);
+    currentProcessor.getSampleLibrary().editSampleItem(sampleItem,
+                                                       tempoChanged,
+                                                       keyChanged,
+                                                       commentChanged,
+                                                       propertyLockChanged);
 }
 
 void SampleEditorPanel::paint(Graphics& g)
@@ -95,7 +103,7 @@ void SampleEditorPanel::setPanelComponents()
     mSampleTempoEditor->setFont(style->FONT_SMALL_BOLD);
     mSampleTempoEditor->setJustification(Justification::centredLeft);
     mSampleTempoEditor->setIndents(mSampleTempoEditor->getLeftIndent(), 0);
-    mSampleTempoEditor->setText(String::toDecimalStringWithSignificantFigures(sampleItem->getTempo(), 1));
+    mSampleTempoEditor->setText(std::to_string(sampleItem->getTempo()));
     mSampleTempoEditor->setBounds(style->PANEL_MARGIN + infoTextWidth,
                                   style->PANEL_MARGIN * 0.5,
                                   getWidth() - infoTextWidth - style->PANEL_MARGIN * 1.5,
@@ -133,11 +141,11 @@ void SampleEditorPanel::setPanelComponents()
     
     // Add button to lock sample properties
     mLockPropertiesButton = std::make_unique<ToggleButton>("ActivateRuleButton");
-    mLockPropertiesButton->setToggleState(sampleItem->isLocked(), NotificationType::dontSendNotification);
+    mLockPropertiesButton->setToggleState(sampleItem->getPropertiesAreLocked(), NotificationType::dontSendNotification);
     mLockPropertiesButton->setTooltip("Lock/unlock the changed properties of this sample");
     mLockPropertiesButton->onClick = [this]
     {
-        sampleIsLocked = mLockPropertiesButton->getToggleState();
+        sampleItem->setPropertyLock(mLockPropertiesButton->getToggleState());
     };
     mLockPropertiesButton->setBounds(style->PANEL_MARGIN + infoTextWidth,
                                      style->PANEL_MARGIN * 0.5 + style->FILTER_RULE_HEIGHT * 3,

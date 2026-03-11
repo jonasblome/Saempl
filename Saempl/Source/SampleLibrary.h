@@ -109,7 +109,11 @@ public:
      Renames a sample item.
      */
     void renameSampleItem(String inOriginalPath, String inNewPath);
-    void editSampleItem(SampleItem* inSampleItem, bool inTempoChanged, bool inKeyChanged, bool inCommentChanged);
+    void editSampleItem(SampleItem* inSampleItem,
+                        bool inTempoChanged,
+                        bool inKeyChanged,
+                        bool inCommentChanged,
+                        bool inPropertyLockChanged);
     /**
      @param inFilePath the file path for which to get the corresponding sample item.
      

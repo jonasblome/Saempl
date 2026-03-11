@@ -160,6 +160,20 @@ void FileFilterPanel::generateRuleView(SampleFileFilterRuleBase *rule)
                                                                   sampleLibrary));
             break;
         }
+        case 13:
+        {
+            newRuleView = mFilterRuleViews
+                .add(std::make_unique<BlomeFileFilterRuleViewComment>(*dynamic_cast<SampleFileFilterRuleComment*>(rule),
+                                                                  sampleLibrary));
+            break;
+        }
+        case 14:
+        {
+            newRuleView = mFilterRuleViews
+                .add(std::make_unique<BlomeFileFilterRuleViewPropertyLock>(*dynamic_cast<SampleFileFilterRulePropertyLock*>(rule),
+                                                                  sampleLibrary));
+            break;
+        }
         default:
         {
             jassertfalse;
@@ -249,6 +263,16 @@ void FileFilterPanel::addFilterRuleView()
             newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleZeroCrossingRate(PROPERTY_NAMES[12]));
             break;
         }
+        case 13:
+        {
+            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRuleComment(PROPERTY_NAMES[13]));
+            break;
+        }
+        case 14:
+        {
+            newRule = libraryFileFilter.addFilterRule(new SampleFileFilterRulePropertyLock(PROPERTY_NAMES[14]));
+            break;
+        }
         default:
         {
             jassertfalse;
@@ -321,6 +345,8 @@ void FileFilterPanel::setNewRuleTypeChooser() {
     mNewRuleTypeChooser->addItem("New frequency fluctuation rule", 11);
     mNewRuleTypeChooser->addItem("New harmonic fluctuation rule", 12);
     mNewRuleTypeChooser->addItem("New zero crossing rate rule", 13);
+    mNewRuleTypeChooser->addItem("New comment rule", 14);
+    mNewRuleTypeChooser->addItem("New property lock rule", 15);
     mNewRuleTypeChooser->setTextWhenNothingSelected("Choose new filter rule type");
     addAndMakeVisible(*mNewRuleTypeChooser);
 }
