@@ -24,6 +24,19 @@ BlomeFileFilterRuleViewSpectralFlux::~BlomeFileFilterRuleViewSpectralFlux()
 void BlomeFileFilterRuleViewSpectralFlux::paint(Graphics &g)
 {
     BlomeFileFilterRuleViewBase::paint(g);
+    
+    // Paint rule unit
+    Rectangle<int> area = getLocalBounds()
+        .removeFromRight(style->FILTER_RULE_HEIGHT
+                         + style->FILTER_RULE_UNIT_WIDTH)
+        .removeFromLeft(style->FILTER_RULE_UNIT_WIDTH);
+    area.reduce(style->PANEL_MARGIN / 2.0, 0);
+    g.setFont(style->FONT_SMALL_BOLD);
+    g.setColour(style->COLOUR_ACCENT_DARK);
+    g.drawFittedText("%",
+                     area,
+                     Justification::left,
+                     1);
 }
 
 void BlomeFileFilterRuleViewSpectralFlux::setComponents()
@@ -31,7 +44,7 @@ void BlomeFileFilterRuleViewSpectralFlux::setComponents()
     // Add text editor for compare value
     mCompareValueEditor = std::make_unique<TextEditor>("CompareValueEditor");
     mCompareValueEditor->setFont(style->FONT_SMALL_BOLD);
-    mCompareValueEditor->setJustification(Justification::centredLeft);
+    mCompareValueEditor->setJustification(Justification::centredRight);
     mCompareValueEditor->setIndents(mCompareValueEditor->getLeftIndent(), 0);
     mCompareValueEditor->setText(std::to_string((int) (getFilterRule().getCompareValue() * 100)));
     mCompareValueEditor->addListener(this);
@@ -48,16 +61,17 @@ void BlomeFileFilterRuleViewSpectralFlux::resized()
     BlomeFileFilterRuleViewBase::resized();
     
     mCompareValueEditor->setBounds(style->BUTTON_SIZE_SMALL
-                                   + style->FILTER_RULE_TITLE_WIDTH
-                                   + style->COMBO_BOX_WIDTH_MEDIUM
-                                   + style->PANEL_MARGIN / 4.0,
+                                       + style->FILTER_RULE_TITLE_WIDTH
+                                       + style->COMBO_BOX_WIDTH_MEDIUM
+                                       + style->PANEL_MARGIN / 4.0,
                                    0,
                                    getWidth()
-                                   - style->BUTTON_SIZE_SMALL
-                                   - style->FILTER_RULE_TITLE_WIDTH
-                                   - style->COMBO_BOX_WIDTH_MEDIUM
-                                   - style->PANEL_MARGIN * 0.75
-                                   - getHeight(),
+                                       - style->BUTTON_SIZE_SMALL
+                                       - style->FILTER_RULE_TITLE_WIDTH
+                                       - style->COMBO_BOX_WIDTH_MEDIUM
+                                       - style->PANEL_MARGIN * 0.25
+                                       - style->FILTER_RULE_UNIT_WIDTH
+                                       - style->FILTER_RULE_HEIGHT,
                                    getHeight());
 }
 

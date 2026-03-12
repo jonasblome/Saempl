@@ -13,7 +13,7 @@ SampleFileFilterRuleZeroCrossingRate::SampleFileFilterRuleZeroCrossingRate(Strin
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = -1;
+    mCompareValue = 0;
     mCompareOperator = GREATER_THAN;
 }
 
@@ -30,7 +30,7 @@ bool SampleFileFilterRuleZeroCrossingRate::matches(SampleItem const & inSampleIt
     {
         case LESS_THAN:
         {
-            return propertyValue < mCompareValue;
+            return propertyValue <= mCompareValue;
             break;
         }
         case EQUAL_TO:
@@ -40,7 +40,7 @@ bool SampleFileFilterRuleZeroCrossingRate::matches(SampleItem const & inSampleIt
         }
         case GREATER_THAN:
         {
-            return propertyValue > mCompareValue;
+            return propertyValue >= mCompareValue;
             break;
         }
         case CONTAINS:
@@ -68,5 +68,5 @@ void SampleFileFilterRuleZeroCrossingRate::setCompareValue(double const & inComp
 
 bool SampleFileFilterRuleZeroCrossingRate::canHaveEffect()
 {
-    return isActive && (mCompareOperator != GREATER_THAN || mCompareValue > -1);
+    return isActive && (mCompareOperator != GREATER_THAN || mCompareValue > 0);
 }

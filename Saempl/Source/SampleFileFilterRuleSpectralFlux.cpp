@@ -13,7 +13,7 @@ SampleFileFilterRuleSpectralFlux::SampleFileFilterRuleSpectralFlux(String inRule
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = -1;
+    mCompareValue = 0;
     mCompareOperator = GREATER_THAN;
 }
 
@@ -30,7 +30,7 @@ bool SampleFileFilterRuleSpectralFlux::matches(SampleItem const & inSampleItem)
     {
         case LESS_THAN:
         {
-            return propertyValue < mCompareValue;
+            return propertyValue <= mCompareValue;
             break;
         }
         case EQUAL_TO:
@@ -40,7 +40,7 @@ bool SampleFileFilterRuleSpectralFlux::matches(SampleItem const & inSampleItem)
         }
         case GREATER_THAN:
         {
-            return propertyValue > mCompareValue;
+            return propertyValue >= mCompareValue;
             break;
         }
         case CONTAINS:
@@ -68,5 +68,5 @@ void SampleFileFilterRuleSpectralFlux::setCompareValue(double const & inCompareV
 
 bool SampleFileFilterRuleSpectralFlux::canHaveEffect()
 {
-    return isActive && (mCompareOperator != GREATER_THAN || mCompareValue > -1);
+    return isActive && (mCompareOperator != GREATER_THAN || mCompareValue > 0);
 }

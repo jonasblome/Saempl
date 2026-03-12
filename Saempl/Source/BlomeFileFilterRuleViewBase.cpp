@@ -31,7 +31,7 @@ void BlomeFileFilterRuleViewBase::paint(Graphics& g)
         .removeFromRight(style->FILTER_RULE_TITLE_WIDTH);
     area.reduce(style->PANEL_MARGIN / 2.0, 0);
     g.setFont(style->FONT_SMALL_BOLD);
-    g.setColour(style->COLOUR_ACCENT_LIGHT);
+    g.setColour(style->COLOUR_ACCENT_DARK);
     g.drawFittedText(getFilterRule().getRulePropertyName(),
                      area,
                      Justification::right,
@@ -87,11 +87,11 @@ void BlomeFileFilterRuleViewBase::setComponents()
 void BlomeFileFilterRuleViewBase::resized()
 {
     mActivateRuleButton->setBounds(style->FILTER_RULE_HEIGHT / 2.0
-                                   - style->BUTTON_SIZE_SMALL / 2.0
-                                   + style->PANEL_MARGIN / 2.0,
+                                       - style->BUTTON_SIZE_SMALL / 2.0
+                                       + style->PANEL_MARGIN / 2.0,
                                    style->FILTER_RULE_HEIGHT / 2.0
-                                   - style->BUTTON_SIZE_SMALL / 2.0
-                                   + style->PANEL_MARGIN / 4.0,
+                                       - style->BUTTON_SIZE_SMALL / 2.0
+                                       + style->PANEL_MARGIN / 4.0,
                                    style->BUTTON_SIZE_SMALL - style->PANEL_MARGIN,
                                    style->BUTTON_SIZE_SMALL - style->PANEL_MARGIN);
     
@@ -102,10 +102,10 @@ void BlomeFileFilterRuleViewBase::resized()
                                        - style->PANEL_MARGIN / 4.0,
                                        getHeight());
     
-    mDeleteRuleButton->setBounds(getWidth() - getHeight(),
+    mDeleteRuleButton->setBounds(getWidth() - style->FILTER_RULE_HEIGHT + style->PANEL_MARGIN / 2.0,
                                  0,
-                                 getHeight(),
-                                 getHeight());
+                                 style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN / 2.0,
+                                 style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN / 2.0);
 }
 
 SampleFileFilterRuleBase& BlomeFileFilterRuleViewBase::getFilterRule()

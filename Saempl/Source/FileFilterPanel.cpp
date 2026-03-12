@@ -186,8 +186,8 @@ void FileFilterPanel::generateRuleView(SampleFileFilterRuleBase *rule)
 
 void FileFilterPanel::addFilterRuleView()
 {
-    // Only add rule if type is selected, add maximum of 8 rules (reason: glitch in filter panel if more)
-    if (mNewRuleTypeChooser->getSelectedItemIndex() == -1 || libraryFileFilter.getFilterRules().size() >= 8)
+    // Only add rule if type is selected
+    if (mNewRuleTypeChooser->getSelectedItemIndex() == -1 || libraryFileFilter.getFilterRules().size() >= 50)
     {
         return;
     }

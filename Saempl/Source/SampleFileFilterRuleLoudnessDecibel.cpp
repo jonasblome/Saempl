@@ -30,7 +30,7 @@ bool SampleFileFilterRuleLoudnessDecibel::matches(SampleItem const & inSampleIte
     {
         case LESS_THAN:
         {
-            return propertyValue < mCompareValue;
+            return propertyValue <= mCompareValue;
             break;
         }
         case EQUAL_TO:
@@ -40,7 +40,7 @@ bool SampleFileFilterRuleLoudnessDecibel::matches(SampleItem const & inSampleIte
         }
         case GREATER_THAN:
         {
-            return propertyValue > mCompareValue;
+            return propertyValue >= mCompareValue;
             break;
         }
         case CONTAINS:

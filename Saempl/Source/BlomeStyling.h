@@ -28,7 +28,7 @@ struct BlomeStyling
     int const SAMPLE_PREVIEW_TITLE_HEIGHT = 25;
     int const BUTTON_SIZE_MEDIUM = 25;
     int const BUTTON_SIZE_SMALL = 20;
-    int const COMBO_BOX_WIDTH_LARGE = 180;
+    int const COMBO_BOX_WIDTH_LARGE = 200;
     int const COMBO_BOX_WIDTH_MEDIUM = 120;
     
     // Panel dimensions
@@ -51,6 +51,7 @@ struct BlomeStyling
     int const FILTER_RULE_HEIGHT = 35;
     
     int const FILTER_RULE_TITLE_WIDTH = 120;
+    int const FILTER_RULE_UNIT_WIDTH = 45;
     
     int const ABOUT_PANEL_WIDTH = 400;
     int const ABOUT_PANEL_HEIGHT = 350;

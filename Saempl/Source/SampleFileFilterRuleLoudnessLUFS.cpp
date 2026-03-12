@@ -30,7 +30,7 @@ bool SampleFileFilterRuleLoudnessLUFS::matches(SampleItem const & inSampleItem)
     {
         case LESS_THAN:
         {
-            return propertyValue < mCompareValue;
+            return propertyValue <= mCompareValue;
             break;
         }
         case EQUAL_TO:
@@ -40,7 +40,7 @@ bool SampleFileFilterRuleLoudnessLUFS::matches(SampleItem const & inSampleItem)
         }
         case GREATER_THAN:
         {
-            return propertyValue > mCompareValue;
+            return propertyValue >= mCompareValue;
             break;
         }
         case CONTAINS:
