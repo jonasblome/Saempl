@@ -19,7 +19,7 @@
 #include "SampleItem.h"
 #include "SampleSwapJob.h"
 #include <random>
-#include <limits.h>
+#include <climits>
 
 /**
  Clusters the filtered sample items of the library according to the Fast Linear Assignment Sorting onto a 2D grid.

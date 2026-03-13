@@ -12,6 +12,7 @@
 #include "JuceHeader.h"
 #include "SampleItem.h"
 #include <random>
+#include <climits>
 
 class SampleSwapJob
 :
