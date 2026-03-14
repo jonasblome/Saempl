@@ -58,6 +58,7 @@ void BlomeFileFilterRuleViewBase::setComponents()
     
     // Add combo box for compare operator
     mCompareOperatorChooser = std::make_unique<ComboBox>("CompareOperatorChooser");
+    mCompareOperatorChooser->setTooltip("Choose the compare operator");
     mCompareOperatorChooser->addListener(this);
     addAndMakeVisible(*mCompareOperatorChooser);
     

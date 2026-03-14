@@ -348,6 +348,7 @@ void FileFilterPanel::setNewRuleTypeChooser() {
     mNewRuleTypeChooser->addItem("New comment rule", 14);
     mNewRuleTypeChooser->addItem("New property lock rule", 15);
     mNewRuleTypeChooser->setTextWhenNothingSelected("Choose new filter rule type");
+    mNewRuleTypeChooser->setTooltip("Choose a filter rule type");
     addAndMakeVisible(*mNewRuleTypeChooser);
 }
 

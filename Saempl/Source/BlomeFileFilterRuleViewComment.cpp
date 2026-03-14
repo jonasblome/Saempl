@@ -34,6 +34,7 @@ void BlomeFileFilterRuleViewComment::setComponents()
     mCompareValueEditor->setJustification(Justification::centredLeft);
     mCompareValueEditor->setIndents(mCompareValueEditor->getLeftIndent(), 0);
     mCompareValueEditor->setText(getFilterRule().getCompareValue());
+    mCompareValueEditor->setTooltip("Enter a compare value");
     mCompareValueEditor->addListener(this);
     addAndMakeVisible(*mCompareValueEditor);
     

@@ -47,6 +47,7 @@ void BlomeFileFilterRuleViewChromaFlux::setComponents()
     mCompareValueEditor->setJustification(Justification::centredRight);
     mCompareValueEditor->setIndents(mCompareValueEditor->getLeftIndent(), 0);
     mCompareValueEditor->setText(std::to_string((int) (getFilterRule().getCompareValue() * 100)));
+    mCompareValueEditor->setTooltip("Enter a compare value");
     mCompareValueEditor->addListener(this);
     addAndMakeVisible(*mCompareValueEditor);
     

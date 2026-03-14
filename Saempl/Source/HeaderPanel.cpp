@@ -604,11 +604,11 @@ void HeaderPanel::setPanelComponents()
     int groupDistance = 10;
     
     // Add refresh sample library button
-    setRefreshLibraryButton(buttonWidth, x);
+    setChooseLibraryDirectoryButton(buttonWidth, x);
     x += buttonWidth + style->PANEL_MARGIN * 0.5;
     
     // Add choose library directory button
-    setChooseLibraryDirectoryButton(buttonWidth, x);
+    setRefreshLibraryButton(buttonWidth, x);
     x += buttonWidth + style->PANEL_MARGIN * 1.5 + groupDistance;
     
     // Add toggle for library panel

@@ -78,21 +78,27 @@ void AboutPanel::paint(Graphics& g)
     g.setFont(style->FONT_SMALL_BOLD);
     g.setColour(style->COLOUR_ACCENT_LIGHT);
     g.drawFittedText("Developed by Jonas Blome"
-                     + String("\n") + "Copyleft @Saempl 2024"
+                     + String("\n") + "Copyleft @Saempl 2026"
                      + String("\n") + "Email: jonas.blome@gmx.de"
                      + String("\n") + "GitHub: https://github.com/jonasblome"
                      + String("\n")
                      + String("\n") + "Short Intructions:"
+                     + String("\n") + " - Hover over buttons, sliders etc. to get explanations"
                      + String("\n") + " - Choose a directory at the top left or press (D)"
-                     + String("\n") + " - Hover over buttons and sliders to get explanations"
-                     + String("\n") + " - Press (K) to start and (L) to stop quick pre-listen of a selected sample"
+                     + String("\n") + " - Switch between folder, table and grid view with (1), (2), (3)"
+                     + String("\n") + " - Select a sample by clicking on it or navigate by pressing the arrow buttons"
+                     + String("\n") + " - Press (K) to start and (L) to stop the quick pre-listen of a selected sample"
                      + String("\n") + "OR"
-                     + String("\n") + " - Press Enter to load selected samples into the preview"
+                     + String("\n") + " - Press Enter to load selected samples into the audio player"
+                     + String("\n") + " - Press Space to start playback of the audio player"
+                     + String("\n") + " - Press (N) to normalise audio playback loudness"
                      + String("\n") + " - Right click on samples to access a popup menu"
                      + String("\n") + " - Drag and drop samples into \"Favourites\" or into your DAW"
                      + String("\n") + " - Select a random sample with the shuffle button at the top or press (S)"
-                     + String("\n") + " - Switch between folder, table and grid view with (1), (2), (3)"
-                     + String("\n") + " - Filter through your samples by adding rules in the filter menu at the top",
+                     + String("\n") + " - Toggle the player panel on or off (P)"
+                     + String("\n") + " - Filter through your samples by adding rules in the filter menu at the top"
+                     + String("\n") + " - Activate or deactivate the whole filter (F)"
+                     + String("\n") + " - Press (R) to refresh the library directory and scan for new files",
                      infoTextBounds.reduced(style->PANEL_MARGIN * 1.0),
                      Justification::topLeft, 10);
 }

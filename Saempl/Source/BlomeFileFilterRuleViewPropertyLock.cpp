@@ -33,6 +33,7 @@ void BlomeFileFilterRuleViewPropertyLock::setComponents()
     mCompareValueComboBox->addItem("On", 1);
     mCompareValueComboBox->addItem("Off", 2);
     mCompareValueComboBox->setSelectedItemIndex(getFilterRule().getCompareValue() ? 0 : 1);
+    mCompareValueComboBox->setTooltip("Choose a compare value");
     mCompareValueComboBox->addListener(this);
     addAndMakeVisible(*mCompareValueComboBox);
     

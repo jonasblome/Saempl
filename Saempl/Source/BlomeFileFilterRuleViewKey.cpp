@@ -31,6 +31,7 @@ void BlomeFileFilterRuleViewKey::setComponents()
     // Add combo box for compare value
     mCompareValueComboBox = std::make_unique<ComboBox>("CompareValueComboBox");
     mCompareValueComboBox->setText(getFilterRule().getCompareValue());
+    mCompareValueComboBox->setTooltip("Choose a compare value");
     mCompareValueComboBox->addListener(this);
     int k = 1;
     for (auto const& key : KEY_INDEX_TO_KEY_NAME)

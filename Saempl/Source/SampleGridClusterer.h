@@ -66,10 +66,16 @@ private:
     bool applyWrap;
     bool featureWeightsChanged = true;
     
-    /**
+    void extracted();
+    
+/**
      Runs the clustering of the sample items while setting the progress for the progress bar.
      */
     void run() override;
+    /**
+     Copies the used features of all sample items into their feature vectors.
+     */
+    void copyFeaturesToVectors();
     void threadComplete(bool userPressedCancel) override;
     /**
      Copies the feature vectors from the sample item collection to the grid and multiplies each dimension with a weight.
