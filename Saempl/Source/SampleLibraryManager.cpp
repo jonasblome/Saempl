@@ -263,7 +263,7 @@ void SampleLibraryManager::run()
     numProcessedItems = 0;
     setProgress(0.0);
     
-    for (File const & sampleFile : allSampleFiles)
+    for (File const& sampleFile : allSampleFiles)
     {
         if (threadShouldExit())
         {
@@ -320,7 +320,7 @@ void SampleLibraryManager::threadComplete(bool userPressedCancel)
     sendChangeMessage();
 }
 
-void SampleLibraryManager::loadSampleLibrary(File const & inLibraryDirectory)
+void SampleLibraryManager::loadSampleLibrary(File const& inLibraryDirectory)
 {
     addedFilePaths.clear();
     libraryDirectory = inLibraryDirectory;
@@ -483,7 +483,7 @@ void SampleLibraryManager::writeSampleItemToXml(SampleItem * sampleItem, XmlElem
     
     // Adding PropertyLock
     samplePropertyXml = new XmlElement(PROPERTY_NAMES[14].removeCharacters(" "));
-    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getPropertiesAreLocked());
+    samplePropertyXml->setAttribute("PropertyValue", sampleItem->getPropertyLock());
     samplePropertiesXml->prependChildElement(samplePropertyXml);
     
     // Adding locked properties
@@ -636,7 +636,7 @@ void SampleLibraryManager::createSampleItemFromXml(const XmlElement * sampleItem
     }
 }
 
-void SampleLibraryManager::loadSampleLibraryFile(File const & inLibraryDirectory)
+void SampleLibraryManager::loadSampleLibraryFile(File const& inLibraryDirectory)
 {
     File libraryFile = File(mLibraryFilesDirectoryPath
                                   + DIRECTORY_SEPARATOR
@@ -668,7 +668,7 @@ void SampleLibraryManager::loadSampleLibraryFile(File const & inLibraryDirectory
             XmlElement* sampleItemsXml = libraryXmlPointer->getChildByName("SampleItems");
             
             // Go over all sample items
-            for (XmlElement const * sampleItemXml : sampleItemsXml->getChildIterator())
+            for (XmlElement const* sampleItemXml : sampleItemsXml->getChildIterator())
             {
                 // Create new sample item
                 createSampleItemFromXml(sampleItemXml);
@@ -702,7 +702,7 @@ void SampleLibraryManager::writeXmlToFile(XmlElement& inXml, File& inFile)
     inFile.replaceWithData(destinationData.getData(), destinationData.getSize());
 }
 
-SampleItem* SampleLibraryManager::createSampleItem(File const & inFile)
+SampleItem* SampleLibraryManager::createSampleItem(File const& inFile)
 {
     SampleItem* newItem = allSampleItems.add(new SampleItem());
     String filePath = inFile.getFullPathName();
@@ -720,7 +720,7 @@ SampleItem* SampleLibraryManager::createSampleItem(File const & inFile)
     return newItem;
 }
 
-SampleItem* SampleLibraryManager::getSampleItemWithFilePath(String const & inFileName)
+SampleItem* SampleLibraryManager::getSampleItemWithFilePath(String const& inFileName)
 {
     for (SampleItem* sampleItem : allSampleItems)
     {
@@ -740,12 +740,12 @@ SampleItem* SampleLibraryManager::getSampleItemWithFilePath(String const & inFil
     return nullptr;
 }
 
-bool SampleLibraryManager::fileHasBeenAdded(String const & inFilePath)
+bool SampleLibraryManager::fileHasBeenAdded(String const& inFilePath)
 {
     return addedFilePaths.contains(inFilePath);
 }
 
-void SampleLibraryManager::analyseSampleItem(SampleItem* inSampleItem, File const & inFile, bool forceAnalysis)
+void SampleLibraryManager::analyseSampleItem(SampleItem* inSampleItem, File const& inFile, bool forceAnalysis)
 {
     addJob(new SampleAnalysisJob(allSampleItems,
                                 addedSampleItems,

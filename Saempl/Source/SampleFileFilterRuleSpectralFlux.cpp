@@ -22,7 +22,7 @@ SampleFileFilterRuleSpectralFlux::~SampleFileFilterRuleSpectralFlux()
     
 }
 
-bool SampleFileFilterRuleSpectralFlux::matches(SampleItem const & inSampleItem)
+bool SampleFileFilterRuleSpectralFlux::matches(SampleItem const& inSampleItem)
 {
     double propertyValue = inSampleItem.getSpectralFlux();
     
@@ -61,7 +61,7 @@ double SampleFileFilterRuleSpectralFlux::getCompareValue()
     return mCompareValue;
 }
 
-void SampleFileFilterRuleSpectralFlux::setCompareValue(double const & inCompareValue)
+void SampleFileFilterRuleSpectralFlux::setCompareValue(double const& inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

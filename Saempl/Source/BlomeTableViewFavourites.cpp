@@ -9,10 +9,10 @@
 
 #include "BlomeTableViewFavourites.h"
 
-BlomeTableViewFavourites::BlomeTableViewFavourites(SaemplAudioProcessor & inProcessor,
-                                                   SampleNavigationPanel & inSampleNavigationPanel,
-                                                   SampleItemPanel & inSampleItemPanel,
-                                                   AudioPlayer & inAudioPlayer)
+BlomeTableViewFavourites::BlomeTableViewFavourites(SaemplAudioProcessor& inProcessor,
+                                                   SampleNavigationPanel& inSampleNavigationPanel,
+                                                   SampleItemPanel& inSampleItemPanel,
+                                                   AudioPlayer& inAudioPlayer)
 :
 BlomeTableViewBase(inProcessor, inSampleItemPanel, inAudioPlayer),
 sampleNavigationPanel(inSampleNavigationPanel)
@@ -35,7 +35,7 @@ BlomeTableViewFavourites::~BlomeTableViewFavourites()
     
 }
 
-void BlomeTableViewFavourites::cellClicked(int rowNumber, int columnId, MouseEvent const &mouseEvent)
+void BlomeTableViewFavourites::cellClicked(int rowNumber, int columnId, MouseEvent const& mouseEvent)
 {
     // Show sample options pop up menu
     if (mouseEvent.mods.isRightButtonDown())
@@ -52,7 +52,7 @@ void BlomeTableViewFavourites::cellClicked(int rowNumber, int columnId, MouseEve
 /**
  Handles what happens when files are dropped onto the tree view.
  */
-void BlomeTableViewFavourites::filesDropped(StringArray const & files, int x, int y)
+void BlomeTableViewFavourites::filesDropped(StringArray const& files, int x, int y)
 {
     // Adding all the dropped files to the library and favourites
     sampleLibrary.addAllToFavourites(files);

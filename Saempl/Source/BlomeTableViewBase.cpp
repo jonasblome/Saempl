@@ -159,7 +159,7 @@ String BlomeTableViewBase::getCellText(SampleItem* inSampleItem, String columnNa
     }
     else if (columnName == PROPERTY_NAMES[14])
     {
-        return inSampleItem->getPropertiesAreLocked() ? "On" : "Off";
+        return inSampleItem->getPropertyLock() ? "On" : "Off";
     }
     else
     {
@@ -190,13 +190,13 @@ void BlomeTableViewBase::loadSelectedRowIntoAudioPlayer(int rowNumber)
     sampleItemPanel.tryShowAudioResource(inFile);
 }
 
-void BlomeTableViewBase::cellDoubleClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent)
+void BlomeTableViewBase::cellDoubleClicked(int rowNumber, int columnId, MouseEvent const& mouseEvent)
 {
     // Load linked sample item into audio resource
     loadSelectedRowIntoAudioPlayer(rowNumber);
 }
 
-void BlomeTableViewBase::mouseDrag(MouseEvent const & mouseEvent)
+void BlomeTableViewBase::mouseDrag(MouseEvent const& mouseEvent)
 {
     // If the drag was at least 50ms after the mouse was pressed
     if (mouseEvent.getLengthOfMousePress() > 100)
@@ -227,7 +227,7 @@ void BlomeTableViewBase::mouseDrag(MouseEvent const & mouseEvent)
     }
 }
 
-bool BlomeTableViewBase::isInterestedInFileDrag(StringArray const & files)
+bool BlomeTableViewBase::isInterestedInFileDrag(StringArray const& files)
 {
     return true;
 }

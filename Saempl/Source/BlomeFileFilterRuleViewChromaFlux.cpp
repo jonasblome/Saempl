@@ -21,7 +21,7 @@ BlomeFileFilterRuleViewChromaFlux::~BlomeFileFilterRuleViewChromaFlux()
     mCompareValueEditor->removeListener(this);
 }
 
-void BlomeFileFilterRuleViewChromaFlux::paint(Graphics &g)
+void BlomeFileFilterRuleViewChromaFlux::paint(Graphics& g)
 {
     BlomeFileFilterRuleViewBase::paint(g);
     

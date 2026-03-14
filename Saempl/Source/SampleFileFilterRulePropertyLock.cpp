@@ -22,9 +22,9 @@ SampleFileFilterRulePropertyLock::~SampleFileFilterRulePropertyLock()
     
 }
 
-bool SampleFileFilterRulePropertyLock::matches(SampleItem const & inSampleItem)
+bool SampleFileFilterRulePropertyLock::matches(SampleItem const& inSampleItem)
 {
-    bool propertyValue = inSampleItem.getPropertiesAreLocked();
+    bool propertyValue = inSampleItem.getPropertyLock();
     
     switch (mCompareOperator)
     {
@@ -61,7 +61,7 @@ bool SampleFileFilterRulePropertyLock::getCompareValue()
     return mCompareValue;
 }
 
-void SampleFileFilterRulePropertyLock::setCompareValue(bool const & inCompareValue)
+void SampleFileFilterRulePropertyLock::setCompareValue(bool const& inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

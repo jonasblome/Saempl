@@ -25,13 +25,13 @@ BlomeFileTreeView::~BlomeFileTreeView()
     removeMouseListener(this);
 }
 
-void BlomeFileTreeView::filesDropped(StringArray const & files, int x, int y)
+void BlomeFileTreeView::filesDropped(StringArray const& files, int x, int y)
 {
     // Adding all the dropped files to the database
     sampleLibrary.addAllToSampleItems(files);
 }
 
-bool BlomeFileTreeView::isInterestedInFileDrag(StringArray const & files)
+bool BlomeFileTreeView::isInterestedInFileDrag(StringArray const& files)
 {
     return true;
 }
@@ -42,7 +42,7 @@ void BlomeFileTreeView::changeListenerCallback(ChangeBroadcaster* source)
     repaint();
 }
 
-void BlomeFileTreeView::mouseDrag(MouseEvent const & e)
+void BlomeFileTreeView::mouseDrag(MouseEvent const& e)
 {
     // If the drag was at least 50ms after the mouse was pressed
     if (e.getLengthOfMousePress() > 100)

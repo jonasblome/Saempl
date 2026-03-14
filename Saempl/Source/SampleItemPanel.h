@@ -39,12 +39,12 @@ public:
      
      @returns whether the loading of the source was successful or not.
      */
-    bool tryShowAudioResource(File const & inFile);
+    bool tryShowAudioResource(File const& inFile);
     /**
      Starts or stops the playback of the audio preview panel.
      */
     void startOrStopPlayback();
-    bool keyPressed(KeyPress const & key) override;
+    bool keyPressed(KeyPress const& key) override;
     /**
      Sets the gain for the audio playback.
      

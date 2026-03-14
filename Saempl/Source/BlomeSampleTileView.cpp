@@ -162,36 +162,36 @@ void BlomeSampleTileView::paint(Graphics& g)
                      5);
     
     // Make text dependent on tile size
-    String other = "";
+    String properties = "";
     int currentWidth = getWidth();
     
     if (currentWidth > 90)
     {
-        other = other
+        properties = properties
         + "\n\n"
         + " - Key: "
         + KEY_INDEX_TO_KEY_NAME[sampleItem->getKey()];
-        other = other
+        properties = properties
         + "\n"
         + " - Tempo: "
         + std::to_string(sampleItem->getTempo())
         + "bpm";
-        other = other
+        properties = properties
         + "\n"
         + " - Dyn. Range: "
         + std::to_string((int) sampleItem->getDynamicRange())
         + "LUFS";
-        other = other
+        properties = properties
         + "\n"
         + " - Avg. Freq: "
         + std::to_string((int) sampleItem->getSpectralCentroid())
         + "Hz";
-        other = other
+        properties = properties
         + "\n"
         + " - Rolloff: "
         + std::to_string((int) (sampleItem->getSpectralRolloff() * 100))
         + "%";
-        other = other
+        properties = properties
         + "\n"
         + " - Freq. Spread: "
         + std::to_string((int) (sampleItem->getSpectralSpread() * 100))
@@ -199,40 +199,43 @@ void BlomeSampleTileView::paint(Graphics& g)
     }
     if (currentWidth > 150)
     {
-        other = other
+        properties = properties
         + "\n"
         + " - Freq. Flux: "
         + std::to_string((int) (sampleItem->getSpectralFlux() * 100))
         + "%";
-        other = other
+        properties = properties
         + "\n"
         + " - Harm. Flux: "
         + std::to_string((int) (sampleItem->getChromaFlux() * 100))
         + "%";
-        other = other
+        properties = properties
         + "\n"
         + " - Length: "
         + std::to_string((int) sampleItem->getLength())
         + "s";
-        other = other
+        properties = properties
         + "\n"
         + " - Loudness: "
         + std::to_string((int) sampleItem->getLoudnessLUFS())
         + "LUFS";
-        other = other
+        properties = properties
         + "\n"
         + " - ZCR: "
         + std::to_string((int) sampleItem->getZeroCrossingRate())
         + "Hz";
     }
     
-    g.drawFittedText(other,
-                     bounds.reduced(style->PANEL_MARGIN).removeFromBottom(getHeight() - 25).removeFromTop(getHeight() - 25 - style->BUTTON_SIZE_MEDIUM - style->PANEL_MARGIN).toNearestInt(),
+    g.drawFittedText(properties,
+                     bounds.reduced(style->PANEL_MARGIN)
+                     .removeFromBottom(getHeight() - 25)
+                     .removeFromTop(getHeight() - 25 - style->BUTTON_SIZE_MEDIUM - style->PANEL_MARGIN)
+                     .toNearestInt(),
                      Justification::topLeft,
                      5);
 }
 
-void BlomeSampleTileView::mouseDoubleClick(MouseEvent const & event)
+void BlomeSampleTileView::mouseDoubleClick(MouseEvent const& event)
 {
     loadIntoAudioPlayer();
 }

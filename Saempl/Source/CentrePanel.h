@@ -41,7 +41,7 @@ public:
      Selects a random sample in the table view.
      */
     void selectRandomSample();
-    bool keyPressed(KeyPress const & key) override;
+    bool keyPressed(KeyPress const& key) override;
     /**
      Sets the gain for the audio playback.
      
@@ -54,6 +54,8 @@ public:
     void toggleVolumeIsNormalised();
     /**
      Selects an output device for the audio player objects.
+     
+     @param inDeviceName the name of the output device.
      */
     void selectOutputDevice(String inDeviceName);
     

@@ -151,7 +151,7 @@ void SampleItemPanel::changeListenerCallback(ChangeBroadcaster* source)
     }
 }
 
-bool SampleItemPanel::tryShowAudioResource(File const & inFile)
+bool SampleItemPanel::tryShowAudioResource(File const& inFile)
 {
     // Load file into source
     if (inFile.exists() && !inFile.isDirectory() && isSupportedAudioFileFormat(inFile.getFileExtension()))
@@ -192,7 +192,7 @@ void SampleItemPanel::resizePanelComponents()
     }
 }
 
-bool SampleItemPanel::keyPressed(KeyPress const & key)
+bool SampleItemPanel::keyPressed(KeyPress const& key)
 {
     int keyCode = key.getKeyCode();
     

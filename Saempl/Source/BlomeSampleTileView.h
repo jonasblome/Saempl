@@ -21,10 +21,18 @@ class BlomeSampleTileView
 public Component
 {
 public:
+    /**
+     Constructor for the tile view of a sample.
+     
+     @param inSampleItem the sample item to show.
+     @param inSampleLibrary the sample library of the current plugin instance.
+     @param inSampleItemPanel the panel for previewing SampleItem objects.
+     @param inAudioPlayer the audio player for sample preview playback.
+     */
     BlomeSampleTileView(SampleItem* inSampleItem,
-                            SampleLibrary& inSampleLibrary,
-                            SampleItemPanel& inSampleItemPanel,
-                            AudioPlayer& inAudioPlayer);
+                        SampleLibrary& inSampleLibrary,
+                        SampleItemPanel& inSampleItemPanel,
+                        AudioPlayer& inAudioPlayer);
     ~BlomeSampleTileView();
     /**
      @returns the title of the sample item linked to the view.
@@ -61,7 +69,7 @@ private:
     bool isSelected;
     
     void paint(Graphics& g) override;
-    void mouseDoubleClick (MouseEvent const & event) override;
+    void mouseDoubleClick (MouseEvent const& event) override;
     void resized() override;
     void setPlayButton();
     

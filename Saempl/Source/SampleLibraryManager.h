@@ -29,8 +29,6 @@ public ThreadPool
 public:
     /**
      The constructor for the library manager.
-     
-     @params all sample item collections of the sample library.
      */
     SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems,
                          OwnedArray<SampleItem>& inFavouriteSampleItems,
@@ -41,7 +39,8 @@ public:
     /**
      Stores all properties of a sample item object in an xml element.
      */
-    void writeSampleItemToXml(SampleItem* sampleItem, XmlElement* sampleItemXml);
+    void writeSampleItemToXml(SampleItem* sampleItem,
+                              XmlElement* sampleItemXml);
     /**
      Adds meta-information of all sample items to an analysis file and updates their information if needed.
      */
@@ -56,19 +55,19 @@ public:
      
      @param inLibraryDirectory the file of the directory to load.
      */
-    void loadSampleLibrary(File const & inLibraryDirectory);
+    void loadSampleLibrary(File const& inLibraryDirectory);
     /**
      Creates a sample item from the stored properties in an  xml element.
      
      @param sampleItemXml the xml element belonging to the sample item.
      */
-    void createSampleItemFromXml(XmlElement const * sampleItemXml);
+    void createSampleItemFromXml(XmlElement const* sampleItemXml);
     /**
      Loads meta-information of directory and all subdirectories as sample items collection.
      
      @param inLibraryDirectory the library directory file.
      */
-    void loadSampleLibraryFile(File const & inLibraryDirectory);
+    void loadSampleLibraryFile(File const& inLibraryDirectory);
     /**
      Creates a sample item for the given file and sets its properties.
      
@@ -76,19 +75,19 @@ public:
      
      @returns the newly created sample item.
      */
-    SampleItem* createSampleItem(File const & inFile);
+    SampleItem* createSampleItem(File const& inFile);
     /**
      @param inFilePath the file path for which to get the corresponding sample item.
      
      @returns the sample item with that file path.
      */
-    SampleItem* getSampleItemWithFilePath(String const & inFilePath);
+    SampleItem* getSampleItemWithFilePath(String const& inFilePath);
     /**
      @param inFilePath the file path to check.
      
      @returns whether a file with the given file path has already been added to the library.
      */
-    bool fileHasBeenAdded(String const & inFilePath);
+    bool fileHasBeenAdded(String const& inFilePath);
     /**
      Analyses all analysis properties of the given sample file.
      
@@ -96,7 +95,9 @@ public:
      @param inFile the sample file to analyse.
      @param forceAnalysis forces analysis even for files longer than one minute.
      */
-    void analyseSampleItem(SampleItem* inSampleItem, File const & inFile, bool forceAnalysis);
+    void analyseSampleItem(SampleItem* inSampleItem,
+                           File const& inFile,
+                           bool forceAnalysis);
     
 private:
     File libraryDirectory;
@@ -146,11 +147,13 @@ private:
      @param inXml the XmlElement to store in the file.
      @param inFile the file to store the XmlElement in.
      */
-    void writeXmlToFile(XmlElement& inXml, File& inFile);
+    void writeXmlToFile(XmlElement& inXml,
+                        File& inFile);
     /**
      Sets the threads progress bar and status message.
      */
-    void setProgressAndStatus(int numItemsToProcess, int64 startTime);
+    void setProgressAndStatus(int numItemsToProcess,
+                              int64 startTime);
     /**
      Runs the loading of a library while setting the progress for the progress bar.
      */
@@ -170,14 +173,16 @@ private:
      @param tempo the detected tempo of the sample.
      @param title the sample's title containing the actual tempo.
      */
-    void evaluateTempoDetection(int tempo, const String& title);
+    void evaluateTempoDetection(int tempo,
+                                const String& title);
     /**
      Evaluates whether the detected key matches the actual key of the sample.
      
      @param key the detected key of the sample.
      @param title the sample's title containing the actual key.
      */
-    void evaluateKeyDetection(int key, const String& title);
+    void evaluateKeyDetection(int key,
+                              const String& title);
     /**
      Checks for all library files if their directory still exists. If not it deletes the library file.
      */

@@ -30,7 +30,7 @@ String SampleItem::getCurrentFilePath() const
     return mCurrentFilePath;
 }
 
-void SampleItem::setCurrentFilePath(String const & inFilePath)
+void SampleItem::setCurrentFilePath(String const& inFilePath)
 {
     mCurrentFilePath = inFilePath;
 }
@@ -40,7 +40,7 @@ String SampleItem::getOldFilePath() const
     return mOldFilePath;
 }
 
-void SampleItem::setOldFilePath(String const & inFilePath)
+void SampleItem::setOldFilePath(String const& inFilePath)
 {
     mOldFilePath = inFilePath;
 }
@@ -214,7 +214,7 @@ void SampleItem::setComment(String inComment)
     mComment = inComment;
 }
 
-bool SampleItem::getPropertiesAreLocked() const
+bool SampleItem::getPropertyLock() const
 {
     return mPropertyLock;
 }

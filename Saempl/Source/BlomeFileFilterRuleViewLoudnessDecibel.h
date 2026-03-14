@@ -29,7 +29,8 @@ public:
      @param inFilterRule the filter rule that the view should represent.
      @param inSampleLibrary the sample library of the current plugin instance.
      */
-    BlomeFileFilterRuleViewLoudnessDecibel(SampleFileFilterRuleLoudnessDecibel& inFilterRule, SampleLibrary& inSampleLibrary);
+    BlomeFileFilterRuleViewLoudnessDecibel(SampleFileFilterRuleLoudnessDecibel& inFilterRule,
+                                           SampleLibrary& inSampleLibrary);
     ~BlomeFileFilterRuleViewLoudnessDecibel();
     /**
      @returns the rule linked to the view.

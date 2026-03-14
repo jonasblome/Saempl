@@ -19,17 +19,17 @@ AboutPanel::~AboutPanel()
     
 }
 
-void AboutPanel::mouseEnter(MouseEvent const & event)
+void AboutPanel::mouseEnter(MouseEvent const& event)
 {
     repaint();
 }
 
-void AboutPanel::mouseExit(MouseEvent const & event)
+void AboutPanel::mouseExit(MouseEvent const& event)
 {
     repaint();
 }
 
-void AboutPanel::paint(Graphics & g)
+void AboutPanel::paint(Graphics& g)
 {
     // Draw background
     g.setColour(style->COLOUR_ACCENT_LIGHT);

@@ -22,7 +22,7 @@ SampleFileFilterRuleSpectralSpread::~SampleFileFilterRuleSpectralSpread()
     
 }
 
-bool SampleFileFilterRuleSpectralSpread::matches(SampleItem const & inSampleItem)
+bool SampleFileFilterRuleSpectralSpread::matches(SampleItem const& inSampleItem)
 {
     double propertyValue = inSampleItem.getSpectralSpread();
     
@@ -61,7 +61,7 @@ double SampleFileFilterRuleSpectralSpread::getCompareValue()
     return mCompareValue;
 }
 
-void SampleFileFilterRuleSpectralSpread::setCompareValue(double const & inCompareValue)
+void SampleFileFilterRuleSpectralSpread::setCompareValue(double const& inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

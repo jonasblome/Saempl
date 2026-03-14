@@ -9,7 +9,8 @@
 
 #include "BlomeFileFilterRuleViewLength.h"
 
-BlomeFileFilterRuleViewLength::BlomeFileFilterRuleViewLength(SampleFileFilterRuleLength& inFilterRule, SampleLibrary& inSampleLibrary)
+BlomeFileFilterRuleViewLength::BlomeFileFilterRuleViewLength(SampleFileFilterRuleLength& inFilterRule,
+                                                             SampleLibrary& inSampleLibrary)
 :
 BlomeFileFilterRuleViewBase(inFilterRule, inSampleLibrary)
 {
@@ -21,7 +22,7 @@ BlomeFileFilterRuleViewLength::~BlomeFileFilterRuleViewLength()
     mCompareValueEditor->removeListener(this);
 }
 
-void BlomeFileFilterRuleViewLength::paint(Graphics &g)
+void BlomeFileFilterRuleViewLength::paint(Graphics& g)
 {
     BlomeFileFilterRuleViewBase::paint(g);
     

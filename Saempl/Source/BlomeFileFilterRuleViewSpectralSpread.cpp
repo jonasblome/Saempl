@@ -22,7 +22,7 @@ BlomeFileFilterRuleViewSpectralSpread::~BlomeFileFilterRuleViewSpectralSpread()
     mCompareValueEditor->removeListener(this);
 }
 
-void BlomeFileFilterRuleViewSpectralSpread::paint(Graphics &g)
+void BlomeFileFilterRuleViewSpectralSpread::paint(Graphics& g)
 {
     BlomeFileFilterRuleViewBase::paint(g);
     

@@ -36,20 +36,20 @@ public:
      
      @param inFilePaths the file paths to add to the collection.
      */
-    void addAllToSampleItems(StringArray const & inFilePaths);
+    void addAllToSampleItems(StringArray const& inFilePaths);
     /**
      Removes the given sample items from all collections and deletes it.
      
      @param inFilePaths the files to remove.
      @param deletePermanently if true, deletes permanently, if false moves file to trash.
      */
-    void removeSampleItems(StringArray const & inFilePaths, bool deletePermanently);
+    void removeSampleItems(StringArray const& inFilePaths, bool deletePermanently);
     /**
      Adds the files and all their children to the favourites collection.
      
      @param inFildPaths the files/directories to add to the favourites.
      */
-    void addAllToFavourites(StringArray const & inFilePaths);
+    void addAllToFavourites(StringArray const& inFilePaths);
     /**
      Removes the sample items from the favourites collection.
      */
@@ -57,7 +57,7 @@ public:
     /**
      Reanalyses the sample and sets the properties to the newly analysed values.
      */
-    void reanalyseSampleItems(StringArray const & inFiles);
+    void reanalyseSampleItems(StringArray const& inFiles);
     /**
      @returns the directory list object.
      */
@@ -109,6 +109,15 @@ public:
      Renames a sample item.
      */
     void renameSampleItem(String inOriginalPath, String inNewPath);
+    /**
+     Updates the properties of a sample item and filters all samples again afterwards.
+     
+     @param inSampleItem the sample item to edit.
+     @param inTempoChanged whether the tempo was edited.
+     @param inKeyChanged whether the key was edited.
+     @param inCommentChanged whether the comment was edited.
+     @param inPropertyLockChanged whether the property lock was edited.
+     */
     void editSampleItem(SampleItem* inSampleItem,
                         bool inTempoChanged,
                         bool inKeyChanged,
@@ -119,7 +128,7 @@ public:
      
      @returns the sample item with that file path.
      */
-    SampleItem* getSampleItemWithFilePath(String const & inFilePath);
+    SampleItem* getSampleItemWithFilePath(String const& inFilePath);
     
 private:
     std::unique_ptr<TimeSliceThread> mDirectoryScannerThread;
@@ -151,9 +160,10 @@ private:
      Adds the file and all its children to the sample item collection.
      
      @param inFile the file to add to the collection.
+     
      @returns whether any sample was added to the library.
      */
-    bool addFileToSampleItems(File const & inFile);
+    bool addFileToSampleItems(File const& inFile);
     /**
      Creates sample item for given file and adds it to the collection.
      
@@ -161,7 +171,7 @@ private:
      
      @returns the newly added sample item.
      */
-    SampleItem* addToSampleItems(File const & newFile);
+    SampleItem* addToSampleItems(File const& newFile);
     /**
      Adds the file and all its children to the favourites collection.
      
@@ -169,7 +179,7 @@ private:
      
      @returns whether a new item was created for this file.
      */
-    bool addFileToFavourites(File const & inFile);
+    bool addFileToFavourites(File const& inFile);
     /**
      Adds the file as a sample item and appends it to the favourites collection.
      
@@ -177,14 +187,14 @@ private:
      
      @returns whether a new item was created for this file.
      */
-    bool addToFavourites(File const & inFile);
+    bool addToFavourites(File const& inFile);
     /**
      Removes the sample item from all collections and deletes it.
      
      @param inFilePath the file to remove
      @param deletePermanently if true, deletes permanently, if false moves file to trash
      */
-    void removeSampleItem(String const & inFilePath, bool deletePermanently);
+    void removeSampleItem(String const& inFilePath, bool deletePermanently);
     /**
      Removes the sample item from the favourites collection.
      */
@@ -192,7 +202,7 @@ private:
     /**
      Reanalyses the sample and sets the properties to the newly analysed values.
      */
-    void reanalyseSampleItem(File const & inFile);
+    void reanalyseSampleItem(File const& inFile);
     void changeListenerCallback(ChangeBroadcaster* inSource) override;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleLibrary);

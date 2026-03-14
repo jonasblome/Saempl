@@ -18,7 +18,6 @@ class AudioPlayer
 private Timer
 {
 public:
-    
     AudioPlayer();
     ~AudioPlayer();
     /**
@@ -58,7 +57,7 @@ public:
      
      @returns if the loading was successful.
      */
-    bool loadURLIntoTransport(URL const & inURL);
+    bool loadURLIntoTransport(URL const& inURL);
     /**
      Empties and resets the audio sources.
      */
@@ -77,6 +76,8 @@ public:
     void setVolumeIsNormalised(bool inVolumeIsNormalised);
     /**
      Selects an output device for the audio player.
+     
+     @param inDeviceName the name of the output device
      */
     void selectOutputDevice(String inDeviceName);
     

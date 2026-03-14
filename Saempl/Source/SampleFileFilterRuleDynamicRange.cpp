@@ -22,7 +22,7 @@ SampleFileFilterRuleDynamicRange::~SampleFileFilterRuleDynamicRange()
     
 }
 
-bool SampleFileFilterRuleDynamicRange::matches(SampleItem const & inSampleItem)
+bool SampleFileFilterRuleDynamicRange::matches(SampleItem const& inSampleItem)
 {
     double propertyValue = inSampleItem.getDynamicRange();
     
@@ -61,7 +61,7 @@ double SampleFileFilterRuleDynamicRange::getCompareValue()
     return mCompareValue;
 }
 
-void SampleFileFilterRuleDynamicRange::setCompareValue(double const & inCompareValue)
+void SampleFileFilterRuleDynamicRange::setCompareValue(double const& inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

@@ -9,7 +9,7 @@
 
 #include "BlomeTransparentButton.h"
 
-BlomeTransparentButton::BlomeTransparentButton(String const & buttonName)
+BlomeTransparentButton::BlomeTransparentButton(String const& buttonName)
 :
 Button(buttonName)
 {

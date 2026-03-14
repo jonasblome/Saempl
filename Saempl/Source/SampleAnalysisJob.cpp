@@ -12,7 +12,7 @@
 SampleAnalysisJob::SampleAnalysisJob(OwnedArray<SampleItem>& inSampleItems,
                                          OwnedArray<SampleItem>& inAddedSampleItems,
                                          StringArray& inAddedFilePaths,
-                                         File const & inFile,
+                                         File const& inFile,
                                          SampleItem* inSampleItem,
                                          bool forceAnalysis,
                                          int& inNumProcessedItems)

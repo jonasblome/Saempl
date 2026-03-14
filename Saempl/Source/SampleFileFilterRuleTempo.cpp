@@ -22,7 +22,7 @@ SampleFileFilterRuleTempo::~SampleFileFilterRuleTempo()
     
 }
 
-bool SampleFileFilterRuleTempo::matches(SampleItem const & inSampleItem)
+bool SampleFileFilterRuleTempo::matches(SampleItem const& inSampleItem)
 {
     int propertyValue = inSampleItem.getTempo();
     
@@ -61,7 +61,7 @@ int SampleFileFilterRuleTempo::getCompareValue()
     return mCompareValue;
 }
 
-void SampleFileFilterRuleTempo::setCompareValue(int const & inCompareValue)
+void SampleFileFilterRuleTempo::setCompareValue(int const& inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

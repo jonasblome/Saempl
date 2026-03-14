@@ -34,6 +34,7 @@ public:
      
      @param inProcessor the processor object of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
+     @param inAudioPlayer the audio player for sample preview playback.     
      */
     BlomeTableViewBase(SaemplAudioProcessor& inProcessor,
                        SampleItemPanel& inSampleItemPanel,
@@ -81,9 +82,9 @@ protected:
      Loads the file of the selected row into the audio player.
      */
     void loadSelectedRowIntoAudioPlayer(int rowNumber);
-    void cellDoubleClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent) override;
-    void mouseDrag(MouseEvent const & mouseEvent) override;
-    bool isInterestedInFileDrag(StringArray const & files) override;
+    void cellDoubleClicked(int rowNumber, int columnId, MouseEvent const& mouseEvent) override;
+    void mouseDrag(MouseEvent const& mouseEvent) override;
+    bool isInterestedInFileDrag(StringArray const& files) override;
     void returnKeyPressed(int lastRowSelected) override;
     void sortOrderChanged(int newSortColumnId, bool isForwards) override;
     /**

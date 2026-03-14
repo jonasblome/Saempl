@@ -111,7 +111,7 @@ void SampleTablePanel::visibilityChanged()
     }
 }
 
-bool SampleTablePanel::keyPressed(KeyPress const & key)
+bool SampleTablePanel::keyPressed(KeyPress const& key)
 {
     if (!isShowing())
     {

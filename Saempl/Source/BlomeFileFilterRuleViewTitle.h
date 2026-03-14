@@ -29,7 +29,8 @@ public:
      @param inFilterRule the filter rule that the view should represent.
      @param inSampleLibrary the sample library of the current plugin instance.
      */
-    BlomeFileFilterRuleViewTitle(SampleFileFilterRuleTitle& inFilterRule, SampleLibrary& inSampleLibrary);
+    BlomeFileFilterRuleViewTitle(SampleFileFilterRuleTitle& inFilterRule,
+                                 SampleLibrary& inSampleLibrary);
     ~BlomeFileFilterRuleViewTitle();
     /**
      @returns the rule linked to the view.

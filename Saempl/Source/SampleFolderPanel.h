@@ -32,6 +32,7 @@ public:
      
      @param inProcessor the processor object of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
+     @param inAudioPlayer the audio player for sample preview playback.     
      */
     SampleFolderPanel(SaemplAudioProcessor& inProcessor,
                       SampleItemPanel& inSampleItemPanel,
@@ -53,9 +54,9 @@ private:
     SampleItemCollectionScope mSampleItemCollectionType;
     
     void selectionChanged() override;
-    void fileClicked(File const & file, MouseEvent const & mouseEvent) override;
-    void fileDoubleClicked(File const &) override;
-    void browserRootChanged(File const &) override;
+    void fileClicked(File const& file, MouseEvent const& mouseEvent) override;
+    void fileDoubleClicked(File const& ) override;
+    void browserRootChanged(File const& ) override;
     void changeListenerCallback(ChangeBroadcaster* source) override;
     /**
      Deletes the files selected in the file tree view.

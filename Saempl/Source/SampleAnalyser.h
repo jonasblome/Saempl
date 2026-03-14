@@ -23,13 +23,13 @@ public:
     SampleAnalyser();
     ~SampleAnalyser();
     /**
-     Analyses all properties of a given file and sets the properties in the provided SampleItem object.
+     Analyses all properties of a given sample and updates its properties.
      
      @param inSampleItem the sample item to set the properties for.
-     @param inFile the file belonging to the sample item.
      @param forceAnalysis forces analysis even for files longer than one minute.
      */
-    void analyseSample(SampleItem* inSampleItem, bool forceAnalysis);
+    void analyseSample(SampleItem* inSampleItem,
+                       bool forceAnalysis);
     
 private:
     std::unique_ptr<AudioFormatReaderSource> mCurrentAudioFileSource;
@@ -99,7 +99,7 @@ private:
      
      @param inFile the file to load into the audio file source.
      */
-    void loadAudioFileSource(File const & inFile);
+    void loadAudioFileSource(File const& inFile);
     /**
      Analyses the loudness of the given file in LUFS and dB.
      */
@@ -112,7 +112,10 @@ private:
      @param inFFTHopLength the hop length with which to shift the windows.
      @param inCompressionFactor the logarithmic compression factor of the frequency coefficients.
      */
-    void calculateSTFTSpectrum(int inFFTOrder, int inBufferSize, int inFFTHopLength, float compressionFactor);
+    void calculateSTFTSpectrum(int inFFTOrder,
+                               int inBufferSize,
+                               int inFFTHopLength,
+                               float compressionFactor);
     /**
      Calculates the novelty function and the spectral centroid and flux.
      
@@ -133,7 +136,8 @@ private:
      
      @returns the tempogram as a 2d vector.
      */
-    std::vector<std::vector<float>> calculateTempogram(std::vector<float>& noveltyFunction, int& numTempogramWindows);
+    std::vector<std::vector<float>> calculateTempogram(std::vector<float>& noveltyFunction,
+                                                       int& numTempogramWindows);
     /**
      Calculates a tempo histogram with the optimal pitch at each position from a given tempogram.
      
@@ -142,11 +146,10 @@ private:
      
      @returns histogram of optimal tempi in the tempogram.
      */
-    std::vector<int> calculateTempoHistogram(int numTempogramWindows, std::vector<std::vector<float>>& spectralTempogram);
+    std::vector<int> calculateTempoHistogram(int numTempogramWindows,
+                                             std::vector<std::vector<float>>& spectralTempogram);
     /**
-     Analyses the tempo of the given file in bpm.
-     
-     @param inFile the file to analyse.
+     Analyses the tempo of the given file.
      
      @returns the tempo of the audio file in bpm.
      */
@@ -169,13 +172,12 @@ private:
      @param averageCorrelation the output variable for the average key chroma correlation.
      @param numKeys the amount of keys to correlate with.
      */
-    std::vector<float> calculateKeyChromaCorrelations(float& averageCorrelation, int& numKeys);
+    std::vector<float> calculateKeyChromaCorrelations(float& averageCorrelation,
+                                                      int& numKeys);
     /**
      Analyses the key of the given file.
      
-     @param inFile the file to analyse.
-     
-     @returns the key of the audio file.
+     @returns the key index of the audio file.
      */
     int analyseSampleKey();
     /**
@@ -189,7 +191,9 @@ private:
      
      @returns the frequency of that pitch.
      */
-    float pitchToFrequency(float inPitchIndex, int referenceIndex = 69, float referenceFrequency = 440.0);
+    float pitchToFrequency(float inPitchIndex,
+                           int referenceIndex = 69,
+                           float referenceFrequency = 440.0);
     /**
      Calculates the corresponding pitch to a frequency according to the MIDI protocol.
      
@@ -201,7 +205,9 @@ private:
      
      @returns the pitch index of that frequency.
      */
-    float frequencyToPitch(float inFrequency, int referenceIndex = 69, float referenceFrequency = 440.0);
+    float frequencyToPitch(float inFrequency,
+                           int referenceIndex = 69,
+                           float referenceFrequency = 440.0);
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleAnalyser);
 };

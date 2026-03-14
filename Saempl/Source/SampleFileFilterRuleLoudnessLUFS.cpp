@@ -22,7 +22,7 @@ SampleFileFilterRuleLoudnessLUFS::~SampleFileFilterRuleLoudnessLUFS()
     
 }
 
-bool SampleFileFilterRuleLoudnessLUFS::matches(SampleItem const & inSampleItem)
+bool SampleFileFilterRuleLoudnessLUFS::matches(SampleItem const& inSampleItem)
 {
     int propertyValue = inSampleItem.getLoudnessLUFS();
     
@@ -61,7 +61,7 @@ double SampleFileFilterRuleLoudnessLUFS::getCompareValue()
     return mCompareValue;
 }
 
-void SampleFileFilterRuleLoudnessLUFS::setCompareValue(double const & inCompareValue)
+void SampleFileFilterRuleLoudnessLUFS::setCompareValue(double const& inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

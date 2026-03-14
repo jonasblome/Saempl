@@ -27,7 +27,7 @@ FileFilterPanel::~FileFilterPanel()
     }
 }
 
-void FileFilterPanel::paint(Graphics &g)
+void FileFilterPanel::paint(Graphics& g)
 {
     // Draw background
     g.setColour(style->COLOUR_ACCENT_MEDIUM);
@@ -293,7 +293,7 @@ void FileFilterPanel::addFilterRuleView()
     }
 }
 
-void FileFilterPanel::removeFilterRule(SampleFileFilterRuleBase const & inFilterRule)
+void FileFilterPanel::removeFilterRule(SampleFileFilterRuleBase const& inFilterRule)
 {
     libraryFileFilter.getFilterRules().removeObject(&inFilterRule);
 }

@@ -21,7 +21,7 @@ BlomeFileFilterRuleViewCentroid::~BlomeFileFilterRuleViewCentroid()
     mCompareValueEditor->removeListener(this);
 }
 
-void BlomeFileFilterRuleViewCentroid::paint(Graphics &g)
+void BlomeFileFilterRuleViewCentroid::paint(Graphics& g)
 {
     BlomeFileFilterRuleViewBase::paint(g);
     

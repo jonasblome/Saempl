@@ -142,7 +142,7 @@ void CentrePanel::resizePanelComponents()
     }
 }
 
-bool CentrePanel::keyPressed(KeyPress const & key)
+bool CentrePanel::keyPressed(KeyPress const& key)
 {
     bool pressWasHandled = false;
     

@@ -22,7 +22,7 @@ BlomeFileFilterRuleViewDynamicRange::~BlomeFileFilterRuleViewDynamicRange()
     mCompareValueEditor->removeListener(this);
 }
 
-void BlomeFileFilterRuleViewDynamicRange::paint(Graphics &g)
+void BlomeFileFilterRuleViewDynamicRange::paint(Graphics& g)
 {
     BlomeFileFilterRuleViewBase::paint(g);
     

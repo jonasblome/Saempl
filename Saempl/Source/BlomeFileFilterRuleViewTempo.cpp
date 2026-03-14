@@ -21,7 +21,7 @@ BlomeFileFilterRuleViewTempo::~BlomeFileFilterRuleViewTempo()
     mCompareValueEditor->removeListener(this);
 }
 
-void BlomeFileFilterRuleViewTempo::paint(Graphics &g)
+void BlomeFileFilterRuleViewTempo::paint(Graphics& g)
 {
     BlomeFileFilterRuleViewBase::paint(g);
     

@@ -21,7 +21,7 @@ BlomeFileFilterRuleViewPropertyLock::~BlomeFileFilterRuleViewPropertyLock()
     
 }
 
-void BlomeFileFilterRuleViewPropertyLock::paint(Graphics &g)
+void BlomeFileFilterRuleViewPropertyLock::paint(Graphics& g)
 {
     BlomeFileFilterRuleViewBase::paint(g);
 }

@@ -154,7 +154,7 @@ Point<int> BlomeSampleGridView::selectRandomTile()
     }
     
     int randomTileIndex = 0;
-    BlomeSampleTileView * randomTile;
+    BlomeSampleTileView* randomTile;
     
     do
     {
@@ -346,13 +346,13 @@ void BlomeSampleGridView::changeListenerCallback(ChangeBroadcaster* source)
     }
 }
 
-void BlomeSampleGridView::filesDropped(StringArray const & files, int x, int y)
+void BlomeSampleGridView::filesDropped(StringArray const& files, int x, int y)
 {
     // Adding all the dropped files to the database
     sampleLibrary.addAllToSampleItems(files);
 }
 
-bool BlomeSampleGridView::isInterestedInFileDrag(StringArray const & files)
+bool BlomeSampleGridView::isInterestedInFileDrag(StringArray const& files)
 {
     return true;
 }
@@ -373,7 +373,7 @@ void BlomeSampleGridView::deselectTile(int inTileIndex)
     mSampleTiles.getUnchecked(inTileIndex)->setSelected(false);
 }
 
-void BlomeSampleGridView::mouseUp(MouseEvent const & event)
+void BlomeSampleGridView::mouseUp(MouseEvent const& event)
 {
     Point<int> mousePosition = event.getEventRelativeTo(this).getPosition();
     bool commandIsDown = event.mods.isCommandDown();
@@ -480,7 +480,7 @@ void BlomeSampleGridView::mouseUp(MouseEvent const & event)
     repaint();
 }
 
-void BlomeSampleGridView::mouseDrag(MouseEvent const & mouseEvent)
+void BlomeSampleGridView::mouseDrag(MouseEvent const& mouseEvent)
 {
     // If the drag was at least 50ms after the mouse was pressed
     if (mouseEvent.getLengthOfMousePress() > 100)

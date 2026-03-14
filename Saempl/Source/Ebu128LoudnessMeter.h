@@ -79,7 +79,7 @@ public:
     /**
      Adapted by Jonas Blome.
      */
-    void processBlock(AudioSampleBuffer const & buffer, int& numZeroCrossings, float& decibel);
+    void processBlock(AudioSampleBuffer const& buffer, int& numZeroCrossings, float& decibel);
     float getShortTermLoudness() const;
     float getMaximumShortTermLoudness() const;
     vector<float>& getMomentaryLoudnessForIndividualChannels();

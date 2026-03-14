@@ -804,7 +804,7 @@ std::vector<float> SampleGridClusterer::filterVerticallyMirror(std::vector<float
     return output;
 }
 
-void SampleGridClusterer::checkRandomSwaps(int radius, std::vector<std::vector<float>> & grid, int rows, int columns)
+void SampleGridClusterer::checkRandomSwaps(int radius, std::vector<std::vector<float>>& grid, int rows, int columns)
 {
     // Set swap size
     int swapAreaWidth = jmin<int>(2 * radius + 1, columns);

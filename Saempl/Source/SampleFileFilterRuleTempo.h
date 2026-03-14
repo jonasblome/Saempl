@@ -26,7 +26,7 @@ public:
      */
     SampleFileFilterRuleTempo(String inRulePropertyName);
     ~SampleFileFilterRuleTempo();
-    bool matches(SampleItem const & inSampleItem) override;
+    bool matches(SampleItem const& inSampleItem) override;
     /**
      @returns the compare value of the rule.
      */
@@ -36,7 +36,7 @@ public:
      
      @param inCompareValue the value to set.
      */
-    void setCompareValue(int const & inCompareValue);
+    void setCompareValue(int const& inCompareValue);
     bool canHaveEffect() override;
     
 private:

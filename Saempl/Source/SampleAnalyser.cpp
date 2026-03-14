@@ -33,6 +33,8 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
         return;
     }
     
+    std::set<String> lockedProperties = inSampleItem->getLockedProperties();
+    
     // Set sample rate
     inSampleItem->setSampleRate(sampleRate);
     
@@ -53,15 +55,20 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
     if (length <= 60 || forceAnalysis)
     {
         // Set properties
-        float tempo = analyseSampleTempo();
-        
-        if (length >= 60.0f / upperCyclicBPMLimit * 5)
+        if (lockedProperties.find(PROPERTY_NAMES[4]) == lockedProperties.end()
+            && length >= 60.0f / upperCyclicBPMLimit * 5)
         {
+            float tempo = analyseSampleTempo();
             inSampleItem->setTempo(tempo);
         }
         
         int key = analyseSampleKey();
-        inSampleItem->setKey(key);
+        
+        if (lockedProperties.find(PROPERTY_NAMES[5]) == lockedProperties.end())
+        {
+            inSampleItem->setKey(key);
+        }
+        
         inSampleItem->setSpectralCentroid(spectralCentroid);
         inSampleItem->setSpectralRolloff(spectralRollOffBandIndex * 1.0 / NUM_SPECTRAL_BANDS);
         inSampleItem->setSpectralSpread(spectralSpread);
@@ -70,13 +77,13 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
         inSampleItem->setSpectralDistribution(mSpectralDistribution);
         inSampleItem->setChromaDistribution(mChromaDistribution);
     }
-    else
+    else if (lockedProperties.find(PROPERTY_NAMES[5]) == lockedProperties.end())
     {
         inSampleItem->setKey(SAMPLE_TOO_LONG_INDEX);
     }
 }
 
-void SampleAnalyser::loadAudioFileSource(File const & inFile)
+void SampleAnalyser::loadAudioFileSource(File const& inFile)
 {
     mCurrentAudioFileSource.reset();
     AudioFormatReader* reader = mFormatManager->createReaderFor(inFile);
@@ -253,7 +260,7 @@ std::vector<float> SampleAnalyser::calculateNoveltyFunction()
     return noveltyFunction;
 }
 
-void SampleAnalyser::noveltyFunctionSubtractAverage(std::vector<float> & noveltyFunction)
+void SampleAnalyser::noveltyFunctionSubtractAverage(std::vector<float>& noveltyFunction)
 {
     noveltyFunctionSampleRate = sampleRate / tempoFFTHopLength;
     int noveltyAveragingWindowLength = noveltyFunctionSampleRate * noveltyAveragingWindowLengthInSeconds;
@@ -275,8 +282,8 @@ void SampleAnalyser::noveltyFunctionSubtractAverage(std::vector<float> & novelty
     }
 }
 
-std::vector<std::vector<float>> SampleAnalyser::calculateTempogram(std::vector<float> & noveltyFunction,
-                                                                   int & numTempogramWindows)
+std::vector<std::vector<float>> SampleAnalyser::calculateTempogram(std::vector<float>& noveltyFunction,
+                                                                   int& numTempogramWindows)
 {
     std::vector<std::vector<float>> spectralTempogram;
     spectralTempogram.resize(numTempi);
@@ -348,7 +355,7 @@ std::vector<std::vector<float>> SampleAnalyser::calculateTempogram(std::vector<f
     return spectralTempogram;
 }
 
-std::vector<int> SampleAnalyser::calculateTempoHistogram(int numTempogramWindows, std::vector<std::vector<float>> & spectralTempogram)
+std::vector<int> SampleAnalyser::calculateTempoHistogram(int numTempogramWindows, std::vector<std::vector<float>>& spectralTempogram)
 {
     std::vector<int> tempoEstimationsHistogram;
     tempoEstimationsHistogram.resize(numTempi);
@@ -487,7 +494,7 @@ std::vector<std::vector<float>> SampleAnalyser::calculateLogSpectrogram()
     return logSpectrogram;
 }
 
-void SampleAnalyser::calculateChromaDistribution(std::vector<std::vector<float>> & logSpectrogram)
+void SampleAnalyser::calculateChromaDistribution(std::vector<std::vector<float>>& logSpectrogram)
 {
     float averageFlux = 0.0;
     float maxFlux = 0.0;
@@ -534,7 +541,7 @@ void SampleAnalyser::calculateChromaDistribution(std::vector<std::vector<float>>
     }
 }
 
-std::vector<float> SampleAnalyser::calculateKeyChromaCorrelations(float & averageCorrelation, int & numKeys)
+std::vector<float> SampleAnalyser::calculateKeyChromaCorrelations(float& averageCorrelation, int& numKeys)
 {
     std::vector<float> keyChromaCorrelations;
     keyChromaCorrelations.resize(numKeys);
@@ -543,7 +550,7 @@ std::vector<float> SampleAnalyser::calculateKeyChromaCorrelations(float & averag
     
     for (int k = 0; k < numKeys; k++)
     {
-        std::vector<int> const & keyPattern = KEY_PATTERNS[k];
+        std::vector<int> const& keyPattern = KEY_PATTERNS[k];
         
         for (int c = 0; c < NUM_CHROMA; c++)
         {

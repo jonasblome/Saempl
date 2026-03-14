@@ -35,7 +35,7 @@ public:
      
      @returns whether the item matches the rule.
      */
-    virtual bool matches(SampleItem const & inSampleItem) = 0;
+    virtual bool matches(SampleItem const& inSampleItem) = 0;
     /**
      @returns the compare operator of the rule.
      */

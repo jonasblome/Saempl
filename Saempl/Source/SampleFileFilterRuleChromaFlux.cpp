@@ -22,7 +22,7 @@ SampleFileFilterRuleChromaFlux::~SampleFileFilterRuleChromaFlux()
     
 }
 
-bool SampleFileFilterRuleChromaFlux::matches(SampleItem const & inSampleItem)
+bool SampleFileFilterRuleChromaFlux::matches(SampleItem const& inSampleItem)
 {
     double propertyValue = inSampleItem.getChromaFlux();
     
@@ -61,7 +61,7 @@ double SampleFileFilterRuleChromaFlux::getCompareValue()
     return mCompareValue;
 }
 
-void SampleFileFilterRuleChromaFlux::setCompareValue(double const & inCompareValue)
+void SampleFileFilterRuleChromaFlux::setCompareValue(double const& inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

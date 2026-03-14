@@ -23,7 +23,7 @@ MainPanel::~MainPanel()
     
 }
 
-void MainPanel::paint(Graphics &g)
+void MainPanel::paint(Graphics& g)
 {
     // Header panel drop shadow
     drawDropShadow(g,
@@ -102,7 +102,7 @@ void MainPanel::setPanelComponents()
     resizePanelComponents();
 }
 
-bool MainPanel::keyPressed(KeyPress const & key)
+bool MainPanel::keyPressed(KeyPress const& key)
 {
     bool pressWasHandled = false;
     

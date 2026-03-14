@@ -9,9 +9,9 @@
 
 #include "SampleFavouritesPanel.h"
 
-SampleFavouritesPanel::SampleFavouritesPanel(SaemplAudioProcessor & inProcessor,
-                                             SampleNavigationPanel & inSampleNavigationPanel,
-                                             SampleItemPanel & inSampleItemPanel,
+SampleFavouritesPanel::SampleFavouritesPanel(SaemplAudioProcessor& inProcessor,
+                                             SampleNavigationPanel& inSampleNavigationPanel,
+                                             SampleItemPanel& inSampleItemPanel,
                                              AudioPlayer& inAudioPlayer)
 :
 PanelBase(inProcessor),
@@ -90,7 +90,7 @@ void SampleFavouritesPanel::resizePanelComponents()
     }
 }
 
-bool SampleFavouritesPanel::keyPressed(KeyPress const & key)
+bool SampleFavouritesPanel::keyPressed(KeyPress const& key)
 {
     if (key.getKeyCode() == 75) // K
     {

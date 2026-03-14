@@ -21,11 +21,25 @@ public ThreadPoolJob
 public:
     /**
      The sample swap job constructor.
+     
+     @param inSampleItems all sample items.
+     @param inStartIndicesInUse the list of indices that are already in use by another job.
+     @param inSwapPositionsInUse the list of swap positions that are already in use.
+     @param inSwapLock the lock for swap elements.
+     @param inNumSwapPositions the amount of positions to swap.
+     @param inApplyWrap whether to wrap the swapping around the edges of the grid.
+     @param inSwapAreaIndices all the indices of the area to swap in.
+     @param inSwapAreaWidth the width of the swap area.
+     @param inSwapAreaHeight the height of the swap area.
+     @param inIndexOfKeyFeature the index number of the key property.
+     @param inRows the amount of rows in the grid.
+     @param inColumns the amount of columns in the grid.
+     @param inGrid the whole sample grid.
      */
     SampleSwapJob(OwnedArray<SampleItem>& inSampleItems,
-                  std::set<int> & inStartIndicesInUse,
-                  std::set<int> & inSwapPositionsInUse,
-                  CriticalSection & inSwapLock,
+                  std::set<int>& inStartIndicesInUse,
+                  std::set<int>& inSwapPositionsInUse,
+                  CriticalSection& inSwapLock,
                   int inNumSwapPositions,
                   bool inApplyWrap,
                   std::vector<int> inSwapAreaIndices,
@@ -34,7 +48,7 @@ public:
                   int inIndexOfKeyFeature,
                   int inRows,
                   int inColumns,
-                  std::vector<std::vector<float>> & inGrid);
+                  std::vector<std::vector<float>>& inGrid);
     ~SampleSwapJob();
     
 private:
@@ -47,10 +61,10 @@ private:
     int const rows;
     int const columns;
     int startIndex;
-    OwnedArray<SampleItem> & sampleItems;
-    std::set<int> & swapPositionsInUse;
-    std::set<int> & startIndicesInUse;
-    CriticalSection & swapLock;
+    OwnedArray<SampleItem>& sampleItems;
+    std::set<int>& swapPositionsInUse;
+    std::set<int>& startIndicesInUse;
+    CriticalSection& swapLock;
     std::vector<SampleItem*> swappedElements;
     std::vector<int> swapPositions;
     std::vector<int> swapAreaIndices;
@@ -83,9 +97,22 @@ private:
                               int swapAreaHeight,
                               int rows,
                               int columns);
-    int getPosition(int columns, int rows, int sp, std::vector<int> &swapAreaIndices, int xStart, int yStart);
-    
-/**
+    /**
+     @param columns the amount of columns on the grid.
+     @param rows the amount of rows on the grid.
+     @param swapPosition the position in the swap area.
+     @param xStart the x position of the swap area.
+     @param yStart the y position of the swap area
+     
+     @returns the position of the swapped item within the whole grid.
+     */
+    int getPosition(int columns,
+                    int rows,
+                    int swapPosition,
+                    std::vector<int>& swapAreaIndices,
+                    int xStart,
+                    int yStart);
+    /**
      Chooses a random position on the grid and finds a set of random positions within a given area around that initial position,
      while mirroring the grid at the edges.
      
@@ -111,7 +138,9 @@ private:
      @param numSwapPositions the number of swaps to perform.
      @param grid the grid of vectors to cluster.
      */
-    void doSwaps(std::vector<int>& swapPositions, int numSwapPositions, std::vector<std::vector<float>>& grid);
+    void doSwaps(std::vector<int>& swapPositions,
+                 int numSwapPositions,
+                 std::vector<std::vector<float>>& grid);
     /**
      Calculates a normalised distance matrix between all vectors that are in the swap positions and the current vectors in the grid.
      
@@ -127,14 +156,16 @@ private:
      @param v1 the first vector.
      @param v2 the second vector.
      */
-    float calculateDistance(std::vector<float> v1, std::vector<float> v2);
+    float calculateDistance(std::vector<float> v1,
+                            std::vector<float> v2);
     /**
      Computes the optimal permutation of vectors that minimises the sum of distances between the vectors.
      
      @param matrix the distance matrix for the vectors.
      @param numDimensions the number of dimensions in a feature vector.
      */
-    std::vector<int> computeAssignment(std::vector<std::vector<int>>& matrix, int numDimensions);
+    std::vector<int> computeAssignment(std::vector<std::vector<int>>& matrix,
+                                       int numDimensions);
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleSwapJob);
 };

@@ -25,8 +25,9 @@ public:
     /**
      The constructor for the sample table panel.
      
-     @param inSampleLibrary the library object of the current plugin instance.
+     @param inProcessor the processor object of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
+     @param inAudioPlayer the audio player for sample preview playback.     
      */
     SampleGridPanel(SaemplAudioProcessor& inProcessor,
                     SampleItemPanel& inSampleItemPanel,
@@ -36,7 +37,7 @@ public:
      Selects a random sample on the grid.
      */
     void selectRandomSample();
-    bool keyPressed(KeyPress const & key) override;
+    bool keyPressed(KeyPress const& key) override;
     /**
      Show the sample in the grid view.
      

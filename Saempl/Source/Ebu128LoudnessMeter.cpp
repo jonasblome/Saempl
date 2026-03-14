@@ -159,7 +159,7 @@ void Ebu128LoudnessMeter::prepareToPlay(double sampleRate,
 /**
  Adapted by Jonas Blome.
  */
-void Ebu128LoudnessMeter::processBlock(juce::AudioSampleBuffer const & buffer,
+void Ebu128LoudnessMeter::processBlock(juce::AudioSampleBuffer const& buffer,
                                        int& numZeroCrossings,
                                        float& decibel)
 {

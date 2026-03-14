@@ -29,7 +29,7 @@ public:
     /**
      Sets the file path of the corresponding audio file.
      */
-    void setCurrentFilePath(String const & inFilePath);
+    void setCurrentFilePath(String const& inFilePath);
     /**
      @returns the sample's old file path.
      */
@@ -37,7 +37,7 @@ public:
     /**
      Sets the old file path of the sample.
      */
-    void setOldFilePath(String const & inFilePath);
+    void setOldFilePath(String const& inFilePath);
     /**
      @returns the sample's title.
      */
@@ -198,9 +198,25 @@ public:
      @param inChromaDistribution the vector to set.
      */
     void setChromaDistribution(std::vector<float> inChromaDistribution);
+    /**
+     @returns the sample's comment.
+     */
     String getComment() const;
+    /**
+     Sets the comment of the sample item.
+     
+     @param inComment the comment to set.
+     */
     void setComment(String inComment);
-    bool getPropertiesAreLocked() const;
+    /**
+     @returns whether the sample's property lock is active or not.
+     */
+    bool getPropertyLock() const;
+    /**
+     Activates/deactivates the property lock of the sample item.
+     
+     @param inIsLocked whether the properties are locked.
+     */
     void setPropertyLock(bool inIsLocked);
     /**
      @returns the sample's feature vector.
@@ -212,8 +228,19 @@ public:
      @param inFeatureVector the vector to set.
      */
     void setFeatureVector(std::vector<float> inFeatureVector);
+    /**
+     Removes the list of locked properties of this sample.
+     */
     void clearLockedProperties();
+    /**
+     Adds a property to the list of locked properties.
+     
+     @param the property to lock.
+     */
     void addLockedProperty(String inPropertyName);
+    /**
+     @returns the list of locked properties.
+     */
     std::set<String> getLockedProperties();
     
 private:

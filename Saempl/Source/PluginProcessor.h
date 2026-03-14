@@ -53,11 +53,11 @@ public:
     int getCurrentProgram() override;
     void setCurrentProgram (int index) override;
     juce::String const getProgramName (int index) override;
-    void changeProgramName (int index, juce::String const & newName) override;
+    void changeProgramName (int index, juce::String const& newName) override;
     
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
-    void setStateInformation (void const * data, int sizeInBytes) override;
+    void setStateInformation (void const* data, int sizeInBytes) override;
     
     //==============================================================================
     /**

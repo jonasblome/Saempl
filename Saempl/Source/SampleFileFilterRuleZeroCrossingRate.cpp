@@ -22,7 +22,7 @@ SampleFileFilterRuleZeroCrossingRate::~SampleFileFilterRuleZeroCrossingRate()
     
 }
 
-bool SampleFileFilterRuleZeroCrossingRate::matches(SampleItem const & inSampleItem)
+bool SampleFileFilterRuleZeroCrossingRate::matches(SampleItem const& inSampleItem)
 {
     double propertyValue = inSampleItem.getZeroCrossingRate();
     
@@ -61,7 +61,7 @@ double SampleFileFilterRuleZeroCrossingRate::getCompareValue()
     return mCompareValue;
 }
 
-void SampleFileFilterRuleZeroCrossingRate::setCompareValue(double const & inCompareValue)
+void SampleFileFilterRuleZeroCrossingRate::setCompareValue(double const& inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

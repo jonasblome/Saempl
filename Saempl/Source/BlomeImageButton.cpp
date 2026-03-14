@@ -9,7 +9,7 @@
 
 #include "BlomeImageButton.h"
 
-BlomeImageButton::BlomeImageButton(String const & name, bool inHasBackground)
+BlomeImageButton::BlomeImageButton(String const& name, bool inHasBackground)
 :
 ImageButton(name),
 hasBackground(inHasBackground)

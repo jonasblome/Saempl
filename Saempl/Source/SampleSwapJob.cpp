@@ -9,10 +9,10 @@
 
 #include "SampleSwapJob.h"
 
-SampleSwapJob::SampleSwapJob(OwnedArray<SampleItem> & inSampleItems,
-                             std::set<int> & inSwapPositionsInUse,
-                             std::set<int> & inStartIndicesInUse,
-                             CriticalSection & inSwapLock,
+SampleSwapJob::SampleSwapJob(OwnedArray<SampleItem>& inSampleItems,
+                             std::set<int>& inSwapPositionsInUse,
+                             std::set<int>& inStartIndicesInUse,
+                             CriticalSection& inSwapLock,
                              int inNumSwapPositions,
                              bool inApplyWrap,
                              std::vector<int> inSwapAreaIndices,
@@ -21,7 +21,7 @@ SampleSwapJob::SampleSwapJob(OwnedArray<SampleItem> & inSampleItems,
                              int inIndexOfKeyFeature,
                              int inRows,
                              int inColumns,
-                             std::vector<std::vector<float>> & inGrid)
+                             std::vector<std::vector<float>>& inGrid)
 :
 ThreadPoolJob("SampleSwapJob"),
 numSwapPositions(inNumSwapPositions),
@@ -48,7 +48,6 @@ SampleSwapJob::~SampleSwapJob()
 
 ThreadPoolJob::JobStatus SampleSwapJob::runJob()
 {
-    int numDimensions = (int) sampleItems.getFirst()->getFeatureVector().size();
     swapPositions.resize(numSwapPositions);
     swappedElements.resize(numSwapPositions);
     for (int s = 0; s < numSwapPositions; s++)
@@ -123,12 +122,12 @@ int SampleSwapJob::findSwapPositionsWrap(std::vector<int>& swapAreaIndices,
 
 int SampleSwapJob::getPosition(int columns,
                                int rows,
-                               int sp,
-                               std::vector<int> & swapAreaIndices,
+                               int swapPosition,
+                               std::vector<int>& swapAreaIndices,
                                int xStart,
                                int yStart) {
-    int dx = swapAreaIndices[sp] % columns;
-    int dy = swapAreaIndices[sp] / columns;
+    int dx = swapAreaIndices[swapPosition] % columns;
+    int dy = swapAreaIndices[swapPosition] / columns;
     
     int x = (xStart + dx) % columns;
     int y = (yStart + dy) % rows;
@@ -201,9 +200,9 @@ int SampleSwapJob::findSwapPositions(std::vector<int>& swapAreaIndices,
     return numActualSwapPositions;
 }
 
-void SampleSwapJob::doSwaps(std::vector<int> & swapPositions,
+void SampleSwapJob::doSwaps(std::vector<int>& swapPositions,
                             int numSwapPositions,
-                            std::vector<std::vector<float>> & grid)
+                            std::vector<std::vector<float>>& grid)
 {
     int numValid = 0;
     

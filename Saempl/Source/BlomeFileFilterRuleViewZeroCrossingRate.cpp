@@ -21,7 +21,7 @@ BlomeFileFilterRuleViewZeroCrossingRate::~BlomeFileFilterRuleViewZeroCrossingRat
     mCompareValueEditor->removeListener(this);
 }
 
-void BlomeFileFilterRuleViewZeroCrossingRate::paint(Graphics &g)
+void BlomeFileFilterRuleViewZeroCrossingRate::paint(Graphics& g)
 {
     BlomeFileFilterRuleViewBase::paint(g);
     

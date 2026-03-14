@@ -28,6 +28,7 @@ public:
      
      @param inSampleLibrary the sample library of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
+     @param inAudioPlayer the audio player for sample preview playback.     
      */
     BlomeTableViewNavigation(SaemplAudioProcessor& inProcessor,
                              SampleItemPanel& inSampleItemPanel,
@@ -45,8 +46,8 @@ public:
     void showSample(String inFilePath);
     
 private:
-    void cellClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent) override;
-    void filesDropped(StringArray const & files, int x, int y) override;
+    void cellClicked(int rowNumber, int columnId, MouseEvent const& mouseEvent) override;
+    void filesDropped(StringArray const& files, int x, int y) override;
     /**
      Deletes all files of the rows that are currently selected.
      

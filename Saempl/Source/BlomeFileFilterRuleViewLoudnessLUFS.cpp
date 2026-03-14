@@ -21,7 +21,7 @@ BlomeFileFilterRuleViewLoudnessLUFS::~BlomeFileFilterRuleViewLoudnessLUFS()
     mCompareValueEditor->removeListener(this);
 }
 
-void BlomeFileFilterRuleViewLoudnessLUFS::paint(Graphics &g)
+void BlomeFileFilterRuleViewLoudnessLUFS::paint(Graphics& g)
 {
     BlomeFileFilterRuleViewBase::paint(g);
     

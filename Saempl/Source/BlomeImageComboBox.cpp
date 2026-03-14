@@ -9,7 +9,7 @@
 
 #include "BlomeImageComboBox.h"
 
-BlomeImageComboBox::BlomeImageComboBox(String const & name, Image const & inImage)
+BlomeImageComboBox::BlomeImageComboBox(String const& name, Image const& inImage)
 :
 ComboBox(name)
 {

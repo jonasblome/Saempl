@@ -9,7 +9,7 @@
 
 #include "SampleFileFilter.h"
 
-SampleFileFilter::SampleFileFilter(String const & inDesciption, OwnedArray<SampleItem>& inFilteredSampleItems)
+SampleFileFilter::SampleFileFilter(String const& inDesciption, OwnedArray<SampleItem>& inFilteredSampleItems)
 :
 FileFilter(inDesciption),
 filteredSampleItems(inFilteredSampleItems)
@@ -22,7 +22,7 @@ SampleFileFilter::~SampleFileFilter()
     
 }
 
-bool SampleFileFilter::isFileSuitable(File const & file) const
+bool SampleFileFilter::isFileSuitable(File const& file) const
 {
     for (SampleItem * sampleItem: filteredSampleItems)
     {
@@ -40,7 +40,7 @@ bool SampleFileFilter::isFileSuitable(File const & file) const
     return false;
 }
 
-bool SampleFileFilter::isDirectorySuitable(File const & file) const
+bool SampleFileFilter::isDirectorySuitable(File const& file) const
 {
     return !file.findChildFiles(File::findFiles, true, SUPPORTED_AUDIO_FORMATS_WILDCARD).isEmpty();
 }

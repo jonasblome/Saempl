@@ -79,7 +79,7 @@ int SampleItemComparator::compareElements(SampleItem* first, SampleItem* second)
     }
     else if (mComparePropertyName == PROPERTY_NAMES[14])
     {
-        return compareElements<bool>(first->getPropertiesAreLocked(), second->getPropertiesAreLocked());
+        return compareElements<bool>(first->getPropertyLock(), second->getPropertyLock());
     }
     
     return 0;

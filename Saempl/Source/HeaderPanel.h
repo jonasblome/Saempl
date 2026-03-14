@@ -33,13 +33,14 @@ public:
      @param inProcessor the audio processor of the current plugin instance.
      @param inCentrePanel the panel for the central plugin UI content.
      */
-    HeaderPanel(SaemplAudioProcessor& inProcessor, CentrePanel& inCentrePanel);
+    HeaderPanel(SaemplAudioProcessor& inProcessor,
+                CentrePanel& inCentrePanel);
     ~HeaderPanel();
-    bool keyPressed(KeyPress const & key) override;
+    bool keyPressed(KeyPress const& key) override;
     
 private:
-    SampleLibrary & sampleLibrary;
-    CentrePanel & centrePanel;
+    SampleLibrary& sampleLibrary;
+    CentrePanel& centrePanel;
     std::unique_ptr<BlomeImageButton> mRefreshLibraryButton;
     std::unique_ptr<BlomeImageButton> mChooseLibraryDirectoryButton;
     std::unique_ptr<FileChooser> mFileChooser;

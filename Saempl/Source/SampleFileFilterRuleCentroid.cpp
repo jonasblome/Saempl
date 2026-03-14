@@ -22,7 +22,7 @@ SampleFileFilterRuleCentroid::~SampleFileFilterRuleCentroid()
     
 }
 
-bool SampleFileFilterRuleCentroid::matches(SampleItem const & inSampleItem)
+bool SampleFileFilterRuleCentroid::matches(SampleItem const& inSampleItem)
 {
     double propertyValue = inSampleItem.getSpectralCentroid();
     
@@ -61,7 +61,7 @@ double SampleFileFilterRuleCentroid::getCompareValue()
     return mCompareValue;
 }
 
-void SampleFileFilterRuleCentroid::setCompareValue(double const & inCompareValue)
+void SampleFileFilterRuleCentroid::setCompareValue(double const& inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

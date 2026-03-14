@@ -34,7 +34,8 @@ public:
      @param inDescription the description of the file filter.
      @param inFilteredSampleItems the collection of filtered sample items in the library.
      */
-    SampleFileFilter(String const & inDescription, OwnedArray<SampleItem>& inFilteredSampleItems);
+    SampleFileFilter(String const& inDescription,
+                     OwnedArray<SampleItem>& inFilteredSampleItems);
     ~SampleFileFilter();
     /**
      Checks if all filter rules apply to the sample item.
@@ -68,9 +69,21 @@ public:
      @returns whether the filter is active and has any active rules that can have an effect on the sample collection.
      */
     bool canHaveEffect();
+    /**
+     @returns whether the filter affects the tempo property.
+     */
     bool affectsTempo();
+    /**
+     @returns whether the filter affects the key property.
+     */
     bool affectsKey();
+    /**
+     @returns whether the filter affects the comment property.
+     */
     bool affectsComment();
+    /**
+     @returns whether the filter affects the property lock.
+     */
     bool affectsPropertyLock();
     
 private:
@@ -78,8 +91,8 @@ private:
     OwnedArray<SampleItem>& filteredSampleItems;
     bool isActive;
     
-    bool isFileSuitable (File const & file) const override;
-    bool isDirectorySuitable (File const & file) const override;
+    bool isFileSuitable (File const& file) const override;
+    bool isDirectorySuitable (File const& file) const override;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleFileFilter);
 };

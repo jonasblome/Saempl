@@ -22,7 +22,7 @@ SampleFileFilterRuleComment::~SampleFileFilterRuleComment()
     
 }
 
-bool SampleFileFilterRuleComment::matches(SampleItem const & inSampleItem)
+bool SampleFileFilterRuleComment::matches(SampleItem const& inSampleItem)
 {
     String propertyValue = inSampleItem.getComment();
     
@@ -60,7 +60,7 @@ String SampleFileFilterRuleComment::getCompareValue()
     return mCompareValue;
 }
 
-void SampleFileFilterRuleComment::setCompareValue(String const & inCompareValue)
+void SampleFileFilterRuleComment::setCompareValue(String const& inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

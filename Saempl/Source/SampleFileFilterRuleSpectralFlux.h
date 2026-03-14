@@ -26,7 +26,7 @@ public:
      */
     SampleFileFilterRuleSpectralFlux(String inRulePropertyName);
     ~SampleFileFilterRuleSpectralFlux();
-    bool matches(SampleItem const & inSampleItem) override;
+    bool matches(SampleItem const& inSampleItem) override;
     /**
      @returns the compare value of the rule.
      */
@@ -36,7 +36,7 @@ public:
      
      @param inCompareValue the value to set.
      */
-    void setCompareValue(double const & inCompareValue);
+    void setCompareValue(double const& inCompareValue);
     bool canHaveEffect() override;
     
 private:

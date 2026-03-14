@@ -29,6 +29,13 @@ public ChangeListener,
 public FileDragAndDropTarget
 {
 public:
+    /**
+     Constructor for the grid view on the SampleLibrary::mFilteredSampleItems collection.
+     
+     @param inSampleLibrary the sample library of the current plugin instance.
+     @param inSampleItemPanel the panel for previewing SampleItem objects.
+     @param inAudioPlayer the audio player for sample preview playback.
+     */
     BlomeSampleGridView(SaemplAudioProcessor& inProcessor,
                         SampleItemPanel& inSampleItemPanel,
                         AudioPlayer& inAudioPlayer);
@@ -146,9 +153,9 @@ private:
     void setupGrid();
     void paint(Graphics& g) override;
     void changeListenerCallback(ChangeBroadcaster* source) override;
-    void filesDropped(StringArray const & files, int x, int y) override;
-    bool isInterestedInFileDrag(StringArray const & files) override;
-    void mouseDrag(MouseEvent const & mouseEvent) override;
+    void filesDropped(StringArray const& files, int x, int y) override;
+    bool isInterestedInFileDrag(StringArray const& files) override;
+    void mouseDrag(MouseEvent const& mouseEvent) override;
     /**
      Shows a popup menu with options to alter the selected sample items.
      */
@@ -167,7 +174,7 @@ private:
      @param inTileIndex the index of the tile in the tile collection
      */
     void deselectTile(int inTileIndex);
-    void mouseUp(MouseEvent const & event) override;
+    void mouseUp(MouseEvent const& event) override;
     /**
      Deletes the files and sample items of the selected tiles.
      

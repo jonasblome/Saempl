@@ -36,7 +36,7 @@ private:
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;
-    bool keyPressed(KeyPress const & key) override;
+    bool keyPressed(KeyPress const& key) override;
     void resizePanelComponents() override;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainPanel);

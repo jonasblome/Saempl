@@ -242,7 +242,7 @@ inline void drawDropShadow(Graphics& g,
                            int offsetX,
                            int offsetY,
                            int radius,
-                           BlomeStyling::StylingPtr const & style)
+                           BlomeStyling::StylingPtr const& style)
 {
     Image dropShadowImage(Image::ARGB, g.getClipBounds().getWidth(), g.getClipBounds().getHeight(), true);
     Graphics g2(dropShadowImage);

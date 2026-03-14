@@ -21,7 +21,7 @@ BlomeFileFilterRuleViewKey::~BlomeFileFilterRuleViewKey()
     mCompareValueComboBox->removeListener(this);
 }
 
-void BlomeFileFilterRuleViewKey::paint(Graphics &g)
+void BlomeFileFilterRuleViewKey::paint(Graphics& g)
 {
     BlomeFileFilterRuleViewBase::paint(g);
 }
@@ -33,7 +33,7 @@ void BlomeFileFilterRuleViewKey::setComponents()
     mCompareValueComboBox->setText(getFilterRule().getCompareValue());
     mCompareValueComboBox->addListener(this);
     int k = 1;
-    for (auto const & key : KEY_INDEX_TO_KEY_NAME)
+    for (auto const& key : KEY_INDEX_TO_KEY_NAME)
     {
         mCompareValueComboBox->addItem(key.second, k++);
     }

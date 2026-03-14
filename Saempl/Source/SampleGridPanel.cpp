@@ -266,7 +266,7 @@ void SampleGridPanel::visibilityChanged()
     }
 }
 
-bool SampleGridPanel::keyPressed(KeyPress const & key)
+bool SampleGridPanel::keyPressed(KeyPress const& key)
 {
     if (!isShowing())
     {

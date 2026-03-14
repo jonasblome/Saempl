@@ -26,7 +26,8 @@ public:
      @param name the name of the button object.
      @param inHasBackground whether to draw a background or not.
      */
-    BlomeImageButton(String const & name, bool inHasBackground);
+    BlomeImageButton(String const& name,
+                     bool inHasBackground);
     ~BlomeImageButton();
     
 private:

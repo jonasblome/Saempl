@@ -111,7 +111,7 @@ void AudioPreviewPanel::setPanelComponents()
     resizePanelComponents();
 }
 
-void AudioPreviewPanel::setURL(URL const & url)
+void AudioPreviewPanel::setURL(URL const& url)
 {
     if (auto inputSource = std::make_unique<URLInputSource>(url))
     {
@@ -161,12 +161,12 @@ void AudioPreviewPanel::setFollowsTransport(bool shouldFollow)
     isFollowingTransport = shouldFollow;
 }
 
-bool AudioPreviewPanel::isInterestedInFileDrag(StringArray const & files)
+bool AudioPreviewPanel::isInterestedInFileDrag(StringArray const& files)
 {
     return true;
 }
 
-void AudioPreviewPanel::filesDropped(StringArray const & files, int x, int y)
+void AudioPreviewPanel::filesDropped(StringArray const& files, int x, int y)
 {
     File file = File(files[0]);
     
@@ -177,12 +177,12 @@ void AudioPreviewPanel::filesDropped(StringArray const & files, int x, int y)
     }
 }
 
-void AudioPreviewPanel::mouseDown(MouseEvent const & e)
+void AudioPreviewPanel::mouseDown(MouseEvent const& e)
 {
     mouseDrag(e);
 }
 
-void AudioPreviewPanel::mouseDrag(MouseEvent const & e)
+void AudioPreviewPanel::mouseDrag(MouseEvent const& e)
 {
     if (canMoveTransport())
     {
@@ -190,7 +190,7 @@ void AudioPreviewPanel::mouseDrag(MouseEvent const & e)
     }
 }
 
-void AudioPreviewPanel::mouseUp(MouseEvent const & mouseEvent)
+void AudioPreviewPanel::mouseUp(MouseEvent const& mouseEvent)
 {
     // Show sample options pop up menu
     if (mouseEvent.mods.isRightButtonDown())
@@ -205,7 +205,7 @@ void AudioPreviewPanel::mouseUp(MouseEvent const & mouseEvent)
     }
 }
 
-void AudioPreviewPanel::mouseWheelMove(MouseEvent const &, MouseWheelDetails const & wheel)
+void AudioPreviewPanel::mouseWheelMove(MouseEvent const& , MouseWheelDetails const& wheel)
 {
     // Set zoom of audio preview if a file is loaded
     if (mAudioPreview->getTotalLength() > 0.0)
@@ -312,7 +312,7 @@ void AudioPreviewPanel::startOrStop()
     audioPlayer.startOrStop();
 }
 
-bool AudioPreviewPanel::loadURLIntoTransport(URL const & audioURL)
+bool AudioPreviewPanel::loadURLIntoTransport(URL const& audioURL)
 {
     return audioPlayer.loadURLIntoTransport(audioURL);
 }

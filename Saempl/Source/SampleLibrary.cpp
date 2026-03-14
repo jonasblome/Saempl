@@ -46,7 +46,7 @@ SampleLibrary::~SampleLibrary()
     mDirectoryScannerThread->stopThread(10000);
 }
 
-void SampleLibrary::addAllToSampleItems(StringArray const & inFilePaths)
+void SampleLibrary::addAllToSampleItems(StringArray const& inFilePaths)
 {
     bool anySampleWasAdded = false;
     
@@ -64,7 +64,7 @@ void SampleLibrary::addAllToSampleItems(StringArray const & inFilePaths)
     }
 }
 
-void SampleLibrary::removeSampleItems(StringArray const & inFilePaths, bool deletePermanently)
+void SampleLibrary::removeSampleItems(StringArray const& inFilePaths, bool deletePermanently)
 {
     for (String path : inFilePaths)
     {
@@ -74,7 +74,7 @@ void SampleLibrary::removeSampleItems(StringArray const & inFilePaths, bool dele
     refreshLibrary();
 }
 
-void SampleLibrary::addAllToFavourites(StringArray const & inFilePaths)
+void SampleLibrary::addAllToFavourites(StringArray const& inFilePaths)
 {
     bool newItemCreated = false;
     
@@ -100,7 +100,7 @@ void SampleLibrary::removeAllFromFavourites(Array<SampleItem*> inSampleItems)
     }
 }
 
-void SampleLibrary::reanalyseSampleItems(StringArray const & inFilePaths)
+void SampleLibrary::reanalyseSampleItems(StringArray const& inFilePaths)
 {
     for (String path : inFilePaths)
     {
@@ -242,7 +242,7 @@ void SampleLibrary::applyFilter()
     sendSynchronousChangeMessage();
 }
 
-bool SampleLibrary::addFileToSampleItems(File const & inFile)
+bool SampleLibrary::addFileToSampleItems(File const& inFile)
 {
     String fileName = inFile.getFileName();
     File newFile = File(mDirectoryPathToAddFilesTo + DIRECTORY_SEPARATOR + fileName);
@@ -294,7 +294,7 @@ bool SampleLibrary::addFileToSampleItems(File const & inFile)
     return false;
 }
 
-SampleItem* SampleLibrary::addToSampleItems(File const & inFile)
+SampleItem* SampleLibrary::addToSampleItems(File const& inFile)
 {
     // Add file to current directory and create sample item
     String fileName = inFile.getFileName();
@@ -307,7 +307,7 @@ SampleItem* SampleLibrary::addToSampleItems(File const & inFile)
     return addedItem;
 }
 
-bool SampleLibrary::addFileToFavourites(File const & inFile)
+bool SampleLibrary::addFileToFavourites(File const& inFile)
 {
     bool newItemCreated = false;
     
@@ -331,7 +331,7 @@ bool SampleLibrary::addFileToFavourites(File const & inFile)
     return newItemCreated;
 }
 
-bool SampleLibrary::addToFavourites(File const & inFile)
+bool SampleLibrary::addToFavourites(File const& inFile)
 {
     SampleItem* itemToAdd = mSampleLibraryManager->getSampleItemWithFilePath(inFile.getFullPathName());
     
@@ -352,7 +352,7 @@ bool SampleLibrary::addToFavourites(File const & inFile)
     return false;
 }
 
-void SampleLibrary::removeSampleItem(String const & inFilePath, bool deletePermanently = false)
+void SampleLibrary::removeSampleItem(String const& inFilePath, bool deletePermanently = false)
 {
     File fileToDelete = File(inFilePath);
     
@@ -378,7 +378,7 @@ void SampleLibrary::removeFromFavourites(SampleItem& inSampleItem)
     mFavouritesSampleItems.removeObject(&inSampleItem, false);
 }
 
-void SampleLibrary::reanalyseSampleItem(File const & inFile)
+void SampleLibrary::reanalyseSampleItem(File const& inFile)
 {
     if (inFile.isDirectory())
     {
@@ -449,7 +449,7 @@ void SampleLibrary::editSampleItem(SampleItem* inSampleItem,
     }
 }
 
-SampleItem* SampleLibrary::getSampleItemWithFilePath(const String & inFilePath)
+SampleItem* SampleLibrary::getSampleItemWithFilePath(const String& inFilePath)
 {
     return mSampleLibraryManager->getSampleItemWithFilePath(inFilePath);
 }

@@ -69,7 +69,7 @@ private:
      
      @param inFilterRule the filter rule to remove.
      */
-    void removeFilterRule(SampleFileFilterRuleBase const & inFilterRule);
+    void removeFilterRule(SampleFileFilterRuleBase const& inFilterRule);
     void setAddFilterRuleButton();
     void setNewRuleTypeChooser();
     void setPanelComponents() override;

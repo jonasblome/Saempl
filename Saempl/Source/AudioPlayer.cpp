@@ -84,7 +84,7 @@ void AudioPlayer::stop()
     mTransportSource->stop();
 }
 
-bool AudioPlayer::loadURLIntoTransport(URL const & inURL)
+bool AudioPlayer::loadURLIntoTransport(URL const& inURL)
 {
     // Unload the previous file source and delete it
     mTransportSource->stop();

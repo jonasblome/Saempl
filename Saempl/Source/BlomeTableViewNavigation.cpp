@@ -42,7 +42,7 @@ BlomeTableViewNavigation::~BlomeTableViewNavigation()
     sampleLibrary.removeChangeListener(this);
 }
 
-void BlomeTableViewNavigation::cellClicked(int rowNumber, int columnId, MouseEvent const & mouseEvent)
+void BlomeTableViewNavigation::cellClicked(int rowNumber, int columnId, MouseEvent const& mouseEvent)
 {
     // Show sample options pop up menu
     if (mouseEvent.mods.isRightButtonDown())
@@ -59,7 +59,7 @@ void BlomeTableViewNavigation::cellClicked(int rowNumber, int columnId, MouseEve
     }
 }
 
-void BlomeTableViewNavigation::filesDropped(StringArray const & files, int x, int y)
+void BlomeTableViewNavigation::filesDropped(StringArray const& files, int x, int y)
 {
     // Adding all the dropped files to the database
     sampleLibrary.addAllToSampleItems(files);
@@ -94,7 +94,7 @@ void BlomeTableViewNavigation::addToFavourites()
     sampleLibrary.addAllToFavourites(filePaths);
 }
 
-void BlomeTableViewNavigation::changeListenerCallback(ChangeBroadcaster *source)
+void BlomeTableViewNavigation::changeListenerCallback(ChangeBroadcaster* source)
 {
     if (source == &sampleLibrary && isShowing())
     {

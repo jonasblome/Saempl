@@ -658,7 +658,7 @@ void HeaderPanel::showLibraryChooser()
                                        true));
     
     mFileChooser->launchAsync(FileBrowserComponent::openMode | FileBrowserComponent::canSelectDirectories,
-                              [&] (FileChooser const & chooser)
+                              [&] (FileChooser const& chooser)
                               {
         URL result = chooser.getURLResult();
         String name = result.isLocalFile() ? result.getLocalFile().getFullPathName() : result.toString(true);
@@ -673,7 +673,7 @@ void HeaderPanel::showLibraryChooser()
     });
 }
 
-bool HeaderPanel::keyPressed(KeyPress const & key)
+bool HeaderPanel::keyPressed(KeyPress const& key)
 {
     int keyCode = key.getKeyCode();
     

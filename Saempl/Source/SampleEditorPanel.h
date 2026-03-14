@@ -20,8 +20,14 @@ public TextEditor::Listener,
 public ComboBox::Listener
 {
 public:
-    SampleEditorPanel(SaemplAudioProcessor & inProcessor,
-                      SampleItem * inSampleItem);
+    /**
+     The constructor for the sample editor panel.
+     
+     @param inProcessor the processor object of the current plugin instance.
+     @param inSampleItem the sample item to edit.
+     */
+    SampleEditorPanel(SaemplAudioProcessor& inProcessor,
+                      SampleItem* inSampleItem);
     ~SampleEditorPanel();
 
 private:
@@ -36,10 +42,10 @@ private:
     bool oldPropertyLock;
     std::unique_ptr<ToggleButton> mLockPropertiesButton;
     
-    void paint(Graphics & g) override;
+    void paint(Graphics& g) override;
     void setPanelComponents() override;
-    void textEditorReturnKeyPressed(TextEditor & textEditor) override;
-    void textEditorEscapeKeyPressed(TextEditor & textEditor) override;
+    void textEditorReturnKeyPressed(TextEditor& textEditor) override;
+    void textEditorEscapeKeyPressed(TextEditor& textEditor) override;
     void textEditorFocusLost(TextEditor&) override;
     void comboBoxChanged(ComboBox* comboBoxThatHasChanged) override;
 };

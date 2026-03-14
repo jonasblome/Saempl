@@ -16,7 +16,7 @@ class BlomeTransparentButton
 public Button
 {
 public:
-    BlomeTransparentButton(String const & buttonName);
+    BlomeTransparentButton(String const& buttonName);
     ~BlomeTransparentButton() override;
     
 private:

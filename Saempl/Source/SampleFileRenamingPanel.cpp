@@ -9,7 +9,7 @@
 
 #include "SampleFileRenamingPanel.h"
 
-SampleFileRenamingPanel::SampleFileRenamingPanel(SaemplAudioProcessor & inProcessor,
+SampleFileRenamingPanel::SampleFileRenamingPanel(SaemplAudioProcessor& inProcessor,
                                                  String inFilePath)
 :
 PanelBase(inProcessor),

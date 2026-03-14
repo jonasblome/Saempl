@@ -9,7 +9,8 @@
 
 #include "BlomeFileFilterRuleViewTitle.h"
 
-BlomeFileFilterRuleViewTitle::BlomeFileFilterRuleViewTitle(SampleFileFilterRuleTitle& inFilterRule, SampleLibrary& inSampleLibrary)
+BlomeFileFilterRuleViewTitle::BlomeFileFilterRuleViewTitle(SampleFileFilterRuleTitle& inFilterRule,
+                                                           SampleLibrary& inSampleLibrary)
 :
 BlomeFileFilterRuleViewBase(inFilterRule, inSampleLibrary)
 {
@@ -21,7 +22,7 @@ BlomeFileFilterRuleViewTitle::~BlomeFileFilterRuleViewTitle()
     mCompareValueEditor->removeListener(this);
 }
 
-void BlomeFileFilterRuleViewTitle::paint(Graphics &g)
+void BlomeFileFilterRuleViewTitle::paint(Graphics& g)
 {
     BlomeFileFilterRuleViewBase::paint(g);
 }
@@ -86,7 +87,7 @@ void BlomeFileFilterRuleViewTitle::textEditorFocusLost(TextEditor& textEditor)
 
 SampleFileFilterRuleTitle& BlomeFileFilterRuleViewTitle::getFilterRule()
 {
-    return *dynamic_cast<SampleFileFilterRuleTitle*>(&filterRule);
+    return *dynamic_cast<SampleFileFilterRuleTitle *>(&filterRule);
 }
 
 void BlomeFileFilterRuleViewTitle::comboBoxChanged(ComboBox* comboBoxThatHasChanged)

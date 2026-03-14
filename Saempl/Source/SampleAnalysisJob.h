@@ -31,7 +31,7 @@ public:
     SampleAnalysisJob(OwnedArray<SampleItem>& inSampleItems,
                      OwnedArray<SampleItem>& inAddedSampleItems,
                      StringArray& inAddedFilePaths,
-                     File const & inFile,
+                     File const& inFile,
                      SampleItem* inSampleItem,
                      bool forceAnalysis,
                      int& numProcessedItems);
@@ -42,7 +42,7 @@ private:
     OwnedArray<SampleItem>& allSampleItems;
     OwnedArray<SampleItem>& addedSampleItems;
     StringArray& addedFilePaths;
-    File const & file;
+    File const& file;
     SampleItem* sampleItem;
     bool mForceAnalysis;
     int& numProcessedItems;

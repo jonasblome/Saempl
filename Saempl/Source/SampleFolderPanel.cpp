@@ -100,7 +100,7 @@ void SampleFolderPanel::selectionChanged()
     
 }
 
-void SampleFolderPanel::fileClicked(File const & file, MouseEvent const & mouseEvent)
+void SampleFolderPanel::fileClicked(File const& file, MouseEvent const& mouseEvent)
 {
     // Show sample options pop up menu
     if (mouseEvent.mods.isRightButtonDown())
@@ -120,7 +120,7 @@ void SampleFolderPanel::fileClicked(File const & file, MouseEvent const & mouseE
     }
 }
 
-void SampleFolderPanel::fileDoubleClicked(File const & inFile)
+void SampleFolderPanel::fileDoubleClicked(File const& inFile)
 {
     if (!inFile.isDirectory())
     {
@@ -128,7 +128,7 @@ void SampleFolderPanel::fileDoubleClicked(File const & inFile)
     }
 }
 
-void SampleFolderPanel::browserRootChanged(File const &)
+void SampleFolderPanel::browserRootChanged(File const&)
 {
     // Not used...
 }
@@ -177,7 +177,7 @@ void SampleFolderPanel::reanalyseSamples()
     sampleLibrary.reanalyseSampleItems(filePaths);
 }
 
-bool SampleFolderPanel::keyPressed(KeyPress const & key)
+bool SampleFolderPanel::keyPressed(KeyPress const& key)
 {
     if (!isShowing())
     {

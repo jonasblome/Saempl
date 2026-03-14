@@ -35,8 +35,8 @@ protected:
     SaemplAudioProcessor& currentProcessor;
     BlomeStyling::StylingPtr style;
     
-    void mouseEnter(MouseEvent const & event) override;
-    void mouseExit(MouseEvent const & event) override;
+    void mouseEnter(MouseEvent const& event) override;
+    void mouseExit(MouseEvent const& event) override;
     void paint(Graphics& g) override;
     void resized() override;
     /**

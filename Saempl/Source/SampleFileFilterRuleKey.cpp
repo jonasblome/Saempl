@@ -22,7 +22,7 @@ SampleFileFilterRuleKey::~SampleFileFilterRuleKey()
     
 }
 
-bool SampleFileFilterRuleKey::matches(SampleItem const & inSampleItem)
+bool SampleFileFilterRuleKey::matches(SampleItem const& inSampleItem)
 {
     String propertyValue = KEY_INDEX_TO_KEY_NAME[inSampleItem.getKey()];
     
@@ -61,7 +61,7 @@ String SampleFileFilterRuleKey::getCompareValue()
     return mCompareValue;
 }
 
-void SampleFileFilterRuleKey::setCompareValue(String const & inCompareValue)
+void SampleFileFilterRuleKey::setCompareValue(String const& inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

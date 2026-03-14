@@ -9,7 +9,7 @@
 
 #include "SampleEditorPanel.h"
 
-SampleEditorPanel::SampleEditorPanel(SaemplAudioProcessor & inProcessor,
+SampleEditorPanel::SampleEditorPanel(SaemplAudioProcessor& inProcessor,
                                      SampleItem * inSampleItem)
 :
 PanelBase(inProcessor),
@@ -17,7 +17,7 @@ sampleItem(inSampleItem),
 oldTempo(inSampleItem->getTempo()),
 oldKey(inSampleItem->getKey()),
 oldComment(inSampleItem->getComment()),
-oldPropertyLock(inSampleItem->getPropertiesAreLocked())
+oldPropertyLock(inSampleItem->getPropertyLock())
 {
     setSize(style->SAMPLE_EDITOR_PANEL_WIDTH, style->SAMPLE_EDITOR_PANEL_HEIGHT);
     setPanelComponents();
@@ -31,9 +31,9 @@ SampleEditorPanel::~SampleEditorPanel()
     bool tempoChanged = sampleItem->getTempo() != oldTempo;
     bool keyChanged = sampleItem->getKey() != oldKey;
     bool commentChanged = sampleItem->getComment() != oldComment;
-    bool propertyLockChanged = sampleItem->getPropertiesAreLocked() != oldPropertyLock;
+    bool propertyLockChanged = sampleItem->getPropertyLock() != oldPropertyLock;
     
-    if (sampleItem->getPropertiesAreLocked())
+    if (sampleItem->getPropertyLock())
     {
         if (tempoChanged)
         {
@@ -119,7 +119,7 @@ void SampleEditorPanel::setPanelComponents()
                                   style->FILTER_RULE_HEIGHT - style->PANEL_MARGIN);
     mSampleKeyComboBox->addListener(this);
     int k = 1;
-    for (auto const & key : KEY_INDEX_TO_KEY_NAME)
+    for (auto const& key : KEY_INDEX_TO_KEY_NAME)
     {
         mSampleKeyComboBox->addItem(key.second, k++);
     }
@@ -141,7 +141,7 @@ void SampleEditorPanel::setPanelComponents()
     
     // Add button to lock sample properties
     mLockPropertiesButton = std::make_unique<ToggleButton>("ActivateRuleButton");
-    mLockPropertiesButton->setToggleState(sampleItem->getPropertiesAreLocked(), NotificationType::dontSendNotification);
+    mLockPropertiesButton->setToggleState(sampleItem->getPropertyLock(), NotificationType::dontSendNotification);
     mLockPropertiesButton->setTooltip("Lock/unlock the changed properties of this sample");
     mLockPropertiesButton->onClick = [this]
     {

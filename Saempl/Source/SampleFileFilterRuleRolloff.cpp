@@ -22,7 +22,7 @@ SampleFileFilterRuleRolloff::~SampleFileFilterRuleRolloff()
     
 }
 
-bool SampleFileFilterRuleRolloff::matches(SampleItem const & inSampleItem)
+bool SampleFileFilterRuleRolloff::matches(SampleItem const& inSampleItem)
 {
     double propertyValue = inSampleItem.getSpectralRolloff();
     
@@ -61,7 +61,7 @@ double SampleFileFilterRuleRolloff::getCompareValue()
     return mCompareValue;
 }
 
-void SampleFileFilterRuleRolloff::setCompareValue(double const & inCompareValue)
+void SampleFileFilterRuleRolloff::setCompareValue(double const& inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

@@ -36,7 +36,7 @@ public:
      
      @param inProcessor the audio processor of the current plugin instance.
      @param inSlider the zoom slider for the AudioThumbnail.
-     @param inAudioPlayer the sample editor with the audio player.
+     @param inAudioPlayer the audio player.
      */
     AudioPreviewPanel(SaemplAudioProcessor& inProcessor,
                       Slider& inSlider,
@@ -47,7 +47,7 @@ public:
      
      @param url the URL of the file.
      */
-    void setURL(URL const & url);
+    void setURL(URL const& url);
     /**
      @returns the URL of the last file that was dropped onto the preview panel.
      */
@@ -95,15 +95,15 @@ public:
      
      @returns if the loading was successful.
      */
-    bool loadURLIntoTransport(URL const & audioURL);
+    bool loadURLIntoTransport(URL const& audioURL);
     /**
      Empties the audio resource and resets it.
      */
     void emptyAudioResource();
     
 private:
-    AudioPlayer & audioPlayer;
-    Slider & zoomSlider;
+    AudioPlayer& audioPlayer;
+    Slider& zoomSlider;
     std::unique_ptr<ScrollBar> mAudioPreviewScrollbar;
     std::unique_ptr<AudioThumbnailCache> mThumbnailCache;
     std::unique_ptr<AudioThumbnail> mAudioPreview;
@@ -115,12 +115,12 @@ private:
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;
-    bool isInterestedInFileDrag(StringArray const & files) override;
-    void filesDropped(StringArray const & files, int x, int y) override;
-    void mouseDown(MouseEvent const & e) override;
-    void mouseDrag(MouseEvent const & e) override;
-    void mouseUp(MouseEvent const &) override;
-    void mouseWheelMove(MouseEvent const &, MouseWheelDetails const & wheel) override;
+    bool isInterestedInFileDrag(StringArray const& files) override;
+    void filesDropped(StringArray const& files, int x, int y) override;
+    void mouseDown(MouseEvent const& e) override;
+    void mouseDrag(MouseEvent const& e) override;
+    void mouseUp(MouseEvent const& ) override;
+    void mouseWheelMove(MouseEvent const& , MouseWheelDetails const& wheel) override;
     /**
      Converts the the playback time to the x value of the cursor.
      

@@ -131,7 +131,7 @@ void SampleNavigationPanel::selectRandomSample()
     }
 }
 
-bool SampleNavigationPanel::keyPressed(KeyPress const & key)
+bool SampleNavigationPanel::keyPressed(KeyPress const& key)
 {
     bool pressWasHandled = false;
     

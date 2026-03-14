@@ -22,7 +22,7 @@ SampleFileFilterRuleLength::~SampleFileFilterRuleLength()
     
 }
 
-bool SampleFileFilterRuleLength::matches(SampleItem const & inSampleItem)
+bool SampleFileFilterRuleLength::matches(SampleItem const& inSampleItem)
 {
     double propertyValue = inSampleItem.getLength();
     
@@ -61,7 +61,7 @@ double SampleFileFilterRuleLength::getCompareValue()
     return mCompareValue;
 }
 
-void SampleFileFilterRuleLength::setCompareValue(double const & inCompareValue)
+void SampleFileFilterRuleLength::setCompareValue(double const& inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

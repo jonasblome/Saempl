@@ -31,6 +31,7 @@
 		0830974D2BDEF367AFFC650F /* include_juce_audio_plugin_client_Standalone.cpp */ = {isa = PBXBuildFile; fileRef = AF6A7849A02318FA69A885CD; };
 		0ECA8B120904BC1D80E92BCF /* MetalKit.framework */ = {isa = PBXBuildFile; fileRef = 0DB909F8AB89C31981F33ED4; settings = { ATTRIBUTES = (Weak, ); }; };
 		13AA0E92BE7C51C301AE5C97 /* SampleFileFilterRuleLength.cpp */ = {isa = PBXBuildFile; fileRef = E24FF04107101897E39A8A2B; };
+		168999F9BF055D30E8E206A9 /* include_juce_gui_basics_3.cpp */ = {isa = PBXBuildFile; fileRef = 9DBA76102A8AA1DE772CC000; };
 		16DE2ED56E05199564DCB7BB /* include_juce_audio_plugin_client_AU_2.mm */ = {isa = PBXBuildFile; fileRef = C45E7609C01D322EB75B0755; };
 		192A9803E7BAA5E97AEE60D4 /* WebKit.framework */ = {isa = PBXBuildFile; fileRef = 5EEC6C3F8D2185817447650D; };
 		1BFE7E008FAD5859BD052685 /* include_juce_core.mm */ = {isa = PBXBuildFile; fileRef = 810E8532A29013C5177D9090; };
@@ -54,6 +55,8 @@
 		3C7399B067C93D135C6EE915 /* PluginEditor.cpp */ = {isa = PBXBuildFile; fileRef = 11C19E2F71CA2711BEC0BD87; };
 		3E1B88DAE1EE8D19EB9A6FAA /* DiscRecording.framework */ = {isa = PBXBuildFile; fileRef = 0C601FD76CCB6302DC2498C2; };
 		407E5D4363E79385046BA8BA /* AU */ = {isa = PBXBuildFile; fileRef = 417DC303E34E0CD2C09ADBEC; };
+		415D9B818F946DB1EF001860 /* include_juce_gui_basics_2.cpp */ = {isa = PBXBuildFile; fileRef = 9F3F0C2B143EEAD3EA29FFAC; };
+		443E8C8391B4EB54086F15C9 /* include_juce_gui_basics_5.cpp */ = {isa = PBXBuildFile; fileRef = 39713936CE997B50C133703B; };
 		49AB03FD2B8B68B92299D20A /* SampleTablePanel.cpp */ = {isa = PBXBuildFile; fileRef = E5521D6F4AB4E69CA068593E; };
 		49BA94814461A5DFED7ECE5B /* BlomeFileFilterRuleViewSpectralSpread.cpp */ = {isa = PBXBuildFile; fileRef = 70DF628A72C92E63DBC3FC64; };
 		4FEA54CD070C801FA2DC7FD3 /* SampleSwapJob.cpp */ = {isa = PBXBuildFile; fileRef = 4CC58708712914551BDE8AE7; };
@@ -62,6 +65,7 @@
 		5E163525E99E96C8EB8C1136 /* BlomeFileTreeView.cpp */ = {isa = PBXBuildFile; fileRef = F7FBEDC35CF3A822178278D9; };
 		60BBDF4F303CC3ABC7E5303F /* SampleItem.cpp */ = {isa = PBXBuildFile; fileRef = B13BF1F48C5F3E3A2773B3DF; };
 		6118E15171E19FA395AC9989 /* BlomeImageButton.cpp */ = {isa = PBXBuildFile; fileRef = BBCCF12BD9CFF9F88899E5FE; };
+		63CBEE668512A06454FC3E8A /* include_juce_gui_basics_4.cpp */ = {isa = PBXBuildFile; fileRef = 740B485F0E6E549E01D0C34C; };
 		65CEF575A8BE984871E5D9D4 /* SampleFileFilterRuleSpectralSpread.cpp */ = {isa = PBXBuildFile; fileRef = B2A4DB0DB5178C8502925BBC; };
 		66C6C35FBA15BEFB6A3B63EE /* include_juce_audio_utils.mm */ = {isa = PBXBuildFile; fileRef = 0C0F86BF3FAB8F357093372E; };
 		67474D48119DE7A8B7666D77 /* MainPanel.cpp */ = {isa = PBXBuildFile; fileRef = 081FD19F0C4FA3DA3ADEB2AE; };
@@ -199,6 +203,7 @@
 		3697D40FB9FCA32796A99227 /* CoreMIDI.framework */ /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 		36ED20CC7F7447CE08FED42D /* Info-VST3.plist */ /* Info-VST3.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-VST3.plist"; path = "Info-VST3.plist"; sourceTree = SOURCE_ROOT; };
 		38D063BA17C098A711C54224 /* play_pause_FILL0_wght400_GRAD0_opsz24.png */ /* play_pause_FILL0_wght400_GRAD0_opsz24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = play_pause_FILL0_wght400_GRAD0_opsz24.png; path = ../../Assets/play_pause_FILL0_wght400_GRAD0_opsz24.png; sourceTree = SOURCE_ROOT; };
+		39713936CE997B50C133703B /* include_juce_gui_basics_5.cpp */ /* include_juce_gui_basics_5.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_gui_basics_5.cpp; path = ../../JuceLibraryCode/include_juce_gui_basics_5.cpp; sourceTree = SOURCE_ROOT; };
 		3A14427674AF7D8C7AE3B8ED /* juce_core */ /* juce_core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_core; path = /Users/jonasblome/Documents/JUCE/modules/juce_core; sourceTree = "<absolute>"; };
 		3A4C3B0AE6B456049BDBF71E /* Ebu128LoudnessMeter.h */ /* Ebu128LoudnessMeter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Ebu128LoudnessMeter.h; path = ../../Source/Ebu128LoudnessMeter.h; sourceTree = SOURCE_ROOT; };
 		3AB82449FEBF2C7BF4ADAC62 /* expand_24dp_000000_FILL0_wght400_GRAD0_opsz24.png */ /* expand_24dp_000000_FILL0_wght400_GRAD0_opsz24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = expand_24dp_000000_FILL0_wght400_GRAD0_opsz24.png; path = ../../Assets/expand_24dp_000000_FILL0_wght400_GRAD0_opsz24.png; sourceTree = SOURCE_ROOT; };
@@ -262,6 +267,7 @@
 		72658B3E48DBE06713DBD7ED /* include_juce_graphics.mm */ /* include_juce_graphics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_graphics.mm; path = ../../JuceLibraryCode/include_juce_graphics.mm; sourceTree = SOURCE_ROOT; };
 		731A92CA2A10F01AB787267B /* include_juce_dsp.mm */ /* include_juce_dsp.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_dsp.mm; path = ../../JuceLibraryCode/include_juce_dsp.mm; sourceTree = SOURCE_ROOT; };
 		73AA4DA9C33BC3C547B9446A /* filter_alt_off_FILL0_wght400_GRAD0_opsz24.png */ /* filter_alt_off_FILL0_wght400_GRAD0_opsz24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = filter_alt_off_FILL0_wght400_GRAD0_opsz24.png; path = ../../Assets/filter_alt_off_FILL0_wght400_GRAD0_opsz24.png; sourceTree = SOURCE_ROOT; };
+		740B485F0E6E549E01D0C34C /* include_juce_gui_basics_4.cpp */ /* include_juce_gui_basics_4.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_gui_basics_4.cpp; path = ../../JuceLibraryCode/include_juce_gui_basics_4.cpp; sourceTree = SOURCE_ROOT; };
 		75BB0C73DDBC28FA521AD8FE /* trending_flat_FILL0_wght400_GRAD0_opsz24.png */ /* trending_flat_FILL0_wght400_GRAD0_opsz24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = trending_flat_FILL0_wght400_GRAD0_opsz24.png; path = ../../Assets/trending_flat_FILL0_wght400_GRAD0_opsz24.png; sourceTree = SOURCE_ROOT; };
 		773349CA052FF1FD2F7C129B /* include_juce_audio_processors_headless.mm */ /* include_juce_audio_processors_headless.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_processors_headless.mm; path = ../../JuceLibraryCode/include_juce_audio_processors_headless.mm; sourceTree = SOURCE_ROOT; };
 		7BAA5ADA8D061495C0644C6B /* SampleFileFilterRuleRolloff.cpp */ /* SampleFileFilterRuleRolloff.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SampleFileFilterRuleRolloff.cpp; path = ../../Source/SampleFileFilterRuleRolloff.cpp; sourceTree = SOURCE_ROOT; };
@@ -290,8 +296,10 @@
 		99E44988FEB0F92306B35349 /* SampleTablePanel.h */ /* SampleTablePanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SampleTablePanel.h; path = ../../Source/SampleTablePanel.h; sourceTree = SOURCE_ROOT; };
 		9B41D613C39DA2D107978D8E /* BlomeSampleGridView.cpp */ /* BlomeSampleGridView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BlomeSampleGridView.cpp; path = ../../Source/BlomeSampleGridView.cpp; sourceTree = SOURCE_ROOT; };
 		9BB39E1D8F88320CFB71CEAF /* include_juce_audio_basics.mm */ /* include_juce_audio_basics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_basics.mm; path = ../../JuceLibraryCode/include_juce_audio_basics.mm; sourceTree = SOURCE_ROOT; };
+		9DBA76102A8AA1DE772CC000 /* include_juce_gui_basics_3.cpp */ /* include_juce_gui_basics_3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_gui_basics_3.cpp; path = ../../JuceLibraryCode/include_juce_gui_basics_3.cpp; sourceTree = SOURCE_ROOT; };
 		9E1C2317BB14803853BEC8AA /* BlomeTableViewFavourites.h */ /* BlomeTableViewFavourites.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BlomeTableViewFavourites.h; path = ../../Source/BlomeTableViewFavourites.h; sourceTree = SOURCE_ROOT; };
 		9E307A196C6170BBA087330D /* grid_view_FILL0_wght400_GRAD0_opsz24.png */ /* grid_view_FILL0_wght400_GRAD0_opsz24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = grid_view_FILL0_wght400_GRAD0_opsz24.png; path = ../../Assets/grid_view_FILL0_wght400_GRAD0_opsz24.png; sourceTree = SOURCE_ROOT; };
+		9F3F0C2B143EEAD3EA29FFAC /* include_juce_gui_basics_2.cpp */ /* include_juce_gui_basics_2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_gui_basics_2.cpp; path = ../../JuceLibraryCode/include_juce_gui_basics_2.cpp; sourceTree = SOURCE_ROOT; };
 		A0C1ABD572C78B4EE26C84C0 /* Info-AU.plist */ /* Info-AU.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-AU.plist"; path = "Info-AU.plist"; sourceTree = SOURCE_ROOT; };
 		A1378D336D83194CF5C3A86C /* VST3 Manifest Helper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = juce_vst3_helper; sourceTree = BUILT_PRODUCTS_DIR; };
 		A29820A16702257744D3BDF4 /* BlomeFileFilterRuleViewTempo.h */ /* BlomeFileFilterRuleViewTempo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BlomeFileFilterRuleViewTempo.h; path = ../../Source/BlomeFileFilterRuleViewTempo.h; sourceTree = SOURCE_ROOT; };
@@ -797,6 +805,10 @@
 				E3DF25EB57949E520D36D867,
 				971E28410083365BB9838D13,
 				C7EEEF1A7DEC86AE1CCD92EF,
+				9F3F0C2B143EEAD3EA29FFAC,
+				9DBA76102A8AA1DE772CC000,
+				740B485F0E6E549E01D0C34C,
+				39713936CE997B50C133703B,
 				FA8D58E3B3C5537F88FF0DDB,
 				8EBF9194AC6194586E4ED4A1,
 				7C924F5D5F40E4666DC22C75,
@@ -1244,6 +1256,10 @@
 				7D0E126F545F49355EB2B8E2,
 				B5DB4169E7CE9D0AA90C1BCB,
 				042790DA6E0793DB99834C6F,
+				415D9B818F946DB1EF001860,
+				168999F9BF055D30E8E206A9,
+				63CBEE668512A06454FC3E8A,
+				443E8C8391B4EB54086F15C9,
 				0201B719EF831381FF2A8033,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

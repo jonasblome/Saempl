@@ -55,7 +55,7 @@ public LookAndFeel_V4
     
     void drawButtonBackground(Graphics& g,
                               Button& button,
-                              Colour const & backgroundColour,
+                              Colour const& backgroundColour,
                               bool shouldDrawButtonAsHighlighted,
                               bool shouldDrawButtonAsDown) override
     {
@@ -122,7 +122,7 @@ public LookAndFeel_V4
     void drawPopupMenuBackgroundWithOptions(Graphics& g,
                                             int width,
                                             int height,
-                                            PopupMenu::Options const & options) override
+                                            PopupMenu::Options const& options) override
     {
         g.setColour(findColour(PopupMenu::backgroundColourId));
         g.fillRoundedRectangle(0,
@@ -133,16 +133,16 @@ public LookAndFeel_V4
     }
     
     void drawPopupMenuItem(Graphics& g,
-                           Rectangle<int> const & area,
+                           Rectangle<int> const& area,
                            bool isSeparator,
                            bool isActive,
                            bool isHighlighted,
                            bool isTicked,
                            bool hasSubMenu,
-                           String const & text,
-                           String const & shortcutKeyText,
-                           Drawable const * icon,
-                           Colour const * textColour) override
+                           String const& text,
+                           String const& shortcutKeyText,
+                           Drawable const* icon,
+                           Colour const* textColour) override
     {
         Rectangle<int> r(area);
         
@@ -233,7 +233,7 @@ public LookAndFeel_V4
                           float minSliderPos,
                           float maxSliderPos,
                           Slider::SliderStyle const sliderStyle,
-                          Slider & slider) override
+                          Slider& slider) override
     {
         if (slider.isBar())
         {
@@ -335,7 +335,7 @@ public LookAndFeel_V4
                     : static_cast<int>((float) slider.getWidth() * 0.5f));
     }
     
-    Label* createSliderTextBox(Slider & slider) override
+    Label* createSliderTextBox(Slider& slider) override
     {
         Label* label = new Label();
         label->setJustificationType(Justification::centred);
@@ -353,7 +353,7 @@ public LookAndFeel_V4
         return label;
     }
     
-    void drawLabel(Graphics & g, Label & label) override
+    void drawLabel(Graphics& g, Label& label) override
     {
         if (!label.isBeingEdited())
         {
@@ -404,7 +404,7 @@ public LookAndFeel_V4
     }
     
     void drawTreeviewPlusMinusBox(Graphics& g,
-                                  Rectangle<float> const & area,
+                                  Rectangle<float> const& area,
                                   Colour backgroundColour,
                                   bool isOpen,
                                   bool isMouseOver) override
@@ -418,11 +418,11 @@ public LookAndFeel_V4
     void drawFileBrowserRow(Graphics& g,
                             int width,
                             int height,
-                            File const & file,
-                            String const & filename,
+                            File const& file,
+                            String const& filename,
                             Image* icon,
-                            String const & fileSizeDescription,
-                            String const & fileTimeDescription,
+                            String const& fileSizeDescription,
+                            String const& fileTimeDescription,
                             bool isDirectory,
                             bool isItemSelected,
                             int itemIndex,
@@ -472,7 +472,7 @@ public LookAndFeel_V4
     
     void drawTableHeaderColumn(Graphics& g,
                                TableHeaderComponent& header,
-                               String const & columnName,
+                               String const& columnName,
                                int columnId,
                                int width,
                                int height,
@@ -500,11 +500,11 @@ public LookAndFeel_V4
         Rectangle<int> area(width, height);
         area.reduce(4, 0);
         
-        if ((columnFlags & (TableHeaderComponent::sortedForwards | TableHeaderComponent::sortedBackwards)) != 0)
+        if ((columnFlags& (TableHeaderComponent::sortedForwards | TableHeaderComponent::sortedBackwards)) != 0)
         {
             Path sortArrow;
             sortArrow.addTriangle(0.0f, 0.0f,
-                                  0.5f, (columnFlags & TableHeaderComponent::sortedForwards) != 0 ? -0.8f : 0.8f,
+                                  0.5f, (columnFlags& TableHeaderComponent::sortedForwards) != 0 ? -0.8f : 0.8f,
                                   1.0f, 0.0f);
             
             g.setColour(style->COLOUR_ACCENT_DARK);
@@ -519,7 +519,7 @@ public LookAndFeel_V4
     
     void drawCallOutBoxBackground(CallOutBox& box,
                                   Graphics& g,
-                                  Path const & path,
+                                  Path const& path,
                                   Image& cachedImage) override
     {
         // Draw drop shadow
@@ -538,19 +538,19 @@ public LookAndFeel_V4
         g.fillPath(path);
     }
     
-    int getCallOutBoxBorderSize(CallOutBox const &) override
+    int getCallOutBoxBorderSize(CallOutBox const& ) override
     {
         return 20;
     }
     
-    float getCallOutBoxCornerSize(CallOutBox const &) override
+    float getCallOutBoxCornerSize(CallOutBox const& ) override
     {
         return style->CORNER_SIZE_MEDIUM;
     }
     
     void drawAlertBox(Graphics& g,
                       AlertWindow& alert,
-                      Rectangle<int> const & textArea,
+                      Rectangle<int> const& textArea,
                       TextLayout& textLayout) override
     {
         // Draw alert box background
@@ -584,7 +584,7 @@ public LookAndFeel_V4
     void drawTextEditorOutline(Graphics& g,
                                int width,
                                int height,
-                               TextEditor & textEditor) override
+                               TextEditor& textEditor) override
     {
         if (dynamic_cast<AlertWindow*>(textEditor.getParentComponent()) == nullptr)
         {
@@ -607,7 +607,7 @@ public LookAndFeel_V4
     void fillTextEditorBackground(Graphics& g,
                                   int width,
                                   int height,
-                                  TextEditor & textEditor) override
+                                  TextEditor& textEditor) override
     {
         g.setColour(style->COLOUR_ACCENT_DARK);
         g.fillRoundedRectangle(0, 0, width, height, style->CORNER_SIZE_MEDIUM);
@@ -642,7 +642,7 @@ public LookAndFeel_V4
     }
     
     void drawTooltip(Graphics& g,
-                     String const & text,
+                     String const& text,
                      int width,
                      int height) override
     {
@@ -674,7 +674,7 @@ public LookAndFeel_V4
                          int width,
                          int height,
                          double progress,
-                         String const & textToShow) override
+                         String const& textToShow) override
     {
         Colour background = style->COLOUR_ACCENT_DARK;
         Colour foreground = style->COLOUR_ACCENT_MEDIUM;

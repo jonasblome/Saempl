@@ -22,7 +22,7 @@ SampleFileFilterRuleTitle::~SampleFileFilterRuleTitle()
     
 }
 
-bool SampleFileFilterRuleTitle::matches(SampleItem const & inSampleItem)
+bool SampleFileFilterRuleTitle::matches(SampleItem const& inSampleItem)
 {
     String propertyValue = inSampleItem.getTitle();
     
@@ -60,7 +60,7 @@ String SampleFileFilterRuleTitle::getCompareValue()
     return mCompareValue;
 }
 
-void SampleFileFilterRuleTitle::setCompareValue(String const & inCompareValue)
+void SampleFileFilterRuleTitle::setCompareValue(String const& inCompareValue)
 {
     mCompareValue = inCompareValue;
 }

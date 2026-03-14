@@ -30,6 +30,7 @@ public:
      
      @param inProcessor the audio processor of the current plugin instance.
      @param inSampleItemPanel the panel for previewing SampleItem objects.
+     @param inAudioPlayer the audio player for sample preview playback.     
      */
     SampleNavigationPanel(SaemplAudioProcessor& inProcessor,
                           SampleItemPanel& inSampleItemPanel,
@@ -45,7 +46,7 @@ public:
      Selects a random sample in the table view.
      */
     void selectRandomSample();
-    bool keyPressed(KeyPress const & key) override;
+    bool keyPressed(KeyPress const& key) override;
     /**
      Show the sample in the current navigation view.
      

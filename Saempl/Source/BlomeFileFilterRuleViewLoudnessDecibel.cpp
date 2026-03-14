@@ -21,7 +21,7 @@ BlomeFileFilterRuleViewLoudnessDecibel::~BlomeFileFilterRuleViewLoudnessDecibel(
     mCompareValueEditor->removeListener(this);
 }
 
-void BlomeFileFilterRuleViewLoudnessDecibel::paint(Graphics &g)
+void BlomeFileFilterRuleViewLoudnessDecibel::paint(Graphics& g)
 {
     BlomeFileFilterRuleViewBase::paint(g);
     
@@ -104,7 +104,7 @@ SampleFileFilterRuleLoudnessDecibel& BlomeFileFilterRuleViewLoudnessDecibel::get
     return *dynamic_cast<SampleFileFilterRuleLoudnessDecibel*>(&filterRule);
 }
 
-void BlomeFileFilterRuleViewLoudnessDecibel::comboBoxChanged(ComboBox* comboBoxThatHasChanged)
+void BlomeFileFilterRuleViewLoudnessDecibel::comboBoxChanged(ComboBox * comboBoxThatHasChanged)
 {
     // Set rule to chosen compare operator
     CompareOperators newOperator = static_cast<CompareOperators>(comboBoxThatHasChanged->getSelectedItemIndex());
