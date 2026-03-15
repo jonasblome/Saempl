@@ -213,9 +213,15 @@ public LookAndFeel_V4
                          label.getMinimumHorizontalScale());
     }
     
-    void drawRotarySlider (Graphics& g, int x, int y, int width, int height,
-                           float sliderPosProportional, float rotaryStartAngle,
-                           float rotaryEndAngle, Slider& slider) override
+    void drawRotarySlider (Graphics& g,
+                           int x,
+                           int y,
+                           int width,
+                           int height,
+                           float sliderPosProportional,
+                           float rotaryStartAngle,
+                           float rotaryEndAngle,
+                           Slider& slider) override
     {
         g.setColour(style->COLOUR_ACCENT_DARK);
         g.fillEllipse(x + 6, y + 6, width - 14, height - 14);
