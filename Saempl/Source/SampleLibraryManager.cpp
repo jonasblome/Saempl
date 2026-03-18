@@ -9,11 +9,11 @@
 
 #include "SampleLibraryManager.h"
 
-SampleLibraryManager::SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems,
-                                           OwnedArray<SampleItem>& inFavouriteSampleItems,
-                                           OwnedArray<SampleItem>& inDeletedSampleItems,
-                                           OwnedArray<SampleItem>& inAddedSampleItems,
-                                           OwnedArray<SampleItem>& inAlteredSampleItems)
+SampleLibraryManager::SampleLibraryManager(OwnedArray<SampleItem, CriticalSection>& inAllSampleItems,
+                                           OwnedArray<SampleItem, CriticalSection>& inFavouriteSampleItems,
+                                           OwnedArray<SampleItem, CriticalSection>& inDeletedSampleItems,
+                                           OwnedArray<SampleItem, CriticalSection>& inAddedSampleItems,
+                                           OwnedArray<SampleItem, CriticalSection>& inAlteredSampleItems)
 :
 ThreadWithProgressWindow("Synching sample library", true, true, 100000, "Stop loading", nullptr),
 ThreadPool(SystemStats::getNumCpus()),

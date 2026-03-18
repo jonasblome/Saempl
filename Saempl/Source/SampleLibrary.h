@@ -83,7 +83,7 @@ public:
      
      @returns the sample item collection of given type.
      */
-    OwnedArray<SampleItem>& getSampleItems(SampleItemCollectionScope inCollectionScope);
+    OwnedArray<SampleItem, CriticalSection>& getSampleItems(SampleItemCollectionScope inCollectionScope);
     /**
      @returns the path of the current library directory.
      */
@@ -135,12 +135,12 @@ private:
     std::unique_ptr<SampleFileFilter> mFileFilter;
     String mCurrentLibraryPath;
     std::unique_ptr<DirectoryContentsList> mDirectoryContentsList;
-    OwnedArray<SampleItem> mAllSampleItems;
-    OwnedArray<SampleItem> mFilteredSampleItems;
-    OwnedArray<SampleItem> mFavouritesSampleItems;
-    OwnedArray<SampleItem> mDeletedSampleItems;
-    OwnedArray<SampleItem> mAddedSampleItems;
-    OwnedArray<SampleItem> mAlteredSampleItems;
+    OwnedArray<SampleItem, CriticalSection> mAllSampleItems;
+    OwnedArray<SampleItem, CriticalSection> mFilteredSampleItems;
+    OwnedArray<SampleItem, CriticalSection> mFavouritesSampleItems;
+    OwnedArray<SampleItem, CriticalSection> mDeletedSampleItems;
+    OwnedArray<SampleItem, CriticalSection> mAddedSampleItems;
+    OwnedArray<SampleItem, CriticalSection> mAlteredSampleItems;
     StringArray mFilteredFilePaths;
     StringArray mRestoredFavouritesPaths;
     String mDirectoryPathToAddFilesTo;

@@ -35,7 +35,7 @@ public:
      @param inFilteredSampleItems the collection of filtered sample items in the library.
      */
     SampleFileFilter(String const& inDescription,
-                     OwnedArray<SampleItem>& inFilteredSampleItems);
+                     OwnedArray<SampleItem, CriticalSection>& inFilteredSampleItems);
     ~SampleFileFilter();
     /**
      Checks if all filter rules apply to the sample item.
@@ -88,7 +88,7 @@ public:
     
 private:
     OwnedArray<SampleFileFilterRuleBase> mFilterRules;
-    OwnedArray<SampleItem>& filteredSampleItems;
+    OwnedArray<SampleItem, CriticalSection>& filteredSampleItems;
     bool isActive;
     
     bool isFileSuitable (File const& file) const override;

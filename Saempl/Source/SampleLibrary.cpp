@@ -150,7 +150,7 @@ void SampleLibrary::setDirectory(String inDirectoryPath)
     mDirectoryContentsList->setDirectory(currentLibraryDirectory, true, true);
 }
 
-OwnedArray<SampleItem>& SampleLibrary::getSampleItems(SampleItemCollectionScope inCollectionScope)
+OwnedArray<SampleItem, CriticalSection>& SampleLibrary::getSampleItems(SampleItemCollectionScope inCollectionScope)
 {
     switch (inCollectionScope)
     {

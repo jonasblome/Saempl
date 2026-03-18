@@ -9,7 +9,7 @@
 
 #include "SampleSwapJob.h"
 
-SampleSwapJob::SampleSwapJob(OwnedArray<SampleItem>& inSampleItems,
+SampleSwapJob::SampleSwapJob(OwnedArray<SampleItem, CriticalSection>& inSampleItems,
                              std::set<int>& inSwapPositionsInUse,
                              std::set<int>& inStartIndicesInUse,
                              CriticalSection& inSwapLock,

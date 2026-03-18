@@ -9,8 +9,8 @@
 
 #include "SampleAnalysisJob.h"
 
-SampleAnalysisJob::SampleAnalysisJob(OwnedArray<SampleItem>& inSampleItems,
-                                         OwnedArray<SampleItem>& inAddedSampleItems,
+SampleAnalysisJob::SampleAnalysisJob(OwnedArray<SampleItem, CriticalSection>& inSampleItems,
+                                         OwnedArray<SampleItem, CriticalSection>& inAddedSampleItems,
                                          StringArray& inAddedFilePaths,
                                          File const& inFile,
                                          SampleItem* inSampleItem,

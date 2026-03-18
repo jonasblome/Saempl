@@ -28,8 +28,8 @@ public:
      @param forceAnalysis see sample analyser analysis method.
      @param numProcessedItems a reference to the item counter.
      */
-    SampleAnalysisJob(OwnedArray<SampleItem>& inSampleItems,
-                     OwnedArray<SampleItem>& inAddedSampleItems,
+    SampleAnalysisJob(OwnedArray<SampleItem, CriticalSection>& inSampleItems,
+                     OwnedArray<SampleItem, CriticalSection>& inAddedSampleItems,
                      StringArray& inAddedFilePaths,
                      File const& inFile,
                      SampleItem* inSampleItem,
@@ -39,8 +39,8 @@ public:
     
 private:
     std::unique_ptr<SampleAnalyser> mSampleAnalyser;
-    OwnedArray<SampleItem>& allSampleItems;
-    OwnedArray<SampleItem>& addedSampleItems;
+    OwnedArray<SampleItem, CriticalSection>& allSampleItems;
+    OwnedArray<SampleItem, CriticalSection>& addedSampleItems;
     StringArray& addedFilePaths;
     File const& file;
     SampleItem* sampleItem;

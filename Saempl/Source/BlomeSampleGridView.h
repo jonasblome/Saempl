@@ -137,7 +137,7 @@ private:
     OwnedArray<BlomeSampleTileView> mSampleTiles;
     SampleItemCollectionScope mSampleItemCollectionType;
     Array<int> mSelectedSampleTileIndices;
-    OwnedArray<SampleItem> emptySquares;
+    OwnedArray<SampleItem, CriticalSection> emptySquares;
     StringArray mAddedSampleFilePaths;
     std::unique_ptr<SampleGridClusterer> mGridClusterer;
     bool sampleItemCollectionChanged;

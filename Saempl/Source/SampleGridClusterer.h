@@ -31,7 +31,7 @@ public ChangeBroadcaster,
 public ThreadPool
 {
 public:
-    SampleGridClusterer(OwnedArray<SampleItem>& inSampleItems);
+    SampleGridClusterer(OwnedArray<SampleItem, CriticalSection>& inSampleItems);
     ~SampleGridClusterer();
     /**
      Applies the clustering algorithm to the given grid of sample items.
@@ -57,7 +57,7 @@ private:
     std::set<int> swapPositionsInUse;
     std::set<int> startIndicesInUse;
     CriticalSection mSwapLock;
-    OwnedArray<SampleItem>& sampleItems;
+    OwnedArray<SampleItem, CriticalSection>& sampleItems;
     std::vector<float> mFeatureWeights;
     int indexOfKeyFeature;
     int rows;

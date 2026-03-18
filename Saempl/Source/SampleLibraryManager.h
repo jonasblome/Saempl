@@ -30,11 +30,11 @@ public:
     /**
      The constructor for the library manager.
      */
-    SampleLibraryManager(OwnedArray<SampleItem>& inAllSampleItems,
-                         OwnedArray<SampleItem>& inFavouriteSampleItems,
-                         OwnedArray<SampleItem>& inDeletedSampleItems,
-                         OwnedArray<SampleItem>& inAddedSampleItems,
-                         OwnedArray<SampleItem>& inAlteredSampleItems);
+    SampleLibraryManager(OwnedArray<SampleItem, CriticalSection>& inAllSampleItems,
+                         OwnedArray<SampleItem, CriticalSection>& inFavouriteSampleItems,
+                         OwnedArray<SampleItem, CriticalSection>& inDeletedSampleItems,
+                         OwnedArray<SampleItem, CriticalSection>& inAddedSampleItems,
+                         OwnedArray<SampleItem, CriticalSection>& inAlteredSampleItems);
     ~SampleLibraryManager();
     /**
      Stores all properties of a sample item object in an xml element.
@@ -101,11 +101,11 @@ public:
     
 private:
     File libraryDirectory;
-    OwnedArray<SampleItem>& allSampleItems;
-    OwnedArray<SampleItem>& favouriteSampleItems;
-    OwnedArray<SampleItem>& deletedSampleItems;
-    OwnedArray<SampleItem>& addedSampleItems;
-    OwnedArray<SampleItem>& alteredSampleItems;
+    OwnedArray<SampleItem, CriticalSection>& allSampleItems;
+    OwnedArray<SampleItem, CriticalSection>& favouriteSampleItems;
+    OwnedArray<SampleItem, CriticalSection>& deletedSampleItems;
+    OwnedArray<SampleItem, CriticalSection>& addedSampleItems;
+    OwnedArray<SampleItem, CriticalSection>& alteredSampleItems;
     StringArray addedFilePaths;
     InterProcessLock mFileLock{"fileLock"};
     String mLibraryFilesDirectoryPath =

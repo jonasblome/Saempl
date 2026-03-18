@@ -16,7 +16,7 @@
 
 #include "SampleGridClusterer.h"
 
-SampleGridClusterer::SampleGridClusterer(OwnedArray<SampleItem>& inSampleItems)
+SampleGridClusterer::SampleGridClusterer(OwnedArray<SampleItem, CriticalSection>& inSampleItems)
 :
 ThreadWithProgressWindow("Improving sample grid clustering quality", true, true, 10000, "Stop improving", nullptr),
 ThreadPool(SystemStats::getNumCpus() * 1),

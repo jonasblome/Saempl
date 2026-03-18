@@ -36,7 +36,7 @@ public:
      @param inColumns the amount of columns in the grid.
      @param inGrid the whole sample grid.
      */
-    SampleSwapJob(OwnedArray<SampleItem>& inSampleItems,
+    SampleSwapJob(OwnedArray<SampleItem, CriticalSection>& inSampleItems,
                   std::set<int>& inStartIndicesInUse,
                   std::set<int>& inSwapPositionsInUse,
                   CriticalSection& inSwapLock,
@@ -61,7 +61,7 @@ private:
     int const rows;
     int const columns;
     int startIndex;
-    OwnedArray<SampleItem>& sampleItems;
+    OwnedArray<SampleItem, CriticalSection>& sampleItems;
     std::set<int>& swapPositionsInUse;
     std::set<int>& startIndicesInUse;
     CriticalSection& swapLock;

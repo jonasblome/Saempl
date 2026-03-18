@@ -43,7 +43,7 @@ void BlomeSampleGridView::clusterGrid()
     }
     
     // Retrieve sample items
-    OwnedArray<SampleItem>& sampleItems = sampleLibrary.getSampleItems(mSampleItemCollectionType);
+    OwnedArray<SampleItem, CriticalSection>& sampleItems = sampleLibrary.getSampleItems(mSampleItemCollectionType);
     mSelectedSampleTileIndices.clear();
     
     // Calculate optimal rectangle side lengths to minimise empty tiles,
@@ -276,7 +276,7 @@ void BlomeSampleGridView::setupGrid()
 {
     // Setup tile grid
     mSampleTiles.clear();
-    OwnedArray<SampleItem>& sampleItems = sampleLibrary.getSampleItems(mSampleItemCollectionType);
+    OwnedArray<SampleItem, CriticalSection>& sampleItems = sampleLibrary.getSampleItems(mSampleItemCollectionType);
     mSampleGrid = std::make_unique<Grid>();
     setVisible(true);
     

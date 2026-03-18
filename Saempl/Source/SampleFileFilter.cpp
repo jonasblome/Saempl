@@ -9,7 +9,7 @@
 
 #include "SampleFileFilter.h"
 
-SampleFileFilter::SampleFileFilter(String const& inDesciption, OwnedArray<SampleItem>& inFilteredSampleItems)
+SampleFileFilter::SampleFileFilter(String const& inDesciption, OwnedArray<SampleItem, CriticalSection>& inFilteredSampleItems)
 :
 FileFilter(inDesciption),
 filteredSampleItems(inFilteredSampleItems)
