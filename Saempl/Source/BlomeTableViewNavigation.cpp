@@ -15,8 +15,8 @@ BlomeTableViewNavigation::BlomeTableViewNavigation(SaemplAudioProcessor& inProce
 :
 BlomeTableViewBase(inProcessor, inSampleItemPanel, inAudioPlayer)
 {
-    sampleLibrary.addChangeListener(this);
     mSampleItemCollectionType = FILTERED_SAMPLES;
+    sampleLibrary.addChangeListener(this);
     
     // Add all sample item properties as table columns
     for (int c = PROPERTY_NAMES.size() - 1; c >= 0 ; c--)

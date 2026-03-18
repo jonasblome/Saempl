@@ -18,8 +18,8 @@ sampleLibrary(currentProcessor.getSampleLibrary()),
 sampleItemPanel(inSampleItemPanel),
 audioPlayer(inAudioPlayer)
 {
-    setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH, style->SAMPLE_NAVIGATION_PANEL_HEIGHT);
     mSampleItemCollectionType = FILTERED_SAMPLES;
+    setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH, style->SAMPLE_NAVIGATION_PANEL_HEIGHT);
     setPanelComponents();
 }
 

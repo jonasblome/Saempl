@@ -18,8 +18,8 @@ sampleLibrary(inProcessor.getSampleLibrary()),
 audioPlayer(inAudioPlayer),
 sampleItemPanel(inSampleItemPanel)
 {
-    sampleLibrary.addChangeListener(this);
     mSampleItemCollectionType = FILTERED_SAMPLES;
+    sampleLibrary.addChangeListener(this);
     sampleItemCollectionChanged = false;
     addMouseListener(this, true);
     
