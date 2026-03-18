@@ -47,8 +47,8 @@ void SampleGridOptionsPanel::paint(Graphics& g)
     g.fillRoundedRectangle(getLocalBounds().toFloat(), style->CORNER_SIZE_MEDIUM);
     
     // Draw explanation text
+    g.setColour(style->COLOUR_ACCENT_DARK);
     g.setFont(style->FONT_SMALL_BOLD);
-    g.setColour(style->COLOUR_ACCENT_LIGHT);
     g.drawFittedText(String("Change how much the clustering focuses on each property:\n\n")
                      + String("(Double click sliders to reset to default value)"),
                      style->PANEL_MARGIN,

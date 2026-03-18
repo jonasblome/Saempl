@@ -114,11 +114,6 @@ public LookAndFeel_V4
         }
     }
     
-    Font getLabelFont(Label& label) override
-    {
-        return style->FONT_SMALL_BOLD;
-    }
-    
     void drawPopupMenuBackgroundWithOptions(Graphics& g,
                                             int width,
                                             int height,
@@ -359,13 +354,25 @@ public LookAndFeel_V4
         return label;
     }
     
+    Font getLabelFont(Label& label) override
+    {
+        return style->FONT_SMALL_BOLD;
+    }
+    
     void drawLabel(Graphics& g, Label& label) override
     {
         if (!label.isBeingEdited())
         {
             float alpha = label.isEnabled() ? 1.0f : 0.5f;
             
-            g.setColour(style->COLOUR_ACCENT_LIGHT.withMultipliedAlpha(alpha));
+            if (label.isAccessible())
+            {
+                g.setColour(style->COLOUR_TRANSPARENT);
+            }
+            else
+            {
+                g.setColour(style->COLOUR_ACCENT_DARK.withMultipliedAlpha(alpha));
+            }
             g.setFont(style->FONT_SMALL_BOLD);
             
             auto textArea = getLabelBorderSize(label).subtractedFrom(label.getLocalBounds());
@@ -374,11 +381,11 @@ public LookAndFeel_V4
                              jmax(1, (int) ((float) textArea.getHeight() / style->FONT_SMALL_BOLD.getHeight())),
                              label.getMinimumHorizontalScale());
             
-            g.setColour(style->COLOUR_ACCENT_LIGHT.withMultipliedAlpha(alpha));
+            g.setColour(style->COLOUR_ACCENT_DARK.withMultipliedAlpha(alpha));
         }
         else if (label.isEnabled())
         {
-            g.setColour(style->COLOUR_ACCENT_LIGHT);
+            g.setColour(style->COLOUR_ACCENT_DARK);
         }
     }
     

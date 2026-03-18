@@ -23,7 +23,6 @@ SaemplAudioProcessor::SaemplAudioProcessor()
 #endif
 {
     mSampleLibrary = std::make_unique<SampleLibrary>();
-    mLastOpenedLibraryPath = "";
     mActiveNavigationPanelType = PANELS_LIBRARY_PANEL;
     mSortingColumnTitle = "Title";
     mSortingDirection = true;
@@ -363,11 +362,6 @@ void SaemplAudioProcessor::setStateInformation(void const* data, int sizeInBytes
             }
             
             mFeatureWeightsChanged = true;
-        }
-        
-        if (mLastOpenedLibraryPath == "")
-        {
-            mLastOpenedLibraryPath = mDefaultLibraryDirectoryPath;
         }
         
         mSampleLibrary->setDirectory(mLastOpenedLibraryPath);

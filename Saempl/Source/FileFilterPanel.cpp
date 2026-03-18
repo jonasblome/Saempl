@@ -41,7 +41,7 @@ void FileFilterPanel::paint(Graphics& g)
     // Draw hint message if rules are empty
     if (libraryFileFilter.getFilterRules().isEmpty())
     {
-        g.setColour(style->COLOUR_ACCENT_LIGHT);
+        g.setColour(style->COLOUR_ACCENT_DARK);
         g.setFont(style->FONT_SMALL_BOLD);
         g.drawFittedText("Add filter rules to see them here",
                          getLocalBounds().removeFromBottom(style->FILTER_RULE_HEIGHT),
