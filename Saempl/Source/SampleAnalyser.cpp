@@ -26,9 +26,9 @@ SampleAnalyser::~SampleAnalyser()
 void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
 {
     // Load audio file
-    loadAudioFileSource(inSampleItem->getCurrentFilePath());
+    bool fileLoadedSuccessfully = loadAudioFileSource(inSampleItem->getCurrentFilePath());
     
-    if (sampleRate == 0 || numChannels == 0 || totalNumSamples == 0 || numBlocks == 0)
+    if (!fileLoadedSuccessfully || sampleRate == 0 || numChannels == 0 || totalNumSamples == 0 || numBlocks == 0)
     {
         return;
     }
@@ -83,15 +83,23 @@ void SampleAnalyser::analyseSample(SampleItem* inSampleItem, bool forceAnalysis)
     }
 }
 
-void SampleAnalyser::loadAudioFileSource(File const& inFile)
+bool SampleAnalyser::loadAudioFileSource(File const& inFile)
 {
     mCurrentAudioFileSource.reset();
     AudioFormatReader* reader = mFormatManager->createReaderFor(inFile);
+    
+    if (reader == nullptr)
+    {
+        return false;
+    }
+    
     mCurrentAudioFileSource = std::make_unique<AudioFormatReaderSource>(reader, true);
     numChannels = mCurrentAudioFileSource->getAudioFormatReader()->numChannels;
     sampleRate = mCurrentAudioFileSource->getAudioFormatReader()->sampleRate;
     totalNumSamples = int (mCurrentAudioFileSource->getTotalLength());
     numBlocks = int (totalNumSamples / loudnessBufferSize) + 1;
+    
+    return true;
 }
 
 void SampleAnalyser::analyseSampleLoudness()

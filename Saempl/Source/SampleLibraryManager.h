@@ -100,13 +100,13 @@ public:
                            bool forceAnalysis);
     
 private:
-    File libraryDirectory;
+    File mLibraryDirectory;
     OwnedArray<SampleItem, CriticalSection>& allSampleItems;
     OwnedArray<SampleItem, CriticalSection>& favouriteSampleItems;
     OwnedArray<SampleItem, CriticalSection>& deletedSampleItems;
     OwnedArray<SampleItem, CriticalSection>& addedSampleItems;
     OwnedArray<SampleItem, CriticalSection>& alteredSampleItems;
-    StringArray addedFilePaths;
+    StringArray mAddedFilePaths;
     InterProcessLock mFileLock{"fileLock"};
     String mLibraryFilesDirectoryPath =
     (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()

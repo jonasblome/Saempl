@@ -98,8 +98,10 @@ private:
      Loads the given file into a audio source.
      
      @param inFile the file to load into the audio file source.
+     
+     @returns whether the file could be read or not.
      */
-    void loadAudioFileSource(File const& inFile);
+    bool loadAudioFileSource(File const& inFile);
     /**
      Analyses the loudness of the given file in LUFS and dB.
      */

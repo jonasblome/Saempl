@@ -24,13 +24,15 @@ SaemplAudioProcessor::SaemplAudioProcessor()
 {
     mSampleLibrary = std::make_unique<SampleLibrary>();
     mActiveNavigationPanelType = PANELS_LIBRARY_PANEL;
+//    mOutputDevice = std::make_unique<AudioDeviceManager>()->getCurrentAudioDevice()->getName();
+    mLastOpenedLibraryPath = String();
     mSortingColumnTitle = "Title";
     mSortingDirection = true;
     mSampleItemPanelIsVisible = true;
     mFollowAudioPlayhead = false;
     mFilterIsActivated = true;
     mFeatureWeightsChanged = true;
-    mVolumeIsNormalised = false;
+    mVolumeIsNormalised = true;
     mSampleGridZoomFactor = 0.0;
     mOutputGain = 1.0;
     mFeatureWeights = GRID_PRESET_HARMONIC;

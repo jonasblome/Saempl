@@ -32,8 +32,8 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     SaemplAudioProcessor& audioProcessor;
-    std::unique_ptr<MainPanel> mMainPanel;
     std::unique_ptr<BlomeLookAndFeel> mLookAndFeel;
+    std::unique_ptr<MainPanel> mMainPanel;
     SharedResourcePointer<TooltipWindow> tooltipWindow;
     BlomeStyling::StylingPtr style;
 };

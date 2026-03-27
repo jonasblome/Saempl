@@ -560,7 +560,7 @@ void HeaderPanel::setChooseOutputDeviceButton(int buttonWidth)
         // Add all output devices to popup menu
         for (AudioIODeviceType* deviceType : mAudioDeviceManager->getAvailableDeviceTypes())
         {
-            for(String deviceName : deviceType->getDeviceNames())
+            for (String deviceName : deviceType->getDeviceNames())
             {
                 popupMenu.addItem(deviceName, [this, deviceName] { selectOutputDevice(deviceName); });
             }
