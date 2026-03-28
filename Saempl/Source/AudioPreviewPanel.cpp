@@ -21,8 +21,7 @@ PanelBase(inProcessor),
 audioPlayer(inAudioPlayer),
 zoomSlider(inSlider),
 mThumbnailCache(std::make_unique<AudioThumbnailCache>(5)),
-mAudioPreview(std::make_unique<AudioThumbnail>(512, audioPlayer.getFormatManager(), *mThumbnailCache)),
-isFollowingTransport(false)
+mAudioPreview(std::make_unique<AudioThumbnail>(512, audioPlayer.getFormatManager(), *mThumbnailCache))
 {
     setSize(style->SAMPLE_PREVIEW_WIDTH, style->SAMPLE_PREVIEW_HEIGHT);
     setPanelComponents();

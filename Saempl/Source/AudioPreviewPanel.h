@@ -107,11 +107,11 @@ private:
     std::unique_ptr<ScrollBar> mAudioPreviewScrollbar;
     std::unique_ptr<AudioThumbnailCache> mThumbnailCache;
     std::unique_ptr<AudioThumbnail> mAudioPreview;
-    Range<double> visibleRange;
-    bool isFollowingTransport;
-    URL lastFileDropped;
     std::unique_ptr<DrawableRectangle> mAudioPositionMarker;
-    URL mCurrentAudioFile;
+    Range<double> visibleRange = Range<double>();
+    bool isFollowingTransport = false;
+    URL lastFileDropped = URL();
+    URL mCurrentAudioFile = URL();
     
     void paint(Graphics& g) override;
     void setPanelComponents() override;
