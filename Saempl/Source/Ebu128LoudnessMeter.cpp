@@ -39,10 +39,11 @@
 
 
 #include "Ebu128LoudnessMeter.h"
+#include "BlomeHelpers.h"
 
 // Static member constants
 // -----------------------
-float const Ebu128LoudnessMeter::minimalReturnValue = -300.0f;
+float const Ebu128LoudnessMeter::minimalReturnValue = MINIMUM_LOUDNESS;
 double const Ebu128LoudnessMeter::absoluteThreshold = -70.0;
 
 // Specification for the histograms

@@ -209,11 +209,16 @@ void SampleGridClusterer::copyFeaturesToVectors()
                             featureVector[numUsedFeatures] = sample->getLength() / 60 * mFeatureWeights[0];
                             break;
                         case 1:
-                            featureVector[numUsedFeatures] = (sample->getLoudnessLUFS() + 300) / (3 + 300) * mFeatureWeights[1];
+                            featureVector[numUsedFeatures] = (sample->getLoudnessLUFS() - MINIMUM_LOUDNESS)
+                                / (MAXIMUM_LOUDNESS - MINIMUM_LOUDNESS) * mFeatureWeights[1];
                             break;
                         case 2:
-                            featureVector[numUsedFeatures] = (sample->getDynamicRange() - 0) / (303 - 0) * mFeatureWeights[2];
+                        {
+                            int minDynamicRange = 0;
+                            featureVector[numUsedFeatures] = (sample->getDynamicRange() - minDynamicRange)
+                                / (abs(MINIMUM_LOUDNESS) + MAXIMUM_LOUDNESS - minDynamicRange) * mFeatureWeights[2];
                             break;
+                        }
                         case 3:
                             featureVector[numUsedFeatures] = sample->getZeroCrossingRate() / sample->getSampleRate() * mFeatureWeights[3];
                             break;

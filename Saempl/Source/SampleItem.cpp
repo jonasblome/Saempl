@@ -15,8 +15,8 @@ SampleItem::SampleItem()
     mOldFilePath = EMPTY_TILE_PATH;
     mTitle = EMPTY_TILE_PATH;
     mLength = 0;
-    mLoudnessDecibel = -300;
-    mLoudnessLUFS = -300;
+    mLoudnessDecibel = MINIMUM_LOUDNESS;
+    mLoudnessLUFS = MINIMUM_LOUDNESS;
     mZeroCrossingRate = 0;
     mSpectralCentroid = 0;
     mSpectralSpread = 0;

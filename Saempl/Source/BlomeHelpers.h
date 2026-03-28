@@ -93,6 +93,9 @@ static std::map<String, CompareOperators> STRING_TO_COMPARE_OPERATORS
     { "LESS_THAN", CompareOperators::LESS_THAN },
 };
 
+static float const MINIMUM_LOUDNESS = -300.0;
+static float const MAXIMUM_LOUDNESS = 15.0;
+
 static int const NO_KEY_INDEX = 100;
 static int const SAMPLE_TOO_LONG_INDEX = 200;
 

@@ -13,7 +13,7 @@ SampleFileFilterRuleLoudnessLUFS::SampleFileFilterRuleLoudnessLUFS(String inRule
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = -300.0;
+    mCompareValue = MINIMUM_LOUDNESS;
     mCompareOperator = GREATER_THAN;
 }
 
@@ -68,5 +68,5 @@ void SampleFileFilterRuleLoudnessLUFS::setCompareValue(double const& inCompareVa
 
 bool SampleFileFilterRuleLoudnessLUFS::canHaveEffect()
 {
-    return isActive && (mCompareOperator != GREATER_THAN || mCompareValue != -300);
+    return isActive && (mCompareOperator != GREATER_THAN || mCompareValue != MINIMUM_LOUDNESS);
 }
