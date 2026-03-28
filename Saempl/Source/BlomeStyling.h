@@ -117,18 +117,19 @@ struct BlomeStyling
     Colour const COLOUR_PANEL_TITLE_FONT = COLOUR_ACCENT_MEDIUM;
     
     // Fonts
-    Font const FONT_EXTRA_SMALL_BOLD = Font(FontOptions("Helvetica Neue", 8.00f, Font::bold));
+    String const SAEMPL_FONT_NAME = "Helvetica Neue";
+    Font const FONT_EXTRA_SMALL_BOLD = Font(FontOptions(SAEMPL_FONT_NAME, 8.00f, Font::bold));
     
-    Font const FONT_SMALL = Font(FontOptions("Helvetica Neue", 12.00f, Font::plain));
-    Font const FONT_SMALL_BOLD = Font(FontOptions("Helvetica Neue", 12.00f, Font::bold));
-    Font const FONT_SMALL_BOLD_ACCENTUATED = Font(FontOptions("Helvetica Neue", 13.00f, Font::bold));
+    Font const FONT_SMALL = Font(FontOptions(SAEMPL_FONT_NAME, 12.00f, Font::plain));
+    Font const FONT_SMALL_BOLD = Font(FontOptions(SAEMPL_FONT_NAME, 12.00f, Font::bold));
+    Font const FONT_SMALL_BOLD_ACCENTUATED = Font(FontOptions(SAEMPL_FONT_NAME, 13.00f, Font::bold));
     
-    Font const FONT_MEDIUM_SMALL = Font(FontOptions("Helvetica Neue", 16.00f, Font::plain));
-    Font const FONT_MEDIUM_SMALL_BOLD = Font(FontOptions("Helvetica Neue", 16.00f, Font::bold));
+    Font const FONT_MEDIUM_SMALL = Font(FontOptions(SAEMPL_FONT_NAME, 16.00f, Font::plain));
+    Font const FONT_MEDIUM_SMALL_BOLD = Font(FontOptions(SAEMPL_FONT_NAME, 16.00f, Font::bold));
     
-    Font const FONT_MEDIUM = Font(FontOptions("Helvetica Neue", 22.00f, Font::plain));
-    Font const FONT_MEDIUM_BOLD = Font(FontOptions("Helvetica Neue", 22.00f, Font::bold));
+    Font const FONT_MEDIUM = Font(FontOptions(SAEMPL_FONT_NAME, 22.00f, Font::plain));
+    Font const FONT_MEDIUM_BOLD = Font(FontOptions(SAEMPL_FONT_NAME, 22.00f, Font::bold));
     
-    Font const FONT_LARGE = Font(FontOptions("Helvetica Neue", 48.00f, Font::plain));
-    Font const FONT_LARGE_BOLD = Font(FontOptions("Helvetica Neue", 48.00f, Font::bold));
+    Font const FONT_LARGE = Font(FontOptions(SAEMPL_FONT_NAME, 48.00f, Font::plain));
+    Font const FONT_LARGE_BOLD = Font(FontOptions(SAEMPL_FONT_NAME, 48.00f, Font::bold));
 };
