@@ -87,9 +87,9 @@ public:
     bool affectsPropertyLock();
     
 private:
-    OwnedArray<SampleFileFilterRuleBase> mFilterRules;
+    OwnedArray<SampleFileFilterRuleBase> mFilterRules = OwnedArray<SampleFileFilterRuleBase>();
     OwnedArray<SampleItem, CriticalSection>& filteredSampleItems;
-    bool isActive;
+    bool isActive = true;
     
     bool isFileSuitable (File const& file) const override;
     bool isDirectorySuitable (File const& file) const override;

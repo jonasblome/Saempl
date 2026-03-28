@@ -16,17 +16,20 @@ AudioPlayer::AudioPlayer()
     mThread->startThread(Thread::Priority::normal);
     
     // Audio setup
-    currentMaxLevel = 0.0;
-    currentUserLevel = 1.0;
-    currentNormalisationGain = 1.0;
-    mFormatManager = std::make_unique<AudioFormatManager>();
-    mTransportSource = std::make_unique<AudioTransportSource>();
     mAudioDeviceManager = std::make_unique<AudioDeviceManager>();
-    mAudioSourcePlayer = std::make_unique<AudioSourcePlayer>();
-    initialiseDefaultDevice();
+    
+    mFormatManager = std::make_unique<AudioFormatManager>();
     mFormatManager->registerBasicFormats();
+    
+    mAudioSourcePlayer = std::make_unique<AudioSourcePlayer>();
     mAudioDeviceManager->addAudioCallback(&*mAudioSourcePlayer);
+    
+    mTransportSource = std::make_unique<AudioTransportSource>();
     mAudioSourcePlayer->setSource(&*mTransportSource);
+    
+    mCurrentAudioFileSource.reset();
+    
+    initialiseDefaultDevice();
     // Start timer to automatically switch audio device along with the current system output
     // Currently deactivated to enable custom audio output device option
     // startTimerHz(5);

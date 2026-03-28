@@ -60,7 +60,7 @@ private:
     int indexOfKeyFeature;
     int const rows;
     int const columns;
-    int startIndex;
+    int startIndex = 0;
     OwnedArray<SampleItem, CriticalSection>& sampleItems;
     std::set<int>& swapPositionsInUse;
     std::set<int>& startIndicesInUse;

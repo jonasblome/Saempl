@@ -13,7 +13,6 @@ SampleFileFilterRuleDynamicRange::SampleFileFilterRuleDynamicRange(String inRule
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = 0;
     mCompareOperator = GREATER_THAN;
 }
 

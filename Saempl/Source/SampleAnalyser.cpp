@@ -14,6 +14,7 @@ SampleAnalyser::SampleAnalyser()
 mForwardFFT(tempoFFTOrder),
 mWindowFunction(tempoWindowLength + 1, juce::dsp::WindowingFunction<float>::hann)
 {
+    mCurrentAudioFileSource.reset();
     mFormatManager = std::make_unique<AudioFormatManager>();
     mFormatManager->registerBasicFormats();
 }

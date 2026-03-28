@@ -13,7 +13,6 @@ SampleFileFilterRuleRolloff::SampleFileFilterRuleRolloff(String inRulePropertyNa
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = 0;
     mCompareOperator = GREATER_THAN;
 }
 

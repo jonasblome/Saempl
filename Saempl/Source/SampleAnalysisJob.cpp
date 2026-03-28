@@ -26,8 +26,7 @@ sampleItem(inSampleItem),
 mForceAnalysis(forceAnalysis),
 numProcessedItems(inNumProcessedItems)
 {
-    // Initialise sample analyser
-    mSampleAnalyser = std::make_unique<SampleAnalyser>();
+    
 }
 
 SampleAnalysisJob::~SampleAnalysisJob()

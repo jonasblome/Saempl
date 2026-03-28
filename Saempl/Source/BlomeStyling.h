@@ -13,7 +13,7 @@
 
 struct BlomeStyling
 {
-    using StylingPtr=SharedResourcePointer<BlomeStyling>;
+    using StylingPtr = SharedResourcePointer<BlomeStyling>;
     
     // Other
     float const CORNER_SIZE_MEDIUM = 6.0;

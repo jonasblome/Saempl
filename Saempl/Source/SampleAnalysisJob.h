@@ -38,7 +38,7 @@ public:
     ~SampleAnalysisJob();
     
 private:
-    std::unique_ptr<SampleAnalyser> mSampleAnalyser;
+    std::unique_ptr<SampleAnalyser> mSampleAnalyser = std::make_unique<SampleAnalyser>();
     OwnedArray<SampleItem, CriticalSection>& allSampleItems;
     OwnedArray<SampleItem, CriticalSection>& addedSampleItems;
     StringArray& addedFilePaths;

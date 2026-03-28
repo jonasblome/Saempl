@@ -13,7 +13,6 @@ SampleFileFilterRuleChromaFlux::SampleFileFilterRuleChromaFlux(String inRuleProp
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = 0;
     mCompareOperator = GREATER_THAN;
 }
 

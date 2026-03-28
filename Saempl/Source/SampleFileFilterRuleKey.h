@@ -40,7 +40,7 @@ public:
     bool canHaveEffect() override;
     
 private:
-    String mCompareValue;
+    String mCompareValue = KEY_INDEX_TO_KEY_NAME[NO_KEY_INDEX];
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleFileFilterRuleKey);
 };

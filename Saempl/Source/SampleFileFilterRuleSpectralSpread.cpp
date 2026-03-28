@@ -13,7 +13,6 @@ SampleFileFilterRuleSpectralSpread::SampleFileFilterRuleSpectralSpread(String in
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = 0;
     mCompareOperator = GREATER_THAN;
 }
 

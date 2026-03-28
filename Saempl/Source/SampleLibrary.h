@@ -133,20 +133,20 @@ public:
 private:
     std::unique_ptr<TimeSliceThread> mDirectoryScannerThread;
     std::unique_ptr<SampleFileFilter> mFileFilter;
-    String mCurrentLibraryPath;
     std::unique_ptr<DirectoryContentsList> mDirectoryContentsList;
-    OwnedArray<SampleItem, CriticalSection> mAllSampleItems;
-    OwnedArray<SampleItem, CriticalSection> mFilteredSampleItems;
-    OwnedArray<SampleItem, CriticalSection> mFavouritesSampleItems;
-    OwnedArray<SampleItem, CriticalSection> mDeletedSampleItems;
-    OwnedArray<SampleItem, CriticalSection> mAddedSampleItems;
-    OwnedArray<SampleItem, CriticalSection> mAlteredSampleItems;
-    StringArray mFilteredFilePaths;
-    StringArray mRestoredFavouritesPaths;
-    String mDirectoryPathToAddFilesTo;
+    StringArray mFilteredFilePaths = StringArray();
+    StringArray mRestoredFavouritesPaths = StringArray();
+    String mDirectoryPathToAddFilesTo = String();
+    String mCurrentLibraryPath = String();
+    OwnedArray<SampleItem, CriticalSection> mAllSampleItems = OwnedArray<SampleItem, CriticalSection>();
+    OwnedArray<SampleItem, CriticalSection> mFilteredSampleItems = OwnedArray<SampleItem, CriticalSection>();
+    OwnedArray<SampleItem, CriticalSection> mFavouriteSampleItems = OwnedArray<SampleItem, CriticalSection>();
+    OwnedArray<SampleItem, CriticalSection> mDeletedSampleItems = OwnedArray<SampleItem, CriticalSection>();
+    OwnedArray<SampleItem, CriticalSection> mAddedSampleItems = OwnedArray<SampleItem, CriticalSection>();
+    OwnedArray<SampleItem, CriticalSection> mAlteredSampleItems = OwnedArray<SampleItem, CriticalSection>();
     std::unique_ptr<SampleLibraryManager> mSampleLibraryManager;
-    bool mLibraryWasLoaded;
-    bool mLibraryWasAltered;
+    bool mLibraryWasLoaded = false;
+    bool mLibraryWasAltered = false;
     
     /**
      Deletes SampleItem objects in all collections (all, filtered, favourites).

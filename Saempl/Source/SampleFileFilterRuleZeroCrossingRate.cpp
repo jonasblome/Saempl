@@ -13,7 +13,6 @@ SampleFileFilterRuleZeroCrossingRate::SampleFileFilterRuleZeroCrossingRate(Strin
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = 0;
     mCompareOperator = GREATER_THAN;
 }
 

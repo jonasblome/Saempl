@@ -190,25 +190,25 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SaemplAudioProcessor)
     
     std::unique_ptr<SampleLibrary> mSampleLibrary;
-    NavigationPanelType mActiveNavigationPanelType;
+    NavigationPanelType mActiveNavigationPanelType = PANELS_LIBRARY_PANEL;
     String mDefaultLibraryDirectoryPath =
-    (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
-    + DIRECTORY_SEPARATOR
-    + "Plugins"
-    + DIRECTORY_SEPARATOR
-    + "Saempl"
-    + DIRECTORY_SEPARATOR
-    + "DefaultSampleLibrary";
-    String mSortingColumnTitle;
-    String mLastOpenedLibraryPath;
-    String mOutputDevice;
-    bool mSortingDirection;
-    bool mSampleItemPanelIsVisible;
-    bool mFollowAudioPlayhead;
-    bool mFilterIsActivated;
-    bool mFeatureWeightsChanged;
-    bool mVolumeIsNormalised;
-    float mSampleGridZoomFactor;
-    float mOutputGain;
-    std::vector<float> mFeatureWeights;
+        (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
+        + DIRECTORY_SEPARATOR
+        + "Plugins"
+        + DIRECTORY_SEPARATOR
+        + "Saempl"
+        + DIRECTORY_SEPARATOR
+        + "DefaultSampleLibrary";
+    String mSortingColumnTitle = PROPERTY_NAMES[0];
+    String mLastOpenedLibraryPath = String();;
+    String mOutputDevice = String();
+    bool mSortingDirection = true;
+    bool mSampleItemPanelIsVisible = true;
+    bool mFollowAudioPlayhead = false;
+    bool mFilterIsActivated = true;
+    bool mFeatureWeightsChanged = true;
+    bool mVolumeIsNormalised = true;
+    float mSampleGridZoomFactor = 0.0;
+    float mOutputGain = 1.0;
+    std::vector<float> mFeatureWeights = GRID_PRESET_HARMONIC;
 };

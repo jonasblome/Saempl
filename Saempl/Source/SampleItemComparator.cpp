@@ -11,8 +11,7 @@
 
 SampleItemComparator::SampleItemComparator()
 {
-    mIsForwards = true;
-    mComparePropertyName = String();
+    
 }
 
 SampleItemComparator::~SampleItemComparator()

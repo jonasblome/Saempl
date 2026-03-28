@@ -34,12 +34,12 @@ public:
 private:
     std::unique_ptr<AudioFormatReaderSource> mCurrentAudioFileSource;
     std::unique_ptr<AudioFormatManager> mFormatManager;
-    AudioBuffer<float> mAnalysisBuffer;
+    AudioBuffer<float> mAnalysisBuffer = AudioBuffer<float>();
     Ebu128LoudnessMeter mEbuLoudnessMeter;
     dsp::FFT mForwardFFT;
     dsp::WindowingFunction<float> mWindowFunction;
-    std::vector<float> mWindowedFFTData;
-    std::vector<std::vector<float>> mSTFTSpectrum;
+    std::vector<float> mWindowedFFTData = std::vector<float>();
+    std::vector<std::vector<float>> mSTFTSpectrum = std::vector<std::vector<float>>();
     // Lower values increase temporal resolution of the STFT spectrum
     static int const tempoFFTOrder = 11;
     static int const tempoFFTSize = 1 << tempoFFTOrder;

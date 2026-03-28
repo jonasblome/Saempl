@@ -11,25 +11,23 @@
 
 SampleLibrary::SampleLibrary()
 {
-    mLibraryWasLoaded = false;
-    mLibraryWasAltered = false;
+    // Create thread for scanning the sample library directory
+    mDirectoryScannerThread = std::make_unique<TimeSliceThread>("DirectoryScannerThread");
+    mDirectoryScannerThread->startThread(Thread::Priority::normal);
+    
+    // Set file filter and directory list
+    mFileFilter = std::make_unique<SampleFileFilter>("AudioFormatsFilter", mFilteredSampleItems);
+    mDirectoryContentsList = std::make_unique<DirectoryContentsList>(&*mFileFilter, *mDirectoryScannerThread);
+    mDirectoryContentsList->addChangeListener(this);
     
     // Initialise library manager
     mSampleLibraryManager = std::make_unique<SampleLibraryManager>(mAllSampleItems,
-                                                                   mFavouritesSampleItems,
+                                                                   mFavouriteSampleItems,
                                                                    mDeletedSampleItems,
                                                                    mAddedSampleItems,
                                                                    mAlteredSampleItems);
     mSampleLibraryManager->addChangeListener(this);
     
-    // Create thread for scanning the sample library directory
-    mDirectoryScannerThread = std::make_unique<TimeSliceThread>("DirectoryScannerThread");
-    mDirectoryScannerThread->startThread(Thread::Priority::normal);
-    
-    // Set file filter
-    mFileFilter = std::make_unique<SampleFileFilter>("AudioFormatsFilter", mFilteredSampleItems);
-    mDirectoryContentsList = std::make_unique<DirectoryContentsList>(&*mFileFilter, *mDirectoryScannerThread);
-    mDirectoryContentsList->addChangeListener(this);
 }
 
 SampleLibrary::~SampleLibrary()
@@ -161,11 +159,11 @@ OwnedArray<SampleItem, CriticalSection>& SampleLibrary::getSampleItems(SampleIte
             return mFilteredSampleItems;
             break;
         case FAVOURITE_SAMPLES:
-            return mFavouritesSampleItems;
+            return mFavouriteSampleItems;
             break;
         default:
-            jassertfalse;
-            return mAllSampleItems;
+            // jassertfalse;
+            return mFilteredSampleItems;
             break;
     }
 }
@@ -218,7 +216,7 @@ StringArray& SampleLibrary::getFilteredFilePaths()
 
 void SampleLibrary::clearSampleItemCollections()
 {
-    mFavouritesSampleItems.clear(false);
+    mFavouriteSampleItems.clear(false);
     mFilteredSampleItems.clear(false);
     mFilteredFilePaths.clear();
     mAllSampleItems.clear();
@@ -339,14 +337,14 @@ bool SampleLibrary::addToFavourites(File const& inFile)
     if (itemToAdd == nullptr)
     {
         itemToAdd = addToSampleItems(inFile);
-        mFavouritesSampleItems.add(itemToAdd);
+        mFavouriteSampleItems.add(itemToAdd);
         return true;
     }
     
     // Check if item is already in favourites
-    if (!mFavouritesSampleItems.contains(itemToAdd))
+    if (!mFavouriteSampleItems.contains(itemToAdd))
     {
-        mFavouritesSampleItems.add(itemToAdd);
+        mFavouriteSampleItems.add(itemToAdd);
     }
     
     return false;
@@ -375,7 +373,7 @@ void SampleLibrary::removeSampleItem(String const& inFilePath, bool deletePerman
 
 void SampleLibrary::removeFromFavourites(SampleItem& inSampleItem)
 {
-    mFavouritesSampleItems.removeObject(&inSampleItem, false);
+    mFavouriteSampleItems.removeObject(&inSampleItem, false);
 }
 
 void SampleLibrary::reanalyseSampleItem(File const& inFile)

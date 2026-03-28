@@ -88,10 +88,10 @@ private:
     std::unique_ptr<AudioSourcePlayer> mAudioSourcePlayer;
     std::unique_ptr<AudioTransportSource> mTransportSource;
     std::unique_ptr<AudioFormatReaderSource> mCurrentAudioFileSource;
-    bool mVolumeIsNormalised;
-    float currentMaxLevel;
-    float currentUserLevel;
-    float currentNormalisationGain;
+    bool mVolumeIsNormalised = true;
+    float currentMaxLevel = 0;
+    float currentUserLevel = 1;
+    float currentNormalisationGain = 1;
     
     void timerCallback() override;
     /**

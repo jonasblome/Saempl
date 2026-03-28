@@ -40,7 +40,7 @@ public:
     bool canHaveEffect() override;
     
 private:
-    double mCompareValue;
+    double mCompareValue = MINIMUM_LOUDNESS;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleFileFilterRuleLoudnessLUFS);
 };

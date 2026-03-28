@@ -13,7 +13,6 @@ SampleFileFilterRuleLoudnessDecibel::SampleFileFilterRuleLoudnessDecibel(String 
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = MINIMUM_LOUDNESS;
     mCompareOperator = GREATER_THAN;
 }
 

@@ -13,7 +13,6 @@ SampleFileFilterRuleKey::SampleFileFilterRuleKey(String inRulePropertyName)
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = KEY_INDEX_TO_KEY_NAME[NO_KEY_INDEX];
     mCompareOperator = EQUAL_TO;
 }
 

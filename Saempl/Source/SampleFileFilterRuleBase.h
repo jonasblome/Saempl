@@ -66,9 +66,9 @@ public:
     bool getIsActive();
     
 protected:
-    CompareOperators mCompareOperator;
+    CompareOperators mCompareOperator = EQUAL_TO;
     String mRulePropertyName;
-    bool isActive;
+    bool isActive = true;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleFileFilterRuleBase);
 };

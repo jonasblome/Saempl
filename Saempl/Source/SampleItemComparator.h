@@ -45,8 +45,8 @@ public:
     void setSortingDirection(bool isForwards);
     
 private:
-    String mComparePropertyName;
-    bool mIsForwards;
+    String mComparePropertyName = String();
+    bool mIsForwards = true;
     
     /**
      @see compareElements()

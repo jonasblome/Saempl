@@ -38,7 +38,7 @@ swapLock(inSwapLock),
 swapAreaIndices(inSwapAreaIndices),
 grid(inGrid)
 {
-    startIndex = 0;
+    
 }
 
 SampleSwapJob::~SampleSwapJob()

@@ -803,6 +803,7 @@ String SampleLibraryManager::replaceSpecialChars(String inString)
 //    data.swap(buffer);
 //    
 //    return String(data);
+    return String();
 }
 
 void SampleLibraryManager::evaluateTempoDetection(int detectedTempo, const String& title)

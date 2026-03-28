@@ -14,8 +14,8 @@
             filePath = "../../Source/SampleItemComparator.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "91"
-            endingLineNumber = "91"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
             landmarkName = "SampleItemComparator::compareElements(first, second)"
             landmarkType = "7">
          </BreakpointContent>

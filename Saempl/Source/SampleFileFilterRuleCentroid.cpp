@@ -13,7 +13,6 @@ SampleFileFilterRuleCentroid::SampleFileFilterRuleCentroid(String inRuleProperty
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = 0;
     mCompareOperator = GREATER_THAN;
 }
 

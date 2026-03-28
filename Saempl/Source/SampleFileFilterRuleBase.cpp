@@ -13,7 +13,7 @@ SampleFileFilterRuleBase::SampleFileFilterRuleBase(String inRulePropertyName)
 :
 mRulePropertyName(inRulePropertyName)
 {
-    isActive = true;
+    
 }
 
 SampleFileFilterRuleBase::~SampleFileFilterRuleBase()

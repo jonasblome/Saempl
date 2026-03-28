@@ -100,42 +100,42 @@ public:
                            bool forceAnalysis);
     
 private:
-    File mLibraryDirectory;
+    File mLibraryDirectory = File();
     OwnedArray<SampleItem, CriticalSection>& allSampleItems;
     OwnedArray<SampleItem, CriticalSection>& favouriteSampleItems;
     OwnedArray<SampleItem, CriticalSection>& deletedSampleItems;
     OwnedArray<SampleItem, CriticalSection>& addedSampleItems;
     OwnedArray<SampleItem, CriticalSection>& alteredSampleItems;
-    StringArray mAddedFilePaths;
+    StringArray mAddedFilePaths = StringArray();
     InterProcessLock mFileLock{"fileLock"};
-    String mLibraryFilesDirectoryPath =
-    (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
-    + DIRECTORY_SEPARATOR
-    + "Plugins"
-    + DIRECTORY_SEPARATOR
-    + "Saempl"
-    + DIRECTORY_SEPARATOR
-    + "SampleLibraryFiles";
-    String mSaemplDataFilePath =
-    (File::getSpecialLocation(File::userMusicDirectory)).getFullPathName()
-    + DIRECTORY_SEPARATOR
-    + "Plugins"
-    + DIRECTORY_SEPARATOR
-    + "Saempl"
-    + DIRECTORY_SEPARATOR
-    + "SaemplPluginData"
-    + SAEMPL_DATA_FILE_EXTENSION;
+    String mLibraryFilesDirectoryPath = (File::getSpecialLocation(File::userMusicDirectory))
+        .getFullPathName()
+        + DIRECTORY_SEPARATOR
+        + "Plugins"
+        + DIRECTORY_SEPARATOR
+        + "Saempl"
+        + DIRECTORY_SEPARATOR
+        + "SampleLibraryFiles";
+    String mSaemplDataFilePath = (File::getSpecialLocation(File::userMusicDirectory))
+        .getFullPathName()
+        + DIRECTORY_SEPARATOR
+        + "Plugins"
+        + DIRECTORY_SEPARATOR
+        + "Saempl"
+        + DIRECTORY_SEPARATOR
+        + "SaemplPluginData"
+        + SAEMPL_DATA_FILE_EXTENSION;
     int currentVersion = 0;
     bool libraryHasOldVersion = false;
-    int numProcessedItems;
-    int numWithinTwoBPM;
-    int numWithinFiveBPM;
-    int numWithinTenBPM;
-    int numFalseBPMDetected;
-    int numCorrectKey;
-    int numWithinOneKey;
-    int numWithinThreeKey;
-    int numFalseKeyDetected;
+    int numProcessedItems = 0;
+//    int numWithinTwoBPM;
+//    int numWithinFiveBPM;
+//    int numWithinTenBPM;
+//    int numFalseBPMDetected;
+//    int numCorrectKey;
+//    int numWithinOneKey;
+//    int numWithinThreeKey;
+//    int numFalseKeyDetected;
     
     /**
      Loads the given file as an XmlElement and returns a pointer to it.

@@ -13,7 +13,6 @@ SampleFileFilterRuleTitle::SampleFileFilterRuleTitle(String inRulePropertyName)
 :
 SampleFileFilterRuleBase(inRulePropertyName)
 {
-    mCompareValue = "";
     mCompareOperator = CONTAINS;
 }
 

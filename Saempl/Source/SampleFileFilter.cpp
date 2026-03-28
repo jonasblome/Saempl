@@ -14,7 +14,7 @@ SampleFileFilter::SampleFileFilter(String const& inDesciption, OwnedArray<Sample
 FileFilter(inDesciption),
 filteredSampleItems(inFilteredSampleItems)
 {
-    isActive = true;
+    
 }
 
 SampleFileFilter::~SampleFileFilter()

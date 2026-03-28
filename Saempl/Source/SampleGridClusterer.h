@@ -54,16 +54,16 @@ private:
     constexpr static float const sampleFactor = 2.0; // How often all tiles in the swap area are swapped per radius reduction
     static int const maxSwapPositions = 9;
     int const numThreads;
-    std::set<int> swapPositionsInUse;
-    std::set<int> startIndicesInUse;
-    CriticalSection mSwapLock;
+    std::set<int> swapPositionsInUse = std::set<int>();
+    std::set<int> startIndicesInUse = std::set<int>();
+    CriticalSection mSwapLock = CriticalSection();
     OwnedArray<SampleItem, CriticalSection>& sampleItems;
-    std::vector<float> mFeatureWeights;
-    int indexOfKeyFeature;
-    int rows;
-    int columns;
-    int numSwapPositions;
-    bool applyWrap;
+    std::vector<float> mFeatureWeights = std::vector<float>();
+    int indexOfKeyFeature = 0;
+    int rows = 0;
+    int columns = 0;
+    int numSwapPositions = maxSwapPositions;
+    bool applyWrap = false;
     bool featureWeightsChanged = true;
     
     void extracted();
