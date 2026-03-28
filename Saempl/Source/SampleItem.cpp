@@ -11,13 +11,27 @@
 
 SampleItem::SampleItem()
 {
-    mTitle = EMPTY_TILE_PATH;
     mCurrentFilePath = EMPTY_TILE_PATH;
-    mKey = NO_KEY_INDEX;
+    mOldFilePath = EMPTY_TILE_PATH;
+    mTitle = EMPTY_TILE_PATH;
+    mLength = 0;
+    mLoudnessDecibel = -300;
+    mLoudnessLUFS = -300;
+    mZeroCrossingRate = 0;
+    mSpectralCentroid = 0;
+    mSpectralSpread = 0;
+    mSpectralRolloff = 0;
+    mSpectralFlux = 0;
+    mChromaFlux = 0;
+    mSampleRate = 0;
     mTempo = 0;
-    mFeatureVector = std::vector<float>(NUM_CHROMA + NUM_SPECTRAL_BANDS + NUM_FEATURES);
+    mKey = NO_KEY_INDEX;
     mSpectralDistribution = std::vector<float>(NUM_SPECTRAL_BANDS);
     mChromaDistribution = std::vector<float>(NUM_CHROMA);
+    mFeatureVector = std::vector<float>(NUM_CHROMA + NUM_SPECTRAL_BANDS + NUM_FEATURES);
+    mComment = String();
+    mPropertyLock = false;
+    mLockedProperties = std::set<String>();
 }
 
 SampleItem::~SampleItem()

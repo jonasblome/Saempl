@@ -38,7 +38,7 @@ swapLock(inSwapLock),
 swapAreaIndices(inSwapAreaIndices),
 grid(inGrid)
 {
-    
+    startIndex = 0;
 }
 
 SampleSwapJob::~SampleSwapJob()
@@ -101,7 +101,7 @@ int SampleSwapJob::findSwapPositionsWrap(std::vector<int>& swapAreaIndices,
     std::mt19937 generator(random());
     
     std::uniform_int_distribution<> distribution1(0, (int) swapAreaIndices.size() - (int) numSwapPositions);
-    int startIndex = ((int) swapAreaIndices.size() - numSwapPositions > 0) ? distribution1(generator) : 0;
+    startIndex = ((int) swapAreaIndices.size() - numSwapPositions > 0) ? distribution1(generator) : 0;
     
     std::uniform_int_distribution<> distribution2(0, rows * columns);
     int randomPosition = distribution2(generator);
