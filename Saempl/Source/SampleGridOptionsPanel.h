@@ -55,8 +55,7 @@ private:
     static int const introTextHeight = 70;
     
     void paint(Graphics& g) override;
-    
-void setPanelComponents() override;
+    void setPanelComponents() override;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleGridOptionsPanel);
 };

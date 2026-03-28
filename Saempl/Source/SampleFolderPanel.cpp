@@ -18,7 +18,6 @@ sampleLibrary(currentProcessor.getSampleLibrary()),
 sampleItemPanel(inSampleItemPanel),
 audioPlayer(inAudioPlayer)
 {
-    mSampleItemCollectionType = FILTERED_SAMPLES;
     setSize(style->SAMPLE_NAVIGATION_PANEL_WIDTH, style->SAMPLE_NAVIGATION_PANEL_HEIGHT);
     setPanelComponents();
 }

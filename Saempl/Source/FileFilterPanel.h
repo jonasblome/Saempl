@@ -51,7 +51,7 @@ private:
     SampleFileFilter& libraryFileFilter;
     std::unique_ptr<ComboBox> mNewRuleTypeChooser;
     std::unique_ptr<BlomeImageButton> mAddFilterRuleButton;
-    OwnedArray<BlomeFileFilterRuleViewBase> mFilterRuleViews;
+    OwnedArray<BlomeFileFilterRuleViewBase> mFilterRuleViews = OwnedArray<BlomeFileFilterRuleViewBase>();
     
     void paint(Graphics& g) override;
     /**

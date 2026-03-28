@@ -10,7 +10,7 @@
 #include "SampleEditorPanel.h"
 
 SampleEditorPanel::SampleEditorPanel(SaemplAudioProcessor& inProcessor,
-                                     SampleItem * inSampleItem)
+                                     SampleItem* inSampleItem)
 :
 PanelBase(inProcessor),
 sampleItem(inSampleItem),
