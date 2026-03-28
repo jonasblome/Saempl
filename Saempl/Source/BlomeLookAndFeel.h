@@ -41,6 +41,9 @@ public LookAndFeel_V4
         // List box colours
         setColour(ListBox::outlineColourId, style->COLOUR_ACCENT_LIGHT);
         setColour(ListBox::backgroundColourId, style->COLOUR_TRANSPARENT);
+        
+        // Label colours
+        setColour(Label::textColourId, style->COLOUR_ACCENT_DARK);
     }
     
     virtual ~BlomeLookAndFeel()
@@ -371,7 +374,8 @@ public LookAndFeel_V4
             }
             else
             {
-                g.setColour(style->COLOUR_ACCENT_DARK.withMultipliedAlpha(alpha));
+                g.setColour(label.findColour(Label::textColourId).withMultipliedAlpha(alpha));
+                // g.setColour(style->COLOUR_ACCENT_DARK.withMultipliedAlpha(alpha));
             }
             g.setFont(style->FONT_SMALL_BOLD);
             
