@@ -346,7 +346,7 @@ public LookAndFeel_V4
         label->setKeyboardType(TextInputTarget::decimalKeyboard);
         
         // Set slider textbox colours
-        label->setColour(Label::textColourId, style->COLOUR_ACCENT_LIGHT);
+        label->setColour(Label::textColourId, style->COLOUR_ACCENT_DARK);
         label->setColour(Label::backgroundColourId, style->COLOUR_ACCENT_DARK);
         label->setColour(Label::outlineColourId, style->COLOUR_ACCENT_LIGHT);
         label->setColour(TextEditor::textColourId, style->COLOUR_ACCENT_DARK);
@@ -368,15 +368,7 @@ public LookAndFeel_V4
         {
             float alpha = label.isEnabled() ? 1.0f : 0.5f;
             
-            if (label.isAccessible())
-            {
-                g.setColour(style->COLOUR_TRANSPARENT);
-            }
-            else
-            {
-                g.setColour(label.findColour(Label::textColourId).withMultipliedAlpha(alpha));
-                // g.setColour(style->COLOUR_ACCENT_DARK.withMultipliedAlpha(alpha));
-            }
+            g.setColour(label.findColour(Label::textColourId).withMultipliedAlpha(alpha));
             g.setFont(style->FONT_SMALL_BOLD);
             
             auto textArea = getLabelBorderSize(label).subtractedFrom(label.getLocalBounds());
