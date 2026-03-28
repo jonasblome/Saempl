@@ -11,9 +11,10 @@
 
 BlomeImageComboBox::BlomeImageComboBox(String const& name, Image const& inImage)
 :
-ComboBox(name)
+ComboBox(name),
+comboBoxImage(inImage)
 {
-    comboBoxImage = inImage;
+    
 }
 
 BlomeImageComboBox::~BlomeImageComboBox()

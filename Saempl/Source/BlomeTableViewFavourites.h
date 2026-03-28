@@ -38,6 +38,7 @@ public:
     
 private:
     SampleNavigationPanel& sampleNavigationPanel;
+    
     void cellClicked(int rowNumber,
                      int columnId,
                      MouseEvent const& mouseEvent) override;

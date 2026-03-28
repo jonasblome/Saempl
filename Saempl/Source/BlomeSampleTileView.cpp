@@ -20,7 +20,6 @@ sampleItemPanel(inSampleItemPanel),
 audioPlayer(inAudioPlayer)
 {
     sampleItemFilePath = sampleItem->getCurrentFilePath();
-    isSelected = false;
     
     if (sampleItemFilePath == EMPTY_TILE_PATH)
     {

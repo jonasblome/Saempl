@@ -134,16 +134,16 @@ private:
     BlomeStyling::StylingPtr style;
     std::unique_ptr<Grid> mSampleGrid;
     SampleItemPanel& sampleItemPanel;
-    OwnedArray<BlomeSampleTileView> mSampleTiles;
-    SampleItemCollectionScope mSampleItemCollectionType;
-    Array<int> mSelectedSampleTileIndices;
-    OwnedArray<SampleItem, CriticalSection> emptySquares;
-    StringArray mAddedSampleFilePaths;
+    OwnedArray<BlomeSampleTileView> mSampleTiles = OwnedArray<BlomeSampleTileView>();
+    SampleItemCollectionScope mSampleItemCollectionType = FILTERED_SAMPLES;
+    Array<int> mSelectedSampleTileIndices = Array<int>();
+    OwnedArray<SampleItem, CriticalSection> emptySquares = OwnedArray<SampleItem, CriticalSection>();
+    StringArray mAddedSampleFilePaths = String();
     std::unique_ptr<SampleGridClusterer> mGridClusterer;
-    bool sampleItemCollectionChanged;
-    int optimalWidth;
-    int optimalHeight;
-    float currentZoomFactor;
+    bool sampleItemCollectionChanged = false;
+    int optimalWidth = 0;
+    int optimalHeight = 0;
+    float currentZoomFactor = 0;
     int minTileWidth = 90;
     int maxTileWidth = 200;
     

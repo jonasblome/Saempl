@@ -51,9 +51,9 @@ protected:
     SampleLibrary& sampleLibrary;
     SampleItemPanel& sampleItemPanel;
     AudioPlayer& audioPlayer;
-    int numRows;
     std::unique_ptr<SampleItemComparator> mComparator;
-    SampleItemCollectionScope mSampleItemCollectionType;
+    int numRows = 0;
+    SampleItemCollectionScope mSampleItemCollectionType = FILTERED_SAMPLES;
     BlomeStyling::StylingPtr style;
     
     void paint(Graphics& g) override;

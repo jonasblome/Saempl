@@ -18,9 +18,7 @@ sampleLibrary(inProcessor.getSampleLibrary()),
 audioPlayer(inAudioPlayer),
 sampleItemPanel(inSampleItemPanel)
 {
-    mSampleItemCollectionType = FILTERED_SAMPLES;
     sampleLibrary.addChangeListener(this);
-    sampleItemCollectionChanged = false;
     addMouseListener(this, true);
     
     // Add grid clusterer

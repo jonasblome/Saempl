@@ -15,7 +15,7 @@ class BlomeImageComboBox
 :
 public ComboBox
 {
-    public:
+public:
     /**
      Creates the image combo box.
      
@@ -26,7 +26,7 @@ public ComboBox
                        Image const& inImage);
     ~BlomeImageComboBox();
     
-    private:
+private:
     BlomeStyling::StylingPtr style;
     Image comboBoxImage;
     

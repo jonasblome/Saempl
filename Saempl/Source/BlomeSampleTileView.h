@@ -66,7 +66,7 @@ private:
     std::unique_ptr<BlomeImageButton> mStartStopButton;
     BlomeStyling::StylingPtr style;
     String sampleItemFilePath;
-    bool isSelected;
+    bool isSelected = false;
     
     void paint(Graphics& g) override;
     void mouseDoubleClick (MouseEvent const& event) override;
