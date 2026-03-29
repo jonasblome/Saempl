@@ -206,12 +206,16 @@ void SampleGridClusterer::copyFeaturesToVectors()
                     switch (i)
                     {
                         case 0:
+                        {
                             featureVector[numUsedFeatures] = sample->getLength() / 60 * mFeatureWeights[0];
                             break;
+                        }
                         case 1:
+                        {
                             featureVector[numUsedFeatures] = (sample->getLoudnessLUFS() - MINIMUM_LOUDNESS)
                                 / (MAXIMUM_LOUDNESS - MINIMUM_LOUDNESS) * mFeatureWeights[1];
                             break;
+                        }
                         case 2:
                         {
                             int minDynamicRange = 0;
@@ -220,33 +224,52 @@ void SampleGridClusterer::copyFeaturesToVectors()
                             break;
                         }
                         case 3:
+                        {
                             featureVector[numUsedFeatures] = sample->getZeroCrossingRate() / sample->getSampleRate() * mFeatureWeights[3];
                             break;
+                        }
                         case 4:
+                        {
                             featureVector[numUsedFeatures] = (sample->getTempo() - LOWER_BPM_LIMIT)
-                            / (UPPER_BPM_LIMIT - LOWER_BPM_LIMIT) * mFeatureWeights[4];
+                                / (UPPER_BPM_LIMIT - LOWER_BPM_LIMIT) * mFeatureWeights[4];
                             break;
+                        }
                         case 5:
+                        {
                             featureVector[numUsedFeatures] = sample->getKey() * 1.0 / NUM_CHROMA * mFeatureWeights[5];
                             indexOfKeyFeature = numUsedFeatures;
                             break;
+                        }
                         case 6:
+                        {
                             featureVector[numUsedFeatures] = sample->getSpectralCentroid() / 20000 * mFeatureWeights[6];
                             break;
+                        }
                         case 7:
+                        {
                             featureVector[numUsedFeatures] = sample->getSpectralSpread() * mFeatureWeights[7];
                             break;
+                        }
                         case 8:
+                        {
                             featureVector[numUsedFeatures] = sample->getSpectralRolloff() * mFeatureWeights[8];
                             break;
+                        }
                         case 9:
+                        {
                             featureVector[numUsedFeatures] = sample->getSpectralFlux() * mFeatureWeights[9];
                             break;
+                        }
                         case 10:
+                        {
                             featureVector[numUsedFeatures] = sample->getChromaFlux() * mFeatureWeights[10];
                             break;
+                        }
                         default:
+                        {
+                            jassertfalse;
                             break;
+                        }
                     }
                     
                     numUsedFeatures++;
@@ -268,6 +291,8 @@ void SampleGridClusterer::copyFeaturesToVectors()
                     {
                         featureVector[numUsedFeatures + c] = chromaDistribution[c] * mFeatureWeights[12];
                     }
+                    
+                    numUsedFeatures += NUM_CHROMA;
                 }
             }
             

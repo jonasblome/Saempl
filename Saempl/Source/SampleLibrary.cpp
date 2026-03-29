@@ -148,23 +148,31 @@ void SampleLibrary::setDirectory(String inDirectoryPath)
     mDirectoryContentsList->setDirectory(currentLibraryDirectory, true, true);
 }
 
-OwnedArray<SampleItem, CriticalSection>& SampleLibrary::getSampleItems(SampleItemCollectionScope inCollectionScope)
+OwnedArray<SampleItem, CriticalSection>& SampleLibrary::getSampleItems(SampleItemCollectionType inCollectionScope)
 {
     switch (inCollectionScope)
     {
         case ALL_SAMPLES:
+        {
             return mAllSampleItems;
             break;
+        }
         case FILTERED_SAMPLES:
+        {
             return mFilteredSampleItems;
             break;
+        }
         case FAVOURITE_SAMPLES:
+        {
             return mFavouriteSampleItems;
             break;
+        }
         default:
-            // jassertfalse;
+        {
+            jassertfalse;
             return mFilteredSampleItems;
             break;
+        }
     }
 }
 

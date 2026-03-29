@@ -262,7 +262,7 @@ private:
     int mKey = NO_KEY_INDEX;
     std::vector<float> mSpectralDistribution = std::vector<float>(NUM_SPECTRAL_BANDS);
     std::vector<float> mChromaDistribution = std::vector<float>(NUM_CHROMA);
-    std::vector<float> mFeatureVector = std::vector<float>(NUM_CHROMA + NUM_SPECTRAL_BANDS + NUM_FEATURES);
+    std::vector<float> mFeatureVector = std::vector<float>((NUM_CHROMA - 1) + (NUM_SPECTRAL_BANDS - 1) + NUM_FEATURES);
     String mComment = String();
     bool mPropertyLock = false;
     std::set<String> mLockedProperties = std::set<String>();

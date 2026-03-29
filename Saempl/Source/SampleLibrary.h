@@ -83,7 +83,7 @@ public:
      
      @returns the sample item collection of given type.
      */
-    OwnedArray<SampleItem, CriticalSection>& getSampleItems(SampleItemCollectionScope inCollectionScope);
+    OwnedArray<SampleItem, CriticalSection>& getSampleItems(SampleItemCollectionType inCollectionScope);
     /**
      @returns the path of the current library directory.
      */

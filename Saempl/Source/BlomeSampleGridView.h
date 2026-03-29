@@ -135,7 +135,7 @@ private:
     std::unique_ptr<Grid> mSampleGrid;
     SampleItemPanel& sampleItemPanel;
     OwnedArray<BlomeSampleTileView> mSampleTiles = OwnedArray<BlomeSampleTileView>();
-    SampleItemCollectionScope mSampleItemCollectionType = FILTERED_SAMPLES;
+    SampleItemCollectionType mSampleItemCollectionType = FILTERED_SAMPLES;
     Array<int> mSelectedSampleTileIndices = Array<int>();
     OwnedArray<SampleItem, CriticalSection> emptySquares = OwnedArray<SampleItem, CriticalSection>();
     StringArray mAddedSampleFilePaths = String();

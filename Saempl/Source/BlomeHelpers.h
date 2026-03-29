@@ -26,25 +26,28 @@ static String const SUPPORTED_AUDIO_FORMATS_WILDCARD = "*.wav;*.mp3;*.aiff;*.m4a
 static String const SUPPORTED_AUDIO_FORMATS_EXTENSIONS = ".wav;.mp3;.aiff;.m4a";
 static StringArray const PROPERTY_NAMES = StringArray
 ({
-    "Title",
-    "Length",
-    "dB",
-    "LUFS",
-    "Tempo",
-    "Key",
-    "Dynamic Range",
-    "Average Frequency",
-    "Rolloff",
-    "Frequency Spread",
-    "Frequency Fluctuation",
-    "Harmonic Fluctuation",
-    "Zero Crossing Rate",
-    "Comment",
-    "Property Lock",
+    "Title", // -1
+    "Length", // Feature
+    "dB", // -1
+    "LUFS", // Feature
+    "Tempo", // Feature
+    "Key", // Feature
+    "Dynamic Range", // Feature
+    "Average Frequency", // Feature
+    "Rolloff", // Feature
+    "Frequency Spread", // Feature
+    "Frequency Fluctuation", // Feature
+    "Harmonic Fluctuation", // Feature
+    "Zero Crossing Rate", // Feature
+    "Comment", // -1
+    "Property Lock", // -1
 });
+// Spectral and chroma distribution
+static int const NUM_ADDITIONAL_FEATURES = 2;
+static int const NUM_NON_FEATURE_PROPERTIES = 4;
+static int const NUM_FEATURES = PROPERTY_NAMES.size() + NUM_ADDITIONAL_FEATURES - NUM_NON_FEATURE_PROPERTIES;
 static int const NUM_CHROMA = 12;
 static int const NUM_SPECTRAL_BANDS = 16;
-static int const NUM_FEATURES = 13;
 static int const LOWER_BPM_LIMIT = 85;
 static int const UPPER_BPM_LIMIT = 170;
 
@@ -203,7 +206,7 @@ static std::vector<float> const GRID_PRESET_FOLEY = std::vector<float>
 });
 
 // Sample library collection types
-enum SampleItemCollectionScope
+enum SampleItemCollectionType
 {
     ALL_SAMPLES,
     FILTERED_SAMPLES,

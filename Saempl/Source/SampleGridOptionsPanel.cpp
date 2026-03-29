@@ -31,8 +31,8 @@ SampleGridOptionsPanel::~SampleGridOptionsPanel()
     newWeights[8] = mSpectralRolloffSlider->getValue();
     newWeights[9] = mSpectralFluxSlider->getValue();
     newWeights[10] = mChromaFluxSlider->getValue();
-    newWeights[11] = mSpectralDistributionSlider->getValue();
-    newWeights[12] = mChromaDistributionSlider->getValue();
+    newWeights[11] = mSpectralDistributionSlider->getValue(); // Keep as second to last element
+    newWeights[12] = mChromaDistributionSlider->getValue(); // Keep as last element
     
     if (currentProcessor.getFeatureWeights() != newWeights)
     {
