@@ -38,7 +38,8 @@ public:
      */
     BlomeTableViewBase(SaemplAudioProcessor& inProcessor,
                        SampleItemPanel& inSampleItemPanel,
-                       AudioPlayer& inAudioPlayer);
+                       AudioPlayer& inAudioPlayer,
+                       SampleItemCollectionType inSampleItemCollectionType);
     ~BlomeTableViewBase();
     int getNumRows() override;
     /**
@@ -49,11 +50,11 @@ public:
 protected:
     SaemplAudioProcessor& currentProcessor;
     SampleLibrary& sampleLibrary;
+    OwnedArray<SampleItem, CriticalSection>& sampleItems;
     SampleItemPanel& sampleItemPanel;
     AudioPlayer& audioPlayer;
     std::unique_ptr<SampleItemComparator> mComparator;
     int numRows = 0;
-    SampleItemCollectionType mSampleItemCollectionType = FILTERED_SAMPLES;
     BlomeStyling::StylingPtr style;
     
     void paint(Graphics& g) override;

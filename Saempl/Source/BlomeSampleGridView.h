@@ -130,12 +130,12 @@ public:
 private:
     SaemplAudioProcessor& currentProcessor;
     SampleLibrary& sampleLibrary;
+    OwnedArray<SampleItem, CriticalSection>& sampleItems;
     AudioPlayer& audioPlayer;
     BlomeStyling::StylingPtr style;
     std::unique_ptr<Grid> mSampleGrid;
     SampleItemPanel& sampleItemPanel;
     OwnedArray<BlomeSampleTileView> mSampleTiles = OwnedArray<BlomeSampleTileView>();
-    SampleItemCollectionType mSampleItemCollectionType = FILTERED_SAMPLES;
     Array<int> mSelectedSampleTileIndices = Array<int>();
     OwnedArray<SampleItem, CriticalSection> emptySquares = OwnedArray<SampleItem, CriticalSection>();
     StringArray mAddedSampleFilePaths = String();

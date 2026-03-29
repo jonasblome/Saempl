@@ -15,6 +15,7 @@ BlomeSampleGridView::BlomeSampleGridView(SaemplAudioProcessor& inProcessor,
 :
 currentProcessor(inProcessor),
 sampleLibrary(inProcessor.getSampleLibrary()),
+sampleItems(sampleLibrary.getSampleItems(FILTERED_SAMPLES)),
 audioPlayer(inAudioPlayer),
 sampleItemPanel(inSampleItemPanel)
 {
@@ -22,7 +23,7 @@ sampleItemPanel(inSampleItemPanel)
     addMouseListener(this, true);
     
     // Add grid clusterer
-    mGridClusterer = std::make_unique<SampleGridClusterer>(sampleLibrary.getSampleItems(mSampleItemCollectionType));
+    mGridClusterer = std::make_unique<SampleGridClusterer>(sampleItems);
     mGridClusterer->addChangeListener(this);
 }
 
@@ -40,8 +41,6 @@ void BlomeSampleGridView::clusterGrid()
         return;
     }
     
-    // Retrieve sample items
-    OwnedArray<SampleItem, CriticalSection>& sampleItems = sampleLibrary.getSampleItems(mSampleItemCollectionType);
     mSelectedSampleTileIndices.clear();
     
     // Calculate optimal rectangle side lengths to minimise empty tiles,
@@ -274,7 +273,6 @@ void BlomeSampleGridView::setupGrid()
 {
     // Setup tile grid
     mSampleTiles.clear();
-    OwnedArray<SampleItem, CriticalSection>& sampleItems = sampleLibrary.getSampleItems(mSampleItemCollectionType);
     mSampleGrid = std::make_unique<Grid>();
     setVisible(true);
     

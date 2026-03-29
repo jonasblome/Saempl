@@ -51,7 +51,6 @@ private:
     SampleItemPanel& sampleItemPanel;
     AudioPlayer& audioPlayer;
     std::unique_ptr<BlomeFileTreeView> mFileTree;
-    SampleItemCollectionType mSampleItemCollectionType = FILTERED_SAMPLES;
     
     void selectionChanged() override;
     void fileClicked(File const& file, MouseEvent const& mouseEvent) override;

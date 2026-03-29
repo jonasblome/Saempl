@@ -11,10 +11,12 @@
 
 BlomeTableViewBase::BlomeTableViewBase(SaemplAudioProcessor& inProcessor,
                                        SampleItemPanel& inSampleItemPanel,
-                                       AudioPlayer& inAudioPlayer)
+                                       AudioPlayer& inAudioPlayer,
+                                       SampleItemCollectionType inSampleItemCollectionType)
 :
 currentProcessor(inProcessor),
 sampleLibrary(currentProcessor.getSampleLibrary()),
+sampleItems(sampleLibrary.getSampleItems(inSampleItemCollectionType)),
 sampleItemPanel(inSampleItemPanel),
 audioPlayer(inAudioPlayer)
 {
@@ -46,7 +48,7 @@ void BlomeTableViewBase::paint(Graphics& g)
 
 int BlomeTableViewBase::getNumRows()
 {
-    numRows = sampleLibrary.getSampleItems(mSampleItemCollectionType).size();
+    numRows = sampleItems.size();
     return numRows;
 }
 
@@ -71,12 +73,12 @@ void BlomeTableViewBase::paintCell(Graphics& g,
                                    bool rowIsSelected)
 {
     // Dont draw more rows than items in collection
-    if (rowNumber >= sampleLibrary.getSampleItems(mSampleItemCollectionType).size())
+    if (rowNumber >= sampleItems.size())
     {
         return;
     }
     
-    if (SampleItem* rowSampleItem = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(rowNumber))
+    if (SampleItem* rowSampleItem = sampleItems.getUnchecked(rowNumber))
     {
         // Draw cell separators
         g.setColour(style->COLOUR_ACCENT_MEDIUM);
@@ -174,7 +176,7 @@ int BlomeTableViewBase::getColumnAutoSizeWidth(int columnId)
     // Find the widest bit of text in this column..
     for (int r = getNumRows(); --r >= 0;)
     {
-        if (SampleItem* sampleItem = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(r))
+        if (SampleItem* sampleItem = sampleItems.getUnchecked(r))
         {
             String text = sampleItem->getCurrentFilePath();
             widest = jmax(widest, (int) TextLayout().getStringWidth(style->FONT_SMALL_BOLD, text));
@@ -186,7 +188,7 @@ int BlomeTableViewBase::getColumnAutoSizeWidth(int columnId)
 
 void BlomeTableViewBase::loadSelectedRowIntoAudioPlayer(int rowNumber)
 {
-    File inFile = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(rowNumber)->getCurrentFilePath();
+    File inFile = sampleItems.getUnchecked(rowNumber)->getCurrentFilePath();
     sampleItemPanel.tryShowAudioResource(inFile);
 }
 
@@ -215,7 +217,7 @@ void BlomeTableViewBase::mouseDrag(MouseEvent const& mouseEvent)
                 // Add all selected rows to external drag
                 for (int r = 0; r < getNumSelectedRows(); r++)
                 {
-                    selectedFilePaths.add(sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(getSelectedRow(r))->getCurrentFilePath());
+                    selectedFilePaths.add(sampleItems.getUnchecked(getSelectedRow(r))->getCurrentFilePath());
                 }
                 
                 DragAndDropContainer* dragContainer = DragAndDropContainer::findParentDragContainerFor(this);
@@ -248,7 +250,7 @@ void BlomeTableViewBase::sortOrderChanged(int newSortColumnId, bool isForwards)
         currentProcessor.setSortingColumnTitle(columnName);
         mComparator->setCompareProperty(columnName);
         mComparator->setSortingDirection(isForwards);
-        sampleLibrary.getSampleItems(mSampleItemCollectionType).sort(*mComparator);
+        sampleItems.sort(*mComparator);
         updateContent();
     }
 }
@@ -260,9 +262,7 @@ void BlomeTableViewBase::reanalyseSamples()
     
     for (int r = getNumSelectedRows() - 1; r >= 0; r--)
     {
-        filePaths.add(sampleLibrary
-                      .getSampleItems(mSampleItemCollectionType)
-                      .getUnchecked(getSelectedRow(r))->getCurrentFilePath());
+        filePaths.add(sampleItems.getUnchecked(getSelectedRow(r))->getCurrentFilePath());
     }
     
     sampleLibrary.reanalyseSampleItems(filePaths);
@@ -270,9 +270,7 @@ void BlomeTableViewBase::reanalyseSamples()
 
 void BlomeTableViewBase::editSampleProperties()
 {
-    SampleItem* sample = sampleLibrary
-        .getSampleItems(mSampleItemCollectionType)
-        .getUnchecked(getLastRowSelected());
+    SampleItem* sample = sampleItems.getUnchecked(getLastRowSelected());
     std::unique_ptr<SampleEditorPanel> sampleEditorPanel = std::make_unique<SampleEditorPanel>(currentProcessor, sample);
     
     CallOutBox::launchAsynchronously(std::move(sampleEditorPanel),
@@ -289,7 +287,7 @@ void BlomeTableViewBase::playSelectedSample()
         return;
     }
     
-    File sampleFile = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(selectedRowIndex)->getCurrentFilePath();
+    File sampleFile = sampleItems.getUnchecked(selectedRowIndex)->getCurrentFilePath();
     
     // Load file into source
     if (sampleFile.exists() && !sampleFile.isDirectory() && isSupportedAudioFileFormat(sampleFile.getFileExtension()))
@@ -314,8 +312,6 @@ void BlomeTableViewBase::playSelectedSample()
 
 void BlomeTableViewBase::showSampleInFinder()
 {
-    File(sampleLibrary
-         .getSampleItems(mSampleItemCollectionType)
-         .getUnchecked(getLastRowSelected())->getCurrentFilePath())
+    File(sampleItems.getUnchecked(getLastRowSelected())->getCurrentFilePath())
     .revealToUser();
 }

@@ -14,11 +14,9 @@ BlomeTableViewFavourites::BlomeTableViewFavourites(SaemplAudioProcessor& inProce
                                                    SampleItemPanel& inSampleItemPanel,
                                                    AudioPlayer& inAudioPlayer)
 :
-BlomeTableViewBase(inProcessor, inSampleItemPanel, inAudioPlayer),
+BlomeTableViewBase(inProcessor, inSampleItemPanel, inAudioPlayer, FAVOURITE_SAMPLES),
 sampleNavigationPanel(inSampleNavigationPanel)
 {
-    mSampleItemCollectionType = FAVOURITE_SAMPLES;
-    
     getHeader().addColumn(PROPERTY_NAMES[0],
                           1,
                           200,
@@ -65,9 +63,7 @@ void BlomeTableViewFavourites::removeSampleItemFromFavourites()
     
     for (int r = getNumSelectedRows() - 1; r >= 0; r--)
     {
-        sampleItems.add(sampleLibrary
-                        .getSampleItems(mSampleItemCollectionType)
-                        .getUnchecked(getSelectedRow(r)));
+        sampleItems.add(sampleItems.getUnchecked(getSelectedRow(r)));
     }
     
     sampleLibrary.removeAllFromFavourites(sampleItems);
@@ -75,7 +71,5 @@ void BlomeTableViewFavourites::removeSampleItemFromFavourites()
 
 void BlomeTableViewFavourites::showSampleInNavigation()
 {
-    sampleNavigationPanel.showSample(sampleLibrary
-                                     .getSampleItems(mSampleItemCollectionType)
-                                     .getUnchecked(getLastRowSelected())->getCurrentFilePath());
+    sampleNavigationPanel.showSample(sampleItems.getUnchecked(getLastRowSelected())->getCurrentFilePath());
 }

@@ -13,9 +13,8 @@ BlomeTableViewNavigation::BlomeTableViewNavigation(SaemplAudioProcessor& inProce
                                                    SampleItemPanel& inSampleItemPanel,
                                                    AudioPlayer& inAudioPlayer)
 :
-BlomeTableViewBase(inProcessor, inSampleItemPanel, inAudioPlayer)
+BlomeTableViewBase(inProcessor, inSampleItemPanel, inAudioPlayer, FILTERED_SAMPLES)
 {
-    mSampleItemCollectionType = FILTERED_SAMPLES;
     sampleLibrary.addChangeListener(this);
     
     // Add all sample item properties as table columns
@@ -72,9 +71,7 @@ void BlomeTableViewNavigation::deleteFiles(bool deletePermanently = false)
     
     for (int r = getNumSelectedRows() - 1; r >= 0; r--)
     {
-        filePaths.add(sampleLibrary
-                      .getSampleItems(mSampleItemCollectionType)
-                      .getUnchecked(getSelectedRow(r))->getCurrentFilePath());
+        filePaths.add(sampleItems.getUnchecked(getSelectedRow(r))->getCurrentFilePath());
     }
     
     sampleLibrary.removeSampleItems(filePaths, deletePermanently);
@@ -86,9 +83,7 @@ void BlomeTableViewNavigation::addToFavourites()
     
     for (int r = getNumSelectedRows() - 1; r >= 0; r--)
     {
-        filePaths.add(sampleLibrary
-                      .getSampleItems(mSampleItemCollectionType)
-                      .getUnchecked(getSelectedRow(r))->getCurrentFilePath());
+        filePaths.add(sampleItems.getUnchecked(getSelectedRow(r))->getCurrentFilePath());
     }
     
     sampleLibrary.addAllToFavourites(filePaths);
@@ -109,7 +104,7 @@ void BlomeTableViewNavigation::resortTable()
 
 void BlomeTableViewNavigation::renameSampleFile()
 {
-    String filePath = sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(getLastRowSelected())->getCurrentFilePath();
+    String filePath = sampleItems.getUnchecked(getLastRowSelected())->getCurrentFilePath();
     std::unique_ptr<SampleFileRenamingPanel> renamingPanel = std::make_unique<SampleFileRenamingPanel>(currentProcessor, filePath);
     CallOutBox::launchAsynchronously(std::move(renamingPanel),
                                      getComponentForRowNumber(getLastRowSelected())->getScreenBounds(),
@@ -120,7 +115,7 @@ void BlomeTableViewNavigation::showSample(String inFilePath)
 {
     for (int r = 0; r < getNumRows(); r++)
     {
-        if (sampleLibrary.getSampleItems(mSampleItemCollectionType).getUnchecked(r)->getCurrentFilePath() == inFilePath)
+        if (sampleItems.getUnchecked(r)->getCurrentFilePath() == inFilePath)
         {
             selectRow(r);
             return;
