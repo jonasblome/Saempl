@@ -937,7 +937,12 @@ void SampleGridClusterer::setProgressAndStatus(double inProgress, int64 startTim
     setProgress(inProgress);
     String statusMessage = "Est. time remaining: ";
     int64 msSinceStart = Time::currentTimeMillis() - startTime;
-    int estimatedSecondsRemaining = ((msSinceStart / inProgress) * (1.0 - inProgress)) / 1000;
+    int estimatedSecondsRemaining = 0;
+    
+    if (inProgress != 0)
+    {
+        estimatedSecondsRemaining = ((msSinceStart / inProgress) * (1.0 - inProgress)) / 1000;
+    }
     
     if (estimatedSecondsRemaining < 60)
     {
