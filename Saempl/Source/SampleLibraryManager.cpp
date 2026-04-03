@@ -177,7 +177,12 @@ void SampleLibraryManager::setProgressAndStatus(int numItemsToProcess, int64 sta
     setProgress(numProcessedItems / (double) numItemsToProcess);
     String statusMessage = String(std::to_string(numProcessedItems) + "/" + std::to_string(numItemsToProcess) + " Samples analysed" + "\n" + "Est. time remaining: ");
     int64 msSinceStart = Time::currentTimeMillis() - startTime;
-    double estimatedSecondsRemaining = ((msSinceStart / numProcessedItems) * (numItemsToProcess - numProcessedItems)) / 1000.0;
+    double estimatedSecondsRemaining = 0;
+    
+    if (numProcessedItems != 0)
+    {
+        estimatedSecondsRemaining = ((msSinceStart / numProcessedItems) * (numItemsToProcess - numProcessedItems)) / 1000.0;
+    }
     
     if (estimatedSecondsRemaining < 60)
     {
