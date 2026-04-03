@@ -508,6 +508,14 @@ void BlomeSampleGridView::mouseDrag(MouseEvent const& mouseEvent)
     }
 }
 
+void BlomeSampleGridView::visibilityChanged()
+{
+    if (isVisible())
+    {
+        clusterGrid();
+    }
+}
+
 void BlomeSampleGridView::showPopupMenu()
 {
     PopupMenu popupMenu;

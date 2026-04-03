@@ -84,16 +84,6 @@ void SampleGridPanel::setPanelComponents()
     mSampleGrid = std::make_unique<BlomeSampleGridView>(currentProcessor, sampleItemPanel, audioPlayer);
     mSampleGrid->setZoomFactor(currentProcessor.getSampleGridZoomFactor());
     
-    if (sampleLibrary.getLibraryWasLoaded())
-    {
-        mSampleGrid->setReadyForClustering();
-        
-        if (isShowing())
-        {
-            mSampleGrid->clusterGrid();
-        }
-    }
-    
     mChangeGridClusteringOptionsButton = std::make_unique<BlomeImageButton>("ChangeClusteringOptionsButton", true);
     mChangeGridClusteringOptionsButton->setImages(false,
                                                   true,
@@ -236,6 +226,11 @@ void SampleGridPanel::setPanelComponents()
     mGridViewport->setWantsKeyboardFocus(false);
     addAndMakeVisible(*mGridViewport);
     
+    if (sampleLibrary.getLibraryWasLoaded())
+    {
+        mSampleGrid->setReadyForClustering();
+    }
+    
     resizePanelComponents();
 }
 
@@ -255,14 +250,6 @@ void SampleGridPanel::resizePanelComponents()
                                                       style->PANEL_MARGIN * 0.75,
                                                       style->PANEL_TITLE_HEIGHT - style->PANEL_MARGIN,
                                                       style->PANEL_TITLE_HEIGHT - style->PANEL_MARGIN);
-    }
-}
-
-void SampleGridPanel::visibilityChanged()
-{
-    if (isVisible())
-    {
-        mSampleGrid->clusterGrid();
     }
 }
 

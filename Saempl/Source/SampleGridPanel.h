@@ -61,7 +61,6 @@ private:
     void paint(Graphics& g) override;
     void setPanelComponents() override;
     void resizePanelComponents() override;
-    void visibilityChanged() override;
     /**
      Moves the viewport's centre position the given position.
      

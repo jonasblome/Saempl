@@ -156,6 +156,7 @@ private:
     void filesDropped(StringArray const& files, int x, int y) override;
     bool isInterestedInFileDrag(StringArray const& files) override;
     void mouseDrag(MouseEvent const& mouseEvent) override;
+    void visibilityChanged() override;
     /**
      Shows a popup menu with options to alter the selected sample items.
      */
