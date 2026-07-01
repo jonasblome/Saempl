@@ -253,6 +253,14 @@ void SampleGridPanel::resizePanelComponents()
     }
 }
 
+void SampleGridPanel::visibilityChanged()
+{
+    if (isShowing())
+    {
+        mSampleGrid->setVisible(true);
+    }
+}
+
 bool SampleGridPanel::keyPressed(KeyPress const& key)
 {
     if (!isShowing())

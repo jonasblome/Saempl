@@ -510,7 +510,7 @@ void BlomeSampleGridView::mouseDrag(MouseEvent const& mouseEvent)
 
 void BlomeSampleGridView::visibilityChanged()
 {
-    if (isVisible())
+    if (isShowing())
     {
         clusterGrid();
     }
